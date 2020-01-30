@@ -1,5 +1,6 @@
 import pickle
 
+# this file is built to generate custom save games for testing.
 value_dictionary = {
     # player data
     "player inventory": [],
@@ -15,6 +16,12 @@ value_dictionary = {
     # main plaza data
     "main plaza bools": (False, False, False, False, False),
     "main plaza items": ["strange keys", "map"],
+    # small den data
+    "small den bools": (False, False),
+    "small den items": ["meat"],
+    # west wing data
+    "west wing bools": (False, False),
+    "west wing items": []
 
                     }
 
@@ -44,6 +51,6 @@ def load_game_state(file_name):
 
 
 if __name__ == "__main__":
-    #save_game_state(value_dictionary, "save game")
+    save_game_state(value_dictionary, "save game")
     item_dict = load_game_state("save game")
     print_db_file(item_dict)
