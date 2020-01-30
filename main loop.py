@@ -4,6 +4,7 @@ from side_room_class import SideRoom
 from main_plaza import MainPlaza
 from small_den import SmallDen
 from west_wing import WestWing
+from cemetery import Cemetery
 import re
 import pickle
 
@@ -58,6 +59,7 @@ class MainGame:
                 self.main_plaza = MainPlaza()
                 self.small_den = SmallDen()
                 self.west_wing = WestWing()
+                self.cemetery = Cemetery()
                 choosing = False
             elif player_option == "L":
                 # getting loaded settings
@@ -85,6 +87,9 @@ class MainGame:
                 # west wing data
                 west_wing_items = new_value_dictionary["west wing items"]
                 west_wing_bools = new_value_dictionary["west wing bools"]
+                # cemetery data
+                cemetery_items = new_value_dictionary["cemetery items"]
+                cemetery_bools = new_value_dictionary["cemetery bools"]
 
                 # loading saved settings
                 self.player = VernLion(player_inventory, player_location, player_score,player_bools)
@@ -93,6 +98,7 @@ class MainGame:
                 self.main_plaza = MainPlaza(main_plaza_items, main_plaza_bools)
                 self.small_den = SmallDen(small_den_item, small_den_bools)
                 self.west_wing = WestWing(west_wing_items, west_wing_bools)
+                self.cemetery_name = "cemetery"
                 choosing = False
             else:
                 print(self.ascii_image)
@@ -137,7 +143,9 @@ class MainGame:
                             "small den items": self.small_den.get_inventory(),
                             "small den bools": self.small_den.get_bools(),
                             "west wing items": self.west_wing.get_inventory(),
-                            "west wing bools": self.west_wing.get_bools()
+                            "west wing bools": self.west_wing.get_bools(),
+                            "cemetery items": self.cemetery.get_inventory(),
+                            "cemetery bools": self.cemetery.get_bools()
                             }
         try:
             with open("save game", 'wb+') as db_file:
@@ -160,6 +168,8 @@ class MainGame:
             loc_name = self.small_den
         elif location == self.west_wing_name:
             loc_name = self.west_wing
+        elif location == self.cemetery_name:
+            loc_name = self.cemetery
         else:
             print("no matching location found, defaulting to bunker.")
             loc_name = self.starting_room
@@ -417,7 +427,25 @@ class MainGame:
 
     # cemetery actions
     def cemetery_area(self, player_choice):
-        pass
+        p_list = player_choice.split(" ", 1)
+        if p_list[0] == "look":
+            try:
+                if p_list[1] == "room":
+                    self.cemetery.print_description_room()
+                elif p_list[1] != "self" and p_list[1] != "map":
+                    print("I don't know where {0} is.".format(p_list[1]))
+            except IndexError:
+                print("look at what?")
+
+        # allows player to move around
+        elif p_list[0] == "go":
+            try:
+                if p_list[1] == "west wing":
+                    self.player.set_location("west wing")
+                else:
+                    print("I can't go to {0}.".format(p_list[1]))
+            except IndexError:
+                print("Go where?")
 
     # main game loop
     def main_loop(self):
@@ -457,6 +485,13 @@ You'll have to figure out where you are first and then get to them.""")
                 continue
             if self.player.get_location() == self.west_wing_name:
                 self.west_wing_area(player_choice)
+                print("")
+                continue
+            if self.player.get_location() == self.cemetery_name:
+                if not self.cemetery.first_entered:
+                    print("You don't think you should remove anything from here.")
+                    self.cemetery.first_entered = True
+                self.cemetery_area(player_choice)
                 print("")
                 continue
             if self.player.get_location() == "exit":
