@@ -19,6 +19,9 @@ class SmallDen:
     def print_description_room(self):
         print("It's some small den... or maybe a corral? It's not totally clear.\nThere is a exit back the 'main plaza'.")
         print("There is a dead body of an animal here.")
+        if len(self.inventory) > 0:
+            for item in self.inventory:
+                print(f"There is a(n) {item}")
 
     # print description of dead body
     def print_description_animal_body(self):

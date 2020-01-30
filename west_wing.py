@@ -19,6 +19,9 @@ class WestWing:
     def print_description_room(self):
         print("It's a small hallway that leads to new areas.\nThere is a exit back the 'main plaza'.")
         print("You can go to 'toy shop', 'pet shop', and 'cemetery.")
+        if len(self.inventory) > 0:
+            for item in self.inventory:
+                print(f"There is a(n) {item}")
 
     # this pops off the items and returns it
     def get_item(self, item):

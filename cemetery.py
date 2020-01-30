@@ -18,9 +18,12 @@ class Cemetery:
     # this prints a description along with a item list
     def print_description_room(self):
         print("It's a make-shift cemetery. There is an exit back to the 'west wing'")
-        if not self.cemetery.first_entered:
+        if not self.first_entered:
             print("You don't think you should remove anything from here.")
-            self.cemetery.first_entered = True
+            self.first_entered = True
+        if len(self.inventory) > 0:
+            for item in self.inventory:
+                print(f"There is a(n) {item}")
 
     # this pops off the items and returns it
     def get_item(self, item):
