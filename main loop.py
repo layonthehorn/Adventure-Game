@@ -16,11 +16,12 @@ class MainGame:
         self.use_pattern = re.compile(r"^use\s|\swith\s|\son\s")
 
         # building the rooms and player
-        self.main_plaza_name = "main plaza"
+        self.main_plaza_name = "outside"
         self.starting_room_name = "bunker"
         self.side_room_name = "side room"
         self.small_den_name = "small den"
         self.west_wing_name = "west wing"
+        self.cemetery_name = "cemetery"
         # Main classes
         # self.player - The player character class
         # self.starting_room - the bunker room class
@@ -98,7 +99,7 @@ class MainGame:
                 self.main_plaza = MainPlaza(main_plaza_items, main_plaza_bools)
                 self.small_den = SmallDen(small_den_item, small_den_bools)
                 self.west_wing = WestWing(west_wing_items, west_wing_bools)
-                self.cemetery_name = "cemetery"
+                self.cemetery = Cemetery(cemetery_items, cemetery_bools)
                 choosing = False
             else:
                 print(self.ascii_image)
@@ -383,7 +384,7 @@ class MainGame:
         elif p_list[0] == "go":
             try:
                 if p_list[1] == "main plaza":
-                    self.player.set_location("main plaza")
+                    self.player.set_location("outside")
                 else:
                     print("I can't go to {0}.".format(p_list[1]))
             except IndexError:
@@ -405,7 +406,7 @@ class MainGame:
         elif p_list[0] == "go":
             try:
                 if p_list[1] == "main plaza":
-                    self.player.set_location("main plaza")
+                    self.player.set_location("outside")
                 elif p_list[1] == "toy shop":
                     self.player.set_location("toy shop")
                 elif p_list[1] == "cemetery":

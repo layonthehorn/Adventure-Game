@@ -21,7 +21,10 @@ value_dictionary = {
     "small den items": ["meat"],
     # west wing data
     "west wing bools": (False, False),
-    "west wing items": []
+    "west wing items": [],
+    # cemetery data
+    "cemetery items": [],
+    "cemetery bools": (False, False)
 
                     }
 
