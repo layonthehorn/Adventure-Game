@@ -1,0 +1,49 @@
+import pickle
+
+value_dictionary = {
+    # player data
+    "player inventory": [],
+    "player score": 2,
+    "player bools": False,
+    "player location": "outside",
+    # starting room data
+    "starting room bools": (True, True, True),
+    "starting room items": ["bag of catnip"],
+    # computer room data
+    "side room bools": (True, True),
+    "side room items": [],
+    # main plaza data
+    "main plaza bools": (False, False, False, False, False),
+    "main plaza items": ["strange keys", "map"],
+
+                    }
+
+
+def print_db_file(db):
+    if db is None:
+        print("nothing to do...")
+    else:
+        for key in db:
+            print(key, " ", db[key])
+
+
+def save_game_state(data, file_name):
+    db_file = open(file_name, 'wb+')
+    pickle.dump(data, db_file)
+    db_file.close()
+
+
+def load_game_state(file_name):
+    try:
+        with open(file_name, 'rb') as db_file:
+            pickle_db = pickle.load(db_file)
+            return pickle_db
+    except FileNotFoundError:
+        print("No save games found.")
+        return None
+
+
+if __name__ == "__main__":
+    #save_game_state(value_dictionary, "save game")
+    item_dict = load_game_state("save game")
+    print_db_file(item_dict)
