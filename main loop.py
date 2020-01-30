@@ -7,7 +7,7 @@ from west_wing import WestWing
 import re
 import pickle
 # these are my imports
-#testing changes
+# testing changes
 
 class MainGame:
     def __init__(self):
