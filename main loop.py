@@ -26,6 +26,7 @@ class MainGame:
         # self.side_room - the computer room to the side of the bunker class
         # self.main_plaza - the area outside the bunker class
 
+        # Temporary ascii art from https://ascii.co.uk/art/lion
         self.ascii_image = """                 ,  ,, ,
            , ,; ; ;;  ; ;  ;
         , ; ';  ;  ;; .-''\\ ; ;
@@ -35,7 +36,7 @@ class MainGame:
          |/.'  /0)    ;  ; `    ;  ; ;
         ,/'   /       ; ; ;  ;   ; ; ; ;
        /_   /         ;    ;  `    ;  ;
-      `R8P"  .      ;  ; ; ; ;     ;  ;;
+      `?8P"  .      ;  ; ; ; ;     ;  ;;
       | ;  .:: `     ;; ; ;   `  ;  ;
       `' `--._      ;;  ;;  ; ;   ;   ;
        `-..__..--''   ; ;    ;;   ; ;   ;
