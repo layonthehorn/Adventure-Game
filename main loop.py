@@ -6,8 +6,6 @@ from small_den import SmallDen
 from west_wing import WestWing
 import re
 import pickle
-# these are my imports
-# testing changes
 
 
 class MainGame:
