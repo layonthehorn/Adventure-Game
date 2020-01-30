@@ -1,7 +1,7 @@
 class Cemetery:
     def __init__(self, items_contained=None, bool_list=(False, False)):
         if items_contained is None:
-            items_contained = []
+            items_contained = ["lion plush"]
         self.inventory = items_contained
 
         self.first_entered = bool_list[0]
@@ -18,6 +18,9 @@ class Cemetery:
     # this prints a description along with a item list
     def print_description_room(self):
         print("It's a make-shift cemetery. There is an exit back to the 'west wing'")
+        if not self.cemetery.first_entered:
+            print("You don't think you should remove anything from here.")
+            self.cemetery.first_entered = True
 
     # this pops off the items and returns it
     def get_item(self, item):

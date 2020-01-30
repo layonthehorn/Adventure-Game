@@ -489,9 +489,6 @@ You'll have to figure out where you are first and then get to them.""")
                 print("")
                 continue
             if self.player.get_location() == self.cemetery_name:
-                if not self.cemetery.first_entered:
-                    print("You don't think you should remove anything from here.")
-                    self.cemetery.first_entered = True
                 self.cemetery_area(player_choice)
                 print("")
                 continue

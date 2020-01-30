@@ -23,7 +23,7 @@ value_dictionary = {
     "west wing bools": (False, False),
     "west wing items": [],
     # cemetery data
-    "cemetery items": [],
+    "cemetery items": ["lion plush"],
     "cemetery bools": (False, False)
 
                     }
