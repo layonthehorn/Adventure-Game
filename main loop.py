@@ -27,6 +27,8 @@ class MainGame:
         # self.starting_room - the bunker room class
         # self.side_room - the computer room to the side of the bunker class
         # self.main_plaza - the area outside the bunker class
+        # self.cemetery - the area north of the west wing.
+        # self.west_wing - a side area used to reach more places
 
         # Temporary ascii art from https://ascii.co.uk/art/lion
         self.ascii_image = """                 ,  ,, ,
