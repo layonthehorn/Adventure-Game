@@ -1,14 +1,10 @@
 class MainPlaza:
-    def __init__(self, items_contained=None, bool_list=(True, False, True, False, False)):
+    def __init__(self, items_contained=None, bool_list=(False, False, True, False, False)):
         if items_contained is None:
             items_contained = ["strange keys", "map"]
         self.inventory = items_contained
 
-        self.exit_unlocked = bool_list[0]
-        self.exit_opened = bool_list[1]
-        self.upstairs_unlocked = bool_list[2]
-        self.upstairs_opened = bool_list[3]
-        self.map_gotten = bool_list[4]
+        self.exit_opened, self.exit_unlocked, self.upstairs_unlocked, self.upstairs_opened, self.map_gotten = bool_list
 
     # returns the items in the room.
     def get_inventory(self):

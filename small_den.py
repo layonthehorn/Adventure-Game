@@ -3,9 +3,7 @@ class SmallDen:
         if items_contained is None:
             items_contained = ["meat"]
         self.inventory = items_contained
-
-        self.bool_one = bool_list[0]
-        self.bool_two = bool_list[1]
+        self.bool_one, self.bool_two = bool_list
 
     # returns the items in the room.
     def get_inventory(self):
