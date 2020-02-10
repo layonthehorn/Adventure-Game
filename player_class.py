@@ -70,11 +70,11 @@ class VernLion:
             print("I dropped the ", item)
             return self.inventory.pop(location)
 
-    # allows using the items
+    # removes items from player
     def use_item(self, item):
         location = self.inventory.index(item)
         print("I used the ", item)
-        return self.inventory.pop(location)
+        self.inventory.remove(location)
 
     # combines items
     def combine_items(self, item_1, item_2):

@@ -79,13 +79,17 @@ class StartingRoom:
 
     # used to get fuse loose from robot
     def fix_robot(self, item):
-        if self.robot_fixed:
-            print("It's already fixed. I don't need to mess with it.")
-        elif not self.robot_fixed:
-            self.robot_fixed = True
-            print("The robot's fuse is loose!")
+        if not self.robot_fixed:
+            if item == "wrench":
+                print("The robot's fuse is loose!")
+                self.robot_fixed = True
+                return True
+            else:
+                print(f"I can't use {item} with the robot.")
+                return False
         else:
-            print("I can't loosen it with that.")
+            print("I don't have to mess with it anymore.")
+            return False
 
     # tries to open door will fail if fuse box is not working.
     def open_door(self):

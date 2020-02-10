@@ -250,26 +250,26 @@ class MainGame:
             except ValueError:
                 pass
             try:
-                print(choice_list)
-                if choice_list[0] == "fuse" and choice_list[1] == "box":
-                    if not self.starting_room.fuse_box and "fuse" in self.player.inventory:
-                        item = self.player.use_item("fuse")
-                        self.starting_room.fix_fuse_box(item)
-                        self.player.increase_score()
-                    elif self.starting_room.fuse_box:
-                        print("It's fixed. I don't need to worry about it now.")
-                # using fuse to fix robot
-                elif choice_list[0] == "wrench" and choice_list[1] == "robot":
-                    if not self.starting_room.robot_fixed and "wrench" in self.player.inventory:
-                        item = self.player.use_item("wrench")
-                        self.starting_room.fix_robot(item)
-                        self.player.increase_score()
-                    elif self.starting_room.robot_fixed:
-                        print("It's loose. I don't need to worry about it now.")
+                # attempt to fix fuse box
+                if choice_list[1] == "box":
+                    if choice_list[0] in self.player.inventory:
+                        if self.starting_room.fix_fuse_box(choice_list[0]):
+                            self.player.use_item(choice_list[0])
+                            self.player.increase_score()
                     else:
-                        print("I can't do that.")
+                        print("I don't have a(n) {0}".format(choice_list[0]))
+
+                # attempt to fix robot
+                elif choice_list[1] == "robot":
+                    if choice_list[0] in self.player.inventory:
+                        if self.starting_room.fix_robot(choice_list[0]):
+                            self.player.use_item(choice_list[0])
+                            self.player.increase_score()
+                    else:
+                        print("I don't have a(n) {0}".format(choice_list[0]))
                 else:
-                    print("I can't do that.")
+                    print("I can't do anything to {0}".format(choice_list[1]))
+
             except IndexError:
                 print("Use what with what?")
 
