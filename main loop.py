@@ -1,12 +1,13 @@
-from player_class import VernLion
-from starting_room_class import StartingRoom
-from side_room_class import SideRoom
-from main_plaza import MainPlaza
-from small_den import SmallDen
-from west_wing import WestWing
-from cemetery import Cemetery
-import re
 import pickle
+import re
+
+from cemetery import Cemetery
+from main_plaza import MainPlaza
+from player_class import VernLion
+from side_room_class import SideRoom
+from small_den import SmallDen
+from starting_room_class import StartingRoom
+from west_wing import WestWing
 
 
 class MainGame:
@@ -26,7 +27,7 @@ class MainGame:
         # self.player - The player character class
         # self.starting_room - the bunker room class
         # self.side_room - the computer room to the side of the bunker class
-        # self.main_plaza - the area outside the bunker class
+        # self.main_plaza - the area outside the bunker
         # self.cemetery - the area north of the west wing.
         # self.west_wing - a side area used to reach more places
 
