@@ -1,26 +1,26 @@
 class MainPlaza:
-    def __init__(self, items_contained=None, bool_list=(False, False, True, False, False)):
+    def __init__(self, items_contained=None, bool_list=(False, False, False)):
         if items_contained is None:
             items_contained = ["strange keys", "map"]
         self.inventory = items_contained
 
-        self.exit_opened, self.exit_unlocked, self.upstairs_unlocked, self.upstairs_opened, self.map_gotten = bool_list
+        self.exit_unlocked, self.upstairs_unlocked, self.map_gotten = bool_list
 
     # returns the items in the room.
     def get_inventory(self):
         return self.inventory
 
     def get_bools(self):
-        return self.exit_unlocked, self.exit_opened, self.upstairs_unlocked, self.upstairs_opened, self.map_gotten
+        return self.exit_unlocked, self.upstairs_unlocked, self.map_gotten
 
     # this prints a description along with a item list
     def print_description_room(self):
         print("It's a large Main Plaza of the mall. There is a path to the 'west wing' too.")
-        if self.exit_opened:
+        if self.exit_unlocked:
             print("The 'exit' is open! I can get out.")
         else:
             print("The 'exit' is locked and I'm trapped.")
-        if self.upstairs_opened:
+        if self.upstairs_unlocked:
             print("I can get 'upstairs' now at least.")
         else:
             print("The path 'upstairs' is shut for now.")

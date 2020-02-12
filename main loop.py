@@ -12,6 +12,16 @@ from toy_shop import ToyShop
 from pet_shop import PetShop
 
 
+# loading saved game
+def load_game_state(file_name):
+    try:
+        with open(file_name, 'rb') as db_file:
+            pickle_db = pickle.load(db_file)
+            return pickle_db
+    except FileNotFoundError:
+        return None
+
+
 class MainGame:
     def __init__(self):
 
@@ -57,6 +67,7 @@ class MainGame:
 
 """
 
+    # noinspection PyAttributeOutsideInit
     def main_menu(self):
         choosing = True
         print(self.ascii_image)
@@ -77,7 +88,7 @@ class MainGame:
                 choosing = False
             elif player_option == "L":
                 # getting loaded settings
-                new_value_dictionary = self.load_game_state("save game")
+                new_value_dictionary = load_game_state("save game")
                 if new_value_dictionary is None:
                     print("No save games found.")
                     continue
@@ -107,7 +118,7 @@ class MainGame:
                 cemetery_bools = new_value_dictionary["cemetery bools"]
 
                 # loading saved settings
-                self.player = VernLion(player_inventory, player_location, player_score,player_bools)
+                self.player = VernLion(player_inventory, player_location, player_score, player_bools)
                 self.starting_room = StartingRoom(starting_room_items, starting_room_bools)
                 self.side_room = SideRoom(side_room_items, side_room_bools)
                 self.main_plaza = MainPlaza(main_plaza_items, main_plaza_bools)
@@ -134,15 +145,6 @@ class MainGame:
             room.give_item(player_item)
         else:
             print(f"I don't have a(n) {item} to drop.")
-
-    # loading saved game
-    def load_game_state(self, file_name):
-        try:
-            with open(file_name, 'rb') as db_file:
-                pickle_db = pickle.load(db_file)
-                return pickle_db
-        except FileNotFoundError:
-            return None
 
     # saves games
     def save_game_state(self):
@@ -213,7 +215,7 @@ class MainGame:
                 if save == 'y':
                     print('Saved!')
                     self.save_game_state()
-                input("Goodbye!")
+                input("Press enter to quit. Goodbye!")
                 self.player.set_location("end")
 
             # looks at player map
@@ -383,19 +385,17 @@ class MainGame:
                 elif p_list[1] == "west wing":
                     self.player.set_location(self.west_wing_name)
                 elif p_list[1] == "upstairs":
-                    if self.main_plaza.upstairs_unlocked and self.main_plaza.upstairs_opened:
+                    if self.main_plaza.upstairs_unlocked:
                         self.player.set_location(self.up_stairs_hallway_name)
-                    elif not self.main_plaza.upstairs_unlocked:
+                    else:
                         print("It's locked!")
-                    elif not self.main_plaza.upstairs_opened:
-                        print("Maybe I should open it first...")
+
                 elif p_list[1] == "exit":
-                    if self.main_plaza.exit_unlocked and self.main_plaza.exit_opened:
+                    if self.main_plaza.exit_unlocked:
                         self.player.set_location(self.exit_name)
-                    elif not self.main_plaza.exit_unlocked:
+                    else:
                         print("It's locked!")
-                    elif not self.main_plaza.exit_opened:
-                        print("Maybe I should open it first...")
+
                 elif p_list[1] == "small den":
                     self.player.set_location(self.small_den_name)
                 else:
@@ -491,7 +491,7 @@ class MainGame:
             except IndexError:
                 print("look at what?")
 
-        # allows player to move aroun   d
+        # allows player to move around
         elif p_list[0] == "go":
             try:
                 if p_list[1] == "west wing":
@@ -548,14 +548,16 @@ class MainGame:
     # main game loop
     def main_loop(self):
         playing = True
+        player_choice = ""
         print("""You, a young nervous lion wakes up, alone and afraid. Where did your friends go?
 You'll have to figure out where you are first and then get to them.""")
         while playing:
-            print("Verbs look, inv(entory), get, oper(ate), com(bine), drop, score, use, go, save, end")
-            player_choice = input("").lower()
-
-            # general actions shared by rooms
-            self.general_actions(player_choice)
+            # if you reach the exit then don't ask for actions from player
+            if self.player.location != self.exit_name:
+                print("Verbs look, inv(entory), get, oper(ate), com(bine), drop, score, use, go, save, end")
+                player_choice = input("").lower()
+                # general actions shared by rooms
+                self.general_actions(player_choice)
 
             # actions available in some rooms only
             # for bunker
@@ -592,6 +594,8 @@ You'll have to figure out where you are first and then get to them.""")
             elif self.player.get_location() == self.toy_shop_name:
                 self.toy_shop_area(player_choice)
                 print("")
+
+            # for pet shop
             elif self.player.get_location() == self.pet_shop_name:
                 self.pet_shop_area(player_choice)
                 print("")
@@ -600,6 +604,7 @@ You'll have to figure out where you are first and then get to them.""")
             elif self.player.get_location() == "exit":
                 print("You escaped the mall! You are back with Johnson and Katie.")
                 print("Maybe they can explain what happened to you.")
+                input("Press enter to end game.\nThank you for playing!")
                 playing = False
 
             # for ending the game smoothly
