@@ -12,7 +12,6 @@ class VernLion:
         self.inventory = player_inventory
         self.dictionary = ItemDictionary()
         self.location = player_start
-        self.map_building = MapOfBuilding()
         self.player_score = score
         self.made_drugged_meat = player_bools
         self.map_of_building = """
@@ -50,11 +49,6 @@ class VernLion:
     # returns the players score for saving
     def get_score(self):
         return self.player_score
-
-    def print_map(self):
-        print("Let me check my map.\n*Map crinkling sounds.*")
-        time.sleep(1.5)
-        print(self.map_of_building)
 
     # prints your score
     def check_score(self):
@@ -121,16 +115,22 @@ class VernLion:
                 self.inventory.append("drugged meat")
                 print("I made drugged meat. Still nasty after that.")
                 self.made_drugged_meat = True
-            elif item_1 == "" and item_2 == "" or item_1 == "" and item_2 == "":
-                pass
+            elif item_1 == "bag of catnip" and item_2 == "lion plush" or item_1 == "lion plush" and item_2 == "bag of catnip":
+                self.inventory.remove(item_1)
+                self.inventory.remove(item_2)
+                self.inventory.append("cat toy")
+                print("I am so ashamed of myself for this...")
+            else:
+                print(f"I can't combine {item_1} and {item_2}.")
         else:
             print("I don't have all I need")
-
 
     # looking at map
     def look_player_map(self):
         if "map" in self.inventory:
-            self.map_building.print_map()
+            print("Let me check my map.\n*Map crinkling sounds.*")
+            time.sleep(1.5)
+            print(self.map_of_building)
         else:
             print("I don't have one.")
 

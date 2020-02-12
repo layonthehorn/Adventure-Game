@@ -16,6 +16,7 @@ class MainGame:
 
         #self.new_value_dictionary = {}
         self.use_pattern = re.compile(r"^use\s|\swith\s|\son\s")
+        self.combine_pattern = re.compile(r"^combine\s|\swith\s|\son\s")
 
         # building the rooms and player
         self.main_plaza_name = "outside"
@@ -231,6 +232,19 @@ class MainGame:
                 self.drop_items(loc_name, general_list[1])
             except IndexError:
                 print("Drop what?")
+        elif general_list[0] == "com":
+            # attempting to unlock pet store
+            choice_list = self.combine_pattern.split(action)
+            try:
+                choice_list.remove('')
+            except ValueError:
+                pass
+            try:
+                self.player.combine_items(choice_list[0], choice_list[1])
+
+            except IndexError:
+                print("Combine what with what?")
+
 
     # commands for bunker area
     def starting_area(self, player_choice):
@@ -474,7 +488,7 @@ class MainGame:
             except IndexError:
                 print("look at what?")
 
-        # allows player to move around
+        # allows player to move aroun   d
         elif p_list[0] == "go":
             try:
                 if p_list[1] == "west wing":
@@ -534,7 +548,7 @@ class MainGame:
         print("""You, a young nervous lion wakes up, alone and afraid. Where did your friends go?
 You'll have to figure out where you are first and then get to them.""")
         while playing:
-            print("Verbs look, inv(entory), get, oper(ate), drop, use, go, save, end")
+            print("Verbs look, inv(entory), get, oper(ate), com(bine), drop, use, go, save, end")
             player_choice = input("").lower()
 
             # general actions shared by rooms
