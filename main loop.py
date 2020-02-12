@@ -11,12 +11,12 @@ from west_wing import WestWing
 from toy_shop import ToyShop
 from pet_shop import PetShop
 
+
 class MainGame:
     def __init__(self):
 
-        #self.new_value_dictionary = {}
         self.use_pattern = re.compile(r"^use\s|\swith\s|\son\s")
-        self.combine_pattern = re.compile(r"^combine\s|\swith\s|\son\s")
+        self.combine_pattern = re.compile(r"^com\s|\swith\s|\son\s")
 
         # building the rooms and player
         self.main_plaza_name = "outside"
@@ -192,6 +192,8 @@ class MainGame:
             loc_name = self.cemetery
         elif location == self.toy_shop_name:
             loc_name = self.toy_shop
+        elif location == self.pet_shop_name:
+            loc_name = self.pet_shop
         else:
             print("no matching location found, defaulting to bunker.")
             loc_name = self.starting_room
@@ -204,14 +206,15 @@ class MainGame:
             elif action == "save":
                 print("Game has been saved!")
                 self.save_game_state()
-                return "save"
+
             elif action == "end":
                 save = input("Save game? ").lower()
                 if save == 'y':
                     print('Saved!')
                     self.save_game_state()
                 input("Goodbye!")
-                return "end"
+                self.player.set_location("end")
+
             # looks at player map
             elif general_list[0] == "look" and general_list[1] == "map":
                 self.player.look_player_map()
@@ -244,7 +247,6 @@ class MainGame:
 
             except IndexError:
                 print("Combine what with what?")
-
 
     # commands for bunker area
     def starting_area(self, player_choice):
@@ -552,53 +554,61 @@ You'll have to figure out where you are first and then get to them.""")
             player_choice = input("").lower()
 
             # general actions shared by rooms
-            result = self.general_actions(player_choice)
-            if result == "end":
-                playing = False
-                continue
-            elif result == "save":
-                continue
+            self.general_actions(player_choice)
 
             # actions available in some rooms only
             # for bunker
             if self.player.get_location() == self.starting_room_name:
                 self.starting_area(player_choice)
                 print("")
-                continue
+
             # for computer room
             elif self.player.get_location() == self.side_room_name:
                 self.side_area(player_choice)
                 print("")
-                continue
+
             # for main plaza
             elif self.player.get_location() == self.main_plaza_name:
                 self.main_plaza_area(player_choice)
                 print("")
-                continue
+
+            # for small den
             elif self.player.get_location() == self.small_den_name:
                 self.small_den_area(player_choice)
                 print("")
-                continue
+
+            # for west wing
             elif self.player.get_location() == self.west_wing_name:
                 self.west_wing_area(player_choice)
                 print("")
-                continue
+
+            # for cemetery
             elif self.player.get_location() == self.cemetery_name:
                 self.cemetery_area(player_choice)
                 print("")
-                continue
+
+            # for toy shop
             elif self.player.get_location() == self.toy_shop_name:
                 self.toy_shop_area(player_choice)
                 print("")
-                continue
+            elif self.player.get_location() == self.pet_shop_name:
+                self.pet_shop_area(player_choice)
+                print("")
+
+            # for ending game
             elif self.player.get_location() == "exit":
                 print("You escaped the mall! You are back with Johnson and Katie.")
                 print("Maybe they can explain what happened to you.")
                 playing = False
-                continue
+
+            # for ending the game smoothly
+            elif self.player.get_location() == "end":
+                playing = False
+
+            # debug if you end out out of playable areas
             else:
                 print("You entered a un-built place. Ending game...")
-                break
+                playing = False
 
 
 if __name__ == "__main__":

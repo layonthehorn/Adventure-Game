@@ -1,6 +1,6 @@
 import time
 
-from item_descriptions_class import ItemDictionary
+
 
 
 class VernLion:
@@ -10,7 +10,6 @@ class VernLion:
             player_inventory = ["self"]
 
         self.inventory = player_inventory
-        self.dictionary = ItemDictionary()
         self.location = player_start
         self.player_score = score
         self.made_drugged_meat = player_bools
@@ -34,6 +33,24 @@ class VernLion:
                                                |                    |
                                                +--------------------+  
                """
+        self.item_dictionary = {
+            "wrench": "Used for unstucking random things. Always handy with robots.",
+            "fuse": "Lots of old world tech uses this to keep power flowing.",
+            "bag of catnip": "Hey now. You need to stay sober.",
+            "lion plush": "A cute lion plush. I wonder who left this here?",
+            "strange keys": "For some reason you recognise them. Maybe they belong to a friend?",
+            "meat": "Maybe something will want this?",
+            "toy raygun": "It's flashing random colors. Not useful but fun!",
+            "knife": "It cuts. I mean what else do you think it does?",
+            "fur sample": "It's fur. Maybe you could use it to get in the pet store?",
+            "map": "A map to the mall! Someone must have updated it recently.",
+            "drugged meat": "This would knockout anything that eats it.",
+            "battery": "This could be used to power something, or overpower it.",
+            "mane brush": "You could use this on your mane. Not that you ever need it.",
+            "self": "It's you... You should not see this item in your inventory. Please report it!",
+            "cheetah keyring": "It's a cheetah keyring. Cute but not really useful to you right now.",
+            "cat toy": "A lion plush stuff with catnip. You druggie..."
+        }
 
     # returns his location
     def get_location(self):
@@ -59,6 +76,12 @@ class VernLion:
         print("Your score went up!")
         self.player_score += 1
 
+    def get_description(self, item):
+        if item in self.item_dictionary:
+            return self.item_dictionary[item]
+        else:
+            return "Missing Value! ERROR!"
+
     # prints his inventory
     def check_inventory(self):
         # if self is some how removed it will be added back.
@@ -72,7 +95,7 @@ class VernLion:
             for item in self.inventory:
                 # should not be shown to player as being an item.
                 if item != "self":
-                    print("{:20}{:<5}".format(item, self.dictionary.get_description(item)))
+                    print("{:20}{:<5}".format(item, self.get_description(item)))
 
     # allows getting items into his inventory
     def get_item(self, item):
@@ -107,7 +130,9 @@ class VernLion:
 
     # combines items
     def combine_items(self, item_1, item_2):
+        print(item_1, " ", item_2)
         if item_1 in self.inventory and item_2 in self.inventory:
+
             if item_1 == "meat" and item_2 == "drugs" or item_1 == "drugs" and item_2 == "meat":
                 self.inventory.remove(item_1)
                 self.inventory.remove(item_2)

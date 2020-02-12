@@ -1,3 +1,5 @@
+# is no longer being used. Moved to player class
+
 class ItemDictionary:
     def __init__(self):
         self.item_dictionary = {
@@ -13,7 +15,7 @@ class ItemDictionary:
             "map": "A map to the mall! Someone must have updated it recently.",
             "drugged meat": "This would knockout anything that eats it.",
             "battery": "This could be used to power something, or overpower it.",
-            "mane comb": "You could use this on your mane. Not that you ever need it.",
+            "mane brush": "You could use this on your mane. Not that you ever need it.",
             "self": "It's you... You should not see this item in your inventory. Please report it!",
             "cheetah keyring": "It's a cheetah keyring. Cute but not really useful to you right now.",
             "cat toy": "A lion plush stuff with catnip. You druggie..."

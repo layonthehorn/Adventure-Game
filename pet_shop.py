@@ -1,7 +1,7 @@
 class PetShop:
     def __init__(self, items_contained=None, bool_list=(False, False)):
         if items_contained is None:
-            items_contained = ["mane comb"]
+            items_contained = ["mane brush"]
         self.inventory = items_contained
 
         self.bool_one = bool_list[0]
