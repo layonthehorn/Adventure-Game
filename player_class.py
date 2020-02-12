@@ -100,9 +100,8 @@ class VernLion:
     def use_item(self, item):
         # never removes self from inventory.
         if item != "self":
-            location = self.inventory.index(item)
             print("I used the ", item)
-            self.inventory.remove(location)
+            self.inventory.remove(item)
         else:
             print("I used myself?")
 
