@@ -13,7 +13,8 @@ class ItemDictionary:
             "map": "A map to the mall! Someone must have updated it recently.",
             "drugged meat": "This would knockout anything that eats it.",
             "battery": "This could be used to power something, or overpower it.",
-            "mane comb": "You could use this on your mane. Not that you ever need it."
+            "mane comb": "You could use this on your mane. Not that you ever need it.",
+            "self": "It's you... You should not see this item in your inventory. Please report it!"
         }
 
     # this allows the program to get descriptions for items

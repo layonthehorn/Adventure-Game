@@ -49,7 +49,7 @@ class WestWing:
                 self.pet_shop_unlocked = True
                 return True
             elif item == "self":
-                print("Error. Exotic pets are not allowed. Including but not excluded too: lions, bears, etc...")
+                print("Error. Exotic pets are not allowed. Including but not limited too: lions, bears, etc...")
                 print("I guess I will have to find something else to get in...")
                 return False
             else:

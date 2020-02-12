@@ -78,9 +78,13 @@ class VernLion:
 
     # removes items from player
     def use_item(self, item):
-        location = self.inventory.index(item)
-        print("I used the ", item)
-        self.inventory.remove(location)
+        # never removes self from inventory.
+        if item != "self":
+            location = self.inventory.index(item)
+            print("I used the ", item)
+            self.inventory.remove(location)
+        else:
+            print("I used myself?")
 
     # combines items
     def combine_items(self, item_1, item_2):
