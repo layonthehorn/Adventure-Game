@@ -419,6 +419,25 @@ class MainGame:
                     print(f"I don't know where {p_list[1]} is.")
             except IndexError:
                 print("look at what?")
+        elif p_list[0] == "use":
+            # attempting to unlock pet store
+            choice_list = self.use_pattern.split(player_choice)
+            try:
+                choice_list.remove('')
+            except ValueError:
+                pass
+            try:
+                # using an item on the kiosk
+                if choice_list[1] == "kiosk":
+                    if choice_list[0] in self.player.inventory:
+                        if self.west_wing.unlock_pet_shop(choice_list[0]):
+                            self.player.use_item(choice_list[0])
+                            self.player.increase_score()
+                    else:
+                        print(f"I don't have a(n) {choice_list[0]}")
+
+            except IndexError:
+                print("Use what with what?")
 
         # allows player to move around
         elif p_list[0] == "go":
@@ -430,7 +449,10 @@ class MainGame:
                 elif p_list[1] == "cemetery":
                     self.player.set_location("cemetery")
                 elif p_list[1] == "pet shop":
-                    self.player.set_location("pet shop")
+                    if self.west_wing.pet_shop_unlocked:
+                        self.player.set_location("pet shop")
+                    else:
+                        print("It wants me to unlock it first.")
                 else:
                     print(f"I can't go to {p_list[1]}.")
             except IndexError:

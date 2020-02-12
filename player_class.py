@@ -6,7 +6,7 @@ class VernLion:
     def __init__(self, player_inventory=None, player_start="bunker", score=0, player_bools=False):
 
         if player_inventory is None:
-            player_inventory = []
+            player_inventory = ["self"]
 
         self.inventory = player_inventory
         self.dictionary = ItemDictionary()
@@ -41,12 +41,18 @@ class VernLion:
 
     # prints his inventory
     def check_inventory(self):
-        if len(self.inventory) == 0:
+        # if self is some how removed it will be added back.
+        # just in case.
+        if "self" not in self.inventory:
+            self.inventory.append("self")
+        if len(self.inventory) == 1:
             print("My pockets are empty it seems.")
         else:
             print("I have...")
             for item in self.inventory:
-                print("{:20}{:<5}".format(item, self.dictionary.get_description(item)))
+                # should not be shown to player as being an item.
+                if item != "self":
+                    print("{:20}{:<5}".format(item, self.dictionary.get_description(item)))
 
     # allows getting items into his inventory
     def get_item(self, item):
