@@ -11,6 +11,7 @@ You have to try and get out of a mall and join your friends outside. Use the com
 - oper(ate) {object}: How you use objects: doors, computers, etc.
 - com(bine) {item} with/on {item}: allows you to combine items
 - drop {item}: Allows you to get rid of an item.
+- score: Allows player to check current progress in game.
 - use {item} With/on {item}: how you use things with other things.
 - go {location}: How you change rooms.
 - save: How you save your game.

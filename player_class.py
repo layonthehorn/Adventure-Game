@@ -68,8 +68,8 @@ class VernLion:
         return self.player_score
 
     # prints your score
-    def check_score(self):
-        print("Your score is {self.player_score}.")
+    def print_score(self):
+        print(f"Your score is {self.player_score} out of 'Unknown Final Value'.")
 
     # sets player score
     def increase_score(self):

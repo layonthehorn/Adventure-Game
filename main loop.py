@@ -206,7 +206,8 @@ class MainGame:
             elif action == "save":
                 print("Game has been saved!")
                 self.save_game_state()
-
+            elif action == "score":
+                self.player.print_score()
             elif action == "end":
                 save = input("Save game? ").lower()
                 if save == 'y':
@@ -550,7 +551,7 @@ class MainGame:
         print("""You, a young nervous lion wakes up, alone and afraid. Where did your friends go?
 You'll have to figure out where you are first and then get to them.""")
         while playing:
-            print("Verbs look, inv(entory), get, oper(ate), com(bine), drop, use, go, save, end")
+            print("Verbs look, inv(entory), get, oper(ate), com(bine), drop, score, use, go, save, end")
             player_choice = input("").lower()
 
             # general actions shared by rooms
