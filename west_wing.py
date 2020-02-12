@@ -46,6 +46,7 @@ class WestWing:
         if not self.pet_shop_unlocked:
             if item == "fur sample":
                 print("The shop accepted the sample as being a pet. You're in!")
+                print("The doors slide open and allow you through.")
                 self.pet_shop_unlocked = True
                 return True
             elif item == "self":
