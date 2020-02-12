@@ -13,7 +13,7 @@ from west_wing import WestWing
 class MainGame:
     def __init__(self):
 
-        self.new_value_dictionary = {}
+        #self.new_value_dictionary = {}
         self.use_pattern = re.compile(r"^use\s|\swith\s|\son\s")
 
         # building the rooms and player
@@ -69,6 +69,7 @@ class MainGame:
                 # getting loaded settings
                 new_value_dictionary = self.load_game_state("save game")
                 if self.new_value_dictionary is None:
+                    print("No save games found.")
                     continue
                 # getting saved settings
                 # player data
@@ -120,7 +121,7 @@ class MainGame:
             player_item = self.player.drop_item(item)
             room.give_item(player_item)
         else:
-            print("I don't have a {0} to drop.".format(item))
+            print(f"I don't have a(n) {item} to drop.")
 
     # loading saved game
     def load_game_state(self, file_name):
@@ -129,7 +130,6 @@ class MainGame:
                 pickle_db = pickle.load(db_file)
                 return pickle_db
         except FileNotFoundError:
-            print("No save games found.")
             return None
 
     # saves games
@@ -228,7 +228,7 @@ class MainGame:
                 elif p_list[1] == "robot":
                     self.starting_room.look_robot()
                 elif p_list[1] != "self" and p_list[1] != "map":
-                    print("I don't know where {0} is.".format(p_list[1]))
+                    print(f"I don't know where {p_list[1]} is.")
             except IndexError:
                 print("Look at what?")
 
@@ -258,7 +258,7 @@ class MainGame:
                             self.player.use_item(choice_list[0])
                             self.player.increase_score()
                     else:
-                        print("I don't have a(n) {0}".format(choice_list[0]))
+                        print(f"I don't have a(n) {choice_list[0]}")
 
                 # attempt to fix robot
                 elif choice_list[1] == "robot":
@@ -267,9 +267,9 @@ class MainGame:
                             self.player.use_item(choice_list[0])
                             self.player.increase_score()
                     else:
-                        print("I don't have a(n) {0}".format(choice_list[0]))
+                        print(f"I don't have a(n) {choice_list[0]}")
                 else:
-                    print("I can't do anything to {0}".format(choice_list[1]))
+                    print(f"I can't do anything to {choice_list[1]}")
 
             except IndexError:
                 print("Use what with what?")
@@ -283,7 +283,7 @@ class MainGame:
                     print("What a small room.")
                     self.player.set_location("side room")
                 else:
-                    print("I can't go to {0}.".format(p_list[1]))
+                    print(f"I can't go to {p_list[1]}.")
             except IndexError:
                 print("Go where?")
 
@@ -298,7 +298,7 @@ class MainGame:
                 elif p_list[1] == "computer":
                     self.side_room.print_description_computer()
                 elif p_list[1] != "self" and p_list[1] != "map":
-                    print("I don't know where {0} is.".format(p_list[1]))
+                    print(f"I don't know where {p_list[1]} is.")
             except IndexError:
                 print("Look at what?")
 
@@ -323,7 +323,7 @@ class MainGame:
                     print("I'm back in the bunker.")
                     self.player.set_location("bunker")
                 else:
-                    print("(side)I can't go to {0}.".format(p_list[1]))
+                    print(f"I can't go to {p_list[1]}.")
             except IndexError:
                 print("Go where?")
 
@@ -337,7 +337,7 @@ class MainGame:
                 elif p_list[1] == "car":
                     self.main_plaza.print_description_car()
                 elif p_list[1] != "self" and p_list[1] != "map":
-                    print("I don't know where {0} is.".format(p_list[1]))
+                    print(f"I don't know where {p_list[1]} is.")
             except IndexError:
                 print("look at what?")
 
@@ -365,7 +365,7 @@ class MainGame:
                 elif p_list[1] == "small den":
                     self.player.set_location("small den")
                 else:
-                    print("I can't go to {0}.".format(p_list[1]))
+                    print(f"I can't go to {p_list[1]}.")
             except IndexError:
                 print("Go where?")
 
@@ -379,7 +379,7 @@ class MainGame:
                 elif p_list[1] == "animal":
                     self.small_den.print_description_animal_body()
                 elif p_list[1] != "self" and p_list[1] != "map":
-                    print("I don't know where {0} is.".format(p_list[1]))
+                    print(f"I don't know where {p_list[1]} is.")
             except IndexError:
                 print("look at what?")
 
@@ -389,7 +389,7 @@ class MainGame:
                 if p_list[1] == "main plaza":
                     self.player.set_location("outside")
                 else:
-                    print("I can't go to {0}.".format(p_list[1]))
+                    print(f"I can't go to {p_list[1]}.")
             except IndexError:
                 print("Go where?")
 
@@ -401,7 +401,7 @@ class MainGame:
                 if p_list[1] == "room":
                     self.west_wing.print_description_room()
                 elif p_list[1] != "self" and p_list[1] != "map":
-                    print("I don't know where {0} is.".format(p_list[1]))
+                    print(f"I don't know where {p_list[1]} is.")
             except IndexError:
                 print("look at what?")
 
@@ -417,7 +417,7 @@ class MainGame:
                 elif p_list[1] == "pet shop":
                     self.player.set_location("pet shop")
                 else:
-                    print("I can't go to {0}.".format(p_list[1]))
+                    print(f"I can't go to {p_list[1]}.")
             except IndexError:
                 print("Go where?")
 
@@ -437,7 +437,7 @@ class MainGame:
                 if p_list[1] == "room":
                     self.cemetery.print_description_room()
                 elif p_list[1] != "self" and p_list[1] != "map":
-                    print("I don't know where {0} is.".format(p_list[1]))
+                    print(f"I don't know where {p_list[1]} is.")
             except IndexError:
                 print("look at what?")
 
@@ -447,7 +447,7 @@ class MainGame:
                 if p_list[1] == "west wing":
                     self.player.set_location("west wing")
                 else:
-                    print("I can't go to {0}.".format(p_list[1]))
+                    print(f"I can't go to {p_list[1]}.")
             except IndexError:
                 print("Go where?")
 
