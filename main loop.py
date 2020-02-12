@@ -8,7 +8,8 @@ from side_room_class import SideRoom
 from small_den import SmallDen
 from starting_room_class import StartingRoom
 from west_wing import WestWing
-
+from toy_shop import ToyShop
+from pet_shop import PetShop
 
 class MainGame:
     def __init__(self):
@@ -23,6 +24,8 @@ class MainGame:
         self.small_den_name = "small den"
         self.west_wing_name = "west wing"
         self.cemetery_name = "cemetery"
+        self.toy_shop_name = "toy shop"
+        self.pet_shop_name = "pet shop"
         # Main classes
         # self.player - The player character class
         # self.starting_room - the bunker room class
@@ -30,6 +33,8 @@ class MainGame:
         # self.main_plaza - the area outside the bunker
         # self.cemetery - the area north of the west wing.
         # self.west_wing - a side area used to reach more places
+        # self.toy_shop - the toy shop off of the west wing
+        # self.pet_shop - A pet shot off of the west wing
 
         # Temporary ascii art from https://ascii.co.uk/art/lion
         self.ascii_image = """                 ,  ,, ,
@@ -64,11 +69,13 @@ class MainGame:
                 self.small_den = SmallDen()
                 self.west_wing = WestWing()
                 self.cemetery = Cemetery()
+                self.toy_shop = ToyShop()
+                self.pet_shop = PetShop()
                 choosing = False
             elif player_option == "L":
                 # getting loaded settings
                 new_value_dictionary = self.load_game_state("save game")
-                if self.new_value_dictionary is None:
+                if new_value_dictionary is None:
                     print("No save games found.")
                     continue
                 # getting saved settings
@@ -104,6 +111,8 @@ class MainGame:
                 self.small_den = SmallDen(small_den_item, small_den_bools)
                 self.west_wing = WestWing(west_wing_items, west_wing_bools)
                 self.cemetery = Cemetery(cemetery_items, cemetery_bools)
+                self.toy_shop = ToyShop(new_value_dictionary["toy shop items"], new_value_dictionary["toy shop bools"])
+                self.pet_shop = PetShop(new_value_dictionary["pet shop items"], new_value_dictionary["pet shop bools"])
                 choosing = False
             else:
                 print(self.ascii_image)
@@ -149,7 +158,11 @@ class MainGame:
                             "west wing items": self.west_wing.get_inventory(),
                             "west wing bools": self.west_wing.get_bools(),
                             "cemetery items": self.cemetery.get_inventory(),
-                            "cemetery bools": self.cemetery.get_bools()
+                            "cemetery bools": self.cemetery.get_bools(),
+                            "toy shop items": self.toy_shop.get_inventory(),
+                            "toy shop bools": self.toy_shop.get_bools(),
+                            "pet shop items": self.toy_shop.get_inventory(),
+                            "pet shop bools": self.toy_shop.get_bools()
                             }
         try:
             with open("save game", 'wb+') as db_file:
@@ -174,6 +187,8 @@ class MainGame:
             loc_name = self.west_wing
         elif location == self.cemetery_name:
             loc_name = self.cemetery
+        elif location == self.toy_shop_name:
+            loc_name = self.toy_shop
         else:
             print("no matching location found, defaulting to bunker.")
             loc_name = self.starting_room
@@ -423,11 +438,47 @@ class MainGame:
 
     # toy shop actions
     def toy_shop_area(self, player_choice):
-        pass
+        p_list = player_choice.split(" ", 1)
+        if p_list[0] == "look":
+            try:
+                if p_list[1] == "room":
+                    self.toy_shop.print_description_room()
+                elif p_list[1] != "self" and p_list[1] != "map":
+                    print(f"I don't know where {p_list[1]} is.")
+            except IndexError:
+                print("look at what?")
+
+        # allows player to move around
+        elif p_list[0] == "go":
+            try:
+                if p_list[1] == "west wing":
+                    self.player.set_location("west wing")
+                else:
+                    print(f"I can't go to {p_list[1]}.")
+            except IndexError:
+                print("Go where?")
 
     # pet shot actions
     def pet_shop_area(self, player_choice):
-        pass
+        p_list = player_choice.split(" ", 1)
+        if p_list[0] == "look":
+            try:
+                if p_list[1] == "room":
+                    self.pet_shop.print_description_room()
+                elif p_list[1] != "self" and p_list[1] != "map":
+                    print(f"I don't know where {p_list[1]} is.")
+            except IndexError:
+                print("look at what?")
+
+        # allows player to move around
+        elif p_list[0] == "go":
+            try:
+                if p_list[1] == "west wing":
+                    self.player.set_location("west wing")
+                else:
+                    print(f"I can't go to {p_list[1]}.")
+            except IndexError:
+                print("Go where?")
 
     # cemetery actions
     def cemetery_area(self, player_choice):
@@ -463,7 +514,8 @@ You'll have to figure out where you are first and then get to them.""")
             # general actions shared by rooms
             result = self.general_actions(player_choice)
             if result == "end":
-                break
+                playing = False
+                continue
             elif result == "save":
                 continue
 
@@ -474,31 +526,36 @@ You'll have to figure out where you are first and then get to them.""")
                 print("")
                 continue
             # for computer room
-            if self.player.get_location() == self.side_room_name:
+            elif self.player.get_location() == self.side_room_name:
                 self.side_area(player_choice)
                 print("")
                 continue
             # for main plaza
-            if self.player.get_location() == self.main_plaza_name:
+            elif self.player.get_location() == self.main_plaza_name:
                 self.main_plaza_area(player_choice)
                 print("")
                 continue
-            if self.player.get_location() == self.small_den_name:
+            elif self.player.get_location() == self.small_den_name:
                 self.small_den_area(player_choice)
                 print("")
                 continue
-            if self.player.get_location() == self.west_wing_name:
+            elif self.player.get_location() == self.west_wing_name:
                 self.west_wing_area(player_choice)
                 print("")
                 continue
-            if self.player.get_location() == self.cemetery_name:
+            elif self.player.get_location() == self.cemetery_name:
                 self.cemetery_area(player_choice)
                 print("")
                 continue
-            if self.player.get_location() == "exit":
+            elif self.player.get_location() == self.toy_shop_name:
+                self.toy_shop_area(player_choice)
+                print("")
+                continue
+            elif self.player.get_location() == "exit":
                 print("You escaped the mall! You are back with Johnson and Katie.")
                 print("Maybe they can explain what happened to you.")
                 playing = False
+                continue
             else:
                 print("You entered a un-built place. Ending game...")
                 break
