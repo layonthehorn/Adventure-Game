@@ -26,6 +26,8 @@ class MainGame:
         self.cemetery_name = "cemetery"
         self.toy_shop_name = "toy shop"
         self.pet_shop_name = "pet shop"
+        self.exit_name = "exit"
+        self.up_stairs_hallway_name = "upstairs"
         # Main classes
         # self.player - The player character class
         # self.starting_room - the bunker room class
@@ -336,7 +338,7 @@ class MainGame:
             try:
                 if p_list[1] == "bunker":
                     print("I'm back in the bunker.")
-                    self.player.set_location("bunker")
+                    self.player.set_location(self.starting_room_name)
                 else:
                     print(f"I can't go to {p_list[1]}.")
             except IndexError:
@@ -360,25 +362,25 @@ class MainGame:
         elif p_list[0] == "go":
             try:
                 if p_list[1] == "bunker" and self.starting_room.door_opened:
-                    self.player.set_location("bunker")
+                    self.player.set_location(self.starting_room_name)
                 elif p_list[1] == "west wing":
-                    self.player.set_location("west wing")
+                    self.player.set_location(self.west_wing_name)
                 elif p_list[1] == "upstairs":
                     if self.main_plaza.upstairs_unlocked and self.main_plaza.upstairs_opened:
-                        self.player.set_location("upstairs")
+                        self.player.set_location(self.up_stairs_hallway_name)
                     elif not self.main_plaza.upstairs_unlocked:
                         print("It's locked!")
                     elif not self.main_plaza.upstairs_opened:
                         print("Maybe I should open it first...")
                 elif p_list[1] == "exit":
                     if self.main_plaza.exit_unlocked and self.main_plaza.exit_opened:
-                        self.player.set_location("exit")
+                        self.player.set_location(self.exit_name)
                     elif not self.main_plaza.exit_unlocked:
                         print("It's locked!")
                     elif not self.main_plaza.exit_opened:
                         print("Maybe I should open it first...")
                 elif p_list[1] == "small den":
-                    self.player.set_location("small den")
+                    self.player.set_location(self.small_den_name)
                 else:
                     print(f"I can't go to {p_list[1]}.")
             except IndexError:
@@ -402,7 +404,7 @@ class MainGame:
         elif p_list[0] == "go":
             try:
                 if p_list[1] == "main plaza":
-                    self.player.set_location("outside")
+                    self.player.set_location(self.main_plaza_name)
                 else:
                     print(f"I can't go to {p_list[1]}.")
             except IndexError:
@@ -443,14 +445,14 @@ class MainGame:
         elif p_list[0] == "go":
             try:
                 if p_list[1] == "main plaza":
-                    self.player.set_location("outside")
+                    self.player.set_location(self.main_plaza_name)
                 elif p_list[1] == "toy shop":
-                    self.player.set_location("toy shop")
+                    self.player.set_location(self.toy_shop_name)
                 elif p_list[1] == "cemetery":
-                    self.player.set_location("cemetery")
+                    self.player.set_location(self.cemetery_name)
                 elif p_list[1] == "pet shop":
                     if self.west_wing.pet_shop_unlocked:
-                        self.player.set_location("pet shop")
+                        self.player.set_location(self.pet_shop_name)
                     else:
                         print("It wants me to unlock it first.")
                 else:
@@ -474,7 +476,7 @@ class MainGame:
         elif p_list[0] == "go":
             try:
                 if p_list[1] == "west wing":
-                    self.player.set_location("west wing")
+                    self.player.set_location(self.west_wing_name)
                 else:
                     print(f"I can't go to {p_list[1]}.")
             except IndexError:
@@ -496,7 +498,7 @@ class MainGame:
         elif p_list[0] == "go":
             try:
                 if p_list[1] == "west wing":
-                    self.player.set_location("west wing")
+                    self.player.set_location(self.west_wing_name)
                 else:
                     print(f"I can't go to {p_list[1]}.")
             except IndexError:
@@ -518,7 +520,7 @@ class MainGame:
         elif p_list[0] == "go":
             try:
                 if p_list[1] == "west wing":
-                    self.player.set_location("west wing")
+                    self.player.set_location(self.west_wing_name)
                 else:
                     print(f"I can't go to {p_list[1]}.")
             except IndexError:
