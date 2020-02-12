@@ -226,7 +226,7 @@ class MainGame:
             except IndexError:
                 print("Get what?")
         # drops item to current room
-        elif general_list[0] == "drop":
+        elif general_list[0] == "drop" and general_list[1] != "self":
             try:
                 self.drop_items(loc_name, general_list[1])
             except IndexError:
