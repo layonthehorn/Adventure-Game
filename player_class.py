@@ -1,5 +1,6 @@
+import time
+
 from item_descriptions_class import ItemDictionary
-from map_class import MapOfBuilding
 
 
 class VernLion:
@@ -14,6 +15,26 @@ class VernLion:
         self.map_building = MapOfBuilding()
         self.player_score = score
         self.made_drugged_meat = player_bools
+        self.map_of_building = """
+          ---------MAP----------
+                                               +--------------------+
+                   SS                          |Legend:             |
+                   ||                          |                    |
+               AD--UP--RR                      |Main Plaza: MP      |
+            C   SD ||                          |Upper Hall: UH      |
+            ||   \\\\||                          |Pet Shop: PS        |
+        PS--WW-----MP----EXIT                  |Shoe Store: SS      |
+            ||     ||                          |Restroom: RR        |
+            TS     FS--CR                      |Animal Den: AD      |
+                                               |Small Den: SD       |
+                                               |West wing: WW       |
+                                               |Toy Shop: TS        |
+                                               |Cemetery: C         |
+                                               |Fallout Shelter: FS |
+                                               |Computer Room: CR   |
+                                               |                    |
+                                               +--------------------+  
+               """
 
     # returns his location
     def get_location(self):
@@ -29,6 +50,11 @@ class VernLion:
     # returns the players score for saving
     def get_score(self):
         return self.player_score
+
+    def print_map(self):
+        print("Let me check my map.\n*Map crinkling sounds.*")
+        time.sleep(1.5)
+        print(self.map_of_building)
 
     # prints your score
     def check_score(self):
