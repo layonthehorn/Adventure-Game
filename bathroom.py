@@ -4,8 +4,7 @@ class Bathroom:
             items_contained = []
         self.inventory = items_contained
 
-        self.bool_one = bool_list[0]
-        self.bool_two = bool_list[1]
+        self.bool_one, self.bool_two = bool_list
 
     # returns the items in the room.
     def get_inventory(self):
@@ -17,8 +16,8 @@ class Bathroom:
 
     # this prints a description along with a item list
     def print_description_room(self):
-        print("")
-        print("")
+        print("It's a small bathroom with a medical kit on the wall.")
+        print("You can go back to the 'hallway'.")
         if len(self.inventory) > 0:
             for item in self.inventory:
                 print(f"There is a(n) {item}")

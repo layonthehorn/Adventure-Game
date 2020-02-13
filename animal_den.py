@@ -4,8 +4,7 @@ class AnimalDen:
             items_contained = ["meat"]
         self.inventory = items_contained
 
-        self.bool_one = bool_list[0]
-        self.bool_two = bool_list[1]
+        self.bool_one, self.bool_two = bool_list
 
     # returns the items in the room.
     def get_inventory(self):
@@ -17,8 +16,9 @@ class AnimalDen:
 
     # this prints a description along with a item list
     def print_description_room(self):
-        print("")
-        print("")
+        print("It's a rough little animal den. You wonder what might live here. "
+              "\nNothing that is domestic you bet.")
+        print("You can go back to the 'hallway'.")
         if len(self.inventory) > 0:
             for item in self.inventory:
                 print(f"There is a(n) {item}")

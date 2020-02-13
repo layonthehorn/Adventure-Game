@@ -4,8 +4,7 @@ class Cemetery:
             items_contained = ["lion plush"]
         self.inventory = items_contained
 
-        self.first_entered = bool_list[0]
-        self.bool_two = bool_list[1]
+        self.first_entered, self.bool_two = bool_list
 
     # returns the items in the room.
     def get_inventory(self):

@@ -4,8 +4,7 @@ class UpstairsHallway:
             items_contained = []
         self.inventory = items_contained
 
-        self.bool_one = bool_list[0]
-        self.bool_two = bool_list[1]
+        self.bool_one, self.bool_two = bool_list
 
     # returns the items in the room.
     def get_inventory(self):
@@ -17,8 +16,8 @@ class UpstairsHallway:
 
     # this prints a description along with a item list
     def print_description_room(self):
-        print("")
-        print("")
+        print("You have reached the upstairs. It's a small hallway that leads to new places.")
+        print("You can go to 'main plaza', 'shoe store', 'animal den', and 'bathroom'.")
         if len(self.inventory) > 0:
             for item in self.inventory:
                 print(f"There is a(n) {item}")

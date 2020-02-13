@@ -4,8 +4,7 @@ class ShoeStore:
             items_contained = ["drugs"]
         self.inventory = items_contained
 
-        self.bool_one = bool_list[0]
-        self.bool_two = bool_list[1]
+        self.first_entered, self.bool_two = bool_list
 
     # returns the items in the room.
     def get_inventory(self):
@@ -13,11 +12,15 @@ class ShoeStore:
 
     # returns bools for saving
     def get_bools(self):
-        return (self.bool_one, self.bool_two)
+        return (self.first_entered, self.bool_two)
 
     # this prints a description along with a item list
     def print_description_room(self):
-        print("")
+        print("It's a small place. Use to sell shoes and wears like that. Now"
+              " it's just a wreck and all too messy.")
+        if not self.first_entered:
+            print("You doubt anything would fit your digitigrade feet from this place.")
+            self.first_entered = True
         print("")
         if len(self.inventory) > 0:
             for item in self.inventory:

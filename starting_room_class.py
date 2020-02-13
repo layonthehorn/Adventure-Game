@@ -7,8 +7,6 @@ class StartingRoom:
             items_contained = ["fuse", "bag of catnip"]
         self.inventory = items_contained
         self.fuse_box, self.door_opened, self.robot_fixed = bool_list
-        #self.door_opened = bool_list[1]
-        #self.robot_fixed = bool_list[2]
 
     # returns the items in the room.
     def get_inventory(self):
