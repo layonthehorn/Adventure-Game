@@ -205,6 +205,8 @@ class MainGame:
             loc_name = self.cemetery
         elif location == self.toy_shop_name:
             loc_name = self.toy_shop
+        elif location == self.pet_shop_name:
+            loc_name = self.pet_shop
         # elif location == self.shoe_store_name:
         #     loc_name = self.shoe_store
         # elif location == self.up_stairs_hallway_name:
