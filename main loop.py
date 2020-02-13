@@ -40,6 +40,7 @@ class MainGame:
         self.exit_name = "exit"
         self.up_stairs_hallway_name = "upstairs"
         # Main classes
+        # These are loaded in main menu to not load them twice
         # self.player - The player character class
         # self.starting_room - the bunker room class
         # self.side_room - the computer room to the side of the bunker class
