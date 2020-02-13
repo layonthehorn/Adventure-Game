@@ -189,6 +189,7 @@ class MainGame:
     # general actions that can be done anywhere
     def general_actions(self, action):
 
+        # dictionary for storing all locations
         switcher_dictionary = {
             self.starting_room_name : self.starting_room,
             self.side_room_name: self.side_room,
@@ -204,13 +205,13 @@ class MainGame:
             # self.bathroom_name: self.bathroom
         }
 
-        general_list = action.split(" ", 1)
         # finds player location
         loc_name = switcher_dictionary.get(self.player.get_location(), None)
         if loc_name is None:
             print("no matching location found, defaulting to bunker.")
             loc_name = self.starting_room
 
+        general_list = action.split(" ", 1)
         try:
             # prints inventory
             if action == "inv":
