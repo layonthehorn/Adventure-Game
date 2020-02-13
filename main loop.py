@@ -195,7 +195,7 @@ class MainGame:
 
         # dictionary for storing all locations
         switcher_dictionary = {
-            self.starting_room_name : self.starting_room,
+            self.starting_room_name: self.starting_room,
             self.side_room_name: self.side_room,
             self.main_plaza_name: self.main_plaza,
             self.west_wing_name: self.west_wing,
