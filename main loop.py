@@ -192,35 +192,30 @@ class MainGame:
 
     # general actions that can be done anywhere
     def general_actions(self, action):
-        general_list = action.split(" ", 1)
+
+        # dictionary for storing all locations
+        switcher_dictionary = {
+            self.starting_room_name : self.starting_room,
+            self.side_room_name: self.side_room,
+            self.main_plaza_name: self.main_plaza,
+            self.west_wing_name: self.west_wing,
+            self.cemetery_name: self.cemetery,
+            self.pet_shop_name: self.pet_shop,
+            self.toy_shop_name: self.toy_shop,
+            self.small_den_name: self.small_den
+            # self.up_stairs_hallway_name: self.up_stairs_hallway,
+            # self.shoe_store_name: self.shoe_store,
+            # self.animal_den_name: self.animal_den,
+            # self.bathroom_name: self.bathroom
+        }
+
         # finds player location
-        location = self.player.get_location()
-        if location == self.starting_room_name:
-            loc_name = self.starting_room
-        elif location == self.side_room_name:
-            loc_name = self.side_room
-        elif location == self.main_plaza_name:
-            loc_name = self.main_plaza
-        elif location == self.small_den_name:
-            loc_name = self.small_den
-        elif location == self.west_wing_name:
-            loc_name = self.west_wing
-        elif location == self.cemetery_name:
-            loc_name = self.cemetery
-        elif location == self.toy_shop_name:
-            loc_name = self.toy_shop
-        # elif location == self.shoe_store_name:
-        #     loc_name = self.shoe_store
-        # elif location == self.up_stairs_hallway_name:
-        #     loc_name = self.up_stairs_hallway
-        # elif location == self.bathroom_name:
-        #     loc_name = self.bathroom
-        # elif location == self.animal_den_name:
-        #     loc_name = self.animal_den
-        else:
+        loc_name = switcher_dictionary.get(self.player.get_location(), None)
+        if loc_name is None:
             print("no matching location found, defaulting to bunker.")
             loc_name = self.starting_room
 
+        general_list = action.split(" ", 1)
         try:
             # prints inventory
             if action == "inv":
