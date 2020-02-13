@@ -43,8 +43,8 @@ class MainGame:
         self.animal_den_name = "animal den"
         self.shoe_store_name = "shoe store"
         self.bathroom_name = "bathroom"
-        # Main classes
-        # These are loaded in main menu to not load them twice
+        # Main Classes
+        # These are loaded in main menu to not load them twice.
         # self.player - The player character class
         # self.starting_room - the bunker room class
         # self.side_room - the computer room to the side of the bunker class
@@ -53,6 +53,10 @@ class MainGame:
         # self.west_wing - a side area used to reach more places
         # self.toy_shop - the toy shop off of the west wing
         # self.pet_shop - A pet shot off of the west wing
+        # self.up_stairs_hallway - the upstairs hallway
+        # self.animal_den - the upstairs den
+        # self.shoe_store - the shoe store up stairs
+        # self.bathroom - the bathroom upstairs
 
         # Temporary ascii art from https://ascii.co.uk/art/lion
         self.ascii_image = """                 ,  ,, ,
