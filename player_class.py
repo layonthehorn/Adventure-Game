@@ -133,18 +133,22 @@ class VernLion:
         # debugging line to check the items being used.
         # print(item_1, " ", item_2)
         if item_1 in self.inventory and item_2 in self.inventory:
-
-            if item_1 == "meat" and item_2 == "drugs" or item_1 == "drugs" and item_2 == "meat":
+            # a list to make checking for contents easier
+            item_list = [item_1, item_2]
+            if "meat" in item_list and "drugs" in item_list:
                 self.inventory.remove(item_1)
                 self.inventory.remove(item_2)
                 self.inventory.append("drugged meat")
                 print("I made drugged meat. Still nasty after that.")
                 self.made_drugged_meat = True
-            elif item_1 == "bag of catnip" and item_2 == "lion plush" or item_1 == "lion plush" and item_2 == "bag of catnip":
+            elif "lion plush" in item_list and "bag of catnip" in item_list:
                 self.inventory.remove(item_1)
                 self.inventory.remove(item_2)
                 self.inventory.append("cat toy")
                 print("I am so ashamed of myself for this...")
+            elif "self" in item_list and "cat toy" in item_list:
+                self.inventory.remove("cat toy")
+                print("purrrrr Mmmmm catnip.")
             else:
                 print(f"I can't combine {item_1} and {item_2}.")
         else:
