@@ -92,41 +92,37 @@ class MainGame:
                 if new_value_dictionary is None:
                     print("No save games found.")
                     continue
-                # getting saved settings
-                # player data
-                player_score = new_value_dictionary["player score"]
-                player_inventory = new_value_dictionary["player inventory"]
-                player_location = new_value_dictionary["player location"]
-                player_bools = new_value_dictionary["player bools"]
-                # bunker data
-                starting_room_bools = new_value_dictionary["starting room bools"]
-                starting_room_items = new_value_dictionary["starting room items"]
-                # side room data
-                side_room_bools = new_value_dictionary["side room bools"]
-                side_room_items = new_value_dictionary["side room items"]
-                # main plaza data
-                main_plaza_bools = new_value_dictionary["main plaza bools"]
-                main_plaza_items = new_value_dictionary["main plaza items"]
-                # small den data
-                small_den_item = new_value_dictionary["small den items"]
-                small_den_bools = new_value_dictionary["small den bools"]
-                # west wing data
-                west_wing_items = new_value_dictionary["west wing items"]
-                west_wing_bools = new_value_dictionary["west wing bools"]
-                # cemetery data
-                cemetery_items = new_value_dictionary["cemetery items"]
-                cemetery_bools = new_value_dictionary["cemetery bools"]
 
                 # loading saved settings
-                self.player = VernLion(player_inventory, player_location, player_score, player_bools)
-                self.starting_room = StartingRoom(starting_room_items, starting_room_bools)
-                self.side_room = SideRoom(side_room_items, side_room_bools)
-                self.main_plaza = MainPlaza(main_plaza_items, main_plaza_bools)
-                self.small_den = SmallDen(small_den_item, small_den_bools)
-                self.west_wing = WestWing(west_wing_items, west_wing_bools)
-                self.cemetery = Cemetery(cemetery_items, cemetery_bools)
-                self.toy_shop = ToyShop(new_value_dictionary["toy shop items"], new_value_dictionary["toy shop bools"])
-                self.pet_shop = PetShop(new_value_dictionary["pet shop items"], new_value_dictionary["pet shop bools"])
+                # player data
+                self.player = VernLion(new_value_dictionary["player inventory"],
+                                       new_value_dictionary["player location"],
+                                       new_value_dictionary["player score"],
+                                       new_value_dictionary["player bools"])
+                # bunker data
+                self.starting_room = StartingRoom(new_value_dictionary["starting room items"],
+                                                  new_value_dictionary["starting room bools"])
+                # side room data
+                self.side_room = SideRoom(new_value_dictionary["side room items"],
+                                          new_value_dictionary["side room bools"])
+                # main plaza data
+                self.main_plaza = MainPlaza(new_value_dictionary["main plaza items"],
+                                            new_value_dictionary["main plaza bools"])
+                # small den data
+                self.small_den = SmallDen(new_value_dictionary["small den items"],
+                                          new_value_dictionary["small den bools"])
+                # west wing data
+                self.west_wing = WestWing(new_value_dictionary["west wing items"],
+                                          new_value_dictionary["west wing bools"])
+                # cemetery data
+                self.cemetery = Cemetery(new_value_dictionary["cemetery items"],
+                                         new_value_dictionary["cemetery bools"])
+                # toy shop data
+                self.toy_shop = ToyShop(new_value_dictionary["toy shop items"],
+                                        new_value_dictionary["toy shop bools"])
+                # pet shop data
+                self.pet_shop = PetShop(new_value_dictionary["pet shop items"],
+                                        new_value_dictionary["pet shop bools"])
                 choosing = False
             else:
                 print(self.ascii_image)
