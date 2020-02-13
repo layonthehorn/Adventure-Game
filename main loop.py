@@ -92,39 +92,39 @@ class MainGame:
                 new_value_dictionary = load_game_state("save game")
                 if new_value_dictionary is None:
                     print("No save games found.")
-                    continue
+                else:
 
-                # loading saved settings
-                # player data
-                self.player = VernLion(new_value_dictionary["player inventory"],
-                                       new_value_dictionary["player location"],
-                                       new_value_dictionary["player score"],
-                                       new_value_dictionary["player bools"])
-                # bunker data
-                self.starting_room = StartingRoom(new_value_dictionary["starting room items"],
-                                                  new_value_dictionary["starting room bools"])
-                # side room data
-                self.side_room = SideRoom(new_value_dictionary["side room items"],
-                                          new_value_dictionary["side room bools"])
-                # main plaza data
-                self.main_plaza = MainPlaza(new_value_dictionary["main plaza items"],
-                                            new_value_dictionary["main plaza bools"])
-                # small den data
-                self.small_den = SmallDen(new_value_dictionary["small den items"],
-                                          new_value_dictionary["small den bools"])
-                # west wing data
-                self.west_wing = WestWing(new_value_dictionary["west wing items"],
-                                          new_value_dictionary["west wing bools"])
-                # cemetery data
-                self.cemetery = Cemetery(new_value_dictionary["cemetery items"],
-                                         new_value_dictionary["cemetery bools"])
-                # toy shop data
-                self.toy_shop = ToyShop(new_value_dictionary["toy shop items"],
-                                        new_value_dictionary["toy shop bools"])
-                # pet shop data
-                self.pet_shop = PetShop(new_value_dictionary["pet shop items"],
-                                        new_value_dictionary["pet shop bools"])
-                choosing = False
+                    # loading saved settings
+                    # player data
+                    self.player = VernLion(new_value_dictionary["player inventory"],
+                                           new_value_dictionary["player location"],
+                                           new_value_dictionary["player score"],
+                                           new_value_dictionary["player bools"])
+                    # bunker data
+                    self.starting_room = StartingRoom(new_value_dictionary["starting room items"],
+                                                      new_value_dictionary["starting room bools"])
+                    # side room data
+                    self.side_room = SideRoom(new_value_dictionary["side room items"],
+                                              new_value_dictionary["side room bools"])
+                    # main plaza data
+                    self.main_plaza = MainPlaza(new_value_dictionary["main plaza items"],
+                                                new_value_dictionary["main plaza bools"])
+                    # small den data
+                    self.small_den = SmallDen(new_value_dictionary["small den items"],
+                                              new_value_dictionary["small den bools"])
+                    # west wing data
+                    self.west_wing = WestWing(new_value_dictionary["west wing items"],
+                                              new_value_dictionary["west wing bools"])
+                    # cemetery data
+                    self.cemetery = Cemetery(new_value_dictionary["cemetery items"],
+                                             new_value_dictionary["cemetery bools"])
+                    # toy shop data
+                    self.toy_shop = ToyShop(new_value_dictionary["toy shop items"],
+                                            new_value_dictionary["toy shop bools"])
+                    # pet shop data
+                    self.pet_shop = PetShop(new_value_dictionary["pet shop items"],
+                                            new_value_dictionary["pet shop bools"])
+                    choosing = False
             else:
                 print(self.ascii_image)
                 print("Welcome to my game!")
@@ -145,24 +145,34 @@ class MainGame:
 
     # saves games
     def save_game_state(self):
-        value_dictionary = {"player inventory": self.player.get_inventory(),
+        value_dictionary = {
+                            # player data
+                            "player inventory": self.player.get_inventory(),
                             "player score": self.player.get_score(),
                             "player location": self.player.get_location(),
                             "player bools": self.player.get_bools(),
+                            # starting room data
                             "starting room bools": self.starting_room.get_bools(),
                             "starting room items": self.starting_room.get_inventory(),
+                            # side/computer room data
                             "side room bools": self.side_room.get_bools(),
                             "side room items": self.side_room.get_inventory(),
+                            # main plaza data
                             "main plaza bools": self.main_plaza.get_bools(),
                             "main plaza items": self.main_plaza.get_inventory(),
+                            # small den data
                             "small den items": self.small_den.get_inventory(),
                             "small den bools": self.small_den.get_bools(),
+                            # west wing data
                             "west wing items": self.west_wing.get_inventory(),
                             "west wing bools": self.west_wing.get_bools(),
+                            # cemetery data
                             "cemetery items": self.cemetery.get_inventory(),
                             "cemetery bools": self.cemetery.get_bools(),
+                            # toy shop data
                             "toy shop items": self.toy_shop.get_inventory(),
                             "toy shop bools": self.toy_shop.get_bools(),
+                            # pet shop data
                             "pet shop items": self.toy_shop.get_inventory(),
                             "pet shop bools": self.toy_shop.get_bools()
                             }

@@ -130,7 +130,8 @@ class VernLion:
 
     # combines items
     def combine_items(self, item_1, item_2):
-        print(item_1, " ", item_2)
+        # debugging line to check the items being used.
+        # print(item_1, " ", item_2)
         if item_1 in self.inventory and item_2 in self.inventory:
 
             if item_1 == "meat" and item_2 == "drugs" or item_1 == "drugs" and item_2 == "meat":
