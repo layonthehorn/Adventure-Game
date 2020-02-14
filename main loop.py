@@ -11,6 +11,10 @@ from west_wing import WestWing
 from toy_shop import ToyShop
 from pet_shop import PetShop
 
+#from upstairs_hallway import UpstairsHallway
+#from animal_den import AnimalDen
+#from bathroom import Bathroom
+#from show_store import ShoeStore
 
 # loading saved game
 def load_game_state(file_name):
