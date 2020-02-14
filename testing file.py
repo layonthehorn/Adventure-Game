@@ -14,7 +14,7 @@ value_dictionary = {
     "side room bools": (True, True),
     "side room items": [],
     # main plaza data
-    "main plaza bools": (True, False, False),
+    "main plaza bools": (True, True, False),
     "main plaza items": ["strange keys", "map"],
     # small den data
     "small den bools": (False, False),
@@ -30,9 +30,21 @@ value_dictionary = {
     "pet shop bools": (False, False),
     # toy shop data
     "toy shop items": ["fur sample", "toy raygun"],
-    "toy shop bools": (False, False)
+    "toy shop bools": (False, False),
+    # bath room data
+    "bathroom items": [],
+    "bathroom bools": (False, False),
+    # animal den data
+    "animal den items": [],
+    "animal den bools": (False, False),
+    # upstairs hallway data
+    "upstairs hallway items": [],
+    "upstairs hallway bools": (False, False),
+    # shoe store data
+    "shoe store items": [],
+    "shoe store bools": (False, False)
 
-                    }
+}
 
 
 def print_db_file(db):

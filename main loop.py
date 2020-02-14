@@ -10,11 +10,11 @@ from starting_room_class import StartingRoom
 from west_wing import WestWing
 from toy_shop import ToyShop
 from pet_shop import PetShop
+from upstairs_hallway import UpstairsHallway
+from animal_den import AnimalDen
+from bathroom import Bathroom
+from shoe_store import ShoeStore
 
-#from upstairs_hallway import UpstairsHallway
-#from animal_den import AnimalDen
-#from bathroom import Bathroom
-#from show_store import ShoeStore
 
 # loading saved game
 def load_game_state(file_name):
@@ -99,6 +99,10 @@ class MainGame:
                 self.cemetery = Cemetery()
                 self.toy_shop = ToyShop()
                 self.pet_shop = PetShop()
+                self.up_stairs_hallway = UpstairsHallway()
+                self.animal_den = AnimalDen()
+                self.shoe_store = ShoeStore()
+                self.bathroom = Bathroom()
                 choosing = False
             elif player_option == "L":
                 # getting loaded settings
@@ -137,6 +141,18 @@ class MainGame:
                     # pet shop data
                     self.pet_shop = PetShop(new_value_dictionary["pet shop items"],
                                             new_value_dictionary["pet shop bools"])
+                    # upstairs hallway data
+                    self.up_stairs_hallway = UpstairsHallway(new_value_dictionary["upstairs hallway items"],
+                                                             new_value_dictionary["upstairs hallway bools"])
+                    # animal den data
+                    self.animal_den = AnimalDen(new_value_dictionary["animal den items"],
+                                                new_value_dictionary["animal den bools"])
+                    # bathroom data
+                    self.bathroom = Bathroom(new_value_dictionary["bathroom items"],
+                                             new_value_dictionary["bathroom bools"])
+                    # shoe store data
+                    self.shoe_store = ShoeStore(new_value_dictionary["shoe store items"],
+                                                new_value_dictionary["shoe store bools"])
                     choosing = False
             else:
                 print(self.ascii_image)
@@ -151,11 +167,11 @@ class MainGame:
             self.cemetery_name: self.cemetery,
             self.pet_shop_name: self.pet_shop,
             self.toy_shop_name: self.toy_shop,
-            self.small_den_name: self.small_den
-            # self.up_stairs_hallway_name: self.up_stairs_hallway,
-            # self.shoe_store_name: self.shoe_store,
-            # self.animal_den_name: self.animal_den,
-            # self.bathroom_name: self.bathroom
+            self.small_den_name: self.small_den,
+            self.up_stairs_hallway_name: self.up_stairs_hallway,
+            self.shoe_store_name: self.shoe_store,
+            self.animal_den_name: self.animal_den,
+            self.bathroom_name: self.bathroom
         }
 
     # getting things
@@ -202,7 +218,19 @@ class MainGame:
                             "toy shop bools": self.toy_shop.get_bools(),
                             # pet shop data
                             "pet shop items": self.toy_shop.get_inventory(),
-                            "pet shop bools": self.toy_shop.get_bools()
+                            "pet shop bools": self.toy_shop.get_bools(),
+                            # bathroom data
+                            "bathroom items": self.bathroom.get_inventory(),
+                            "bathroom bools": self.bathroom.get_bools(),
+                            # animal den data
+                            "animal den items": self.animal_den.get_inventory(),
+                            "animal den bools": self.animal_den.get_bools(),
+                            # upstairs hallway data
+                            "upstairs hallway items": self.up_stairs_hallway.get_inventory(),
+                            "upstairs hallway bools": self.up_stairs_hallway.get_bools(),
+                            # shoe store data
+                            "shoe store items": self.shoe_store.get_inventory(),
+                            "shoe store bools": self.shoe_store.get_bools()
                             }
         try:
             with open("save game", 'wb+') as db_file:
@@ -566,20 +594,100 @@ class MainGame:
                 print("Go where?")
 
     # upstairs hallway actions
-    def up_stairs_hallway_area(self, choice):
-        pass
+    def up_stairs_hallway_area(self, player_choice):
+        p_list = player_choice.split(" ", 1)
+        if p_list[0] == "look":
+            try:
+                if p_list[1] == "room":
+                    self.up_stairs_hallway.print_description_room()
+                elif p_list[1] != "self" and p_list[1] != "map":
+                    print(f"I don't know where {p_list[1]} is.")
+            except IndexError:
+                print("look at what?")
+
+        # allows player to move around
+        elif p_list[0] == "go":
+            try:
+                if p_list[1] == "animal den":
+                    self.player.set_location(self.animal_den_name)
+                elif p_list[1] == "shoe store":
+                    self.player.set_location(self.shoe_store_name)
+                elif p_list[1] == "bathroom":
+                    self.player.set_location(self.bathroom_name)
+                elif p_list[1] == "down stairs":
+                    self.player.set_location(self.main_plaza_name)
+                else:
+                    print(f"I can't go to {p_list[1]}.")
+            except IndexError:
+                print("Go where?")
 
     # animal den actions
-    def animal_den_area(self, choice):
+    def animal_den_area(self, player_choice):
         pass
+        p_list = player_choice.split(" ", 1)
+        if p_list[0] == "look":
+            try:
+                if p_list[1] == "room":
+                    self.animal_den.print_description_room()
+                elif p_list[1] != "self" and p_list[1] != "map":
+                    print(f"I don't know where {p_list[1]} is.")
+            except IndexError:
+                print("look at what?")
+
+        # allows player to move around
+        elif p_list[0] == "go":
+            try:
+                if p_list[1] == "hallway":
+                    self.player.set_location(self.up_stairs_hallway_name)
+                else:
+                    print(f"I can't go to {p_list[1]}.")
+            except IndexError:
+                print("Go where?")
 
     # bathroom actions
-    def bathroom_area(self, choice):
+    def bathroom_area(self, player_choice):
         pass
+        p_list = player_choice.split(" ", 1)
+        if p_list[0] == "look":
+            try:
+                if p_list[1] == "room":
+                    self.bathroom.print_description_room()
+                elif p_list[1] != "self" and p_list[1] != "map":
+                    print(f"I don't know where {p_list[1]} is.")
+            except IndexError:
+                print("look at what?")
+
+        # allows player to move around
+        elif p_list[0] == "go":
+            try:
+                if p_list[1] == "hallway":
+                    self.player.set_location(self.up_stairs_hallway_name)
+                else:
+                    print(f"I can't go to {p_list[1]}.")
+            except IndexError:
+                print("Go where?")
 
     # shoe store actions
-    def shoe_store_area(self, choice):
-        pass
+    def shoe_store_area(self, player_choice):
+        p_list = player_choice.split(" ", 1)
+        if p_list[0] == "look":
+            try:
+                if p_list[1] == "room":
+                    self.shoe_store.print_description_room()
+                elif p_list[1] != "self" and p_list[1] != "map":
+                    print(f"I don't know where {p_list[1]} is.")
+            except IndexError:
+                print("look at what?")
+
+        # allows player to move around
+        elif p_list[0] == "go":
+            try:
+                if p_list[1] == "hallway":
+                    self.player.set_location(self.up_stairs_hallway_name)
+                else:
+                    print(f"I can't go to {p_list[1]}.")
+            except IndexError:
+                print("Go where?")
 
     # a exit game function
     # dummy parameter is so they can be called without crashing

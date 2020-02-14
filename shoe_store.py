@@ -21,7 +21,7 @@ class ShoeStore:
         if not self.first_entered:
             print("You doubt anything would fit your digitigrade feet from this place.")
             self.first_entered = True
-        print("")
+        print("You can go back the the 'hallway' from here.")
         if len(self.inventory) > 0:
             for item in self.inventory:
                 print(f"There is a(n) {item}")
