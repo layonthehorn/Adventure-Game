@@ -209,8 +209,6 @@ class MainGame:
     # general actions that can be done anywhere
     def general_actions(self, action):
 
-        # dictionary for storing all locations
-
         # finds player location
         loc_name = self.switcher_dictionary.get(self.player.get_location(), None)
         if loc_name is None:
