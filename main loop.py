@@ -43,6 +43,7 @@ class MainGame:
         self.animal_den_name = "animal den"
         self.shoe_store_name = "shoe store"
         self.bathroom_name = "bathroom"
+        self.playing = True
         # Main Classes
         # These are loaded in main menu to not load them twice.
         # self.player - The player character class
@@ -137,6 +138,21 @@ class MainGame:
                 print(self.ascii_image)
                 print("Welcome to my game!")
                 continue
+        # location dictionary
+        self.switcher_dictionary = {
+            self.starting_room_name: self.starting_room,
+            self.side_room_name: self.side_room,
+            self.main_plaza_name: self.main_plaza,
+            self.west_wing_name: self.west_wing,
+            self.cemetery_name: self.cemetery,
+            self.pet_shop_name: self.pet_shop,
+            self.toy_shop_name: self.toy_shop,
+            self.small_den_name: self.small_den
+            # self.up_stairs_hallway_name: self.up_stairs_hallway,
+            # self.shoe_store_name: self.shoe_store,
+            # self.animal_den_name: self.animal_den,
+            # self.bathroom_name: self.bathroom
+        }
 
     # getting things
     def get_items(self, room, item):
@@ -194,23 +210,9 @@ class MainGame:
     def general_actions(self, action):
 
         # dictionary for storing all locations
-        switcher_dictionary = {
-            self.starting_room_name: self.starting_room,
-            self.side_room_name: self.side_room,
-            self.main_plaza_name: self.main_plaza,
-            self.west_wing_name: self.west_wing,
-            self.cemetery_name: self.cemetery,
-            self.pet_shop_name: self.pet_shop,
-            self.toy_shop_name: self.toy_shop,
-            self.small_den_name: self.small_den
-            # self.up_stairs_hallway_name: self.up_stairs_hallway,
-            # self.shoe_store_name: self.shoe_store,
-            # self.animal_den_name: self.animal_den,
-            # self.bathroom_name: self.bathroom
-        }
 
         # finds player location
-        loc_name = switcher_dictionary.get(self.player.get_location(), None)
+        loc_name = self.switcher_dictionary.get(self.player.get_location(), None)
         if loc_name is None:
             print("no matching location found, defaulting to bunker.")
             loc_name = self.starting_room
@@ -577,13 +579,39 @@ class MainGame:
     def shoe_store_area(self, choice):
         pass
 
+    # a exit game function
+    def exit_game(self, dummy):
+        print("You escaped the mall! You are back with Johnson and Katie.")
+        print("Maybe they can explain what happened to you.")
+        input("Press enter to end game.\nThank you for playing!")
+        self.playing = False
+
+    # a end game function
+    def end_game(self, dummy):
+        self.playing = False
+
     # main game loop
     def main_loop(self):
-        playing = True
+        location_dict = {
+            self.starting_room_name: self.starting_area,
+            self.side_room_name: self.side_area,
+            self.main_plaza_name: self.main_plaza_area,
+            self.small_den_name: self.small_den_area,
+            self.west_wing_name: self.west_wing_area,
+            self.cemetery_name: self.cemetery_area,
+            self.pet_shop_name: self.pet_shop_area,
+            self.toy_shop_name: self.toy_shop_area,
+            self.up_stairs_hallway_name: self.up_stairs_hallway_area,
+            self.bathroom_name: self.bathroom_area,
+            self.animal_den_name: self.animal_den_area,
+            self.shoe_store_name: self.shoe_store_area,
+            self.exit_name: self.exit_game,
+            self.end_name: self.end_game
+        }
         player_choice = ""
         print("""You, a young nervous lion wakes up, alone and afraid. Where did your friends go?
 You'll have to figure out where you are first and then get to them.""")
-        while playing:
+        while self.playing:
             # if you reach the exit then don't ask for actions from player
             if self.player.location != self.exit_name:
                 print("Verbs look, inv(entory), get, oper(ate), com(bine), drop, score, use, go, save, end")
@@ -591,84 +619,17 @@ You'll have to figure out where you are first and then get to them.""")
                 # general actions shared by rooms
                 self.general_actions(player_choice)
 
-            # getting player location
-            player_location = self.player.get_location()
-            # actions available in some rooms only
-            # for bunker
-            if player_location == self.starting_room_name:
-                self.starting_area(player_choice)
-                print("")
-
-            # for computer room
-            elif player_location == self.side_room_name:
-                self.side_area(player_choice)
-                print("")
-
-            # for main plaza
-            elif player_location == self.main_plaza_name:
-                self.main_plaza_area(player_choice)
-                print("")
-
-            # for small den
-            elif player_location == self.small_den_name:
-                self.small_den_area(player_choice)
-                print("")
-
-            # for west wing
-            elif player_location == self.west_wing_name:
-                self.west_wing_area(player_choice)
-                print("")
-
-            # for cemetery
-            elif player_location == self.cemetery_name:
-                self.cemetery_area(player_choice)
-                print("")
-
-            # for toy shop
-            elif player_location == self.toy_shop_name:
-                self.toy_shop_area(player_choice)
-                print("")
-
-            # for pet shop
-            elif player_location == self.pet_shop_name:
-                self.pet_shop_area(player_choice)
-                print("")
-
-            # for upstairs hallway
-            elif player_location == self.up_stairs_hallway_name:
-                self.up_stairs_hallway_area(player_choice)
-                print("")
-
-            # for bathroom
-            elif player_location == self.bathroom_name:
-                self.bathroom_area(player_choice)
-                print("")
-
-            # for animal den
-            elif player_location == self.animal_den_name:
-                self.animal_den_area(player_choice)
-                print("")
-
-            # for shoe store
-            elif player_location == self.shoe_store_name:
-                self.shoe_store_area(player_choice)
-                print("")
-
-            # for winning the game
-            elif player_location == self.exit_name:
-                print("You escaped the mall! You are back with Johnson and Katie.")
-                print("Maybe they can explain what happened to you.")
-                input("Press enter to end game.\nThank you for playing!")
-                playing = False
-
-            # for ending the game smoothly
-            elif player_location == self.end_name:
-                playing = False
-
-            # debug if you end out out of playable areas
-            else:
+            # gets the room the player is in
+            location_actions = location_dict.get(self.player.get_location(), None)
+            # if it does not find a room moves them to the main plaza
+            if location_actions is None:
                 print("You entered a un-built place. Moving to main plaza.")
-                self.player.set_location(self.main_plaza_name)
+                self.player.set_location(self.starting_room_name)
+                location_actions = self.main_plaza_area
+
+            # runs the players actions in the room they are in
+            location_actions(player_choice)
+            print("")
 
 
 if __name__ == "__main__":
