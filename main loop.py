@@ -578,14 +578,16 @@ class MainGame:
         pass
 
     # a exit game function
-    def exit_game(self, dummy):
+    # dummy parameter is so they can be called without crashing
+    def exit_game(self, dummy=None):
         print("You escaped the mall! You are back with Johnson and Katie.")
         print("Maybe they can explain what happened to you.")
         input("Press enter to end game.\nThank you for playing!")
         self.playing = False
 
     # a end game function
-    def end_game(self, dummy):
+    # dummy parameter is so they can be called without crashing
+    def end_game(self, dummy=None):
         self.playing = False
 
     # main game loop
