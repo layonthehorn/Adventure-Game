@@ -1,7 +1,7 @@
 class Bathroom:
     def __init__(self, items_contained=None, bool_list=(False, False)):
         if items_contained is None:
-            items_contained = []
+            items_contained = ["drugs"]
         self.inventory = items_contained
 
         self.bool_one, self.bool_two = bool_list

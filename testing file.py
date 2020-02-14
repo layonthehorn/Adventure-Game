@@ -32,10 +32,10 @@ value_dictionary = {
     "toy shop items": ["fur sample", "toy raygun"],
     "toy shop bools": (False, False),
     # bath room data
-    "bathroom items": [],
+    "bathroom items": ["drugs"],
     "bathroom bools": (False, False),
     # animal den data
-    "animal den items": [],
+    "animal den items": ["meat"],
     "animal den bools": (False, False),
     # upstairs hallway data
     "upstairs hallway items": [],

@@ -1,7 +1,7 @@
 class ShoeStore:
     def __init__(self, items_contained=None, bool_list=(False, False)):
         if items_contained is None:
-            items_contained = ["drugs"]
+            items_contained = []
         self.inventory = items_contained
 
         self.first_entered, self.bool_two = bool_list
