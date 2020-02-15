@@ -223,14 +223,12 @@ You'll have to figure out where you are first and then get to them.""")
 
     # getting things
     def get_items(self, room, item):
-        item = room.get_item(item)
-        self.player.get_item(item)
+        self.player.get_item(room.get_item(item))
 
     # drops items to a room
     def drop_items(self, room, item):
         if item in self.player.inventory:
-            player_item = self.player.drop_item(item)
-            room.give_item(player_item)
+            room.give_item(self.player.drop_item(item))
         else:
             print(f"I don't have a(n) {item} to drop.")
 
