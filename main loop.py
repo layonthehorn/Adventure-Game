@@ -26,7 +26,7 @@ def load_game_state(file_name):
         return None
 
 
-class MainGame:
+class VernsAdventure:
     def __init__(self):
 
         self.use_pattern = re.compile(r"^use\s|\swith\s|\son\s")
@@ -67,12 +67,11 @@ class MainGame:
 
         """
         # Main Classes
-        # These are loaded in main menu to not load them twice.
+        # These are loaded below as to not load them twice.
         # self.player - The player character class
         # self.starting_room - the bunker room class
         # self.side_room - the computer room to the side of the bunker class
-        # self.main_plaza - the area outside the bunker
-        # self.cemetery - the area north of the west wing.
+        # self.main_plaza - the area outside the bunker # self.cemetery - the area north of the west wing.
         # self.west_wing - a side area used to reach more places
         # self.toy_shop - the toy shop off of the west wing
         # self.pet_shop - A pet shot off of the west wing
@@ -192,7 +191,7 @@ class MainGame:
         }
         player_choice = ""
         print("""You, a young nervous lion wakes up, alone and afraid. Where did your friends go?
-    You'll have to figure out where you are first and then get to them.""")
+You'll have to figure out where you are first and then get to them.""")
 
         # main game play loop
         while self.playing:
@@ -215,7 +214,7 @@ class MainGame:
                 # runs the players actions in the room they are in
                 location_actions(player_choice)
                 print("")
-            elif self.player.get_location() == self.end_name:
+            elif p_local == self.end_name:
                 # ends game after player asks to
                 location_actions()
             else:
@@ -738,7 +737,6 @@ class MainGame:
                 print("Go where?")
 
     # a exit game function
-    # dummy parameter is so they can be called without crashing
     def exit_game(self):
         print("You escaped the mall! You are back with Johnson and Katie.")
         print("Maybe they can explain what happened to you.")
@@ -746,10 +744,9 @@ class MainGame:
         self.playing = False
 
     # a end game function
-    # dummy parameter is so they can be called without crashing
     def end_game(self):
         self.playing = False
 
 
 if __name__ == "__main__":
-    MainGame()
+    VernsAdventure()
