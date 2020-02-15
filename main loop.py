@@ -48,6 +48,24 @@ class MainGame:
         self.shoe_store_name = "shoe store"
         self.bathroom_name = "bathroom"
         self.playing = True
+
+        # Temporary ascii art from https://ascii.co.uk/art/lion
+        self.ascii_image = """                 ,  ,, ,
+                   , ,; ; ;;  ; ;  ;
+                , ; ';  ;  ;; .-''\\ ; ;
+             , ;  ;`  ; ,; . / /8b \\ ; ;
+             `; ; .;'         ;,\\8 |  ;  ;
+              ` ;/   / `_      ; ;;    ;  ; ;
+                 |/.'  /0)    ;  ; `    ;  ; ;
+                ,/'   /       ; ; ;  ;   ; ; ; ;
+               /_   /         ;    ;  `    ;  ;
+              `?8P"  .      ;  ; ; ; ;     ;  ;;
+              | ;  .:: `     ;; ; ;   `  ;  ;
+              `' `--._      ;;  ;;  ; ;   ;   ;
+               `-..__..--''   ; ;    ;;   ; ;   ;
+                           ;    ; ; ;   ;     ;
+
+        """
         # Main Classes
         # These are loaded in main menu to not load them twice.
         # self.player - The player character class
@@ -63,26 +81,6 @@ class MainGame:
         # self.shoe_store - the shoe store up stairs
         # self.bathroom - the bathroom upstairs
 
-        # Temporary ascii art from https://ascii.co.uk/art/lion
-        self.ascii_image = """                 ,  ,, ,
-           , ,; ; ;;  ; ;  ;
-        , ; ';  ;  ;; .-''\\ ; ;
-     , ;  ;`  ; ,; . / /8b \\ ; ;
-     `; ; .;'         ;,\\8 |  ;  ;
-      ` ;/   / `_      ; ;;    ;  ; ;
-         |/.'  /0)    ;  ; `    ;  ; ;
-        ,/'   /       ; ; ;  ;   ; ; ; ;
-       /_   /         ;    ;  `    ;  ;
-      `?8P"  .      ;  ; ; ; ;     ;  ;;
-      | ;  .:: `     ;; ; ;   `  ;  ;
-      `' `--._      ;;  ;;  ; ;   ;   ;
-       `-..__..--''   ; ;    ;;   ; ;   ;
-                   ;    ; ; ;   ;     ;
-
-"""
-
-    # noinspection PyAttributeOutsideInit
-    def main_menu(self):
         choosing = True
         print(self.ascii_image)
         print("Welcome to my game!")
@@ -103,6 +101,7 @@ class MainGame:
                 self.animal_den = AnimalDen()
                 self.shoe_store = ShoeStore()
                 self.bathroom = Bathroom()
+
                 choosing = False
             elif player_option == "L":
                 # getting loaded settings
@@ -173,6 +172,55 @@ class MainGame:
             self.animal_den_name: self.animal_den,
             self.bathroom_name: self.bathroom
         }
+
+        # action dictionary
+        self.location_dict = {
+            self.starting_room_name: self.starting_area,
+            self.side_room_name: self.side_area,
+            self.main_plaza_name: self.main_plaza_area,
+            self.small_den_name: self.small_den_area,
+            self.west_wing_name: self.west_wing_area,
+            self.cemetery_name: self.cemetery_area,
+            self.pet_shop_name: self.pet_shop_area,
+            self.toy_shop_name: self.toy_shop_area,
+            self.up_stairs_hallway_name: self.up_stairs_hallway_area,
+            self.bathroom_name: self.bathroom_area,
+            self.animal_den_name: self.animal_den_area,
+            self.shoe_store_name: self.shoe_store_area,
+            self.exit_name: self.exit_game,
+            self.end_name: self.end_game
+        }
+        player_choice = ""
+        print("""You, a young nervous lion wakes up, alone and afraid. Where did your friends go?
+    You'll have to figure out where you are first and then get to them.""")
+
+        # main game play loop
+        while self.playing:
+            # if you reach the exit then don't ask for actions from player
+            if self.player.location != self.exit_name:
+                print("Verbs look, inv(entory), get, oper(ate), com(bine), drop, score, use, go, save, end")
+                player_choice = input("").lower()
+                # general actions shared by rooms
+                self.general_actions(player_choice)
+
+            # gets the room the player is in
+            p_local = self.player.get_location()
+            location_actions = self.location_dict.get(p_local, None)
+            # if it does not find a room moves them to the main plaza
+            if location_actions is None:
+                print("You entered a un-built place. Moving to main plaza.")
+                self.player.set_location(self.starting_room_name)
+                location_actions = self.main_plaza_area
+            if p_local != self.end_name and p_local != self.exit_name:
+                # runs the players actions in the room they are in
+                location_actions(player_choice)
+                print("")
+            elif self.player.get_location() == self.end_name:
+                # ends game after player asks to
+                location_actions()
+            else:
+                # Winning game ending
+                location_actions()
 
     # getting things
     def get_items(self, room, item):
@@ -691,7 +739,7 @@ class MainGame:
 
     # a exit game function
     # dummy parameter is so they can be called without crashing
-    def exit_game(self, dummy=None):
+    def exit_game(self):
         print("You escaped the mall! You are back with Johnson and Katie.")
         print("Maybe they can explain what happened to you.")
         input("Press enter to end game.\nThank you for playing!")
@@ -699,52 +747,9 @@ class MainGame:
 
     # a end game function
     # dummy parameter is so they can be called without crashing
-    def end_game(self, dummy=None):
+    def end_game(self):
         self.playing = False
-
-    # main game loop
-    def main_loop(self):
-        location_dict = {
-            self.starting_room_name: self.starting_area,
-            self.side_room_name: self.side_area,
-            self.main_plaza_name: self.main_plaza_area,
-            self.small_den_name: self.small_den_area,
-            self.west_wing_name: self.west_wing_area,
-            self.cemetery_name: self.cemetery_area,
-            self.pet_shop_name: self.pet_shop_area,
-            self.toy_shop_name: self.toy_shop_area,
-            self.up_stairs_hallway_name: self.up_stairs_hallway_area,
-            self.bathroom_name: self.bathroom_area,
-            self.animal_den_name: self.animal_den_area,
-            self.shoe_store_name: self.shoe_store_area,
-            self.exit_name: self.exit_game,
-            self.end_name: self.end_game
-        }
-        player_choice = ""
-        print("""You, a young nervous lion wakes up, alone and afraid. Where did your friends go?
-You'll have to figure out where you are first and then get to them.""")
-        while self.playing:
-            # if you reach the exit then don't ask for actions from player
-            if self.player.location != self.exit_name:
-                print("Verbs look, inv(entory), get, oper(ate), com(bine), drop, score, use, go, save, end")
-                player_choice = input("").lower()
-                # general actions shared by rooms
-                self.general_actions(player_choice)
-
-            # gets the room the player is in
-            location_actions = location_dict.get(self.player.get_location(), None)
-            # if it does not find a room moves them to the main plaza
-            if location_actions is None:
-                print("You entered a un-built place. Moving to main plaza.")
-                self.player.set_location(self.starting_room_name)
-                location_actions = self.main_plaza_area
-
-            # runs the players actions in the room they are in
-            location_actions(player_choice)
-            print("")
 
 
 if __name__ == "__main__":
-    menu = MainGame()
-    menu.main_menu()
-    menu.main_loop()
+    MainGame()
