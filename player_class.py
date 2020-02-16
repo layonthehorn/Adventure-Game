@@ -38,7 +38,7 @@ class VernLion:
             "fuse": "Lots of old world tech uses this to keep power flowing.",
             "bag of catnip": "Hey now. You need to stay sober.",
             "lion plush": "A cute lion plush. I wonder who left this here?",
-            "strange keys": "For some reason you recognise them. Maybe they belong to a friend?",
+            "keys": "For some reason you recognise them. Maybe they belong to a friend?",
             "meat": "Maybe something will want this?",
             "toy raygun": "It's flashing random colors. Not useful but fun!",
             "knife": "It cuts. I mean what else do you think it does?",

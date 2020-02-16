@@ -14,7 +14,7 @@ value_dictionary = {
     "side room bools": (True, True),
     "side room items": [],
     # main plaza data
-    "main plaza bools": (True, True, False),
+    "main plaza bools": (True, True, False, False),
     "main plaza items": ["strange keys", "map"],
     # small den data
     "small den bools": (False, False),

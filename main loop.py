@@ -101,6 +101,11 @@ class VernsAdventure:
                 self.shoe_store = ShoeStore()
                 self.bathroom = Bathroom()
 
+                print("""You wake up, alone and afraid in an old fallout shelter, built some time in the past, but abandoned 
+long ago. It appears a group had set themselves up here before the end, judging by the things that were left 
+behind. The room smells of mould and rust. There is a disabled robot in the corner, an entry to a smaller 
+room and there is a door that appears to be locked.""")
+
                 choosing = False
             elif player_option == "L":
                 # getting loaded settings
@@ -151,6 +156,7 @@ class VernsAdventure:
                     # shoe store data
                     self.shoe_store = ShoeStore(new_value_dictionary["shoe store items"],
                                                 new_value_dictionary["shoe store bools"])
+                    print("Loaded Game!")
                     choosing = False
             else:
                 print(self.ascii_image)
@@ -190,10 +196,6 @@ class VernsAdventure:
             self.end_name: self.end_game
         }
         player_choice = ""
-        print("""You wake up, alone and afraid in an old fallout shelter, built some time in the past, but abandoned 
-long ago. It appears a group had set themselves up here before the end, judging by the things that were left 
-behind. The room smells of mould and rust. There is a disabled robot in the corner, an entry to a smaller 
-room and there is a door that appears to be locked.""")
 
         # main game play loop
         while self.playing:
@@ -354,9 +356,9 @@ room and there is a door that appears to be locked.""")
             try:
                 if p_list[1] == "room":
                     self.starting_room.print_description_room()
-                elif p_list[1] == "box":
+                elif "box" in p_list[1]:
                     self.starting_room.print_description_box()
-                elif p_list[1] == "robot":
+                elif "robot" in p_list[1]:
                     self.starting_room.look_robot()
                 elif p_list[1] != "self" and p_list[1] != "map":
                     print(f"I don't know where {p_list[1]} is.")
@@ -383,7 +385,7 @@ room and there is a door that appears to be locked.""")
                 pass
             try:
                 # attempt to fix fuse box
-                if choice_list[1] == "box":
+                if "box" in choice_list[1]:
                     if choice_list[0] in self.player.inventory:
                         if self.starting_room.fix_fuse_box(choice_list[0]):
                             self.player.use_item(choice_list[0])
@@ -392,7 +394,7 @@ room and there is a door that appears to be locked.""")
                         print(f"I don't have a(n) {choice_list[0]}")
 
                 # attempt to fix robot
-                elif choice_list[1] == "robot":
+                elif "robot" in choice_list[1]:
                     if choice_list[0] in self.player.inventory:
                         if self.starting_room.fix_robot(choice_list[0]):
                             self.player.use_item(choice_list[0])
@@ -410,7 +412,7 @@ room and there is a door that appears to be locked.""")
             try:
                 if p_list[1] == "outside" and self.starting_room.door_opened:
                     self.player.set_location("outside")
-                elif p_list[1] == "side room":
+                elif "side" in p_list[1]:
                     print("What a small room.")
                     self.player.set_location("side room")
                 else:
@@ -426,7 +428,7 @@ room and there is a door that appears to be locked.""")
             try:
                 if p_list[1] == "room":
                     self.side_room.print_description_room()
-                elif p_list[1] == "computer":
+                elif "pc" in p_list[1] or "computer" in p_list[1]:
                     self.side_room.print_description_computer()
                 elif p_list[1] != "self" and p_list[1] != "map":
                     print(f"I don't know where {p_list[1]} is.")
@@ -436,11 +438,11 @@ room and there is a door that appears to be locked.""")
         # player using things
         elif p_list[0] == "oper":
             try:
-                if p_list[1] == "light switch":
+                if "light" in p_list[1] or "switch" in p_list[1]:
                     if not self.side_room.light_switch:
                         self.player.increase_score()
                     self.side_room.turn_on_switch()
-                elif p_list[1] == "computer":
+                elif "pc" in p_list[1] or "computer" in p_list[1]:
                     self.side_room.use_computer()
                 else:
                     print("I can't operate that.")
@@ -450,7 +452,7 @@ room and there is a door that appears to be locked.""")
         # allows the player to leave
         elif p_list[0] == "go":
             try:
-                if p_list[1] == "bunker":
+                if "bunker" in p_list[1]:
                     print("I'm back in the bunker.")
                     self.player.set_location(self.starting_room_name)
                 else:
@@ -465,7 +467,8 @@ room and there is a door that appears to be locked.""")
             except ValueError:
                 pass
             try:
-                if choice_list[1] == "":
+                # place holding in case player attempts to use an item on an object here.
+                if choice_list[1] is None:
                     if choice_list[0] in self.player.inventory:
                         pass
                         # if self.starting_room.fix_fuse_box(choice_list[0]):
@@ -486,7 +489,7 @@ room and there is a door that appears to be locked.""")
             try:
                 if p_list[1] == "room":
                     self.main_plaza.print_description_room()
-                elif p_list[1] == "car":
+                elif "car" in p_list[1]:
                     self.main_plaza.print_description_car()
                 elif p_list[1] != "self" and p_list[1] != "map":
                     print(f"I don't know where {p_list[1]} is.")
@@ -498,7 +501,7 @@ room and there is a door that appears to be locked.""")
             try:
                 if p_list[1] == "bunker" and self.starting_room.door_opened:
                     self.player.set_location(self.starting_room_name)
-                elif p_list[1] == "west wing":
+                elif "west" in p_list[1]:
                     self.player.set_location(self.west_wing_name)
                 elif p_list[1] == "upstairs":
                     if self.main_plaza.upstairs_unlocked:
@@ -506,13 +509,13 @@ room and there is a door that appears to be locked.""")
                     else:
                         print("It's locked!")
 
-                elif p_list[1] == "exit":
+                elif "exit" in p_list[1]:
                     if self.main_plaza.exit_unlocked:
                         self.player.set_location(self.exit_name)
                     else:
                         print("It's locked!")
 
-                elif p_list[1] == "small den":
+                elif "den" in p_list[1]:
                     self.player.set_location(self.small_den_name)
                 else:
                     print(f"I can't go to {p_list[1]}.")
@@ -521,7 +524,7 @@ room and there is a door that appears to be locked.""")
 
         elif p_list[0] == "oper":
             try:
-                if p_list[1] == "":
+                if p_list[1] is None:
                     pass
                 else:
                     print("I can't use that.")
@@ -535,7 +538,7 @@ room and there is a door that appears to be locked.""")
             except ValueError:
                 pass
             try:
-                if choice_list[1] == "":
+                if choice_list[1] is None:
                     if choice_list[0] in self.player.inventory:
                         pass
                         # if self.starting_room.fix_fuse_box(choice_list[0]):
@@ -556,7 +559,7 @@ room and there is a door that appears to be locked.""")
             try:
                 if p_list[1] == "room":
                     self.small_den.print_description_room()
-                elif p_list[1] == "animal":
+                elif "animal" in p_list[1]:
                     self.small_den.print_description_animal_body()
                 elif p_list[1] != "self" and p_list[1] != "map":
                     print(f"I don't know where {p_list[1]} is.")
@@ -566,7 +569,7 @@ room and there is a door that appears to be locked.""")
         # allows player to move around
         elif p_list[0] == "go":
             try:
-                if p_list[1] == "main plaza":
+                if "plaza" in p_list[1]:
                     self.player.set_location(self.main_plaza_name)
                 else:
                     print(f"I can't go to {p_list[1]}.")
@@ -575,7 +578,7 @@ room and there is a door that appears to be locked.""")
 
         elif p_list[0] == "oper":
             try:
-                if p_list[1] == "":
+                if p_list[1] is None:
                     pass
                 else:
                     print("I can't use that.")
@@ -589,7 +592,7 @@ room and there is a door that appears to be locked.""")
             except ValueError:
                 pass
             try:
-                if choice_list[1] == "":
+                if choice_list[1] is None:
                     if choice_list[0] in self.player.inventory:
                         pass
                         # if self.starting_room.fix_fuse_box(choice_list[0]):
@@ -610,7 +613,7 @@ room and there is a door that appears to be locked.""")
             try:
                 if p_list[1] == "room":
                     self.west_wing.print_description_room()
-                elif p_list[1] == "kiosk":
+                elif "kiosk" in p_list[1]:
                     self.west_wing.print_description_kiosk()
                 elif p_list[1] != "self" and p_list[1] != "map":
                     print(f"I don't know where {p_list[1]} is.")
@@ -625,7 +628,7 @@ room and there is a door that appears to be locked.""")
                 pass
             try:
                 # using an item on the kiosk
-                if choice_list[1] == "kiosk":
+                if "kiosk" in p_list[1]:
                     if choice_list[0] in self.player.inventory:
                         if self.west_wing.unlock_pet_shop(choice_list[0]):
                             self.player.use_item(choice_list[0])
@@ -639,13 +642,13 @@ room and there is a door that appears to be locked.""")
         # allows player to move around
         elif p_list[0] == "go":
             try:
-                if p_list[1] == "main plaza":
+                if "plaza" in p_list[1]:
                     self.player.set_location(self.main_plaza_name)
-                elif p_list[1] == "toy shop":
+                elif "toy" in p_list[1]:
                     self.player.set_location(self.toy_shop_name)
-                elif p_list[1] == "cemetery":
+                elif "cem" in p_list[1]:
                     self.player.set_location(self.cemetery_name)
-                elif p_list[1] == "pet shop":
+                elif "pet" in p_list[1]:
                     if self.west_wing.pet_shop_unlocked:
                         self.player.set_location(self.pet_shop_name)
                     else:
@@ -657,7 +660,7 @@ room and there is a door that appears to be locked.""")
 
         elif p_list[0] == "oper":
             try:
-                if p_list[1] == "":
+                if p_list[1] is None:
                     pass
                 else:
                     print("I can't use that.")
@@ -669,8 +672,12 @@ room and there is a door that appears to be locked.""")
         p_list = player_choice.split(" ", 1)
         if p_list[0] == "look":
             try:
-                if p_list[1] == "room":
+                if "room" in p_list[1]:
                     self.toy_shop.print_description_room()
+                elif "shelve" in p_list[1]:
+                    self.toy_shop.print_description_shelves()
+                elif "crane" in p_list[1]:
+                    self.toy_shop.print_description_crane()
                 elif p_list[1] != "self" and p_list[1] != "map":
                     print(f"I don't know where {p_list[1]} is.")
             except IndexError:
@@ -679,7 +686,7 @@ room and there is a door that appears to be locked.""")
         # allows player to move around
         elif p_list[0] == "go":
             try:
-                if p_list[1] == "west wing":
+                if "west" in p_list[1]:
                     self.player.set_location(self.west_wing_name)
                 else:
                     print(f"I can't go to {p_list[1]}.")
@@ -688,8 +695,8 @@ room and there is a door that appears to be locked.""")
 
         elif p_list[0] == "oper":
             try:
-                if p_list[1] == "":
-                    pass
+                if "crane" in p_list[1]:
+                    self.toy_shop.operate_crane()
                 else:
                     print("I can't use that.")
             except IndexError:
@@ -702,12 +709,11 @@ room and there is a door that appears to be locked.""")
             except ValueError:
                 pass
             try:
-                if choice_list[1] == "":
+                if "crane" in choice_list[1]:
                     if choice_list[0] in self.player.inventory:
-                        pass
-                        # if self.starting_room.fix_fuse_box(choice_list[0]):
-                        #     self.player.use_item(choice_list[0])
-                        #     self.player.increase_score()
+                        if self.toy_shop.fix_crane(choice_list[0]):
+                            self.player.use_item(choice_list[0])
+                            self.player.increase_score()
                     else:
                         print(f"I don't have a(n) {choice_list[0]}")
                 else:
@@ -731,7 +737,7 @@ room and there is a door that appears to be locked.""")
         # allows player to move around
         elif p_list[0] == "go":
             try:
-                if p_list[1] == "west wing":
+                if "west" in p_list[1]:
                     self.player.set_location(self.west_wing_name)
                 else:
                     print(f"I can't go to {p_list[1]}.")
@@ -740,7 +746,7 @@ room and there is a door that appears to be locked.""")
 
         elif p_list[0] == "oper":
             try:
-                if p_list[1] == "":
+                if p_list[1] is None:
                     pass
                 else:
                     print("I can't use that.")
@@ -754,7 +760,7 @@ room and there is a door that appears to be locked.""")
             except ValueError:
                 pass
             try:
-                if choice_list[1] == "":
+                if choice_list[1] is None:
                     if choice_list[0] in self.player.inventory:
                         pass
                         # if self.starting_room.fix_fuse_box(choice_list[0]):
@@ -783,7 +789,7 @@ room and there is a door that appears to be locked.""")
         # allows player to move around
         elif p_list[0] == "go":
             try:
-                if p_list[1] == "west wing":
+                if "west" in p_list[1]:
                     self.player.set_location(self.west_wing_name)
                 else:
                     print(f"I can't go to {p_list[1]}.")
@@ -792,7 +798,7 @@ room and there is a door that appears to be locked.""")
 
         elif p_list[0] == "oper":
             try:
-                if p_list[1] == "":
+                if p_list[1] is None:
                     pass
                 else:
                     print("I can't use that.")
@@ -835,13 +841,13 @@ room and there is a door that appears to be locked.""")
         # allows player to move around
         elif p_list[0] == "go":
             try:
-                if p_list[1] == "animal den":
+                if "den" in p_list[1]:
                     self.player.set_location(self.animal_den_name)
-                elif p_list[1] == "shoe store":
+                elif "shoe" in p_list[1]:
                     self.player.set_location(self.shoe_store_name)
-                elif p_list[1] == "bathroom":
+                elif "bath" in p_list[1]:
                     self.player.set_location(self.bathroom_name)
-                elif p_list[1] == "down stairs":
+                elif "down" in p_list[1]:
                     self.player.set_location(self.main_plaza_name)
                 else:
                     print(f"I can't go to {p_list[1]}.")
@@ -850,7 +856,7 @@ room and there is a door that appears to be locked.""")
 
         elif p_list[0] == "oper":
             try:
-                if p_list[1] == "":
+                if p_list[1] is None:
                     pass
                 else:
                     print("I can't use that.")
@@ -864,7 +870,7 @@ room and there is a door that appears to be locked.""")
             except ValueError:
                 pass
             try:
-                if choice_list[1] == "":
+                if choice_list[1] is None:
                     if choice_list[0] in self.player.inventory:
                         pass
                         # if self.starting_room.fix_fuse_box(choice_list[0]):
@@ -894,7 +900,7 @@ room and there is a door that appears to be locked.""")
         # allows player to move around
         elif p_list[0] == "go":
             try:
-                if p_list[1] == "hallway":
+                if "hallway" in p_list[1]:
                     self.player.set_location(self.up_stairs_hallway_name)
                 else:
                     print(f"I can't go to {p_list[1]}.")
@@ -903,7 +909,7 @@ room and there is a door that appears to be locked.""")
 
         elif p_list[0] == "oper":
             try:
-                if p_list[1] == "":
+                if p_list[1] is None:
                     pass
                 else:
                     print("I can't use that.")
@@ -917,7 +923,7 @@ room and there is a door that appears to be locked.""")
             except ValueError:
                 pass
             try:
-                if choice_list[1] == "":
+                if choice_list[1] is None:
                     if choice_list[0] in self.player.inventory:
                         pass
                         # if self.starting_room.fix_fuse_box(choice_list[0]):
@@ -947,7 +953,7 @@ room and there is a door that appears to be locked.""")
         # allows player to move around
         elif p_list[0] == "go":
             try:
-                if p_list[1] == "hallway":
+                if "hallway" in p_list[1]:
                     self.player.set_location(self.up_stairs_hallway_name)
                 else:
                     print(f"I can't go to {p_list[1]}.")
@@ -956,7 +962,7 @@ room and there is a door that appears to be locked.""")
 
         elif p_list[0] == "oper":
             try:
-                if p_list[1] == "":
+                if p_list[1] is None:
                     pass
                 else:
                     print("I can't use that.")
@@ -970,7 +976,7 @@ room and there is a door that appears to be locked.""")
             except ValueError:
                 pass
             try:
-                if choice_list[1] == "":
+                if choice_list[1] is None:
                     if choice_list[0] in self.player.inventory:
                         pass
                         # if self.starting_room.fix_fuse_box(choice_list[0]):
@@ -999,7 +1005,7 @@ room and there is a door that appears to be locked.""")
         # allows player to move around
         elif p_list[0] == "go":
             try:
-                if p_list[1] == "hallway":
+                if "hallway" in p_list[1]:
                     self.player.set_location(self.up_stairs_hallway_name)
                 else:
                     print(f"I can't go to {p_list[1]}.")
@@ -1009,7 +1015,7 @@ room and there is a door that appears to be locked.""")
         # opens door
         elif p_list[0] == "oper":
             try:
-                if p_list[1] == "":
+                if p_list[1] is None:
                     pass
                 else:
                     print("I can't use that.")
@@ -1023,7 +1029,7 @@ room and there is a door that appears to be locked.""")
             except ValueError:
                 pass
             try:
-                if choice_list[1] == "":
+                if choice_list[1] is None:
                     if choice_list[0] in self.player.inventory:
                         pass
                         # if self.starting_room.fix_fuse_box(choice_list[0]):
