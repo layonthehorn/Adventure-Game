@@ -491,6 +491,8 @@ room and there is a door that appears to be locked.""")
                     self.main_plaza.print_description_room()
                 elif "car" in p_list[1]:
                     self.main_plaza.print_description_car()
+                elif "gate" in p_list[1]:
+                    self.main_plaza.print_description_door()
                 elif p_list[1] != "self" and p_list[1] != "map":
                     print(f"I don't know where {p_list[1]} is.")
             except IndexError:
@@ -503,7 +505,7 @@ room and there is a door that appears to be locked.""")
                     self.player.set_location(self.starting_room_name)
                 elif "west" in p_list[1]:
                     self.player.set_location(self.west_wing_name)
-                elif p_list[1] == "upstairs":
+                elif "up" in p_list[1]:
                     if self.main_plaza.upstairs_unlocked:
                         self.player.set_location(self.up_stairs_hallway_name)
                     else:
@@ -538,12 +540,11 @@ room and there is a door that appears to be locked.""")
             except ValueError:
                 pass
             try:
-                if choice_list[1] is None:
+                if "gate" in choice_list[1]:
                     if choice_list[0] in self.player.inventory:
-                        pass
-                        # if self.starting_room.fix_fuse_box(choice_list[0]):
-                        #     self.player.use_item(choice_list[0])
-                        #     self.player.increase_score()
+                        if self.main_plaza.unlock_gate(choice_list[0]):
+                            self.player.use_item(choice_list[0])
+                            self.player.increase_score()
                     else:
                         print(f"I don't have a(n) {choice_list[0]}")
                 else:
@@ -1048,7 +1049,7 @@ room and there is a door that appears to be locked.""")
         print("You escaped the mall! You are back with Johnson and Katie.")
         print("Maybe they can explain what happened to you.")
         input("Press enter to end game.\nThank you for playing!")
-        self.playing = False
+        self.end_game()
 
     # a end game function
     def end_game(self):

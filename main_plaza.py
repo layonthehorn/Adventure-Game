@@ -24,18 +24,32 @@ class MainPlaza:
         else:
             print("The 'exit' is locked and I'm trapped.")
         if self.upstairs_unlocked:
-            print("I can get 'upstairs' now at least.")
+            print("I can get 'upstairs' now at least. The gate is unlocked now.")
         else:
-            print("The path 'upstairs' is shut for now.")
+            print("The path 'upstairs' is shut for now. The gate is locked.")
         if len(self.inventory) > 0:
             for item in self.inventory:
                 print(f"There is a(n) {item}")
 
     def print_description_door(self):
         if not self.upstairs_unlocked:
-            print("")
+            print("The gate is locked. You need to figure out how to open it.")
+        elif self.upstairs_unlocked:
+            print("You can go upstairs now at least.")
         else:
             print("It's open and you can go upstairs.")
+
+    def unlock_gate(self, item):
+        if not self.upstairs_unlocked:
+            if item == "keys":
+                self.upstairs_unlocked = True
+                return True
+            else:
+                print(f"I can't unlock it with {item}.")
+                return False
+        else:
+            print("The gate is unlocked already.")
+            return False
 
     def print_description_car(self):
         print("It's an old beat up Nissan Laurel. Not that you know what that is. It's seen better days.")
