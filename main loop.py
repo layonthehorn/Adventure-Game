@@ -458,6 +458,27 @@ room and there is a door that appears to be locked.""")
             except IndexError:
                 print("Go where?")
 
+        elif p_list[0] == "use":
+            choice_list = self.use_pattern.split(player_choice)
+            try:
+                choice_list.remove('')
+            except ValueError:
+                pass
+            try:
+                if choice_list[1] == "":
+                    if choice_list[0] in self.player.inventory:
+                        pass
+                        # if self.starting_room.fix_fuse_box(choice_list[0]):
+                        #     self.player.use_item(choice_list[0])
+                        #     self.player.increase_score()
+                    else:
+                        print(f"I don't have a(n) {choice_list[0]}")
+                else:
+                    print(f"I can't do anything to {choice_list[1]}")
+
+            except IndexError:
+                print("Use what with what?")
+
     # main plaza actions
     def main_plaza_area(self, player_choice):
         p_list = player_choice.split(" ", 1)
@@ -498,6 +519,36 @@ room and there is a door that appears to be locked.""")
             except IndexError:
                 print("Go where?")
 
+        elif p_list[0] == "oper":
+            try:
+                if p_list[1] == "":
+                    pass
+                else:
+                    print("I can't use that.")
+            except IndexError:
+                print("Operate what?")
+
+        elif p_list[0] == "use":
+            choice_list = self.use_pattern.split(player_choice)
+            try:
+                choice_list.remove('')
+            except ValueError:
+                pass
+            try:
+                if choice_list[1] == "":
+                    if choice_list[0] in self.player.inventory:
+                        pass
+                        # if self.starting_room.fix_fuse_box(choice_list[0]):
+                        #     self.player.use_item(choice_list[0])
+                        #     self.player.increase_score()
+                    else:
+                        print(f"I don't have a(n) {choice_list[0]}")
+                else:
+                    print(f"I can't do anything to {choice_list[1]}")
+
+            except IndexError:
+                print("Use what with what?")
+
     # small den actions
     def small_den_area(self, player_choice):
         p_list = player_choice.split(" ", 1)
@@ -521,6 +572,36 @@ room and there is a door that appears to be locked.""")
                     print(f"I can't go to {p_list[1]}.")
             except IndexError:
                 print("Go where?")
+
+        elif p_list[0] == "oper":
+            try:
+                if p_list[1] == "":
+                    pass
+                else:
+                    print("I can't use that.")
+            except IndexError:
+                print("Operate what?")
+
+        elif p_list[0] == "use":
+            choice_list = self.use_pattern.split(player_choice)
+            try:
+                choice_list.remove('')
+            except ValueError:
+                pass
+            try:
+                if choice_list[1] == "":
+                    if choice_list[0] in self.player.inventory:
+                        pass
+                        # if self.starting_room.fix_fuse_box(choice_list[0]):
+                        #     self.player.use_item(choice_list[0])
+                        #     self.player.increase_score()
+                    else:
+                        print(f"I don't have a(n) {choice_list[0]}")
+                else:
+                    print(f"I can't do anything to {choice_list[1]}")
+
+            except IndexError:
+                print("Use what with what?")
 
     # west wing actions
     def west_wing_area(self, player_choice):
@@ -574,6 +655,15 @@ room and there is a door that appears to be locked.""")
             except IndexError:
                 print("Go where?")
 
+        elif p_list[0] == "oper":
+            try:
+                if p_list[1] == "":
+                    pass
+                else:
+                    print("I can't use that.")
+            except IndexError:
+                print("Operate what?")
+
     # toy shop actions
     def toy_shop_area(self, player_choice):
         p_list = player_choice.split(" ", 1)
@@ -595,6 +685,36 @@ room and there is a door that appears to be locked.""")
                     print(f"I can't go to {p_list[1]}.")
             except IndexError:
                 print("Go where?")
+
+        elif p_list[0] == "oper":
+            try:
+                if p_list[1] == "":
+                    pass
+                else:
+                    print("I can't use that.")
+            except IndexError:
+                print("Operate what?")
+
+        elif p_list[0] == "use":
+            choice_list = self.use_pattern.split(player_choice)
+            try:
+                choice_list.remove('')
+            except ValueError:
+                pass
+            try:
+                if choice_list[1] == "":
+                    if choice_list[0] in self.player.inventory:
+                        pass
+                        # if self.starting_room.fix_fuse_box(choice_list[0]):
+                        #     self.player.use_item(choice_list[0])
+                        #     self.player.increase_score()
+                    else:
+                        print(f"I don't have a(n) {choice_list[0]}")
+                else:
+                    print(f"I can't do anything to {choice_list[1]}")
+
+            except IndexError:
+                print("Use what with what?")
 
     # pet shot actions
     def pet_shop_area(self, player_choice):
@@ -618,6 +738,36 @@ room and there is a door that appears to be locked.""")
             except IndexError:
                 print("Go where?")
 
+        elif p_list[0] == "oper":
+            try:
+                if p_list[1] == "":
+                    pass
+                else:
+                    print("I can't use that.")
+            except IndexError:
+                print("Operate what?")
+
+        elif p_list[0] == "use":
+            choice_list = self.use_pattern.split(player_choice)
+            try:
+                choice_list.remove('')
+            except ValueError:
+                pass
+            try:
+                if choice_list[1] == "":
+                    if choice_list[0] in self.player.inventory:
+                        pass
+                        # if self.starting_room.fix_fuse_box(choice_list[0]):
+                        #     self.player.use_item(choice_list[0])
+                        #     self.player.increase_score()
+                    else:
+                        print(f"I don't have a(n) {choice_list[0]}")
+                else:
+                    print(f"I can't do anything to {choice_list[1]}")
+
+            except IndexError:
+                print("Use what with what?")
+
     # cemetery actions
     def cemetery_area(self, player_choice):
         p_list = player_choice.split(" ", 1)
@@ -639,6 +789,36 @@ room and there is a door that appears to be locked.""")
                     print(f"I can't go to {p_list[1]}.")
             except IndexError:
                 print("Go where?")
+
+        elif p_list[0] == "oper":
+            try:
+                if p_list[1] == "":
+                    pass
+                else:
+                    print("I can't use that.")
+            except IndexError:
+                print("Operate what?")
+
+        elif p_list[0] == "use":
+            choice_list = self.use_pattern.split(player_choice)
+            try:
+                choice_list.remove('')
+            except ValueError:
+                pass
+            try:
+                if choice_list[1] == "":
+                    if choice_list[0] in self.player.inventory:
+                        pass
+                        # if self.starting_room.fix_fuse_box(choice_list[0]):
+                        #     self.player.use_item(choice_list[0])
+                        #     self.player.increase_score()
+                    else:
+                        print(f"I don't have a(n) {choice_list[0]}")
+                else:
+                    print(f"I can't do anything to {choice_list[1]}")
+
+            except IndexError:
+                print("Use what with what?")
 
     # upstairs hallway actions
     def up_stairs_hallway_area(self, player_choice):
@@ -668,6 +848,36 @@ room and there is a door that appears to be locked.""")
             except IndexError:
                 print("Go where?")
 
+        elif p_list[0] == "oper":
+            try:
+                if p_list[1] == "":
+                    pass
+                else:
+                    print("I can't use that.")
+            except IndexError:
+                print("Operate what?")
+
+        elif p_list[0] == "use":
+            choice_list = self.use_pattern.split(player_choice)
+            try:
+                choice_list.remove('')
+            except ValueError:
+                pass
+            try:
+                if choice_list[1] == "":
+                    if choice_list[0] in self.player.inventory:
+                        pass
+                        # if self.starting_room.fix_fuse_box(choice_list[0]):
+                        #     self.player.use_item(choice_list[0])
+                        #     self.player.increase_score()
+                    else:
+                        print(f"I don't have a(n) {choice_list[0]}")
+                else:
+                    print(f"I can't do anything to {choice_list[1]}")
+
+            except IndexError:
+                print("Use what with what?")
+
     # animal den actions
     def animal_den_area(self, player_choice):
         pass
@@ -690,6 +900,36 @@ room and there is a door that appears to be locked.""")
                     print(f"I can't go to {p_list[1]}.")
             except IndexError:
                 print("Go where?")
+
+        elif p_list[0] == "oper":
+            try:
+                if p_list[1] == "":
+                    pass
+                else:
+                    print("I can't use that.")
+            except IndexError:
+                print("Operate what?")
+
+        elif p_list[0] == "use":
+            choice_list = self.use_pattern.split(player_choice)
+            try:
+                choice_list.remove('')
+            except ValueError:
+                pass
+            try:
+                if choice_list[1] == "":
+                    if choice_list[0] in self.player.inventory:
+                        pass
+                        # if self.starting_room.fix_fuse_box(choice_list[0]):
+                        #     self.player.use_item(choice_list[0])
+                        #     self.player.increase_score()
+                    else:
+                        print(f"I don't have a(n) {choice_list[0]}")
+                else:
+                    print(f"I can't do anything to {choice_list[1]}")
+
+            except IndexError:
+                print("Use what with what?")
 
     # bathroom actions
     def bathroom_area(self, player_choice):
@@ -714,6 +954,36 @@ room and there is a door that appears to be locked.""")
             except IndexError:
                 print("Go where?")
 
+        elif p_list[0] == "oper":
+            try:
+                if p_list[1] == "":
+                    pass
+                else:
+                    print("I can't use that.")
+            except IndexError:
+                print("Operate what?")
+
+        elif p_list[0] == "use":
+            choice_list = self.use_pattern.split(player_choice)
+            try:
+                choice_list.remove('')
+            except ValueError:
+                pass
+            try:
+                if choice_list[1] == "":
+                    if choice_list[0] in self.player.inventory:
+                        pass
+                        # if self.starting_room.fix_fuse_box(choice_list[0]):
+                        #     self.player.use_item(choice_list[0])
+                        #     self.player.increase_score()
+                    else:
+                        print(f"I don't have a(n) {choice_list[0]}")
+                else:
+                    print(f"I can't do anything to {choice_list[1]}")
+
+            except IndexError:
+                print("Use what with what?")
+
     # shoe store actions
     def shoe_store_area(self, player_choice):
         p_list = player_choice.split(" ", 1)
@@ -735,6 +1005,37 @@ room and there is a door that appears to be locked.""")
                     print(f"I can't go to {p_list[1]}.")
             except IndexError:
                 print("Go where?")
+
+        # opens door
+        elif p_list[0] == "oper":
+            try:
+                if p_list[1] == "":
+                    pass
+                else:
+                    print("I can't use that.")
+            except IndexError:
+                print("Operate what?")
+
+        elif p_list[0] == "use":
+            choice_list = self.use_pattern.split(player_choice)
+            try:
+                choice_list.remove('')
+            except ValueError:
+                pass
+            try:
+                if choice_list[1] == "":
+                    if choice_list[0] in self.player.inventory:
+                        pass
+                        # if self.starting_room.fix_fuse_box(choice_list[0]):
+                        #     self.player.use_item(choice_list[0])
+                        #     self.player.increase_score()
+                    else:
+                        print(f"I don't have a(n) {choice_list[0]}")
+                else:
+                    print(f"I can't do anything to {choice_list[1]}")
+
+            except IndexError:
+                print("Use what with what?")
 
     # a exit game function
     def exit_game(self):
