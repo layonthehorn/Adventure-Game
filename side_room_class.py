@@ -18,13 +18,15 @@ class SideRoom:
         if self.light_switch:
             print("It's a small 'side room'. There is a 'computer' running some had left logged in. "
                   "\nThere is an exit back to the 'bunker'.")
-            print("It's cramped with very little room to move. They did not spend much on this room.")
+            print("You walk into a small room. It is dark and doesn’t smell any better than the rest of the bunker. "
+                  "There is a light switch by the entryway. In the corner is an old computer which appears to still "
+                  "be operational.")
             if len(self.inventory) > 0:
                 for item in self.inventory:
                     print(f"There is a(n) {item}")
         else:
-            print("There's a 'light switch' on the wall and an exit back to the 'bunker' but otherwise it's too dark to "
-                  "see.")
+            print("There's a 'light switch' on the wall and an exit back to the 'bunker' \nbut otherwise it's too dark "
+                  "to see.")
 
     def print_description_computer(self):
         if self.light_switch:

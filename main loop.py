@@ -190,8 +190,10 @@ class VernsAdventure:
             self.end_name: self.end_game
         }
         player_choice = ""
-        print("""You, a young nervous lion wakes up, alone and afraid. Where did your friends go?
-You'll have to figure out where you are first and then get to them.""")
+        print("""You wake up, alone and afraid in an old fallout shelter, built some time in the past, but abandoned 
+long ago. It appears a group had set themselves up here before the end, judging by the things that were left 
+behind. The room smells of mould and rust. There is a disabled robot in the corner, an entry to a smaller 
+room and there is a door that appears to be locked.""")
 
         # main game play loop
         while self.playing:

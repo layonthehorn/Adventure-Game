@@ -17,10 +17,9 @@ class StartingRoom:
 
     # this prints a description along with a item list
     def print_description_room(self):
-        print("You are in a 'bunker'.")
         print("The room is dark and blasted out.")
-        print("The air smells of rust and decay. You want out pretty badly.")
-        print("There is a 'side room' but it's also very dark.")
+        print("The room smells of mould and rust. There is a disabled robot in the corner, an entry to \na side room "
+              "and there is a door that appears to be locked. Maybe it’s connected to that fuse box?.")
         if self.door_opened:
             print("The door to 'outside' is open.")
         else:

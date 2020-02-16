@@ -16,6 +16,9 @@ class MainPlaza:
     # this prints a description along with a item list
     def print_description_room(self):
         print("It's a large Main Plaza of the mall. There is a path to the 'west wing' too.")
+        print("You emerge into the plaza of an old shopping mall. It is falling apart, "
+              "with much of the furnishings removed or smashed. Nature is starting to reclaim it too, judging by all "
+              "the foliage that’s popped up. There is an old car parked nearby, for some strange reason.")
         if self.exit_unlocked:
             print("The 'exit' is open! I can get out.")
         else:
