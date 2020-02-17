@@ -224,6 +224,11 @@ class VernsAdventure:
                 location_actions = self.main_plaza_area
             if p_local != self.end_name and p_local != self.exit_name:
                 # runs the players actions in the room they are in
+
+                # if the player is in the animal den it checks if it needs to run the
+                if p_local == self.up_stairs_hallway_name:
+                    if not self.animal_den.drug_animal():
+                        self.small_den.give_item("meat")
                 location_actions(player_choice)
                 print("")
             elif p_local == self.end_name:
@@ -901,6 +906,8 @@ class VernsAdventure:
             try:
                 if p_list[1] == "room":
                     self.animal_den.print_description_room()
+                elif "animal" in p_list[1]:
+                    self.animal_den.print_description_animal()
                 elif p_list[1] != "self" and p_list[1] != "map":
                     print(f"I don't know where {p_list[1]} is.")
             except IndexError:

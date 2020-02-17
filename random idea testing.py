@@ -35,5 +35,21 @@ def entering_code(item=None):
         return False
 
 
-print("the correct code is 404167.")
-entering_code()
+# print("the correct code is 404167.")
+# entering_code()
+
+def climb_ladder(room_inventory):
+    room_inventory = []
+    if "rope" in room_inventory:
+        print("That rope is too weak. I'm not going to climb it.")
+    elif "strong rope" in room_inventory:
+        print("Ok, I'm heading down.")
+
+
+# inv = input("w, or s.")
+# if inv == "w":
+#     data = ["rope"]
+# else:
+#     data = ["strong rope"]
+# climb_ladder(data)
+

@@ -3,10 +3,10 @@ import pickle
 # this file is built to generate custom save games for testing.
 value_dictionary = {
     # player data
-    "player inventory": ["self", "bag of catnip", "lion plush"],
+    "player inventory": ["self", "bag of catnip", "lion plush", "drugged meat"],
     "player score": 2,
     "player bools": False,
-    "player location": "outside",
+    "player location": "upstairs",
     # starting room data
     "starting room bools": (True, True, True),
     "starting room items": ["bag of catnip"],
@@ -14,7 +14,7 @@ value_dictionary = {
     "side room bools": (True, True),
     "side room items": [],
     # main plaza data
-    "main plaza bools": (False, False, False, False),
+    "main plaza bools": (True, True, False, False),
     "main plaza items": ["strange keys", "map"],
     # small den data
     "small den bools": (False, False),
@@ -35,8 +35,8 @@ value_dictionary = {
     "bathroom items": [],
     "bathroom bools": (False, False),
     # animal den data
-    "animal den items": ["meat"],
-    "animal den bools": (False, False),
+    "animal den items": [],
+    "animal den bools": (False, False, False, False),
     # upstairs hallway data
     "upstairs hallway items": [],
     "upstairs hallway bools": (False, False),
