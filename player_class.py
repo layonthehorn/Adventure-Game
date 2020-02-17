@@ -2,7 +2,7 @@ import time
 
 
 class VernLion:
-    def __init__(self, player_inventory=None, player_start="bunker", score=0, player_bools=False):
+    def __init__(self, player_inventory=None, player_start="bunker", score=0, player_misc=(False, 0)):
 
         if player_inventory is None:
             player_inventory = ["self"]
@@ -10,8 +10,8 @@ class VernLion:
         self.inventory = player_inventory
         self.location = player_start
         self.player_score = score
-        self.mane_brushed = player_bools
-        self.fish_counter = 0
+        self.mane_brushed, self.fish_counter = player_misc
+
         self.map_of_building = """
           ---------MAP----------
                                                +--------------------+
@@ -55,7 +55,9 @@ class VernLion:
             "gold fuse": "It's a gold fuse. Much larger than the one from the bunker.",
             "blue fuse": "It's a blue fuse. Much larger than the one from the bunker.",
             "fish": "A very tasty if small fish. Should you?.. Eat it?",
-            "bones": "Bones are all that's left of the little fish you ate. How could you?"
+            "bones": "Bones are all that's left of the little fish you ate. How could you?",
+            "rope": "A length of rope. Might be useful to get somewhere lower.",
+            "strong rope": "A strong length of rope. This won't break."
         }
 
     # returns his location
@@ -66,8 +68,8 @@ class VernLion:
     def get_inventory(self):
         return self.inventory
 
-    def get_bools(self):
-        return self.mane_brushed
+    def get_misc(self):
+        return self.mane_brushed, self.fish_counter
 
     # returns the players score for saving
     def get_score(self):

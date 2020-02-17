@@ -5,7 +5,7 @@ value_dictionary = {
     # player data
     "player inventory": ["self", "bag of catnip", "lion plush", "drugged meat"],
     "player score": 2,
-    "player bools": False,
+    "player misc": (False, 0),
     "player location": "upstairs",
     # starting room data
     "starting room bools": (True, True, True),

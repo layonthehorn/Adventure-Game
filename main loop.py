@@ -135,7 +135,7 @@ class VernsAdventure:
                     self.player = VernLion(new_value_dictionary["player inventory"],
                                            new_value_dictionary["player location"],
                                            new_value_dictionary["player score"],
-                                           new_value_dictionary["player bools"])
+                                           new_value_dictionary["player misc"])
                     # bunker data
                     self.starting_room = StartingRoom(new_value_dictionary["starting room items"],
                                                       new_value_dictionary["starting room bools"])
@@ -279,7 +279,7 @@ class VernsAdventure:
                             "player inventory": self.player.get_inventory(),
                             "player score": self.player.get_score(),
                             "player location": self.player.get_location(),
-                            "player bools": self.player.get_bools(),
+                            "player misc": self.player.get_misc(),
                             # starting room data
                             "starting room bools": self.starting_room.get_bools(),
                             "starting room items": self.starting_room.get_inventory(),
@@ -894,7 +894,7 @@ class VernsAdventure:
                     self.player.set_location(self.shoe_store_name)
                 elif "bath" in p_list[1]:
                     self.player.set_location(self.bathroom_name)
-                elif "down" in p_list[1]:
+                elif "down" in p_list[1] or "plaza" in p_list[1]:
                     self.player.set_location(self.main_plaza_name)
                 else:
                     print(f"I can't go to {p_list[1]}.")
@@ -1058,6 +1058,8 @@ class VernsAdventure:
             try:
                 if p_list[1] == "room":
                     self.shoe_store.print_description_room()
+                elif "elev" in p_list[1]:
+                    self.shoe_store.print_description_elevator()
                 elif p_list[1] != "self" and p_list[1] != "map":
                     print(f"I don't know where {p_list[1]} is.")
             except IndexError:
@@ -1068,7 +1070,7 @@ class VernsAdventure:
             try:
                 if "hallway" in p_list[1]:
                     self.player.set_location(self.up_stairs_hallway_name)
-                elif "elevator" in p_list[1]:
+                elif "elev" in p_list[1]:
                     if self.shoe_store.go_elevator():
                         self.player.set_location(self.basement_entryway_name)
                 else:
@@ -1079,7 +1081,7 @@ class VernsAdventure:
         # opens door
         elif p_list[0] == "oper":
             try:
-                if "elevator" in p_list[1]:
+                if "elev" in p_list[1]:
                     self.shoe_store.operate_elevator_doors()
                 else:
                     print("I can't use that.")
@@ -1093,7 +1095,7 @@ class VernsAdventure:
             except ValueError:
                 pass
             try:
-                if "elevator" in choice_list[1]:
+                if "elev" in choice_list[1]:
                     if choice_list[0] in self.player.inventory:
                         if self.shoe_store.fix_elevator(choice_list[0]):
                             if choice_list[0] == "strong rope":

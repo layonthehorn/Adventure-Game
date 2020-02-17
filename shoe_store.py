@@ -39,11 +39,21 @@ class ShoeStore:
             for item in self.inventory:
                 print(f"There is a(n) {item}")
 
+    def print_description_elevator(self):
+        if not self.elevator_opened:
+            print("It's closed right now. I wonder what's inside.")
+        elif self.weak_roped:
+            print("It's got a rope but I don't think it's safe enough.")
+        elif self.elevator_roped:
+            print("I should be safe to go down now.")
+        else:
+            print("I need to figure out how to descend it.")
+
     # this pops off the items and returns it
     def get_item(self, item):
         if item in self.inventory:
             if item is "rope" and self.weak_roped:
-                print("I removed the weaker rope from the elevator.")
+                print("I removed the weak rope from the elevator.")
                 self.weak_roped = False
             location = self.inventory.index(item)
             return self.inventory.pop(location)
