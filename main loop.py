@@ -1068,6 +1068,9 @@ class VernsAdventure:
             try:
                 if "hallway" in p_list[1]:
                     self.player.set_location(self.up_stairs_hallway_name)
+                elif "elevator" in p_list[1]:
+                    if self.shoe_store.go_elevator():
+                        self.player.set_location(self.basement_entryway_name)
                 else:
                     print(f"I can't go to {p_list[1]}.")
             except IndexError:
@@ -1076,8 +1079,8 @@ class VernsAdventure:
         # opens door
         elif p_list[0] == "oper":
             try:
-                if p_list[1] is None:
-                    pass
+                if "elevator" in p_list[1]:
+                    self.shoe_store.operate_elevator_doors()
                 else:
                     print("I can't use that.")
             except IndexError:
@@ -1090,12 +1093,14 @@ class VernsAdventure:
             except ValueError:
                 pass
             try:
-                if choice_list[1] is None:
+                if "elevator" in choice_list[1]:
                     if choice_list[0] in self.player.inventory:
-                        pass
-                        # if self.starting_room.fix_fuse_box(choice_list[0]):
-                        #     self.player.use_item(choice_list[0])
-                        #     self.player.increase_score()
+                        if self.shoe_store.fix_elevator(choice_list[0]):
+                            if choice_list[0] == "strong rope":
+                                self.player.use_item(choice_list[0])
+                                self.player.increase_score()
+                            else:
+                                self.player.use_item(choice_list[0])
                     else:
                         print(f"I don't have a(n) {choice_list[0]}")
                 else:

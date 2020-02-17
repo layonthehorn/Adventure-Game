@@ -29,9 +29,9 @@ class Bathroom:
                 print(f"There is a(n) {item}")
 
     # bool will be if player has brushed mane
-    def print_description_mirror(self, bool):
+    def print_description_mirror(self, bool_val):
         print("It's an old cracked mirror. Kinda dirty too...")
-        if bool:
+        if bool_val:
             print("At least I look nicer than I thought I did.")
         else:
             print("My mane needs to be cleaned up pretty badly.")
