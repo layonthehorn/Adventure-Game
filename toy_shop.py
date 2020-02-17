@@ -1,10 +1,10 @@
 class ToyShop:
-    def __init__(self, items_contained=None, bool_list=(False, False)):
+    def __init__(self, items_contained=None, bool_list=(False, False, False)):
         if items_contained is None:
-            items_contained = ["toy raygun", "fur sample"]
+            items_contained = ["fur sample"]
         self.inventory = items_contained
 
-        self.crane_fixed, self.crane_won = bool_list
+        self.crane_fixed, self.crane_won, self.shelves_looked = bool_list
 
     # returns the items in the room.
     def get_inventory(self):
@@ -12,7 +12,7 @@ class ToyShop:
 
     # returns bools for saving
     def get_bools(self):
-        return (self.crane_fixed, self.crane_won)
+        return (self.crane_fixed, self.crane_won, self.shelves_looked)
 
     # this prints a description along with a item list
     def print_description_room(self):
@@ -40,6 +40,14 @@ class ToyShop:
     def print_description_shelves(self):
         print("There are a load of old toys and other bits and bobs.")
         print("What a pile of junk.")
+        if not self.shelves_looked:
+            print("There's a silly toy raygun. For some reason it makes you a little nervous.")
+            self.inventory.append("toy raygun")
+            self.shelves_looked = True
+        elif "toy raygun" in self.inventory:
+            print("That odd raygun is still here.")
+        else:
+            print("Just junk left now.")
 
     def operate_crane(self):
         if not self.crane_won:
