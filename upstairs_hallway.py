@@ -19,7 +19,7 @@ class UpstairsHallway:
         print("You climb up the old escalator onto the upper plaza of the mall. It appears someone lived here for "
               "\nsome time, judging by the repurposed furniture and empty food packaging all over the floor. Whoever "
               "\nlived here defended it fiercely, judging by all the old casings and bullet holes.")
-        print("You can go to 'main plaza', 'shoe store', 'animal den', and 'bathroom'.")
+        print("You can go to 'down stairs', 'shoe store', 'animal den', and 'bathroom'.")
         if len(self.inventory) > 0:
             for item in self.inventory:
                 print(f"There is a(n) {item}")
