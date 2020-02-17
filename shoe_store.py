@@ -17,8 +17,8 @@ class ShoeStore:
     # this prints a description along with a item list
     def print_description_room(self):
         print("It’s an old shoe store. It smells of musty leather and fabric. It used to be where a human would go to "
-              "get some footwear, but now it appears someone had turned it into a living space, judging by the mess "
-              "they’ve left.")
+              "\nget some footwear, but now it appears someone had turned it into a living space, judging by the mess "
+              "\nthey’ve left.")
         if not self.first_entered:
             print("You doubt anything would fit your digitigrade feet from this place.")
             self.first_entered = True

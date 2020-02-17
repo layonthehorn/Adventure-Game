@@ -19,7 +19,7 @@ class StartingRoom:
     def print_description_room(self):
         print("The room is dark and blasted out.")
         print("The room smells of mould and rust. There is a disabled robot in the corner, an entry to \na side room "
-              "and there is a door that appears to be locked. Maybe it’s connected to that fuse box?.")
+              "\nand there is a door that appears to be locked. Maybe it’s connected to that fuse box?.")
         if self.door_opened:
             print("The door to 'outside' is open.")
         else:

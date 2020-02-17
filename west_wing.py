@@ -16,13 +16,14 @@ class WestWing:
 
     # this prints a description along with a item list
     def print_description_room(self):
-        print("It's a small hallway that leads to new areas.\nThere is a exit back the 'main plaza'.")
+        print("To the west of the plaza sits the west wing. While it is quite dilapidated, it appears someone has "
+              "\nmade an effort to clean the wing up a fair bit. There is a kiosk nearby")
         if not self.pet_shop_unlocked:
             print("There is a kiosk in front of the pet shop.")
             print("It is asking for a pet to allow entry.")
         else:
             print("The kiosk is happy with your offering.")
-        print("You can go to 'toy shop', 'pet shop', and 'cemetery.")
+        print("You can go to 'toy shop', 'main plaza', 'pet shop', and 'cemetery.")
         if len(self.inventory) > 0:
             for item in self.inventory:
                 print(f"There is a(n) {item}")

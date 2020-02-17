@@ -19,8 +19,8 @@ class SideRoom:
             print("It's a small 'side room'. There is a 'computer' running some had left logged in. "
                   "\nThere is an exit back to the 'bunker'.")
             print("You walk into a small room. It is dark and doesn’t smell any better than the rest of the bunker. "
-                  "There is a light switch by the entryway. In the corner is an old computer which appears to still "
-                  "be operational.")
+                  "\nThere is a light switch by the entryway. In the corner is an old computer which appears to still "
+                  "\nbe operational.")
             if len(self.inventory) > 0:
                 for item in self.inventory:
                     print(f"There is a(n) {item}")

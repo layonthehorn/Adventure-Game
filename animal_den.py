@@ -18,8 +18,8 @@ class AnimalDen:
 
     # this prints a description along with a item list
     def print_description_room(self):
-        print("It's a rough little animal den. You wonder what might live here. "
-              "\nNothing that is domestic you bet. There is an odd hole in the wall.")
+        print("Once an old utility cabinet, it has now been claimed by some kind of animal. Judging by the sounds "
+              "\ncoming from the den's hole of a entrance, you feel you should probably avoid going in there directly.")
         if "meat" not in self.inventory and "drugged meat" not in self.inventory and not self.animal_drugged:
             print("With some sort of animal here I could lay a trap for it.")
         if not self.entered_after_drugged and self.animal_drugged:

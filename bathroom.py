@@ -20,8 +20,8 @@ class Bathroom:
     # this prints a description along with a item list
     def print_description_room(self):
         print("It’s an old restroom. You can probably guess what "
-              "went on in here yourself. The old toilet blocks are heavily damaged and covered in graffiti. The smell "
-              "isn’t much better either. There is an old first aid cabinet on the wall and a hand drier along side it. ")
+              "\nwent on in here yourself. The old toilet blocks are heavily damaged and covered in graffiti. The smell "
+              "\nisn’t much better either. There is an old first aid cabinet on the wall and a hand drier along side it. ")
         print("You can go back to the 'hallway'.")
         if len(self.inventory) > 0:
             for item in self.inventory:
