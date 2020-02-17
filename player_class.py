@@ -10,7 +10,8 @@ class VernLion:
         self.inventory = player_inventory
         self.location = player_start
         self.player_score = score
-        self.made_drugged_meat = player_bools
+        self.mane_brushed = player_bools
+        self.fish_counter = 0
         self.map_of_building = """
           ---------MAP----------
                                                +--------------------+
@@ -52,7 +53,9 @@ class VernLion:
             "red fuse": "It's a red fuse. Much larger than the one from the bunker.",
             "green fuse": "It's a green fuse. Much larger than the one from the bunker.",
             "gold fuse": "It's a gold fuse. Much larger than the one from the bunker.",
-            "blue fuse": "It's a blue fuse. Much larger than the one from the bunker."
+            "blue fuse": "It's a blue fuse. Much larger than the one from the bunker.",
+            "fish": "A very tasty if small fish. Should you?.. Eat it?",
+            "bones": "Bones are all that's left of the little fish you ate. How could you?"
         }
 
     # returns his location
@@ -64,7 +67,7 @@ class VernLion:
         return self.inventory
 
     def get_bools(self):
-        return self.made_drugged_meat
+        return self.mane_brushed
 
     # returns the players score for saving
     def get_score(self):
@@ -111,6 +114,10 @@ class VernLion:
             self.inventory.append(item)
             print("I picked up the ", item)
 
+    # returns if your mane has been brushed
+    def is_mane_brushed(self):
+        return self.mane_brushed
+
     # allows changing his location
     def set_location(self, room):
         self.location = room
@@ -138,24 +145,72 @@ class VernLion:
         if item_1 in self.inventory and item_2 in self.inventory:
             # a list to make checking for contents easier
             item_list = [item_1, item_2]
+
+            # item crafting results
             if "meat" in item_list and "drugs" in item_list:
                 self.inventory.remove(item_1)
                 self.inventory.remove(item_2)
                 self.inventory.append("drugged meat")
                 print("I made drugged meat. Still nasty after that.")
                 self.made_drugged_meat = True
+                return True
             elif "lion plush" in item_list and "bag of catnip" in item_list:
                 self.inventory.remove(item_1)
                 self.inventory.remove(item_2)
                 self.inventory.append("cat toy")
                 print("I am so ashamed of myself for this...")
+                return False
+            # all using items on self reactions
             elif "self" in item_list and "cat toy" in item_list:
                 self.inventory.remove("cat toy")
                 print("purrrrr Mmmmm catnip.")
+                return False
+            elif "self" in item_list and "mane brush" in item_list:
+                self.inventory.remove("mane brush")
+                print("Hey, I'm looking better now. That's good too.")
+                self.mane_brushed = True
+                return True
+            elif "self" in item_list and "drugs" in item_list:
+                print("I'm not eating them...")
+                return False
+
+            # small thing for player repeating the eat fish command
+            elif "self" in item_list and "fish" in item_list:
+                if self.fish_counter == 0:
+                    print("I really shouldn't. Though it is tasty looking...")
+                    self.fish_counter += 1
+                    return False
+                elif self.fish_counter == 1:
+                    print("Still shouldn't eat it.")
+                    self.fish_counter += 1
+                    return False
+                elif self.fish_counter == 2:
+                    print("No, I need to get rid of it. I keep getting temped.")
+                    self.fish_counter += 1
+                    return False
+                else:
+                    print("Vern finally gives in and eats the little fish.")
+                    print("Oh no! I couldn't resist anymore...")
+                    print("Now all I have is a pile of bones.")
+                    self.inventory.append("bones")
+                    self.inventory.remove("fish")
+                    return True
+
+            # more general self reactions
+            elif "self" in item_list and "meat" in item_list:
+                print("Nasty. I love meat but this is not appetizing at all.")
+                return False
+            elif "self" in item_list and "bag of catnip" in item_list:
+                print("I need to stay sober right now... \nIf it was in a little cute toy I might... No, I better not.")
+                return False
             else:
                 print(f"I can't combine {item_1} and {item_2}.")
+                return False
+
+        # No matching items found
         else:
             print("I don't have all I need")
+            return False
 
     # looking at map
     def look_player_map(self):
@@ -169,3 +224,5 @@ class VernLion:
     # looking at self
     def look_self(self):
         print("A nervous lion is what you are. Somehow still alive but for how long? Hopefully long enough.")
+        if "meat" in self.inventory or "drugged meat" in self.inventory:
+            print("This meat smells awful...")

@@ -1,5 +1,6 @@
 import time
 
+
 class AnimalDen:
     def __init__(self, items_contained=None, bool_list=(False, False, False, False, False)):
         if items_contained is None:
@@ -48,12 +49,14 @@ class AnimalDen:
         if item not in self.inventory:
             self.inventory.append(item)
 
+    # Vern talking about the odd hole in the wall
     def print_description_hole(self):
         if self.hole_tried:
             print("I'm never going in there again.")
         else:
             print("I wonder what's inside?")
 
+    # Vern enters the hole once and never again
     def enter_hole(self):
         if self.hole_tried:
             print("Nope. Never again...")
@@ -66,6 +69,7 @@ class AnimalDen:
             print("Wow, that thing was not nice. It's a good thing that us lions can fight.")
             self.hole_tried = True
 
+    # talks about the animal
     def print_description_animal(self):
         if self.animal_drugged:
             print("it's a small animal. Pretty fuzzy too.")
@@ -74,8 +78,10 @@ class AnimalDen:
                 print("Hey, that fur might help me out.")
                 self.found_fur = True
         else:
-            print("What animal?")
+            print("I'm sure it's around but I can't see it right now.")
 
+    # if this returns true it does not add the meat item back to the other room.
+    # if it returns false then it adds it for the player to try again.
     def drug_animal(self):
         if "meat" in self.inventory:
             print("I should see if something took my bate in the animal den.")

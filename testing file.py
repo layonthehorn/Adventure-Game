@@ -18,7 +18,7 @@ value_dictionary = {
     "main plaza items": ["strange keys", "map"],
     # small den data
     "small den bools": (False, False),
-    "small den items": ["meat"],
+    "small den items": [],
     # west wing data
     "west wing bools": (False, False),
     "west wing items": [],
@@ -32,7 +32,7 @@ value_dictionary = {
     "toy shop items": ["fur sample"],
     "toy shop bools": (False, False, False),
     # bath room data
-    "bathroom items": [],
+    "bathroom items": ["knife"],
     "bathroom bools": (False, False),
     # animal den data
     "animal den items": [],

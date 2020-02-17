@@ -4,7 +4,7 @@ import time
 class Bathroom:
     def __init__(self, items_contained=None, bool_list=(False, False)):
         if items_contained is None:
-            items_contained = []
+            items_contained = ["knife"]
         self.inventory = items_contained
 
         self.looked_dryer, self.cabinet_looked = bool_list
@@ -15,17 +15,26 @@ class Bathroom:
 
     # returns bools for saving
     def get_bools(self):
-        return (self.looked_dryer, self.cabinet_looked)
+        return self.looked_dryer, self.cabinet_looked
 
     # this prints a description along with a item list
     def print_description_room(self):
         print("It’s an old restroom. You can probably guess what "
               "\nwent on in here yourself. The old toilet blocks are heavily damaged and covered in graffiti. The smell "
-              "\nisn’t much better either. There is an old first aid cabinet on the wall and a hand drier along side it. ")
+              "\nisn’t much better either. There is an old first aid cabinet on the wall and a hand dryer along side it. ")
+        print("There is an old nasty looking mirror on the wall.")
         print("You can go back to the 'hallway'.")
         if len(self.inventory) > 0:
             for item in self.inventory:
                 print(f"There is a(n) {item}")
+
+    # bool will be if player has brushed mane
+    def print_description_mirror(self, bool):
+        print("It's an old cracked mirror. Kinda dirty too...")
+        if bool:
+            print("At least I look nicer than I thought I did.")
+        else:
+            print("My mane needs to be cleaned up pretty badly.")
 
     def print_description_dryer(self):
         if not self.looked_dryer:

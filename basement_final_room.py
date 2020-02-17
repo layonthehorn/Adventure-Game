@@ -1,6 +1,3 @@
-import time
-
-
 class BasementGenRoom:
     def __init__(self, items_contained=None, generator_inv=None, bool_list=(False, False)):
         if items_contained is None:
@@ -22,12 +19,12 @@ class BasementGenRoom:
 
     # returns bools for saving
     def get_bools(self):
-        return (self.fuses_fixed, self.generator_working)
+        return self.fuses_fixed, self.generator_working
 
     # this prints a description along with a item list
     def print_description_room(self):
         print("It's a dark basement lit only by emergency lights.")
-
+        print("This place is not on the map either... Maybe it just was not entered by the previous owners?.")
         if self.fuses_fixed:
             print("The power is on somewhere now. You should look around for it!")
         else:
@@ -75,5 +72,3 @@ class BasementGenRoom:
             print(f"It's missing {remainder} fuses still. You'll have to find them somewhere first.")
         else:
             print("It's already running.")
-
-

@@ -4,7 +4,7 @@ class PetShop:
             items_contained = ["mane brush"]
         self.inventory = items_contained
 
-        self.bool_one, self.bool_two = bool_list
+        self.fish_looked, self.bool_two = bool_list
 
     # returns the items in the room.
     def get_inventory(self):
@@ -12,7 +12,7 @@ class PetShop:
 
     # returns bools for saving
     def get_bools(self):
-        return (self.bool_one, self.bool_two)
+        return self.fish_looked, self.bool_two
 
     # this prints a description along with a item list
     def print_description_room(self):
@@ -23,10 +23,22 @@ class PetShop:
               "\nthings for a lion like you. Though you aren’t too fond of having to go to a pet store to get anything "
               "\neven remotely useful for you. In the back room of the store there is a fish display tank. You seem "
               "\noddly attracted to it...")
+        if "mane brush" in self.inventory:
+            print("I might need a clean up.")
 
         if len(self.inventory) > 0:
             for item in self.inventory:
                 print(f"There is a(n) {item}")
+
+    def print_description_fish(self):
+        if not self.fish_looked:
+            self.inventory.append("fish")
+            self.fish_looked = True
+            print("Oh, there's a fish still alive in there.")
+        elif "fish" in self.inventory:
+            print("That fish looks tasty... No, Vern resist it.")
+        else:
+            print("I feel bad for taking the fish. Damn it.")
 
     # this pops off the items and returns it
     def get_item(self, item):

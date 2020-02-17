@@ -1,6 +1,3 @@
-import time
-
-
 class BasementEnter:
     def __init__(self, items_contained=None, bool_list=(False, False)):
         if items_contained is None:
@@ -15,11 +12,12 @@ class BasementEnter:
 
     # returns bools for saving
     def get_bools(self):
-        return (self.door_unlocked, self.bool_two)
+        return self.door_unlocked, self.bool_two
 
     # this prints a description along with a item list
     def print_description_room(self):
         print("It's a dark basement lit only by emergency lights. There is a door with a pad lock across from you.")
+        print("This place is not on the map... How strange.")
         if self.door_unlocked:
             print("The door is open and you can enter.")
         else:

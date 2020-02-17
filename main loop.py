@@ -96,6 +96,8 @@ class VernsAdventure:
         # self.animal_den - the upstairs den
         # self.shoe_store - the shoe store up stairs
         # self.bathroom - the bathroom upstairs
+        # self.basement_entry - where you have to go to finish the game
+        # self.basement_gen_room - where you turn on the power.
 
         choosing = True
         print(self.ascii_image)
@@ -248,6 +250,8 @@ class VernsAdventure:
                 if p_local == self.up_stairs_hallway_name:
                     if not self.animal_den.drug_animal():
                         self.small_den.give_item("meat")
+                    else:
+                        self.player.increase_score()
                 location_actions(player_choice)
                 print("")
             elif p_local == self.end_name:
@@ -346,6 +350,8 @@ class VernsAdventure:
                 self.save_game_state()
             elif action == "score":
                 self.player.print_score()
+            elif action == "":
+                print("Vern taps his foot on the ground. \n'I get so sick of waiting for something to happen.'")
             elif action == "end":
                 save = input("Save game? ").lower()
                 if save == 'y':
@@ -382,7 +388,9 @@ class VernsAdventure:
             except ValueError:
                 pass
             try:
-                self.player.combine_items(choice_list[0], choice_list[1])
+                # if the player makes the drugged meat it increases your score
+                if self.player.combine_items(choice_list[0], choice_list[1]):
+                    self.player.increase_score()
 
             except IndexError:
                 print("Combine what with what?")
@@ -632,12 +640,11 @@ class VernsAdventure:
             except ValueError:
                 pass
             try:
-                if choice_list[1] is None:
+                # asks for knife to get meat from animal.
+                if "animal" in choice_list[1]:
                     if choice_list[0] in self.player.inventory:
-                        pass
-                        # if self.starting_room.fix_fuse_box(choice_list[0]):
-                        #     self.player.use_item(choice_list[0])
-                        #     self.player.increase_score()
+                        if self.small_den.animal_cutting(choice_list[0]):
+                            self.player.increase_score()
                     else:
                         print(f"I don't have a(n) {choice_list[0]}")
                 else:
@@ -991,6 +998,8 @@ class VernsAdventure:
             try:
                 if p_list[1] == "room":
                     self.bathroom.print_description_room()
+                elif "mirror" in p_list[1]:
+                    self.bathroom.print_description_mirror(self.player.is_mane_brushed())
                 elif "graffiti" in p_list[1]:
                     self.bathroom.print_description_graffiti()
                 elif "cabinet" in p_list[1]:
@@ -1203,7 +1212,7 @@ class VernsAdventure:
             except IndexError:
                 print("Use what with what?")
 
-    # a exit game function
+    # a winning game function
     def exit_game(self):
         print("You escaped the mall! You are back with Johnson and Katie.")
         print("Maybe they can explain what happened to you.")
