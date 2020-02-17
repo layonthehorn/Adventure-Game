@@ -375,9 +375,13 @@ class VernsAdventure:
             except IndexError:
                 print("Get what?")
         # drops item to current room
-        elif general_list[0] == "drop" and general_list[1] != "self":
+        elif general_list[0] == "drop":
             try:
-                self.drop_items(loc_name, general_list[1])
+                # if player tries to drop self print message.
+                if general_list[1] != 'self':
+                    self.drop_items(loc_name, general_list[1])
+                else:
+                    print("Now how would I do that?")
             except IndexError:
                 print("Drop what?")
         elif general_list[0] == "com":
