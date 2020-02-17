@@ -26,6 +26,19 @@ def load_game_state(file_name):
         return None
 
 
+def print_loading():
+    print("Game Loaded.")
+
+
+def print_intro():
+    print("""
+You wake up, alone and afraid in an old fallout shelter, built some time in the past, but abandoned 
+long ago. It appears a group had set themselves up here before the end, judging by the things that were left 
+behind. The room smells of mould and rust. There is a disabled robot in the corner, an entry to a smaller 
+room and there is a door that appears to be locked.
+""")
+
+
 class VernsAdventure:
     def __init__(self):
 
@@ -100,12 +113,7 @@ class VernsAdventure:
                 self.animal_den = AnimalDen()
                 self.shoe_store = ShoeStore()
                 self.bathroom = Bathroom()
-
-                print("""You wake up, alone and afraid in an old fallout shelter, built some time in the past, but abandoned 
-long ago. It appears a group had set themselves up here before the end, judging by the things that were left 
-behind. The room smells of mould and rust. There is a disabled robot in the corner, an entry to a smaller 
-room and there is a door that appears to be locked.""")
-
+                print_intro()
                 choosing = False
             elif player_option == "L":
                 # getting loaded settings
@@ -156,7 +164,7 @@ room and there is a door that appears to be locked.""")
                     # shoe store data
                     self.shoe_store = ShoeStore(new_value_dictionary["shoe store items"],
                                                 new_value_dictionary["shoe store bools"])
-                    print("Loaded Game!")
+                    print_loading()
                     choosing = False
             else:
                 print(self.ascii_image)
