@@ -9,7 +9,7 @@ You have to try and get out of a mall and join your friends outside. Use the com
 - inv(entory): Checks your inventory and prints descriptions out.
 - get {item}: Gets items from room.
 - oper(ate) {object}: How you use objects: doors, computers, etc.
-- com(bine) {item} with/on {item}: allows you to combine items
+- com(bine) {item} with/on {item}: allows you to combine items. Use 'self' to use an item on you.
 - drop {item}: Allows you to get rid of an item.
 - score: Allows player to check current progress in game.
 - use {item} With/on {item}: how you use things with other things.
