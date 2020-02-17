@@ -28,6 +28,22 @@ def load_game_state(file_name):
         return None
 
 
+def print_help():
+    print("How to play.")
+    print("look {item}: Looks at things. room, map, objects."
+          "\ninv(entory): Checks your inventory and prints descriptions out."
+          "\nget {item}: Gets items from room."
+          "\noper(ate) {object}: How you use objects: doors, computers, etc."
+          "\ncom(bine) {item} with/on {item}: allows you to combine items. Use 'self' to use an item on you."
+          "\ndrop {item}: Allows you to get rid of an item."
+          "\nscore: Allows the player to check current progress in-game."
+          "\nuse {item} With/on {item}: how you use things with other things."
+          "\ngo {location}: How you change rooms."
+          "\nsave: How you save your game."
+          "\nend: Exit game and will ask to save or not."
+          "\nhelp: This menu.")
+
+
 def print_loading():
     print("Game Loaded.")
 
@@ -44,10 +60,11 @@ room and there is a door that appears to be locked.
 class VernsAdventure:
     def __init__(self):
 
+        # pattern matching for actions
         self.use_pattern = re.compile(r"^use\s|\swith\s|\son\s")
         self.combine_pattern = re.compile(r"^com\s|\swith\s|\son\s")
 
-        # building the rooms and player
+        # building the rooms and player names
         self.main_plaza_name = "outside"
         self.starting_room_name = "bunker"
         self.side_room_name = "side room"
@@ -103,9 +120,9 @@ class VernsAdventure:
         print(self.ascii_image)
         print("Welcome to my game!")
         while choosing:
-            player_option = input("Load(L) or Start New(S)?").upper()
+            player_option = input("Load(L), Start New(S), or How to play(H)?").upper()
             if player_option == "S":
-                # leaves defaults
+                # Loads defaults in classes for game
                 self.player = VernLion()
                 self.starting_room = StartingRoom()
                 self.side_room = SideRoom()
@@ -126,11 +143,12 @@ class VernsAdventure:
             elif player_option == "L":
                 # getting loaded settings
                 new_value_dictionary = load_game_state("save game")
+                # if the dictionary is none it can not load a game
                 if new_value_dictionary is None:
                     print("No save games found.")
                 else:
 
-                    # loading saved settings
+                    # loading saved settings for classes
                     # player data
                     self.player = VernLion(new_value_dictionary["player inventory"],
                                            new_value_dictionary["player location"],
@@ -181,13 +199,21 @@ class VernsAdventure:
                     self.basement_gen_room = BasementGenRoom(new_value_dictionary["basement gen items"],
                                                              new_value_dictionary["basement gen inv"],
                                                              new_value_dictionary["basement gen bools"])
+                    # tells player it loaded the game
                     print_loading()
                     choosing = False
+
+            # prints instructions
+            elif player_option == "H":
+                print_help()
             else:
+                #
                 print(self.ascii_image)
                 print("Welcome to my game!")
                 continue
+
         # location dictionary
+        # used for general actions to run player actions in any room.
         self.switcher_dictionary = {
             self.starting_room_name: self.starting_room,
             self.side_room_name: self.side_room,
@@ -205,7 +231,7 @@ class VernsAdventure:
             self.basement_entryway_name: self.basement_entryway
         }
 
-        # action dictionary
+        # action dictionary for each of the rooms special actions
         self.location_dict = {
             self.starting_room_name: self.starting_area,
             self.side_room_name: self.side_area,
@@ -230,7 +256,7 @@ class VernsAdventure:
         while self.playing:
             # if you reach the exit then don't ask for actions from player
             if self.player.location != self.exit_name:
-                print("Verbs look, inv(entory), get, oper(ate), com(bine), drop, score, use, go, save, end")
+                print("Verbs look, inv(entory), get, oper(ate), com(bine), drop, score, use, go, save, end, help")
                 player_choice = input("").lower()
                 # general actions shared by rooms
                 self.general_actions(player_choice)
@@ -247,6 +273,7 @@ class VernsAdventure:
                 # runs the players actions in the room they are in
 
                 # if the player is in the animal den it checks if it needs to run the
+                # checking if they placed the meat in the animal den
                 if p_local == self.up_stairs_hallway_name:
                     if not self.animal_den.drug_animal():
                         self.small_den.give_item("meat")
@@ -325,6 +352,7 @@ class VernsAdventure:
                             "basement gen inv": self.basement_gen_room.get_gen_inventory()
                             }
         try:
+            # writes data to save file with pickle
             with open("save game", 'wb+') as db_file:
                 pickle.dump(value_dictionary, db_file)
         except IOError:
@@ -339,19 +367,26 @@ class VernsAdventure:
             print("no matching location found, defaulting to bunker.")
             loc_name = self.starting_room
 
+        # splits the input on the first space
         general_list = action.split(" ", 1)
         try:
             # prints inventory
             if action == "inv":
                 self.player.check_inventory()
+            # prints actions that can be taken
+            elif action == "help":
+                print_help()
             # ends game
             elif action == "save":
                 print("Game has been saved!")
                 self.save_game_state()
+            # prints score
             elif action == "score":
                 self.player.print_score()
+            # in case input is blank
             elif action == "":
                 print("Vern taps his foot on the ground. \n'I get so sick of waiting for something to happen.'")
+            # ends game asks to save
             elif action == "end":
                 save = input("Save game? ").lower()
                 if save == 'y':
@@ -385,7 +420,7 @@ class VernsAdventure:
             except IndexError:
                 print("Drop what?")
         elif general_list[0] == "com":
-            # attempting to unlock pet store
+            # tries to combine items
             choice_list = self.combine_pattern.split(action)
             try:
                 choice_list.remove('')
@@ -511,6 +546,7 @@ class VernsAdventure:
             except IndexError:
                 print("Go where?")
 
+        # allows the player to use items on objects
         elif p_list[0] == "use":
             choice_list = self.use_pattern.split(player_choice)
             try:
@@ -536,6 +572,8 @@ class VernsAdventure:
     # main plaza actions
     def main_plaza_area(self, player_choice):
         p_list = player_choice.split(" ", 1)
+
+        # allows player to look at things
         if p_list[0] == "look":
             try:
                 if p_list[1] == "room":
@@ -549,7 +587,7 @@ class VernsAdventure:
             except IndexError:
                 print("look at what?")
 
-        # allows player to move around
+        # allows player to leave
         elif p_list[0] == "go":
             try:
                 if p_list[1] == "bunker" and self.starting_room.door_opened:
@@ -575,6 +613,7 @@ class VernsAdventure:
             except IndexError:
                 print("Go where?")
 
+        # allows the player to operate things. Placeholder
         elif p_list[0] == "oper":
             try:
                 if p_list[1] is None:
@@ -584,6 +623,7 @@ class VernsAdventure:
             except IndexError:
                 print("Operate what?")
 
+        # allows the player to use items with objects
         elif p_list[0] == "use":
             choice_list = self.use_pattern.split(player_choice)
             try:
@@ -607,6 +647,8 @@ class VernsAdventure:
     # small den actions
     def small_den_area(self, player_choice):
         p_list = player_choice.split(" ", 1)
+
+        # player looking at things
         if p_list[0] == "look":
             try:
                 if p_list[1] == "room":
@@ -628,6 +670,7 @@ class VernsAdventure:
             except IndexError:
                 print("Go where?")
 
+        # allows player to operate things. Placeholder
         elif p_list[0] == "oper":
             try:
                 if p_list[1] is None:
@@ -637,6 +680,7 @@ class VernsAdventure:
             except IndexError:
                 print("Operate what?")
 
+        # allows player to use items with objects
         elif p_list[0] == "use":
             choice_list = self.use_pattern.split(player_choice)
             try:
@@ -660,6 +704,8 @@ class VernsAdventure:
     # west wing actions
     def west_wing_area(self, player_choice):
         p_list = player_choice.split(" ", 1)
+
+        # player looking at objects
         if p_list[0] == "look":
             try:
                 if p_list[1] == "room":
@@ -670,6 +716,8 @@ class VernsAdventure:
                     print(f"I don't know where {p_list[1]} is.")
             except IndexError:
                 print("look at what?")
+
+        # allows player to use items on objects
         elif p_list[0] == "use":
             # attempting to unlock pet store
             choice_list = self.use_pattern.split(player_choice)
@@ -709,6 +757,7 @@ class VernsAdventure:
             except IndexError:
                 print("Go where?")
 
+        # allows player to operate things. Placeholder
         elif p_list[0] == "oper":
             try:
                 if p_list[1] is None:
@@ -721,6 +770,8 @@ class VernsAdventure:
     # toy shop actions
     def toy_shop_area(self, player_choice):
         p_list = player_choice.split(" ", 1)
+
+        # allows player to look at things
         if p_list[0] == "look":
             try:
                 if "room" in p_list[1]:
@@ -744,6 +795,7 @@ class VernsAdventure:
             except IndexError:
                 print("Go where?")
 
+        # allows player to operate things
         elif p_list[0] == "oper":
             try:
                 if "crane" in p_list[1]:
@@ -753,6 +805,7 @@ class VernsAdventure:
             except IndexError:
                 print("Operate what?")
 
+        # allows player to use items on objects
         elif p_list[0] == "use":
             choice_list = self.use_pattern.split(player_choice)
             try:
@@ -776,6 +829,8 @@ class VernsAdventure:
     # pet shot actions
     def pet_shop_area(self, player_choice):
         p_list = player_choice.split(" ", 1)
+
+        # allows the player to look at things
         if p_list[0] == "look":
             try:
                 if p_list[1] == "room":
@@ -795,6 +850,7 @@ class VernsAdventure:
             except IndexError:
                 print("Go where?")
 
+        # allows player to operate things
         elif p_list[0] == "oper":
             try:
                 if p_list[1] is None:
@@ -804,6 +860,7 @@ class VernsAdventure:
             except IndexError:
                 print("Operate what?")
 
+        # allows player to use items with objects
         elif p_list[0] == "use":
             choice_list = self.use_pattern.split(player_choice)
             try:
@@ -828,6 +885,8 @@ class VernsAdventure:
     # cemetery actions
     def cemetery_area(self, player_choice):
         p_list = player_choice.split(" ", 1)
+
+        # allows player to look at things
         if p_list[0] == "look":
             try:
                 if p_list[1] == "room":
@@ -847,6 +906,7 @@ class VernsAdventure:
             except IndexError:
                 print("Go where?")
 
+        # allows player to operate things. Placeholder
         elif p_list[0] == "oper":
             try:
                 if p_list[1] is None:
@@ -856,6 +916,7 @@ class VernsAdventure:
             except IndexError:
                 print("Operate what?")
 
+        # allows player to use items on objects. Placeholder
         elif p_list[0] == "use":
             choice_list = self.use_pattern.split(player_choice)
             try:
@@ -880,6 +941,8 @@ class VernsAdventure:
     # upstairs hallway actions
     def up_stairs_hallway_area(self, player_choice):
         p_list = player_choice.split(" ", 1)
+
+        # allows player to look around
         if p_list[0] == "look":
             try:
                 if p_list[1] == "room":
@@ -905,6 +968,7 @@ class VernsAdventure:
             except IndexError:
                 print("Go where?")
 
+        # allows player to operate things. Placeholder
         elif p_list[0] == "oper":
             try:
                 if p_list[1] is None:
@@ -914,6 +978,7 @@ class VernsAdventure:
             except IndexError:
                 print("Operate what?")
 
+        # allows player to use items on objects. Placeholder
         elif p_list[0] == "use":
             choice_list = self.use_pattern.split(player_choice)
             try:
@@ -964,6 +1029,7 @@ class VernsAdventure:
             except IndexError:
                 print("Go where?")
 
+        # allows player to operate things. Placeholder
         elif p_list[0] == "oper":
             try:
                 if p_list[1] is None:
@@ -973,6 +1039,7 @@ class VernsAdventure:
             except IndexError:
                 print("Operate what?")
 
+        # allows player to use items on objects. Placeholder
         elif p_list[0] == "use":
             choice_list = self.use_pattern.split(player_choice)
             try:
@@ -998,6 +1065,8 @@ class VernsAdventure:
     def bathroom_area(self, player_choice):
         pass
         p_list = player_choice.split(" ", 1)
+
+        # allows player to look at things
         if p_list[0] == "look":
             try:
                 if p_list[1] == "room":
@@ -1025,6 +1094,7 @@ class VernsAdventure:
             except IndexError:
                 print("Go where?")
 
+        # allows player to operate things. Placeholder
         elif p_list[0] == "oper":
             try:
                 if p_list[1] is None:
@@ -1034,6 +1104,7 @@ class VernsAdventure:
             except IndexError:
                 print("Operate what?")
 
+        # allows player to use things. Placeholder
         elif p_list[0] == "use":
             choice_list = self.use_pattern.split(player_choice)
             try:
