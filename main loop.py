@@ -934,6 +934,8 @@ class VernsAdventure:
                     self.animal_den.print_description_room()
                 elif "animal" in p_list[1]:
                     self.animal_den.print_description_animal()
+                elif "hole" in p_list[1]:
+                    self.animal_den.print_description_hole()
                 elif p_list[1] != "self" and p_list[1] != "map":
                     print(f"I don't know where {p_list[1]} is.")
             except IndexError:
@@ -944,6 +946,8 @@ class VernsAdventure:
             try:
                 if "hallway" in p_list[1]:
                     self.player.set_location(self.up_stairs_hallway_name)
+                elif "hole" in p_list[1]:
+                    self.animal_den.enter_hole()
                 else:
                     print(f"I can't go to {p_list[1]}.")
             except IndexError:

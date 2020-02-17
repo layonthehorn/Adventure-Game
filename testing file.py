@@ -36,7 +36,7 @@ value_dictionary = {
     "bathroom bools": (False, False),
     # animal den data
     "animal den items": [],
-    "animal den bools": (False, False, False, False),
+    "animal den bools": (False, False, False, False, False),
     # upstairs hallway data
     "upstairs hallway items": [],
     "upstairs hallway bools": (False, False),
