@@ -1,8 +1,6 @@
 import time
 
 
-
-
 class VernLion:
     def __init__(self, player_inventory=None, player_start="bunker", score=0, player_bools=False):
 
@@ -50,7 +48,11 @@ class VernLion:
             "mane brush": "You could use this on your mane. Not that you ever need it.",
             "self": "It's you... You should not see this item in your inventory. Please report it!",
             "cheetah keyring": "It's a cheetah keyring. Cute but not really useful to you right now.",
-            "cat toy": "A lion plush stuff with catnip. You druggie..."
+            "cat toy": "A lion plush stuff with catnip. You druggie...",
+            "red fuse": "It's a red fuse. Much larger than the one from the bunker.",
+            "green fuse": "It's a green fuse. Much larger than the one from the bunker.",
+            "gold fuse": "It's a gold fuse. Much larger than the one from the bunker.",
+            "blue fuse": "It's a blue fuse. Much larger than the one from the bunker."
         }
 
     # returns his location
