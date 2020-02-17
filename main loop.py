@@ -1125,7 +1125,7 @@ class VernsAdventure:
         elif p_list[0] == "go":
             try:
                 if "up" in p_list[1]:
-                    self.player.set_location(self.bathroom_name)
+                    self.player.set_location(self.shoe_store_name)
                 elif "gen" in p_list[1]:
                     self.player.set_location(self.basement_gen_room_name)
                 else:

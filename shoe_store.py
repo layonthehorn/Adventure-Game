@@ -42,7 +42,8 @@ class ShoeStore:
     # this pops off the items and returns it
     def get_item(self, item):
         if item in self.inventory:
-            if item is "rope":
+            if item is "rope" and self.weak_roped:
+                print("I removed the weaker rope from the elevator.")
                 self.weak_roped = False
             location = self.inventory.index(item)
             return self.inventory.pop(location)
@@ -62,23 +63,28 @@ class ShoeStore:
             print("The doors are already opened.")
 
     # to fix the elevator
+    # if you used the weak rope it adds it to the room inventory and flags you as having used the weak rope
+    # if you use the strong rope it just removes the item and does marks you as having used the strong rope
     def fix_elevator(self, item):
         if not self.elevator_opened:
             print("I should open it first.")
             return False
-        if "rope" in self.inventory or self.elevator_roped:
-            if "rope" in self.inventory:
+        # if you have used either the weak or strong rope
+        if self.weak_roped or self.elevator_roped:
+            if self.weak_roped:
                 print("I used a rope already but I should try and make the rope stronger.")
                 return False
             else:
                 print("It's ok for me to climb down now.")
                 return False
         else:
+            # if the item is the rope it adds to room inventory and flips the flag variable
             if item == "rope":
                 print(f"I used the {item}. Maybe I can climb down")
                 self.inventory.append(item)
                 self.weak_roped = True
                 return True
+            # if strong rope just flips the strong rope flag
             elif item == "strong rope":
                 print(f"I used the {item}. Maybe I can climb down now.")
                 self.elevator_roped = True
@@ -87,14 +93,18 @@ class ShoeStore:
                 print(f"I can use the {item} on the elevator.")
                 return False
 
+    # tries to go down the shaft. Fails if the strong rope is not used
     def go_elevator(self):
+        # if the elevator has not being opened fail
         if not self.elevator_opened:
             print("I should open it first.")
             return False
-        if "rope" in self.inventory:
+        # if weak rope has been used and
+        if self.weak_roped:
             print("I'm not going down that rope. It's not safe at all.")
             return False
-        elif "strong rope" in self.inventory:
+        # if you used the strong rope then you can go
+        elif self.elevator_roped:
             print("Ok, it looks safe... Maybe not but here I go.")
             return True
         else:
