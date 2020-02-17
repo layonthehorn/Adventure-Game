@@ -14,6 +14,8 @@ from upstairs_hallway import UpstairsHallway
 from animal_den import AnimalDen
 from bathroom import Bathroom
 from shoe_store import ShoeStore
+from basement_enter import BasementEnter
+from basement_final_room import BasementGenRoom
 
 
 # loading saved game
@@ -60,6 +62,8 @@ class VernsAdventure:
         self.animal_den_name = "animal den"
         self.shoe_store_name = "shoe store"
         self.bathroom_name = "bathroom"
+        self.basement_entryway_name = "basement entry"
+        self.basement_gen_room_name = "basement generator"
         self.playing = True
 
         # Temporary ascii art from https://ascii.co.uk/art/lion
@@ -113,6 +117,8 @@ class VernsAdventure:
                 self.animal_den = AnimalDen()
                 self.shoe_store = ShoeStore()
                 self.bathroom = Bathroom()
+                self.basement_entryway = BasementEnter()
+                self.basement_gen_room = BasementGenRoom()
                 print_intro()
                 choosing = False
             elif player_option == "L":
@@ -164,6 +170,15 @@ class VernsAdventure:
                     # shoe store data
                     self.shoe_store = ShoeStore(new_value_dictionary["shoe store items"],
                                                 new_value_dictionary["shoe store bools"])
+
+                    # basement entryway data
+                    self.basement_entryway = BasementEnter(new_value_dictionary["basement entry items"],
+                                                           new_value_dictionary["basement entry bools"])
+
+                    # basement generator room data
+                    self.basement_gen_room = BasementGenRoom(new_value_dictionary["basement gen items"],
+                                                             new_value_dictionary["basement gen inv"],
+                                                             new_value_dictionary["basement gen bools"])
                     print_loading()
                     choosing = False
             else:
@@ -183,7 +198,9 @@ class VernsAdventure:
             self.up_stairs_hallway_name: self.up_stairs_hallway,
             self.shoe_store_name: self.shoe_store,
             self.animal_den_name: self.animal_den,
-            self.bathroom_name: self.bathroom
+            self.bathroom_name: self.bathroom,
+            self.basement_gen_room_name: self.basement_gen_room,
+            self.basement_entryway_name: self.basement_entryway
         }
 
         # action dictionary
@@ -200,6 +217,8 @@ class VernsAdventure:
             self.bathroom_name: self.bathroom_area,
             self.animal_den_name: self.animal_den_area,
             self.shoe_store_name: self.shoe_store_area,
+            self.basement_entryway_name: self.basement_entryway_area,
+            self.basement_gen_room_name: self.basement_gen_area,
             self.exit_name: self.exit_game,
             self.end_name: self.end_game
         }
@@ -292,7 +311,14 @@ class VernsAdventure:
                             "upstairs hallway bools": self.up_stairs_hallway.get_bools(),
                             # shoe store data
                             "shoe store items": self.shoe_store.get_inventory(),
-                            "shoe store bools": self.shoe_store.get_bools()
+                            "shoe store bools": self.shoe_store.get_bools(),
+                            # basement entryway data
+                            "basement entry items": self.basement_entryway.get_inventory(),
+                            "basement entry bools": self.basement_entryway.get_bools(),
+                            # basement generator room data
+                            "basement gen items": self.basement_gen_room.get_inventory(),
+                            "basement gen bools": self.basement_gen_room.get_bools(),
+                            "basement gen inv": self.basement_gen_room.get_gen_inventory()
                             }
         try:
             with open("save game", 'wb+') as db_file:
@@ -1029,6 +1055,114 @@ class VernsAdventure:
             try:
                 if "hallway" in p_list[1]:
                     self.player.set_location(self.up_stairs_hallway_name)
+                else:
+                    print(f"I can't go to {p_list[1]}.")
+            except IndexError:
+                print("Go where?")
+
+        # opens door
+        elif p_list[0] == "oper":
+            try:
+                if p_list[1] is None:
+                    pass
+                else:
+                    print("I can't use that.")
+            except IndexError:
+                print("Operate what?")
+
+        elif p_list[0] == "use":
+            choice_list = self.use_pattern.split(player_choice)
+            try:
+                choice_list.remove('')
+            except ValueError:
+                pass
+            try:
+                if choice_list[1] is None:
+                    if choice_list[0] in self.player.inventory:
+                        pass
+                        # if self.starting_room.fix_fuse_box(choice_list[0]):
+                        #     self.player.use_item(choice_list[0])
+                        #     self.player.increase_score()
+                    else:
+                        print(f"I don't have a(n) {choice_list[0]}")
+                else:
+                    print(f"I can't do anything to {choice_list[1]}")
+
+            except IndexError:
+                print("Use what with what?")
+
+    # basement entryway actions
+    def basement_entryway_area(self, player_choice):
+        p_list = player_choice.split(" ", 1)
+        if p_list[0] == "look":
+            try:
+                if p_list[1] == "room":
+                    pass
+                elif p_list[1] != "self" and p_list[1] != "map":
+                    print(f"I don't know where {p_list[1]} is.")
+            except IndexError:
+                print("look at what?")
+
+        # allows player to move around
+        elif p_list[0] == "go":
+            try:
+                if "up" in p_list[1]:
+                    self.player.set_location(self.bathroom_name)
+                elif "gen" in p_list[1]:
+                    self.player.set_location(self.basement_gen_room_name)
+                else:
+                    print(f"I can't go to {p_list[1]}.")
+            except IndexError:
+                print("Go where?")
+
+        # opens door
+        elif p_list[0] == "oper":
+            try:
+                if p_list[1] is None:
+                    pass
+                else:
+                    print("I can't use that.")
+            except IndexError:
+                print("Operate what?")
+
+        elif p_list[0] == "use":
+            choice_list = self.use_pattern.split(player_choice)
+            try:
+                choice_list.remove('')
+            except ValueError:
+                pass
+            try:
+                if choice_list[1] is None:
+                    if choice_list[0] in self.player.inventory:
+                        pass
+                        # if self.starting_room.fix_fuse_box(choice_list[0]):
+                        #     self.player.use_item(choice_list[0])
+                        #     self.player.increase_score()
+                    else:
+                        print(f"I don't have a(n) {choice_list[0]}")
+                else:
+                    print(f"I can't do anything to {choice_list[1]}")
+
+            except IndexError:
+                print("Use what with what?")
+
+    # basement generator actions
+    def basement_gen_area(self, player_choice):
+        p_list = player_choice.split(" ", 1)
+        if p_list[0] == "look":
+            try:
+                if p_list[1] == "room":
+                    pass
+                elif p_list[1] != "self" and p_list[1] != "map":
+                    print(f"I don't know where {p_list[1]} is.")
+            except IndexError:
+                print("look at what?")
+
+        # allows player to move around
+        elif p_list[0] == "go":
+            try:
+                if "entry" in p_list[1]:
+                    self.player.set_location(self.basement_entryway_name)
                 else:
                     print(f"I can't go to {p_list[1]}.")
             except IndexError:

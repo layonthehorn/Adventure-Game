@@ -42,7 +42,14 @@ value_dictionary = {
     "upstairs hallway bools": (False, False),
     # shoe store data
     "shoe store items": [],
-    "shoe store bools": (False, False)
+    "shoe store bools": (False, False),
+    # basement entry data
+    "basement entry items": [],
+    "basement entry bools": (False, False),
+    # basement generator room data
+    "basement gen items": [],
+    "basement gen bools": (False, False),
+    "basement gen inv": []
 
 }
 

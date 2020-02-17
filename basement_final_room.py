@@ -1,7 +1,7 @@
 import time
 
 
-class BasementFinalRoom:
+class BasementGenRoom:
     def __init__(self, items_contained=None, generator_inv=None, bool_list=(False, False)):
         if items_contained is None:
             items_contained = []
