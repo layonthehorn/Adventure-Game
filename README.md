@@ -17,4 +17,6 @@ You have to try and get out of a mall and join your friends outside. Use the com
 - save: How you save your game.
 - end: Exit game and will ask to save or not.
 
+### Credits
+- Thanks to my friend DisposedTalent for the room descriptions and help with ideas.
 
