@@ -954,6 +954,12 @@ class VernsAdventure:
             try:
                 if p_list[1] == "room":
                     self.bathroom.print_description_room()
+                elif "graffiti" in p_list[1]:
+                    self.bathroom.print_description_graffiti()
+                elif "cabinet" in p_list[1]:
+                    self.bathroom.print_description_medical()
+                elif "dryer" in p_list[1]:
+                    self.bathroom.print_description_dryer()
                 elif p_list[1] != "self" and p_list[1] != "map":
                     print(f"I don't know where {p_list[1]} is.")
             except IndexError:
