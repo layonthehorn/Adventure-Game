@@ -201,6 +201,7 @@ class VernsAdventure:
                                                              new_value_dictionary["basement gen bools"])
                     # tells player it loaded the game
                     print_loading()
+                    print(f"You are in the {self.player.get_location()} room.")
                     choosing = False
 
             # prints instructions
