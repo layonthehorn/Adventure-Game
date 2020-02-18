@@ -154,7 +154,6 @@ class VernLion:
                 self.inventory.remove(item_2)
                 self.inventory.append("drugged meat")
                 print("I made drugged meat. Still nasty after that.")
-                self.made_drugged_meat = True
                 return True
             elif "lion plush" in item_list and "bag of catnip" in item_list:
                 self.inventory.remove(item_1)

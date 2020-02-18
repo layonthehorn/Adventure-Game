@@ -4,7 +4,7 @@ class Cemetery:
             items_contained = ["lion plush"]
         self.inventory = items_contained
 
-        self.first_entered, self.bool_two = bool_list
+        self.first_entered, self.found_rope = bool_list
 
     # returns the items in the room.
     def get_inventory(self):
@@ -12,7 +12,7 @@ class Cemetery:
 
     # returns bools for saving
     def get_bools(self):
-        return (self.first_entered, self.bool_two)
+        return self.first_entered, self.found_rope
 
     # this prints a description along with a item list
     def print_description_room(self):
@@ -26,6 +26,19 @@ class Cemetery:
         if len(self.inventory) > 0:
             for item in self.inventory:
                 print(f"There is a(n) {item}")
+
+    def print_description_graves(self):
+        print("There are a lot of different graves here. Seems a large community both lived and died here.")
+        if "lion plush" in self.inventory:
+            print("On a child's grave hangs a little lion plushy.")
+        if not self.found_rope:
+            print("Hey, there's an old rope here. Might come in handy if you dare to steal from a graveyard.")
+            self.inventory.append("rope")
+            self.found_rope = True
+        elif "rope" in self.inventory:
+            print("That rope is still here. I wonder what it was from.")
+        else:
+            print("There's not much here of value now.")
 
     # this pops off the items and returns it
     def get_item(self, item):

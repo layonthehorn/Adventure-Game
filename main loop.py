@@ -891,6 +891,8 @@ class VernsAdventure:
             try:
                 if p_list[1] == "room":
                     self.cemetery.print_description_room()
+                elif "grave" in p_list[1]:
+                    self.cemetery.print_description_graves()
                 elif p_list[1] != "self" and p_list[1] != "map":
                     print(f"I don't know where {p_list[1]} is.")
             except IndexError:
