@@ -52,7 +52,8 @@ class ShoeStore:
     # this pops off the items and returns it
     def get_item(self, item):
         if item in self.inventory:
-            if item is "rope" and self.weak_roped:
+            # if item is rope and you have used it on the elevator it flips that flag back to false
+            if item == "rope" and self.weak_roped:
                 print("I removed the weak rope from the elevator.")
                 self.weak_roped = False
             location = self.inventory.index(item)

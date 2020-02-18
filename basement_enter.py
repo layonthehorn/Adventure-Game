@@ -4,7 +4,7 @@ class BasementEnter:
             items_contained = []
         self.inventory = items_contained
 
-        self.door_unlocked, self.bool_two = bool_list
+        self.door_unlocked, self.soda_used = bool_list
 
     # returns the items in the room.
     def get_inventory(self):
@@ -12,7 +12,7 @@ class BasementEnter:
 
     # returns bools for saving
     def get_bools(self):
-        return self.door_unlocked, self.bool_two
+        return self.door_unlocked, self.soda_used
 
     # this prints a description along with a item list
     def print_description_room(self):
@@ -26,6 +26,25 @@ class BasementEnter:
         if len(self.inventory) > 0:
             for item in self.inventory:
                 print(f"There is a(n) {item}")
+
+    def print_description_pad(self):
+        print("It's an old electronic lock of some kind.")
+        print("There's a small note near it.")
+        if not self.door_unlocked:
+            print("I can't believe I found that password.")
+        elif self.door_unlocked and self.soda_used:
+            print("It's open now and pretty gross from the soda.")
+        else:
+            print("It's asking for a password.")
+
+    def print_description_note(self):
+        print("It reads: Don't get anything on this new lock you morons.")
+        print("I have replaced it, but next time it's on your paycheck.")
+        if self.soda_used:
+            print("The note is splattered with soda.")
+            print("The soda worked... Who knew?")
+        else:
+            print("I wonder what that means.")
 
     # this pops off the items and returns it
     def get_item(self, item):
@@ -77,6 +96,7 @@ class BasementEnter:
                 print("You dump the soda on the code box.")
                 print("It fizzles and sparks. The door opens.\nHuh? Can't believe that worked.")
                 self.door_unlocked = True
+                self.soda_used = True
                 return True
             else:
                 print("That doesn't help me...")

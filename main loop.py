@@ -1134,7 +1134,7 @@ class VernsAdventure:
             try:
                 if p_list[1] == "room":
                     self.shoe_store.print_description_room()
-                elif "elev" in p_list[1]:
+                elif "ele" in p_list[1]:
                     self.shoe_store.print_description_elevator()
                 elif p_list[1] != "self" and p_list[1] != "map":
                     print(f"I don't know where {p_list[1]} is.")
@@ -1146,7 +1146,7 @@ class VernsAdventure:
             try:
                 if "hall" in p_list[1]:
                     self.player.set_location(self.up_stairs_hallway_name)
-                elif "elev" in p_list[1]:
+                elif "ele" in p_list[1]:
                     if self.shoe_store.go_elevator():
                         self.player.set_location(self.basement_entryway_name)
                 else:
@@ -1157,7 +1157,7 @@ class VernsAdventure:
         # opens door
         elif p_list[0] == "oper":
             try:
-                if "elev" in p_list[1]:
+                if "ele" in p_list[1]:
                     self.shoe_store.operate_elevator_doors()
                 else:
                     print("I can't use that.")
@@ -1171,7 +1171,7 @@ class VernsAdventure:
             except ValueError:
                 pass
             try:
-                if "elev" in choice_list[1]:
+                if "ele" in choice_list[1]:
                     if choice_list[0] in self.player.inventory:
                         if self.shoe_store.fix_elevator(choice_list[0]):
                             if choice_list[0] == "strong rope":

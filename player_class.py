@@ -147,7 +147,7 @@ class VernLion:
         # print(item_1, " ", item_2)
         if item_1 in self.inventory and item_2 in self.inventory:
             # a list to make checking for contents easier
-            item_list = [item_1, item_2]
+            item_list = (item_1, item_2)
 
             # item crafting results
             if "meat" in item_list and "drugs" in item_list:
@@ -175,6 +175,18 @@ class VernLion:
             elif "self" in item_list and "drugs" in item_list:
                 print("I'm not eating them...")
                 return False
+            elif "self" in item_list and "meat" in item_list:
+                print("Nasty. I love meat but this is not appetizing at all.")
+                return False
+            elif "self" in item_list and "drugged meat" in item_list:
+                print("Eating rotten meat is not any safer with medication in it.")
+                return False
+            elif "self" in item_list and "soda" in item_list:
+                print("I hate sugary things...")
+                return False
+            elif "self" in item_list and "bag of catnip" in item_list:
+                print("I need to stay sober right now... \nIf it was in a little cute toy I might... No, I better not.")
+                return False
 
             # small thing for player repeating the eat fish command
             elif "self" in item_list and "fish" in item_list:
@@ -197,14 +209,7 @@ class VernLion:
                     self.inventory.append("bones")
                     self.inventory.remove("fish")
                     return True
-
-            # more general self reactions
-            elif "self" in item_list and "meat" in item_list:
-                print("Nasty. I love meat but this is not appetizing at all.")
-                return False
-            elif "self" in item_list and "bag of catnip" in item_list:
-                print("I need to stay sober right now... \nIf it was in a little cute toy I might... No, I better not.")
-                return False
+            # no matches found
             else:
                 print(f"I can't combine {item_1} and {item_2}.")
                 return False

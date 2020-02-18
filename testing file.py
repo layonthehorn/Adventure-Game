@@ -35,10 +35,10 @@ import pickle
 # this file is built to generate custom save games for testing.
 value_dictionary = {
     # player data
-    "player inventory": ["self", "bag of catnip", "lion plush", "drugged meat"],
+    "player inventory": ["self", "rope", "strong rope"],
     "player score": 2,
     "player misc": (False, 0),
-    "player location": "upstairs",
+    "player location": "shoe store",
     # starting room data
     "starting room bools": (True, True, True),
     "starting room items": ["bag of catnip"],
