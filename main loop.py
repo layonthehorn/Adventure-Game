@@ -709,6 +709,8 @@ class VernsAdventure:
                     self.west_wing.print_description_room()
                 elif "kiosk" in p_list[1]:
                     self.west_wing.print_description_kiosk()
+                elif "vend" in p_list[1] or "mach" in p_list[1]:
+                    self.west_wing.print_description_vending()
                 elif p_list[1] != "self" and p_list[1] != "map":
                     print(f"I don't know where {p_list[1]} is.")
             except IndexError:

@@ -4,7 +4,7 @@ class WestWing:
             items_contained = []
         self.inventory = items_contained
 
-        self.pet_shop_unlocked, self.bool_two = bool_list
+        self.pet_shop_unlocked, self.vend_looked = bool_list
 
     # returns the items in the room.
     def get_inventory(self):
@@ -12,12 +12,12 @@ class WestWing:
 
     # returns bools for saving
     def get_bools(self):
-        return self.pet_shop_unlocked, self.bool_two
+        return self.pet_shop_unlocked, self.vend_looked
 
     # this prints a description along with a item list
     def print_description_room(self):
         print("To the west of the plaza sits the west wing. While it is quite dilapidated, it appears someone has "
-              "\nmade an effort to clean the wing up a fair bit. There is a kiosk nearby")
+              "\nmade an effort to clean the wing up a fair bit. There is a kiosk nearby and a vending machine.")
         if not self.pet_shop_unlocked:
             print("There is a kiosk in front of the pet shop.")
             print("It is asking for a pet to allow entry.")
@@ -54,6 +54,17 @@ class WestWing:
             print("I usually just use my 'self' to fake my way past.")
         else:
             print("It's happy with the fur sample. Stupid thing...")
+
+    def print_description_vending(self):
+        print("It's a old and cracked machine. There is a flap on the front for getting things from it.")
+        if not self.vend_looked:
+            print("There's soda laying in it.")
+            self.inventory.append("soda")
+            self.vend_looked = True
+        elif "soda" in self.inventory:
+            print("That old soda is still here.")
+        else:
+            print("there's nothing else of value within it.")
 
     def unlock_pet_shop(self, item):
         if not self.pet_shop_unlocked:

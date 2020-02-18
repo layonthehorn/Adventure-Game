@@ -57,7 +57,8 @@ class VernLion:
             "fish": "A very tasty if small fish. Should you?.. Eat it?",
             "bones": "Bones are all that's left of the little fish you ate. How could you?",
             "rope": "A length of rope. Might be useful to get somewhere lower.",
-            "strong rope": "A strong length of rope. This won't break."
+            "strong rope": "A strong length of rope. This won't break.",
+            "soda": "An old flat soda. Not something you want to drink."
         }
 
     # returns his location
