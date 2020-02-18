@@ -16,8 +16,6 @@ class PetShop:
 
     # this prints a description along with a item list
     def print_description_room(self):
-        print("It's an old pet store. Lot's of useful things for a lion like you here. If you are not embarrassed to "
-              "\nuse them.")
         print("It’s an old pet shop. Humans would go here with their pets to buy care products for whatever animal "
               "\nthey owned. While the pet displays are now empty and smashed to bits, there are still plenty of useful "
               "\nthings for a lion like you. Though you aren’t too fond of having to go to a pet store to get anything "

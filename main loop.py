@@ -830,6 +830,8 @@ class VernsAdventure:
             try:
                 if p_list[1] == "room":
                     self.pet_shop.print_description_room()
+                elif "fish" in p_list[1]:
+                    self.pet_shop.print_description_fish()
                 elif p_list[1] != "self" and p_list[1] != "map":
                     print(f"I don't know where {p_list[1]} is.")
             except IndexError:
