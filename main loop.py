@@ -283,10 +283,10 @@ class VernsAdventure:
                 print("")
             elif p_local == self.end_name:
                 # ends game after player asks to
-                location_actions()
+                self.end_game()
             else:
                 # Winning game ending
-                location_actions()
+                self.exit_game()
 
     # getting things
     def get_items(self, room, item):
