@@ -16,12 +16,12 @@ class BasementEnter:
 
     # this prints a description along with a item list
     def print_description_room(self):
-        print("It's a dark basement lit only by emergency lights. There is a door with a pad lock across from you.")
+        print("It's a dark basement lit only by emergency lights. There is a door with a electronic pad lock across from you.")
         print("This place is not on the map... How strange.")
         if self.door_unlocked:
             print("The door is open and you can enter.")
         else:
-            print("You'll have to figure out how to open it.")
+            print("You'll have to figure out how to open the door.")
         if len(self.inventory) > 0:
             for item in self.inventory:
                 print(f"There is a(n) {item}")

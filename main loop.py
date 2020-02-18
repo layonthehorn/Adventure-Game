@@ -1194,7 +1194,7 @@ class VernsAdventure:
         if p_list[0] == "look":
             try:
                 if p_list[1] == "room":
-                    pass
+                    self.basement_entryway.print_description_room()
                 elif p_list[1] != "self" and p_list[1] != "map":
                     print(f"I don't know where {p_list[1]} is.")
             except IndexError:
@@ -1215,8 +1215,8 @@ class VernsAdventure:
         # opens door
         elif p_list[0] == "oper":
             try:
-                if p_list[1] is None:
-                    pass
+                if "pad" in p_list[1]:
+                    self.basement_entryway.entering_code()
                 else:
                     print("I can't use that.")
             except IndexError:
@@ -1229,12 +1229,11 @@ class VernsAdventure:
             except ValueError:
                 pass
             try:
-                if choice_list[1] is None:
+                if "pad" in choice_list[1]:
                     if choice_list[0] in self.player.inventory:
-                        pass
-                        # if self.starting_room.fix_fuse_box(choice_list[0]):
-                        #     self.player.use_item(choice_list[0])
-                        #     self.player.increase_score()
+                        if self.basement_entryway.entering_code(choice_list[0]):
+                            self.player.use_item(choice_list[0])
+                            self.player.increase_score()
                     else:
                         print(f"I don't have a(n) {choice_list[0]}")
                 else:
@@ -1249,7 +1248,7 @@ class VernsAdventure:
         if p_list[0] == "look":
             try:
                 if p_list[1] == "room":
-                    pass
+                    self.basement_gen_room.print_description_room()
                 elif p_list[1] != "self" and p_list[1] != "map":
                     print(f"I don't know where {p_list[1]} is.")
             except IndexError:
@@ -1268,8 +1267,8 @@ class VernsAdventure:
         # opens door
         elif p_list[0] == "oper":
             try:
-                if p_list[1] is None:
-                    pass
+                if "gen" in p_list[1]:
+                    self.basement_gen_room.operate_generator()
                 else:
                     print("I can't use that.")
             except IndexError:
@@ -1282,12 +1281,11 @@ class VernsAdventure:
             except ValueError:
                 pass
             try:
-                if choice_list[1] is None:
+                if "gen" in choice_list[1]:
                     if choice_list[0] in self.player.inventory:
-                        pass
-                        # if self.starting_room.fix_fuse_box(choice_list[0]):
-                        #     self.player.use_item(choice_list[0])
-                        #     self.player.increase_score()
+                        if self.basement_gen_room.add_item_generator(choice_list[0]):
+                            self.player.use_item(choice_list[0])
+                            self.player.increase_score()
                     else:
                         print(f"I don't have a(n) {choice_list[0]}")
                 else:
