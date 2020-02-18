@@ -16,7 +16,8 @@ class BasementEnter:
 
     # this prints a description along with a item list
     def print_description_room(self):
-        print("It's a dark basement lit only by emergency lights. There is a door with a electronic pad lock across from you.")
+        print("It's a dark basement lit only by emergency lights. There is a door with a electronic pad lock across "
+              "from you.")
         print("This place is not on the map... How strange.")
         if self.door_unlocked:
             print("The door is open and you can enter.")
@@ -39,15 +40,25 @@ class BasementEnter:
         if item not in self.inventory:
             self.inventory.append(item)
 
+    def go_gen_room(self):
+        if self.door_unlocked:
+            return True
+        else:
+            print("The door is locked. I can't go there yet.")
+            return False
+
     # tries to enter codes or items to bypass the door.
     def entering_code(self, item=None):
 
+        # only allows attempting to unlock if door is locked.
         if not self.door_unlocked:
+            # if no item is give it asks for a password
             if item is None:
                 password = ""
                 print("It's asking for a password.")
                 while len(password) < 6:
                     number = input("")
+                    # counts through the player input and makes sure are only numbers.
                     for digit in number:
                         if digit not in "0123456789":
                             print("ERROR!")
@@ -59,10 +70,9 @@ class BasementEnter:
                 if password == "404167":
                     print("That Password is accepted. The door is open now!")
                     self.door_unlocked = True
-                    return False
                 else:
                     print("That was not accepted... I wonder what the code is?")
-                    return False
+            # if they used a soda.
             elif item == "soda":
                 print("You dump the soda on the code box.")
                 print("It fizzles and sparks. The door opens.\nHuh? Can't believe that worked.")

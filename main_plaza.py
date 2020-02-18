@@ -39,6 +39,20 @@ class MainPlaza:
         else:
             print("It's open and you can go upstairs.")
 
+    def go_upstairs(self):
+        if self.upstairs_unlocked:
+            return True
+        else:
+            print("It's locked. I'll have to figure out how to get up there.")
+            return False
+
+    def go_exit(self):
+        if self.exit_unlocked:
+            return True
+        else:
+            print("Right now the power is out, I'm trapped.")
+            return False
+
     def unlock_gate(self, item):
         if not self.upstairs_unlocked:
             if item == "keys":

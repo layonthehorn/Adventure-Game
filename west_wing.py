@@ -12,7 +12,7 @@ class WestWing:
 
     # returns bools for saving
     def get_bools(self):
-        return (self.pet_shop_unlocked, self.bool_two)
+        return self.pet_shop_unlocked, self.bool_two
 
     # this prints a description along with a item list
     def print_description_room(self):
@@ -40,6 +40,13 @@ class WestWing:
     def give_item(self, item):
         if item not in self.inventory:
             self.inventory.append(item)
+
+    def go_pet_shop(self):
+        if self.pet_shop_unlocked:
+            return True
+        else:
+            print("The kiosk is demanding something.")
+            return False
 
     def print_description_kiosk(self):
         if not self.pet_shop_unlocked:

@@ -13,7 +13,7 @@ class StartingRoom:
         return self.inventory
 
     def get_bools(self):
-        return (self.fuse_box, self.door_opened, self.robot_fixed)
+        return self.fuse_box, self.door_opened, self.robot_fixed
 
     # this prints a description along with a item list
     def print_description_room(self):
@@ -54,6 +54,16 @@ class StartingRoom:
             return self.inventory.pop(location)
         else:
             return None
+
+    def go_outside(self):
+        if self.door_opened:
+            return True
+        elif self.fuse_box and not self.door_opened:
+            print("I need to open the door first.")
+            return False
+        elif not self.fuse_box:
+            print("I need to power the door and open it first.")
+            return False
 
     # dropping item back into room
     def give_item(self, item):

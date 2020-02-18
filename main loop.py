@@ -496,8 +496,9 @@ class VernsAdventure:
         # allows the player to leave
         elif p_list[0] == "go":
             try:
-                if p_list[1] == "outside" and self.starting_room.door_opened:
-                    self.player.set_location("outside")
+                if p_list[1] == "outside" or "plaza" in p_list[1]:
+                    if self.starting_room.go_outside():
+                        self.player.set_location("outside")
                 elif "side" in p_list[1]:
                     print("What a small room.")
                     self.player.set_location("side room")
@@ -590,21 +591,17 @@ class VernsAdventure:
         # allows player to leave
         elif p_list[0] == "go":
             try:
-                if p_list[1] == "bunker" and self.starting_room.door_opened:
+                if p_list[1] == "bunker":
                     self.player.set_location(self.starting_room_name)
                 elif "west" in p_list[1]:
                     self.player.set_location(self.west_wing_name)
                 elif "up" in p_list[1]:
-                    if self.main_plaza.upstairs_unlocked:
+                    if self.main_plaza.go_upstairs():
                         self.player.set_location(self.up_stairs_hallway_name)
-                    else:
-                        print("It's locked!")
 
                 elif "exit" in p_list[1]:
-                    if self.main_plaza.exit_unlocked:
+                    if self.main_plaza.go_exit():
                         self.player.set_location(self.exit_name)
-                    else:
-                        print("It's locked!")
 
                 elif "den" in p_list[1]:
                     self.player.set_location(self.small_den_name)
@@ -663,7 +660,7 @@ class VernsAdventure:
         # allows player to move around
         elif p_list[0] == "go":
             try:
-                if "plaza" in p_list[1]:
+                if "plaza" in p_list[1] or p_list[1] == "outside":
                     self.player.set_location(self.main_plaza_name)
                 else:
                     print(f"I can't go to {p_list[1]}.")
@@ -741,17 +738,15 @@ class VernsAdventure:
         # allows player to move around
         elif p_list[0] == "go":
             try:
-                if "plaza" in p_list[1]:
+                if "plaza" in p_list[1] or p_list[1] == "outside":
                     self.player.set_location(self.main_plaza_name)
                 elif "toy" in p_list[1]:
                     self.player.set_location(self.toy_shop_name)
                 elif "cem" in p_list[1]:
                     self.player.set_location(self.cemetery_name)
                 elif "pet" in p_list[1]:
-                    if self.west_wing.pet_shop_unlocked:
+                    if self.west_wing.go_pet_shop():
                         self.player.set_location(self.pet_shop_name)
-                    else:
-                        print("It wants me to unlock it first.")
                 else:
                     print(f"I can't go to {p_list[1]}.")
             except IndexError:
@@ -963,7 +958,7 @@ class VernsAdventure:
                     self.player.set_location(self.shoe_store_name)
                 elif "bath" in p_list[1]:
                     self.player.set_location(self.bathroom_name)
-                elif "down" in p_list[1] or "plaza" in p_list[1]:
+                elif "down" in p_list[1] or "plaza" in p_list[1] or p_list[1] == "outside":
                     self.player.set_location(self.main_plaza_name)
                 else:
                     print(f"I can't go to {p_list[1]}.")
@@ -1022,7 +1017,7 @@ class VernsAdventure:
         # allows player to move around
         elif p_list[0] == "go":
             try:
-                if "hallway" in p_list[1]:
+                if "hall" in p_list[1]:
                     self.player.set_location(self.up_stairs_hallway_name)
                 elif "hole" in p_list[1]:
                     self.animal_den.enter_hole()
@@ -1089,7 +1084,7 @@ class VernsAdventure:
         # allows player to move around
         elif p_list[0] == "go":
             try:
-                if "hallway" in p_list[1]:
+                if "hall" in p_list[1]:
                     self.player.set_location(self.up_stairs_hallway_name)
                 else:
                     print(f"I can't go to {p_list[1]}.")
@@ -1145,7 +1140,7 @@ class VernsAdventure:
         # allows player to move around
         elif p_list[0] == "go":
             try:
-                if "hallway" in p_list[1]:
+                if "hall" in p_list[1]:
                     self.player.set_location(self.up_stairs_hallway_name)
                 elif "elev" in p_list[1]:
                     if self.shoe_store.go_elevator():
@@ -1206,7 +1201,8 @@ class VernsAdventure:
                 if "up" in p_list[1]:
                     self.player.set_location(self.shoe_store_name)
                 elif "gen" in p_list[1]:
-                    self.player.set_location(self.basement_gen_room_name)
+                    if self.basement_entryway.go_gen_room():
+                        self.player.set_location(self.basement_gen_room_name)
                 else:
                     print(f"I can't go to {p_list[1]}.")
             except IndexError:
