@@ -251,10 +251,14 @@ class VernsAdventure:
             self.end_name: self.end_game
         }
         player_choice = ""
-
+        self.player_old_room = self.player.get_location()
+        self.player_new_room = self.player_old_room
         # main game play loop
         while self.playing:
             # if you reach the exit then don't ask for actions from player
+            if self.player_old_room != self.player_new_room:
+                print(f"You have gone to the {self.player_new_room} outside.")
+                self.player_old_room = self.player_new_room
             if self.player.location != self.exit_name:
                 print("Verbs look, inv(entory), get, oper(ate), com(bine), drop, score, use, go, save, end, help")
                 player_choice = input("").lower()
@@ -263,6 +267,7 @@ class VernsAdventure:
 
             # gets the room the player is in
             p_local = self.player.get_location()
+            self.player_new_room = p_local
             location_actions = self.location_dict.get(p_local, None)
             # if it does not find a room moves them to the main plaza
             if location_actions is None:
