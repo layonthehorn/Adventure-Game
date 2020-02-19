@@ -256,10 +256,12 @@ class VernsAdventure:
         self.player_new_room = self.player_old_room
         # main game play loop
         while self.playing:
-            # if you reach the exit then don't ask for actions from player
+            # if they reached a new room announce it
             if self.player_old_room != self.player_new_room:
                 print(f"You have gone to the {self.player_new_room}.")
                 self.player_old_room = self.player_new_room
+
+            # if you reach the exit then don't ask for actions from player
             if self.player.location != self.exit_name:
                 print("Verbs look, inv(entory), get, oper(ate), com(bine), drop, score, use, go, save, end, help")
                 player_choice = input("").lower()
@@ -272,7 +274,7 @@ class VernsAdventure:
             # if it does not find a room moves them to the main plaza
             if location_actions is None:
                 print("You entered a un-built place. Moving to main plaza.")
-                self.player.set_location(self.starting_room_name)
+                self.player.set_location(self.main_plaza_name)
                 location_actions = self.main_plaza_area
             if p_local != self.end_name and p_local != self.exit_name:
                 # runs the players actions in the room they are in
@@ -285,6 +287,8 @@ class VernsAdventure:
                     else:
                         self.player.increase_score()
                 location_actions(player_choice)
+
+                # finds players new location to see if they changed rooms
                 self.player_new_room = self.player.get_location()
                 print("")
             elif p_local == self.end_name:
@@ -524,6 +528,8 @@ class VernsAdventure:
                     self.side_room.print_description_room()
                 elif "pc" in p_list[1] or "computer" in p_list[1]:
                     self.side_room.print_description_computer()
+                elif "safe" in p_list[1]:
+                    self.side_room.print_description_safe()
                 elif p_list[1] != "self" and p_list[1] != "map":
                     print(f"I don't know where {p_list[1]} is.")
             except IndexError:
@@ -538,6 +544,9 @@ class VernsAdventure:
                     self.side_room.turn_on_switch()
                 elif "pc" in p_list[1] or "computer" in p_list[1]:
                     self.side_room.use_computer()
+                elif "safe" in p_list[1]:
+                    if self.side_room.operate_safe(self.player.is_mane_brushed()):
+                        self.player.increase_score()
                 else:
                     print("I can't operate that.")
             except IndexError:

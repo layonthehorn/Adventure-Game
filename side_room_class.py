@@ -1,17 +1,17 @@
 
 class SideRoom:
-    def __init__(self, items_contained=None, bool_list=(False)):
+    def __init__(self, items_contained=None, bool_list=(False, False)):
         if items_contained is None:
             items_contained = ["wrench"]
         self.inventory = items_contained
-        self.light_switch = bool_list
+        self.light_switch, self.safe_opened = bool_list
 
     # returns the items in the room.
     def get_inventory(self):
         return self.inventory
 
     def get_bools(self):
-        return self.light_switch
+        return self.light_switch, self.safe_opened
 
     # this prints a description along with a item list
     def print_description_room(self):
@@ -19,6 +19,7 @@ class SideRoom:
             print("You walk into a small room. It is dark and doesn’t smell any better than the rest of the bunker. "
                   "\nThere is a 'light' switch by the entryway. In the corner is an old 'computer' which appears to still "
                   "\nbe operational. You can get back to the 'bunker' too.")
+            print("There is an old 'safe' of some sort too.")
             if len(self.inventory) > 0:
                 for item in self.inventory:
                     print(f"There is a(n) {item}")
@@ -31,6 +32,34 @@ class SideRoom:
             print("An old but still working 'computer'.\nMaybe someone left some information on it.")
         else:
             print("It's too dark to see.")
+
+    def print_description_safe(self):
+        print("An old safe. Looks like it uses a biometric lock of some sort.")
+        if not self.safe_opened:
+            print("I got the dumb thing open at least.")
+        elif "green fuse" in self.inventory:
+            print("I might need that fuse.")
+        else:
+            print("I wonder how I get into it?")
+
+    def operate_safe(self, mane_brushed):
+        if not self.safe_opened:
+            if mane_brushed:
+                print("I SUPPOSE YOU ARE CLEAN ENOUGH... FINE I'LL OPEN.\n")
+                print("Piece of junk... About damn time.")
+                self.inventory.append("green fuse")
+                self.safe_opened = True
+                return True
+            else:
+                print("The safe buzzes and a voice barks out.")
+                print("HEY, A SCRUFFY THING LIKE YOU CAN'T OPEN ME.\n")
+                print("What The fuck?\n")
+                print("YES, YOU. CLEAN YOURSELF UP IF YOU WANT ME TO OPEN.\n")
+                print("Great a talking safe. Always happy to find new pains in my tail.")
+                return False
+        else:
+            print("It's already opened and I would prefer never to deal with it again.")
+            return False
 
     # this pops off the items and returns it
     def get_item(self, item):

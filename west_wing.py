@@ -19,7 +19,7 @@ class WestWing:
         print("To the west of the plaza sits the west wing. While it is quite dilapidated, it appears someone has "
               "\nmade an effort to clean the wing up a fair bit. There is a 'kiosk' nearby and a 'vending machine'.")
         if not self.pet_shop_unlocked:
-            print("There is a kiosk in front of the pet shop.")
+            print("There is a 'kiosk' in front of the pet shop.")
             print("It is asking for a pet to allow entry.")
         else:
             print("The 'kiosk' is happy with your offering.")
