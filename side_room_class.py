@@ -35,12 +35,12 @@ class SideRoom:
 
     def print_description_safe(self):
         print("An old safe. Looks like it uses a biometric lock of some sort.")
-        if self.safe_opened:
-            print("I got the dumb thing open at least.")
+        if not self.safe_opened:
+            print("I wonder how I get into it?")
         elif "green fuse" in self.inventory:
             print("I might need that fuse.")
         else:
-            print("I wonder how I get into it?")
+            print("I got the dumb thing open at least.")
 
     def operate_safe(self, mane_brushed):
         if not self.safe_opened:

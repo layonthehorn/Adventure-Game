@@ -68,10 +68,12 @@ class BasementGenRoom:
         if len(self.generator_inventory) < 4:
             if item in self.fuses_needed:
                 if len(self.generator_inventory) < 3:
-                    print(f"I added the {item} to the generator. Only {4 - len(self.generator_inventory)} Left to add")
+                    self.generator_inventory.append(item)
+                    print(f"I added the {item} to the generator. Only {4 - len(self.generator_inventory)} Left to add.")
                 else:
+                    self.generator_inventory.append(item)
                     print(f"I added the {item} to the generator. That's the last one!")
-                self.generator_inventory.append(item)
+
                 return True
             else:
                 print("I can't use that on the generator.")

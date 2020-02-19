@@ -18,9 +18,8 @@
 #     data = [None]
 # climb_ladder(data)
 
-combo_dict = {
-    ("fish","lion"): "1st",
-    ("testing", "newthing"): "2nd"
-}
-
-print(combo_dict.get(("lion","fish")))
+print("The safe buzzes and a voice barks out.")
+print("HEY, A SCRUFFY THING LIKE YOU CAN'T OPEN ME.\n")
+print("What The fuck?\n")
+print("YES, YOU. CLEAN YOURSELF UP IF YOU WANT ME TO OPEN.\n")
+print("Great a talking safe. Always happy to find new pains in my tail.")
