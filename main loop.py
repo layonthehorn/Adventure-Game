@@ -1,5 +1,6 @@
 import pickle
 import re
+import sys
 
 from cemetery import Cemetery
 from main_plaza import MainPlaza
@@ -120,7 +121,7 @@ class VernsAdventure:
         print(self.ascii_image)
         print("Welcome to my game!")
         while choosing:
-            player_option = input("Load(L), Start New(S), or How to play(H)?").upper()
+            player_option = input("Load(L), Start New(S), Quit(Q), or How to play(H)?\n").upper()
             if player_option == "S":
                 # Loads defaults in classes for game
                 self.player = VernLion()
@@ -140,6 +141,9 @@ class VernsAdventure:
                 self.basement_gen_room = BasementGenRoom()
                 print_intro()
                 choosing = False
+            elif player_option == "Q":
+                print("Goodbye!")
+                sys.exit(0)
             elif player_option == "L":
                 # getting loaded settings
                 new_value_dictionary = load_game_state("save game")
