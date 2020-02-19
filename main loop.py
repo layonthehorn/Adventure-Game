@@ -933,12 +933,11 @@ class VernsAdventure:
             except ValueError:
                 pass
             try:
-                if choice_list[1] == "":
+                if "grave" in choice_list[1]:
                     if choice_list[0] in self.player.inventory:
-                        pass
-                        # if self.starting_room.fix_fuse_box(choice_list[0]):
-                        #     self.player.use_item(choice_list[0])
-                        #     self.player.increase_score()
+                        if self.cemetery.dig_grave(choice_list[0]):
+                            self.player.use_item(choice_list[0])
+                            self.player.increase_score()
                     else:
                         print(f"I don't have a(n) {choice_list[0]}")
                 else:

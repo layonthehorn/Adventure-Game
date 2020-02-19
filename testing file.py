@@ -56,7 +56,7 @@ value_dictionary = {
     "west wing items": [],
     # cemetery data
     "cemetery items": ["lion plush"],
-    "cemetery bools": (False, False),
+    "cemetery bools": (False, False, False),
     # pet shop data
     "pet shop items": ["mane brush"],
     "pet shop bools": (False, False),
@@ -76,7 +76,7 @@ value_dictionary = {
     "shoe store items": [],
     "shoe store bools": (False, False, False, False),
     # basement entry data
-    "basement entry items": [],
+    "basement entry items": ["shovel"],
     "basement entry bools": (False, False),
     # basement generator room data
     "basement gen items": [],

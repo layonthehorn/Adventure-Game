@@ -12,7 +12,7 @@ class ToyShop:
 
     # returns bools for saving
     def get_bools(self):
-        return (self.crane_fixed, self.crane_won, self.shelves_looked)
+        return self.crane_fixed, self.crane_won, self.shelves_looked
 
     # this prints a description along with a item list
     def print_description_room(self):

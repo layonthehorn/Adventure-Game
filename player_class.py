@@ -58,7 +58,8 @@ class VernLion:
             "bones": "Bones are all that's left of the little fish you ate. How could you?",
             "rope": "A length of rope. Might be useful to get somewhere lower.",
             "strong rope": "A strong length of rope. This won't break.",
-            "soda": "An old flat soda. Not something you want to drink."
+            "soda": "An old flat soda. Not something you want to drink.",
+            "shovel": "It's old entrenching tool. Useful for digging and many other things."
         }
 
     # returns his location
@@ -180,6 +181,9 @@ class VernLion:
                 return False
             elif "self" in item_list and "bag of catnip" in item_list:
                 print("I need to stay sober right now... \nIf it was in a little cute toy I might... No, I better not.")
+                return False
+            elif "self" in item_list and "knife" in item_list:
+                print("I don't think that's a great plan...")
                 return False
 
             # small thing for player repeating the eat fish command

@@ -1,7 +1,7 @@
 class BasementEnter:
     def __init__(self, items_contained=None, bool_list=(False, False)):
         if items_contained is None:
-            items_contained = []
+            items_contained = ["shovel"]
         self.inventory = items_contained
 
         self.door_unlocked, self.soda_used = bool_list
