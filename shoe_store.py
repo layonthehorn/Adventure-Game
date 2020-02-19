@@ -21,7 +21,7 @@ class ShoeStore:
               "\nthey’ve left.")
 
         if self.elevator_opened:
-            print("The elevator shaft is opened now.")
+            print("The 'elevator' shaft is opened now.")
             if self.elevator_roped:
                 print("You can climb down it now.")
             elif "rope" in self.inventory and self.weak_roped:
@@ -29,7 +29,7 @@ class ShoeStore:
             else:
                 print("There's no way down just yet. You'll have to figure that out.")
         else:
-            print("There is an old elevator shaft but the doors are closed.")
+            print("There is an old 'elevator' shaft but the doors are closed.")
         if not self.first_entered:
             print("You doubt anything would fit your digitigrade feet from this place.")
             self.first_entered = True

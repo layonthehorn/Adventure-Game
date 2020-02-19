@@ -20,16 +20,16 @@ class AnimalDen:
     # this prints a description along with a item list
     def print_description_room(self):
         print("Once an old utility cabinet, it has now been claimed by some kind of animal. Judging by the sounds "
-              "\ncoming from the den's hole of a entrance, you feel you should probably avoid going in there directly.")
+              "\ncoming from the den's 'hole' of a entrance, you feel you should probably avoid going in there directly.")
         if "meat" not in self.inventory and "drugged meat" not in self.inventory and not self.animal_drugged:
             print("With some sort of animal here I could lay a trap for it.")
         if not self.entered_after_drugged and self.animal_drugged:
             print("Hey, my trap worked!")
             self.entered_after_drugged = True
         if self.animal_drugged:
-            print("Hey, looks like some sort of shaggy dog. Kinda fuzzy too.")
+            print("Hey, looks like some sort of shaggy dog. Kinda fuzzy too, weird 'animal'.")
         elif self.meat_just_taken:
-            print("It took my meat and left. I'll have to more and use something on it.")
+            print("It took my meat and left. I'll have to get more and use something on it.")
             self.meat_just_taken = False
         print("You can go back to the 'hallway'.")
         if len(self.inventory) > 0:

@@ -16,7 +16,7 @@ class SmallDen:
     # this prints a description along with a item list
     def print_description_room(self):
         print("It's some small den... or maybe a corral? It's not totally clear. \nThere is a exit back the 'main plaza'.")
-        print("There is a dead body of an animal here.")
+        print("There is a dead body of an 'animal' here.")
         if len(self.inventory) > 0:
             for item in self.inventory:
                 print(f"There is a(n) {item}")
@@ -27,11 +27,11 @@ class SmallDen:
         if not self.animal_cut:
             print("Could be useful if I cut some meat off it.")
         elif not self.meat_added:
-            print("There's chuck of meat loose now.")
+            print("There's chuck of 'meat' loose now.")
             self.inventory.append("meat")
             self.meat_added = True
         elif "meat" in self.inventory:
-            print("I might need it. Though I don't want to touch it.")
+            print("I might need that meat. Though I don't want to touch it.")
         else:
             print("There's a chunk missing now.")
 

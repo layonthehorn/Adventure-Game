@@ -16,7 +16,7 @@ class BasementEnter:
 
     # this prints a description along with a item list
     def print_description_room(self):
-        print("It's a dark basement lit only by emergency lights. There is a door with a electronic pad lock across "
+        print("It's a dark basement lit only by emergency lights. There is a door with a electronic 'pad' lock across "
               "from you.")
         print("This place is not on the map... How strange.")
         if self.door_unlocked:
@@ -29,7 +29,7 @@ class BasementEnter:
 
     def print_description_pad(self):
         print("It's an old electronic lock of some kind.")
-        print("There's a small note near it.")
+        print("There's a small 'note' near it.")
         if not self.door_unlocked:
             print("I can't believe I found that password.")
         elif self.door_unlocked and self.soda_used:

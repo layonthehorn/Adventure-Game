@@ -18,15 +18,15 @@ class MainPlaza:
         print("It's a large Main Plaza of the mall. There is a path to the 'west wing' too.")
         print("You emerge into the plaza of an old shopping mall. It is falling apart, "
               "\nwith much of the furnishings removed or smashed. Nature is starting to reclaim it too, judging by all "
-              "\nthe foliage that’s popped up. There is an old car parked nearby, for some strange reason.")
+              "\nthe foliage that’s popped up. There is an old 'car' parked nearby, for some strange reason.")
         if self.exit_unlocked:
             print("The 'exit' is open! I can get out.")
         else:
             print("The 'exit' is locked and I'm trapped.")
         if self.upstairs_unlocked:
-            print("I can get 'upstairs' now at least. The gate is unlocked now.")
+            print("I can get 'upstairs' now at least. The 'gate' is unlocked now.")
         else:
-            print("The path 'upstairs' is shut for now. The gate is locked.")
+            print("The path 'upstairs' is shut for now. The 'gate' is locked.")
         if len(self.inventory) > 0:
             for item in self.inventory:
                 print(f"There is a(n) {item}")

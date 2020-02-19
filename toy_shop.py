@@ -17,9 +17,9 @@ class ToyShop:
     # this prints a description along with a item list
     def print_description_room(self):
         print("It’s an old toy shop, full of things a parent would buy for their children. It’s a mess with old toys "
-              "strewn across the floor, many of which are now broken. There is a claw machine that’s still "
+              "strewn across the floor and 'shelves', many of which are now broken. There is a 'crane' machine that’s still "
               "operational after so long.")
-        print("You can go back to the west wing from here.")
+        print("You can go back to the 'west wing' from here.")
         if len(self.inventory) > 0:
             for item in self.inventory:
                 print(f"There is a(n) {item}")

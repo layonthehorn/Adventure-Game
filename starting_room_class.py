@@ -18,12 +18,12 @@ class StartingRoom:
     # this prints a description along with a item list
     def print_description_room(self):
         print("The room is dark and blasted out.")
-        print("The room smells of mould and rust. There is a disabled robot in the corner, an entry to \na side room "
-              "\nand there is a door that appears to be locked. Maybe it’s connected to that fuse box?.")
+        print("The room smells of mould and rust. There is a disabled 'robot' in the corner, an entry to \na side room "
+              "\nand there is a 'door' that appears to be locked. Maybe it’s connected to that fuse 'box'?.")
         if self.door_opened:
             print("The door to 'outside' is open.")
         else:
-            print("There is a old door and a odd box next to it.")
+            print("There is a old 'door' and a odd 'box' next to it.")
         if len(self.inventory) > 0:
             for item in self.inventory:
                 print(f"There is a(n) {item}")
@@ -37,9 +37,20 @@ class StartingRoom:
         else:
             print("Hey, it's working now!")
 
+    def print_description_door(self):
+        print("It's an old bunker door. Looks like it has a power lock.")
+        if not self.fuse_box:
+            print("I need to find a way to power it.")
+        elif not self.door_opened:
+            print("I need to open it I think now that it has power again.")
+        else:
+            print("I hope it stays working as long as I need it.")
+
     def look_robot(self):
         if not self.robot_fixed:
             print("It's a robot and it has a fuse!")
+        elif 'fuse' in self.inventory:
+            print("I can get the fuse now.")
         else:
             print("I took the robots fuse.")
 

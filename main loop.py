@@ -65,7 +65,7 @@ class VernsAdventure:
         self.combine_pattern = re.compile(r"^com\s|\swith\s|\son\s")
 
         # building the rooms and player names
-        self.main_plaza_name = "outside"
+        self.main_plaza_name = "plaza"
         self.starting_room_name = "bunker"
         self.side_room_name = "side room"
         self.small_den_name = "small den"
@@ -75,12 +75,12 @@ class VernsAdventure:
         self.pet_shop_name = "pet shop"
         self.exit_name = "exit"
         self.end_name = "end"
-        self.up_stairs_hallway_name = "upstairs"
+        self.up_stairs_hallway_name = "upstairs hallway"
         self.animal_den_name = "animal den"
         self.shoe_store_name = "shoe store"
         self.bathroom_name = "bathroom"
         self.basement_entryway_name = "basement entry"
-        self.basement_gen_room_name = "basement generator"
+        self.basement_gen_room_name = "basement generator room"
         self.playing = True
 
         # Temporary ascii art from https://ascii.co.uk/art/lion
@@ -258,7 +258,7 @@ class VernsAdventure:
         while self.playing:
             # if you reach the exit then don't ask for actions from player
             if self.player_old_room != self.player_new_room:
-                print(f"You have gone to the {self.player_new_room} outside.")
+                print(f"You have gone to the {self.player_new_room}.")
                 self.player_old_room = self.player_new_room
             if self.player.location != self.exit_name:
                 print("Verbs look, inv(entory), get, oper(ate), com(bine), drop, score, use, go, save, end, help")
@@ -268,7 +268,6 @@ class VernsAdventure:
 
             # gets the room the player is in
             p_local = self.player.get_location()
-            self.player_new_room = p_local
             location_actions = self.location_dict.get(p_local, None)
             # if it does not find a room moves them to the main plaza
             if location_actions is None:
@@ -286,6 +285,7 @@ class VernsAdventure:
                     else:
                         self.player.increase_score()
                 location_actions(player_choice)
+                self.player_new_room = self.player.get_location()
                 print("")
             elif p_local == self.end_name:
                 # ends game after player asks to
@@ -450,6 +450,8 @@ class VernsAdventure:
                     self.starting_room.print_description_room()
                 elif "box" in p_list[1]:
                     self.starting_room.print_description_box()
+                elif "door" in p_list[1]:
+                    self.starting_room.print_description_door()
                 elif "robot" in p_list[1]:
                     self.starting_room.look_robot()
                 elif p_list[1] != "self" and p_list[1] != "map":
@@ -504,9 +506,8 @@ class VernsAdventure:
             try:
                 if p_list[1] == "outside" or "plaza" in p_list[1]:
                     if self.starting_room.go_outside():
-                        self.player.set_location("outside")
+                        self.player.set_location(self.main_plaza_name)
                 elif "side" in p_list[1]:
-                    print("What a small room.")
                     self.player.set_location("side room")
                 else:
                     print(f"I can't go to {p_list[1]}.")
@@ -546,7 +547,6 @@ class VernsAdventure:
         elif p_list[0] == "go":
             try:
                 if "bunker" in p_list[1]:
-                    print("I'm back in the bunker.")
                     self.player.set_location(self.starting_room_name)
                 else:
                     print(f"I can't go to {p_list[1]}.")
@@ -840,6 +840,8 @@ class VernsAdventure:
                     self.pet_shop.print_description_room()
                 elif "fish" in p_list[1]:
                     self.pet_shop.print_description_fish()
+                elif "dis" in p_list[1]:
+                    self.pet_shop.print_description_selves()
                 elif p_list[1] != "self" and p_list[1] != "map":
                     print(f"I don't know where {p_list[1]} is.")
             except IndexError:
@@ -1200,6 +1202,10 @@ class VernsAdventure:
             try:
                 if p_list[1] == "room":
                     self.basement_entryway.print_description_room()
+                elif "pad" in p_list[1]:
+                    self.basement_entryway.print_description_pad()
+                elif "note" in p_list[1]:
+                    self.basement_entryway.print_description_note()
                 elif p_list[1] != "self" and p_list[1] != "map":
                     print(f"I don't know where {p_list[1]} is.")
             except IndexError:
@@ -1255,6 +1261,10 @@ class VernsAdventure:
             try:
                 if p_list[1] == "room":
                     self.basement_gen_room.print_description_room()
+                elif "spec" in p_list[1]:
+                    self.basement_gen_room.print_description_spec()
+                elif "gen" in p_list[1]:
+                    self.basement_gen_room.print_description_generator()
                 elif p_list[1] != "self" and p_list[1] != "map":
                     print(f"I don't know where {p_list[1]} is.")
             except IndexError:

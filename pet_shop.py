@@ -17,12 +17,12 @@ class PetShop:
     # this prints a description along with a item list
     def print_description_room(self):
         print("It’s an old pet shop. Humans would go here with their pets to buy care products for whatever animal "
-              "\nthey owned. While the pet displays are now empty and smashed to bits, there are still plenty of useful "
+              "\nthey owned. While the pet 'displays' are now empty and smashed to bits, there are still plenty of useful "
               "\nthings for a lion like you. Though you aren’t too fond of having to go to a pet store to get anything "
-              "\neven remotely useful for you. In the back room of the store there is a fish display tank. You seem "
+              "\neven remotely useful for you. In the back room of the store there is a fish display 'tank'. You seem "
               "\noddly attracted to it...")
         if "mane brush" in self.inventory:
-            print("I might need a clean up.")
+            print("I might need a clean up and that brush looks handy.")
 
         if len(self.inventory) > 0:
             for item in self.inventory:
@@ -37,6 +37,9 @@ class PetShop:
             print("That fish looks tasty... No, Vern resist it.")
         else:
             print("I feel bad for taking the fish. Damn it.")
+
+    def print_description_selves(self):
+        print("They are ruined and there is nothing to get from them. Just old junk and random dog care products.")
 
     # this pops off the items and returns it
     def get_item(self, item):

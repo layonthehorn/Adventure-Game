@@ -17,7 +17,7 @@ class Cemetery:
     # this prints a description along with a item list
     def print_description_room(self):
         print("You stumble into a makeshift cemetery. The atmosphere of the room makes you uneasy. At some point it "
-              "\nused to be an outdoors food court, but it has become a grave site for someone’s loved ones. The "
+              "\nused to be an outdoors food court, but it has become a 'grave' site for someone’s loved ones. The "
               "\nheadstones are made from old objects such as old car doors and hoods and signs.")
         print("You can go back to the 'west wing'.")
         if not self.first_entered:
@@ -32,7 +32,7 @@ class Cemetery:
         if "lion plush" in self.inventory:
             print("On a child's grave hangs a little lion plushy.")
         if not self.found_rope:
-            print("Hey, there's an old rope here. Might come in handy if you dare to steal from a graveyard.")
+            print("Hey, there's an old 'rope' here. Might come in handy if you dare to steal from a graveyard.")
             self.inventory.append("rope")
             self.found_rope = True
         elif "rope" in self.inventory:

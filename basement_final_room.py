@@ -23,16 +23,33 @@ class BasementGenRoom:
 
     # this prints a description along with a item list
     def print_description_room(self):
-        print("It's a dark basement lit only by emergency lights.")
         print("This place is not on the map either... Maybe it just was not entered by the previous owners?.")
+        print("Hey a large 'generator', maybe you can get it working?")
         if self.fuses_fixed:
             print("The power is on somewhere now. You should look around for it!")
         else:
             print("There is a large panel with spaces for four large fuses. You should get your eyes out for them.")
-            print("There is a spec sheet by it you might want to take note of.")
+            print("There is a 'spec' sheet by it you might want to take note of.")
         if len(self.inventory) > 0:
             for item in self.inventory:
                 print(f"There is a(n) {item}")
+
+    def print_description_generator(self):
+        print("It's a back up generator.")
+        if self.generator_working:
+            print("I got it working. I should check around and see what opened up. Maybe the exit is working again.")
+        else:
+            print("There are slots for four fuses. I need to find and insert them.")
+
+    def print_description_spec(self):
+        print("It lists the fuses I will need to fix the generator.")
+        if len(self.generator_inventory) < 4:
+            print("You still need:")
+            for fuse in self.fuses_needed:
+                if fuse not in self.generator_inventory:
+                    print(f"A {fuse}")
+        else:
+            print("I got them all. Took long enough too...")
 
     # this pops off the items and returns it
     def get_item(self, item):

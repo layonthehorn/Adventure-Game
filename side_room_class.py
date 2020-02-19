@@ -11,16 +11,14 @@ class SideRoom:
         return self.inventory
 
     def get_bools(self):
-        return (self.light_switch)
+        return self.light_switch
 
     # this prints a description along with a item list
     def print_description_room(self):
         if self.light_switch:
-            print("It's a small 'side room'. There is a 'computer' running some had left logged in. "
-                  "\nThere is an exit back to the 'bunker'.")
             print("You walk into a small room. It is dark and doesn’t smell any better than the rest of the bunker. "
-                  "\nThere is a light switch by the entryway. In the corner is an old computer which appears to still "
-                  "\nbe operational.")
+                  "\nThere is a 'light' switch by the entryway. In the corner is an old 'computer' which appears to still "
+                  "\nbe operational. You can get back to the 'bunker' too.")
             if len(self.inventory) > 0:
                 for item in self.inventory:
                     print(f"There is a(n) {item}")

@@ -85,12 +85,6 @@ class VernLion:
         print("Your score went up!")
         self.player_score += 1
 
-    def get_description(self, item):
-        if item in self.item_dictionary:
-            return self.item_dictionary[item]
-        else:
-            return "Missing Value! ERROR!"
-
     # prints his inventory
     def check_inventory(self):
         # if self is some how removed it will be added back.
@@ -104,7 +98,7 @@ class VernLion:
             for item in self.inventory:
                 # should not be shown to player as being an item.
                 if item != "self":
-                    print("{:20}{:<5}".format(item, self.get_description(item)))
+                    print("{:20}{:<5}".format(item, self.item_dictionary.get(item, "Error, Report me pls!")))
 
     # allows getting items into his inventory
     def get_item(self, item):
