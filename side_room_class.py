@@ -34,31 +34,38 @@ class SideRoom:
             print("It's too dark to see.")
 
     def print_description_safe(self):
-        print("An old safe. Looks like it uses a biometric lock of some sort.")
-        if not self.safe_opened:
-            print("I wonder how I get into it?")
-        elif "green fuse" in self.inventory:
-            print("I might need that fuse.")
+        if self.light_switch:
+            print("An old safe. Looks like it uses a biometric lock of some sort.")
+            if not self.safe_opened:
+                print("I wonder how I get into it?")
+            elif "green fuse" in self.inventory:
+                print("I might need that fuse.")
+            else:
+                print("I got the dumb thing open at least.")
         else:
-            print("I got the dumb thing open at least.")
+            print("It's too dark to see.")
 
     def operate_safe(self, mane_brushed):
-        if not self.safe_opened:
-            if mane_brushed:
-                print("I SUPPOSE YOU ARE CLEAN ENOUGH... FINE I'LL OPEN.\n")
-                print("Piece of junk... About damn time.")
-                self.inventory.append("green fuse")
-                self.safe_opened = True
-                return True
+        if self.light_switch:
+            if not self.safe_opened:
+                if mane_brushed:
+                    print("I SUPPOSE YOU ARE CLEAN ENOUGH... FINE I'LL OPEN.\n")
+                    print("Piece of junk... About damn time.")
+                    self.inventory.append("green fuse")
+                    self.safe_opened = True
+                    return True
+                else:
+                    print("The safe buzzes and a voice barks out.")
+                    print("HEY, A SCRUFFY THING LIKE YOU CAN'T OPEN ME.\n")
+                    print("What The fuck?\n")
+                    print("YES, YOU. CLEAN YOURSELF UP IF YOU WANT ME TO OPEN.\n")
+                    print("Great a talking safe. Always happy to find new pains in my tail.")
+                    return False
             else:
-                print("The safe buzzes and a voice barks out.")
-                print("HEY, A SCRUFFY THING LIKE YOU CAN'T OPEN ME.\n")
-                print("What The fuck?\n")
-                print("YES, YOU. CLEAN YOURSELF UP IF YOU WANT ME TO OPEN.\n")
-                print("Great a talking safe. Always happy to find new pains in my tail.")
+                print("It's already opened and I would prefer never to deal with it again.")
                 return False
         else:
-            print("It's already opened and I would prefer never to deal with it again.")
+            print("It's too dark to see.")
             return False
 
     # this pops off the items and returns it
@@ -85,14 +92,12 @@ class SideRoom:
 
     # uses computer in side room
     def use_computer(self):
-        if not self.light_switch:
-            print("You can't see anything to use it.")
-        else:
+        if self.light_switch:
             reading = True
             while reading:
-                print("You have three emails. Select 1-4 and -1 to exit.")
-                player_option = input("")
-                if player_option == "-1":
+                print("You have three emails. Select 1-4 and q to exit.")
+                player_option = input("").lower()
+                if player_option == "q":
                     reading = False
                 elif player_option == "1":
                     print("""The only way to save messages on ths computer is to email them to myself.
@@ -109,3 +114,5 @@ class SideRoom:
                     Hopefully we don't need it for the door.""")
                 else:
                     print("I should select a usable option. Stupid computers.")
+        else:
+            print("You can't see anything to use it.")

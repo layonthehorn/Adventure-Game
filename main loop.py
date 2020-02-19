@@ -85,7 +85,8 @@ class VernsAdventure:
         self.playing = True
 
         # Temporary ascii art from https://ascii.co.uk/art/lion
-        self.ascii_image = """                 ,  ,, ,
+        self.ascii_image = """                 
+                        ,  ,, ,
                    , ,; ; ;;  ; ;  ;
                 , ; ';  ;  ;; .-''\\ ; ;
              , ;  ;`  ; ,; . / /8b \\ ; ;
