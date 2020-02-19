@@ -851,6 +851,8 @@ class VernsAdventure:
                     self.pet_shop.print_description_fish()
                 elif "dis" in p_list[1]:
                     self.pet_shop.print_description_selves()
+                elif "mach" in p_list[1] or "leash" in p_list[1]:
+                    self.pet_shop.print_description_leash_machine()
                 elif p_list[1] != "self" and p_list[1] != "map":
                     print(f"I don't know where {p_list[1]} is.")
             except IndexError:
@@ -884,12 +886,11 @@ class VernsAdventure:
             except ValueError:
                 pass
             try:
-                if choice_list[1] is None:
+                if "leash" in choice_list[1] or "mach" in choice_list[1]:
                     if choice_list[0] in self.player.inventory:
-                        pass
-                        # if self.starting_room.fix_fuse_box(choice_list[0]):
-                        #     self.player.use_item(choice_list[0])
-                        #     self.player.increase_score()
+                        if self.pet_shop.lengthen_rope(choice_list[0]):
+                            self.player.use_item(choice_list[0])
+                            self.player.increase_score()
                     else:
                         print(f"I don't have a(n) {choice_list[0]}")
                 else:

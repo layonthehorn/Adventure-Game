@@ -25,7 +25,7 @@ class ShoeStore:
             if self.elevator_roped:
                 print("You can climb down it now.")
             elif "rope" in self.inventory and self.weak_roped:
-                print("I used a rope on it but I don't think it's strong enough.")
+                print("I used a rope on it but I don't think it's long enough.")
             else:
                 print("There's no way down just yet. You'll have to figure that out.")
         else:
@@ -43,7 +43,7 @@ class ShoeStore:
         if not self.elevator_opened:
             print("It's closed right now. I wonder what's inside.")
         elif self.weak_roped:
-            print("It's got a rope but I don't think it's safe enough.")
+            print("It's got a rope but I don't think it's long enough.")
         elif self.elevator_roped:
             print("I should be safe to go down now.")
         else:
@@ -54,7 +54,7 @@ class ShoeStore:
         if item in self.inventory:
             # if item is rope and you have used it on the elevator it flips that flag back to false
             if item == "rope" and self.weak_roped:
-                print("I removed the weak rope from the elevator.")
+                print("I removed the short rope from the elevator.")
                 self.weak_roped = False
             location = self.inventory.index(item)
             return self.inventory.pop(location)
@@ -91,12 +91,12 @@ class ShoeStore:
         else:
             # if the item is the rope it adds to room inventory and flips the flag variable
             if item == "rope":
-                print(f"I used the {item}. Maybe I can climb down")
+                print(f"I used the {item}. Maybe I can climb down.")
                 self.inventory.append(item)
                 self.weak_roped = True
                 return True
             # if strong rope just flips the strong rope flag
-            elif item == "strong rope":
+            elif item == "long rope":
                 print(f"I used the {item}. Maybe I can climb down now.")
                 self.elevator_roped = True
                 return True

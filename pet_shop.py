@@ -1,10 +1,10 @@
 class PetShop:
     def __init__(self, items_contained=None, bool_list=(False, False)):
         if items_contained is None:
-            items_contained = ["mane brush"]
+            items_contained = ["mane brush", "bag of catnip"]
         self.inventory = items_contained
 
-        self.fish_looked, self.bool_two = bool_list
+        self.fish_looked, self.rope_fixed = bool_list
 
     # returns the items in the room.
     def get_inventory(self):
@@ -12,7 +12,7 @@ class PetShop:
 
     # returns bools for saving
     def get_bools(self):
-        return self.fish_looked, self.bool_two
+        return self.fish_looked, self.rope_fixed
 
     # this prints a description along with a item list
     def print_description_room(self):
@@ -21,6 +21,7 @@ class PetShop:
               "\nthings for a lion like you. Though you aren’t too fond of having to go to a pet store to get anything "
               "\neven remotely useful for you. In the back room of the store there is a fish display 'tank'. You seem "
               "\noddly attracted to it...")
+        print("There is a 'leash repairing' machine off in one of the corners.")
         if "mane brush" in self.inventory:
             print("I might need a clean up and that brush looks handy.")
 
@@ -40,6 +41,29 @@ class PetShop:
 
     def print_description_selves(self):
         print("They are ruined and there is nothing to get from them. Just old junk and random dog care products.")
+
+    def print_description_leash_machine(self):
+        print("It's a machine to repair leases.")
+        if self.rope_fixed:
+            print("It broke after extending my rope. It's no good now.")
+        else:
+            print("It looks like it's still working.")
+
+    def lengthen_rope(self, item):
+        if not self.rope_fixed:
+            if item == "rope":
+                print("Suddenly, the motor in the machine starts to struggle, and then with a large bang, ceases to "
+                      "work.")
+                print("Hey, I got a much longer rope now!")
+                self.inventory.append("long rope")
+                self.rope_fixed = True
+                return True
+            else:
+                print(f"It rejected the {item}.")
+                return False
+        else:
+            print("It's very broken and there's nothing else I can do with it.")
+            return False
 
     # this pops off the items and returns it
     def get_item(self, item):

@@ -4,7 +4,7 @@ import time
 class StartingRoom:
     def __init__(self, items_contained=None, bool_list=(False, False, False)):
         if items_contained is None:
-            items_contained = ["fuse", "bag of catnip"]
+            items_contained = ["fuse"]
         self.inventory = items_contained
         self.fuse_box, self.door_opened, self.robot_fixed = bool_list
 

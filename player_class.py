@@ -57,9 +57,9 @@ class VernLion:
             "fish": "A very tasty if small fish. Should you?.. Eat it?",
             "bones": "Bones are all that's left of the little fish you ate. How could you?",
             "rope": "A length of rope. Might be useful to get somewhere lower.",
-            "strong rope": "A strong length of rope. This won't break.",
+            "long rope": "A long length of rope. This should reach the bottom.",
             "soda": "An old flat soda. Not something you want to drink.",
-            "shovel": "It's old entrenching tool. Useful for digging and many other things."
+            "shovel": "It's an old entrenching tool. Useful for digging and many other things."
         }
 
     # returns his location
@@ -231,3 +231,5 @@ class VernLion:
         print("A nervous lion is what you are. Somehow still alive but for how long? Hopefully long enough.")
         if "meat" in self.inventory or "drugged meat" in self.inventory:
             print("This meat smells awful...")
+        if self.mane_brushed:
+            print("At least I'm cleaned up now.")
