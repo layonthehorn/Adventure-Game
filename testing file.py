@@ -38,7 +38,7 @@ value_dictionary = {
     "player inventory": ["self", "gold fuse", "green fuse"],
     "player score": 2,
     "player misc": (False, 0),
-    "player location": "basement generator room",
+    "player location": "upstairs hallway",
     # starting room data
     "starting room bools": (True, True, True),
     "starting room items": ["bag of catnip"],

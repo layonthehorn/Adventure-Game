@@ -33,7 +33,7 @@ def print_help():
     print("look {item}: Looks at things. room, map, objects."
           "\ninv(entory): Checks your inventory and prints descriptions out."
           "\nget {item}: Gets items from room."
-          "\noper(ate) {object}: How you use objects: doors, computers, etc."
+          "\noper(ate) {object}: How you use/read objects: doors, computers, etc."
           "\ncom(bine) {item} with/on {item}: allows you to combine items. Use 'self' to use an item on you."
           "\ndrop {item}: Allows you to get rid of an item."
           "\nscore: Allows the player to check current progress in-game."
@@ -965,6 +965,10 @@ class VernsAdventure:
             try:
                 if p_list[1] == "room":
                     self.up_stairs_hallway.print_description_room()
+                elif "book" in p_list[1]:
+                    self.up_stairs_hallway.print_description_book()
+                elif "furn" in p_list[1]:
+                    self.up_stairs_hallway.print_description_furniture()
                 elif p_list[1] != "self" and p_list[1] != "map":
                     print(f"I don't know where {p_list[1]} is.")
             except IndexError:
@@ -989,8 +993,8 @@ class VernsAdventure:
         # allows player to operate things. Placeholder
         elif p_list[0] == "oper":
             try:
-                if p_list[1] is None:
-                    pass
+                if "book" in p_list[1]:
+                    self.up_stairs_hallway.read_book()
                 else:
                     print("I can't use that.")
             except IndexError:
