@@ -1,25 +1,20 @@
+import time
 
-# def climb_ladder(room_inventory):
-#
-#     if "rope" in room_inventory:
-#         print("That rope is too weak. I'm not going to climb it.")
-#     elif "strong rope" in room_inventory:
-#         print("Ok, I'm heading down.")
-#     else:
-#         print("I need to find something to get down with first.")
-#
-#
-# inv = input("w, or s.")
-# if inv == "w":
-#     data = ["rope"]
-# elif inv == "s":
-#     data = ["strong rope"]
-# else:
-#     data = [None]
-# climb_ladder(data)
+# testing cooking puzzle
 
-print("The safe buzzes and a voice barks out.")
-print("HEY, A SCRUFFY THING LIKE YOU CAN'T OPEN ME.\n")
-print("What The fuck?\n")
-print("YES, YOU. CLEAN YOURSELF UP IF YOU WANT ME TO OPEN.\n")
-print("Great a talking safe. Always happy to find new pains in my tail.")
+# gets starting time
+start_time = time.time()
+
+# loop to wait for player input
+cooking = True
+while cooking:
+    user_input = input("Press enter to quit.")
+    cooking = False
+
+# checks if you let it cook for about 20 seconds
+total_time = time.time() - start_time
+print(total_time, "Time taken.")
+if 25.0 > total_time > 18.0:
+    print("It's working now!")
+else:
+    print("I didn't time it right.")
