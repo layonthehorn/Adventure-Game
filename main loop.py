@@ -59,6 +59,7 @@ room and there is a door that appears to be locked.
 
 
 class VernsAdventure:
+    """This is a text adventure game. All that is needed is to initialize it and the game will start."""
     def __init__(self):
 
         # pattern matching for actions
@@ -449,7 +450,7 @@ class VernsAdventure:
             except IndexError:
                 print("Combine what with what?")
 
-    # commands for bunker area
+    # bunker actions
     def starting_area(self, player_choice):
         # looking at things
         p_list = player_choice.split(" ", 1)
@@ -523,7 +524,7 @@ class VernsAdventure:
             except IndexError:
                 print("Go where?")
 
-    # actions for the side room
+    # side room actions
     def side_area(self, player_choice):
         # looking at things
         p_list = player_choice.split(" ", 1)
