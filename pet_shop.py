@@ -39,7 +39,8 @@ class PetShop:
         else:
             print("I feel bad for taking the fish. Damn it.")
 
-    def print_description_selves(self):
+    @staticmethod
+    def print_description_selves():
         print("They are ruined and there is nothing to get from them. Just old junk and random dog care products.")
 
     def print_description_leash_machine(self):

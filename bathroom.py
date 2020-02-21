@@ -29,7 +29,8 @@ class Bathroom:
                 print(f"There is a(n) {item}")
 
     # bool will be if player has brushed mane
-    def print_description_mirror(self, bool_val):
+    @staticmethod
+    def print_description_mirror(bool_val):
         print("It's an old cracked mirror. Kinda dirty too...")
         if bool_val:
             print("At least I look nicer than I thought I did.")
@@ -47,7 +48,8 @@ class Bathroom:
         else:
             print("I'm not messing with it again.")
 
-    def print_description_graffiti(self):
+    @staticmethod
+    def print_description_graffiti():
         print("It's a lot of crudely drawn shapes and messages.")
         print("You look it and try to make something out.")
         time.sleep(1)

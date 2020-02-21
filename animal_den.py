@@ -74,7 +74,6 @@ class AnimalDen:
         if self.animal_drugged:
             print("it's a small animal. Pretty fuzzy too.")
             if not self.found_fur:
-                self.inventory.append("fur sample")
                 print("Hey, that fur might help me out.")
                 self.found_fur = True
         else:
@@ -91,5 +90,6 @@ class AnimalDen:
         elif "drugged meat" in self.inventory:
             print("I should check my trap in the animal den.")
             self.inventory.remove("drugged meat")
+            self.inventory.append("fur sample")
             self.animal_drugged = True
             return True
