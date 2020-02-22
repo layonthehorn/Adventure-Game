@@ -1069,17 +1069,19 @@ class VernsAdventure:
             except IndexError:
                 print("Go where?")
 
-        # allows player to operate things. Placeholder
+        # allows player to operate things.
         elif p_list[0] == "oper":
             try:
                 if "book" in p_list[1]:
                     self.up_stairs_hallway.read_book()
+                elif "furn" in p_list[1]:
+                    print("There's nothing to operate on it.")
                 else:
                     print("I can't use that.")
             except IndexError:
                 print("Operate what?")
 
-        # allows player to use items on objects. Placeholder
+        # allows player to use items on objects.
         elif p_list[0] == "use":
             choice_list = self.use_pattern.split(player_choice)
             try:
@@ -1087,14 +1089,11 @@ class VernsAdventure:
             except ValueError:
                 pass
             try:
-                if choice_list[1] is None:
-                    if choice_list[0] in self.player.inventory:
-                        pass
-                        # if self.starting_room.fix_fuse_box(choice_list[0]):
-                        #     self.player.use_item(choice_list[0])
-                        #     self.player.increase_score()
-                    else:
-                        print(f"I don't have a(n) {choice_list[0]}")
+                if "book" in p_list[1]:
+                    print("It's a book. Why would I do that?")
+                elif "furn" in p_list[1]:
+                    print("There's no point to using anything on it.")
+
                 else:
                     print(f"I can't do anything to {choice_list[1]}")
 
