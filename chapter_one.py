@@ -103,6 +103,23 @@ class ChapterOne:
         # self.basement_entry - where you have to go to finish the game
         # self.basement_gen_room - where you turn on the power.
 
+        # dummy classes if the player quits rather than loads or starts new.
+        # self.player = ""
+        # self.starting_room = ""
+        # self.side_room = ""
+        # self.main_plaza = ""
+        # self.small_den = ""
+        # self.west_wing = ""
+        # self.cemetery = ""
+        # self.toy_shop = ""
+        # self.pet_shop = ""
+        # self.up_stairs_hallway = ""
+        # self.animal_den = ""
+        # self.shoe_store = ""
+        # self.bathroom = ""
+        # self.basement_entryway = ""
+        # self.basement_gen_room = ""
+
         choosing = True
         end_game = False
         while choosing:
@@ -128,24 +145,8 @@ class ChapterOne:
                 print_intro()
                 choosing = False
             elif player_option == "q":
-                self.player = VernLion()
-                self.starting_room = StartingRoom()
-                self.side_room = SideRoom()
-                self.main_plaza = MainPlaza()
-                self.small_den = SmallDen()
-                self.west_wing = WestWing()
-                self.cemetery = Cemetery()
-                self.toy_shop = ToyShop()
-                self.pet_shop = PetShop()
-                self.up_stairs_hallway = UpstairsHallway()
-                self.animal_den = AnimalDen()
-                self.shoe_store = ShoeStore()
-                self.bathroom = Bathroom()
-                self.basement_entryway = BasementEnter()
-                self.basement_gen_room = BasementGenRoom()
                 choosing = False
                 end_game = True
-                print("Goodbye!")
             elif player_option == "l":
                 # getting loaded settings
                 new_value_dictionary = load_game_state("chapter_one.save")
@@ -217,45 +218,48 @@ class ChapterOne:
 
         # location dictionary
         # used for general actions to run player actions in any room.
-        self.switcher_dictionary = {
-            self.starting_room_name: self.starting_room,
-            self.side_room_name: self.side_room,
-            self.main_plaza_name: self.main_plaza,
-            self.west_wing_name: self.west_wing,
-            self.cemetery_name: self.cemetery,
-            self.pet_shop_name: self.pet_shop,
-            self.toy_shop_name: self.toy_shop,
-            self.small_den_name: self.small_den,
-            self.up_stairs_hallway_name: self.up_stairs_hallway,
-            self.shoe_store_name: self.shoe_store,
-            self.animal_den_name: self.animal_den,
-            self.bathroom_name: self.bathroom,
-            self.basement_gen_room_name: self.basement_gen_room,
-            self.basement_entryway_name: self.basement_entryway
-        }
+        # if the player is going to actually play builds rest of game
+        if not end_game:
+            player_choice = ""
+            self.player_old_room = self.player.get_location()
+            self.player_new_room = self.player_old_room
+            self.switcher_dictionary = {
+                self.starting_room_name: self.starting_room,
+                self.side_room_name: self.side_room,
+                self.main_plaza_name: self.main_plaza,
+                self.west_wing_name: self.west_wing,
+                self.cemetery_name: self.cemetery,
+                self.pet_shop_name: self.pet_shop,
+                self.toy_shop_name: self.toy_shop,
+                self.small_den_name: self.small_den,
+                self.up_stairs_hallway_name: self.up_stairs_hallway,
+                self.shoe_store_name: self.shoe_store,
+                self.animal_den_name: self.animal_den,
+                self.bathroom_name: self.bathroom,
+                self.basement_gen_room_name: self.basement_gen_room,
+                self.basement_entryway_name: self.basement_entryway
+            }
 
         # action dictionary for each of the rooms special actions
-        self.location_dict = {
-            self.starting_room_name: self.starting_area,
-            self.side_room_name: self.side_area,
-            self.main_plaza_name: self.main_plaza_area,
-            self.small_den_name: self.small_den_area,
-            self.west_wing_name: self.west_wing_area,
-            self.cemetery_name: self.cemetery_area,
-            self.pet_shop_name: self.pet_shop_area,
-            self.toy_shop_name: self.toy_shop_area,
-            self.up_stairs_hallway_name: self.up_stairs_hallway_area,
-            self.bathroom_name: self.bathroom_area,
-            self.animal_den_name: self.animal_den_area,
-            self.shoe_store_name: self.shoe_store_area,
-            self.basement_entryway_name: self.basement_entryway_area,
-            self.basement_gen_room_name: self.basement_gen_area,
-            self.exit_name: self.exit_game,
-            self.end_name: self.end_game
-        }
-        player_choice = ""
-        self.player_old_room = self.player.get_location()
-        self.player_new_room = self.player_old_room
+            self.location_dict = {
+                self.starting_room_name: self.starting_area,
+                self.side_room_name: self.side_area,
+                self.main_plaza_name: self.main_plaza_area,
+                self.small_den_name: self.small_den_area,
+                self.west_wing_name: self.west_wing_area,
+                self.cemetery_name: self.cemetery_area,
+                self.pet_shop_name: self.pet_shop_area,
+                self.toy_shop_name: self.toy_shop_area,
+                self.up_stairs_hallway_name: self.up_stairs_hallway_area,
+                self.bathroom_name: self.bathroom_area,
+                self.animal_den_name: self.animal_den_area,
+                self.shoe_store_name: self.shoe_store_area,
+                self.basement_entryway_name: self.basement_entryway_area,
+                self.basement_gen_room_name: self.basement_gen_area,
+                self.exit_name: self.exit_game,
+                self.end_name: self.end_game
+            }
+
         # main game play loop
         while self.playing and not end_game:
             # if they reached a new room announce it
