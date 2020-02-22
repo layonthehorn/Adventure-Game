@@ -1,5 +1,4 @@
 from chapter_one import ChapterOne
-import sys
 
 ascii_image = """                 
                 ,  ,, ,

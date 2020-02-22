@@ -112,6 +112,7 @@ def load_game_state(file_name):
 
 
 if __name__ == "__main__":
-    save_game_state(value_dictionary, "chapter_one.save")
-    item_dict = load_game_state("chapter_one.save")
+    save_location = "saves/chapter_one.save"
+    save_game_state(value_dictionary, save_location)
+    item_dict = load_game_state(save_location)
     print_db_file(item_dict)

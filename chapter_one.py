@@ -1,6 +1,5 @@
 import pickle
 import re
-import sys
 
 from cemetery import Cemetery
 from main_plaza import MainPlaza
@@ -65,6 +64,7 @@ class ChapterOne:
         # pattern matching for actions
         self.use_pattern = re.compile(r"^use\s|\swith\s|\son\s")
         self.combine_pattern = re.compile(r"^com\s|\swith\s|\son\s")
+        self.save_location = "saves/chapter_one.save"
 
         # building the rooms and player names
         self.main_plaza_name = "plaza"
@@ -149,7 +149,7 @@ class ChapterOne:
                 end_game = True
             elif player_option == "l":
                 # getting loaded settings
-                new_value_dictionary = load_game_state("chapter_one.save")
+                new_value_dictionary = load_game_state(self.save_location)
                 # if the dictionary is none it can not load a game
                 if new_value_dictionary is None:
                     print("No save games found.")
@@ -220,7 +220,6 @@ class ChapterOne:
         # used for general actions to run player actions in any room.
         # if the player is going to actually play builds rest of game
         if not end_game:
-            player_choice = ""
             self.player_old_room = self.player.get_location()
             self.player_new_room = self.player_old_room
             self.switcher_dictionary = {
@@ -260,6 +259,7 @@ class ChapterOne:
                 self.end_name: self.end_game
             }
 
+        player_choice = ""
         # main game play loop
         while self.playing and not end_game:
             # if they reached a new room announce it
@@ -370,7 +370,7 @@ class ChapterOne:
                             }
         try:
             # writes data to save file with pickle
-            with open("chapter_one.save", 'wb+') as db_file:
+            with open(self.save_location, 'wb+') as db_file:
                 pickle.dump(value_dictionary, db_file)
         except IOError:
             print("Could not open file for saving...")
