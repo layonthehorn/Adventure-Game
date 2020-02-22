@@ -1,9 +1,14 @@
 class SmallDen:
-    def __init__(self, items_contained=None, bool_list=(False, False, False)):
+    def __init__(self, items_contained=None, bool_list=(False, False, False, False), work_inventory=None):
         if items_contained is None:
             items_contained = ["meat"]
+        if work_inventory is None:
+            work_inventory = []
+
         self.inventory = items_contained
-        self.animal_cut, self.barn_looked, self.tool_repaired = bool_list
+        self.workbench_items_needed = ("", "", "")
+        self.workbench_inventory = work_inventory
+        self.animal_cut, self.barn_looked, self.tool_repaired, self.have_parts = bool_list
 
     # returns the items in the room.
     def get_inventory(self):
@@ -11,7 +16,10 @@ class SmallDen:
 
     # returns bools for saving
     def get_bools(self):
-        return self.animal_cut, self.barn_looked, self.tool_repaired
+        return self.animal_cut, self.barn_looked, self.tool_repaired, self.have_parts
+
+    def get_parts(self):
+        return self.workbench_inventory
 
     # this prints a description along with a item list
     def print_description_room(self):
@@ -43,12 +51,23 @@ class SmallDen:
         else:
             print("I wonder what the 'work bench' was for.")
 
+    # prints description of work bench
     def print_description_workbench(self):
         print("It's a work bench with assortment of tools and materials.")
         if not self.tool_repaired:
-            print("")
+            print("I wonder if I can fix that, .")
+        elif "tool" in self.inventory:
+            print("I repaired it.")
         else:
-            print("")
+            print("I don't think there's anything else to do here.")
+
+    # gets missing parts to work bench
+    def give_missing_part(self, item):
+        return False
+
+    # if you have the parts you can repair the item
+    def operate_work_bench(self):
+        pass
 
     # player trying to get a chunk of meat
     def animal_cutting(self, item):

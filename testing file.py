@@ -49,8 +49,9 @@ value_dictionary = {
     "main plaza bools": (True, True, False, False, False),
     "main plaza items": ["strange keys", "map"],
     # small den data
-    "small den bools": (False, False),
+    "small den bools": (False, False, False, False),
     "small den items": [],
+    "workbench inventory": [],
     # west wing data
     "west wing bools": (False, False),
     "west wing items": [],

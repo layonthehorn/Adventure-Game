@@ -171,7 +171,8 @@ class VernsAdventure:
                                                 new_value_dictionary["main plaza bools"])
                     # small den data
                     self.small_den = SmallDen(new_value_dictionary["small den items"],
-                                              new_value_dictionary["small den bools"])
+                                              new_value_dictionary["small den bools"],
+                                              new_value_dictionary["workbench inventory"])
                     # west wing data
                     self.west_wing = WestWing(new_value_dictionary["west wing items"],
                                               new_value_dictionary["west wing bools"])
@@ -335,6 +336,7 @@ class VernsAdventure:
                             # small den data
                             "small den items": self.small_den.get_inventory(),
                             "small den bools": self.small_den.get_bools(),
+                            "workbench inventory": self.small_den.get_parts(),
                             # west wing data
                             "west wing items": self.west_wing.get_inventory(),
                             "west wing bools": self.west_wing.get_bools(),
@@ -687,6 +689,10 @@ class VernsAdventure:
                     self.small_den.print_description_room()
                 elif "animal" in p_list[1]:
                     self.small_den.print_description_animal_body()
+                elif "work" in p_list[1]:
+                    self.small_den.print_description_workbench()
+                elif "barn" in p_list[1]:
+                    self.small_den.print_description_barn()
                 elif p_list[1] != "self" and p_list[1] != "map":
                     print(f"I don't know where {p_list[1]} is.")
             except IndexError:
@@ -697,6 +703,8 @@ class VernsAdventure:
             try:
                 if "plaza" in p_list[1] or p_list[1] == "outside":
                     self.player.set_location(self.main_plaza_name)
+                elif "barn" in p_list[1]:
+                    print("I'm already here.")
                 else:
                     print(f"I can't go to {p_list[1]}.")
             except IndexError:
@@ -707,6 +715,10 @@ class VernsAdventure:
             try:
                 if "animal" in p_list[1]:
                     print("It's not alive to mess with.")
+                elif "work" in p_list[1]:
+                    self.small_den.operate_work_bench()
+                elif "barn" in p_list[1]:
+                    print("I can't really do much with it.")
                 else:
                     print("I can't use that.")
             except IndexError:
@@ -727,6 +739,15 @@ class VernsAdventure:
                             self.player.increase_score()
                     else:
                         print(f"I don't have a(n) {choice_list[0]}")
+                elif "work" in choice_list[1]:
+                    if choice_list[0] in self.player.inventory:
+                        if self.small_den.give_missing_part(choice_list[0]):
+                            self.player.increase_score()
+                    else:
+                        print(f"I don't have a(n) {choice_list[0]}")
+                elif "barn" in choice_list[1]:
+                    print("There's nothing that needs to be done to the barn.")
+
                 else:
                     print(f"I can't do anything to {choice_list[1]}")
 
