@@ -35,7 +35,7 @@ import pickle
 # this file is built to generate custom save games for testing.
 value_dictionary = {
     # player data
-    "player inventory": ["self", "soldering iron", "soldering wire", "capacitor"],
+    "player inventory": ["self", "circuit board"],
     "player score": 2,
     "player misc": (False, 0),
     "player location": "small den",

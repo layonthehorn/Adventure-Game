@@ -881,9 +881,10 @@ class VernsAdventure:
                     else:
                         print(f"I don't have a(n) {choice_list[0]}")
                 elif "lock" in choice_list[1]:
-                    if self.toy_shop.open_locker(choice_list[0]):
-                        self.player.use_item(choice_list[0])
-                        self.player.increase_score()
+                    if choice_list[0] in self.player.inventory:
+                        if self.toy_shop.open_locker(choice_list[0]):
+                            self.player.use_item(choice_list[0])
+                            self.player.increase_score()
                     else:
                         print(f"I don't have a(n) {choice_list[0]}")
                 elif "shelve" in p_list[1]:
