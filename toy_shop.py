@@ -1,7 +1,7 @@
 class ToyShop:
     def __init__(self, items_contained=None, bool_list=(False, False, False)):
         if items_contained is None:
-            items_contained = ["fur sample"]
+            items_contained = ["soldering wire"]
         self.inventory = items_contained
 
         self.crane_fixed, self.crane_won, self.shelves_looked = bool_list
@@ -19,6 +19,8 @@ class ToyShop:
         print("It’s an old toy shop, full of things a parent would buy for their children. It’s a mess with old toys "
               "strewn across the floor and 'shelves', many of which are now broken. There is a 'crane' machine that’s still "
               "operational after so long.")
+        if "soldering wire" in self.inventory:
+            print("There's old wire used to repair things here too.")
         print("You can go back to the 'west wing' from here.")
         if len(self.inventory) > 0:
             for item in self.inventory:

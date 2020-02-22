@@ -894,6 +894,8 @@ class VernsAdventure:
                     self.pet_shop.print_description_selves()
                 elif "mach" in p_list[1] or "leash" in p_list[1]:
                     self.pet_shop.print_description_leash_machine()
+                elif "fridge" in p_list[1]:
+                    self.pet_shop.print_description_fridge()
                 elif p_list[1] != "self" and p_list[1] != "map":
                     print(f"I don't know where {p_list[1]} is.")
             except IndexError:
@@ -912,8 +914,14 @@ class VernsAdventure:
         # allows player to operate things
         elif p_list[0] == "oper":
             try:
-                if p_list[1] is None:
-                    pass
+                if "fish" in p_list[1]:
+                    print("How would I operate the tank?")
+                elif "dis" in p_list[1]:
+                    print("There's nothing I want to mess with there.")
+                elif "mach" in p_list[1] or "leash" in p_list[1]:
+                    print("It need a item to be used with.")
+                elif "fridge" in p_list[1]:
+                    print("Not much to be done with a broken fridge.")
                 else:
                     print("I can't use that.")
             except IndexError:
@@ -934,6 +942,12 @@ class VernsAdventure:
                             self.player.increase_score()
                     else:
                         print(f"I don't have a(n) {choice_list[0]}")
+                elif "fish" in p_list[1]:
+                    print("I don't need to do that.")
+                elif "dis" in p_list[1]:
+                    print("No point in that. I don't want to mess with them.")
+                elif "fridge" in p_list[1]:
+                    print("Nothing to be done to it.")
                 else:
                     print(f"I can't do anything to {choice_list[1]}")
 
@@ -969,8 +983,8 @@ class VernsAdventure:
         # allows player to operate things. Placeholder
         elif p_list[0] == "oper":
             try:
-                if p_list[1] is None:
-                    pass
+                if "grave" in p_list[1]:
+                    print("I don't really see anything to mess with like that.")
                 else:
                     print("I can't use that.")
             except IndexError:

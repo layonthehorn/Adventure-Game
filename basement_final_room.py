@@ -1,7 +1,7 @@
 class BasementGenRoom:
     def __init__(self, items_contained=None, generator_inv=None, bool_list=(False, False)):
         if items_contained is None:
-            items_contained = []
+            items_contained = ["soldering iron"]
         if generator_inv is None:
             generator_inv = []
         self.generator_inventory = generator_inv
@@ -25,6 +25,9 @@ class BasementGenRoom:
     def print_description_room(self):
         print("This place is not on the map either... Maybe it just was not entered by the previous owners?.")
         print("Hey a large 'generator', maybe you can get it working?")
+        print("There's a workbench with some scattered tools on it.")
+        if "soldering iron" in self.inventory:
+            print("That iron looks useful still.")
         if self.fuses_fixed:
             print("The power is on somewhere now. You should look around for it!")
         else:

@@ -59,7 +59,10 @@ class VernLion:
             "rope": "A length of rope. Might be useful to get somewhere lower.",
             "long rope": "A long length of rope. This should reach the bottom.",
             "soda": "An old flat soda. Not something you want to drink.",
-            "shovel": "It's an old entrenching tool. Useful for digging and many other things."
+            "shovel": "It's an old entrenching tool. Useful for digging and many other things.",
+            "soldering iron": "It's used to repair wires and circuits.",
+            "soldering wire": "Used to fix circuits and connections.",
+            "capacitor": "A part to a circuit board, might be handy."
         }
 
     # returns his location

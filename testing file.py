@@ -60,7 +60,7 @@ value_dictionary = {
     "cemetery bools": (False, False, False),
     # pet shop data
     "pet shop items": ["mane brush"],
-    "pet shop bools": (False, False),
+    "pet shop bools": (False, False, False),
     # toy shop data
     "toy shop items": ["fur sample"],
     "toy shop bools": (False, False, False),

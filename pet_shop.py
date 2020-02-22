@@ -1,10 +1,10 @@
 class PetShop:
-    def __init__(self, items_contained=None, bool_list=(False, False)):
+    def __init__(self, items_contained=None, bool_list=(False, False, False)):
         if items_contained is None:
-            items_contained = ["mane brush", "bag of catnip"]
+            items_contained = ["mane brush"]
         self.inventory = items_contained
 
-        self.fish_looked, self.rope_fixed = bool_list
+        self.fish_looked, self.rope_fixed, self.fridge_checked = bool_list
 
     # returns the items in the room.
     def get_inventory(self):
@@ -12,7 +12,7 @@ class PetShop:
 
     # returns bools for saving
     def get_bools(self):
-        return self.fish_looked, self.rope_fixed
+        return self.fish_looked, self.rope_fixed, self.fridge_checked
 
     # this prints a description along with a item list
     def print_description_room(self):
@@ -21,7 +21,7 @@ class PetShop:
               "\nthings for a lion like you. Though you aren’t too fond of having to go to a pet store to get anything "
               "\neven remotely useful for you. In the back room of the store there is a fish display 'tank'. You seem "
               "\noddly attracted to it...")
-        print("There is a 'leash repairing' machine off in one of the corners.")
+        print("There is a 'leash repairing' machine off in one of the corners and a small 'fridge'.")
         if "mane brush" in self.inventory:
             print("I might need a clean up and that brush looks handy.")
 
@@ -38,6 +38,15 @@ class PetShop:
             print("That fish looks tasty... No, Vern resist it.")
         else:
             print("I feel bad for taking the fish. Damn it.")
+
+    def print_description_fridge(self):
+        print("It's an old fridge and it's not very clean inside.")
+        if not self.fridge_checked:
+            print("Hey, what is this thing?")
+            self.inventory.append("capacitor")
+            print("And some catnip? uh on...")
+            self.inventory.append("bag of catnip")
+            self.fridge_checked = True
 
     @staticmethod
     def print_description_selves():
