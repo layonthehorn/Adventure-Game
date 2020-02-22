@@ -58,7 +58,7 @@ room and there is a door that appears to be locked.
 """)
 
 
-class VernsAdventure:
+class ChapterOne:
     """This is a text adventure game. All that is needed is to initialize it and the game will start."""
     def __init__(self):
 
@@ -86,23 +86,7 @@ class VernsAdventure:
         self.playing = True
 
         # Temporary ascii art from https://ascii.co.uk/art/lion
-        self.ascii_image = """                 
-                        ,  ,, ,
-                   , ,; ; ;;  ; ;  ;
-                , ; ';  ;  ;; .-''\\ ; ;
-             , ;  ;`  ; ,; . / /8b \\ ; ;
-             `; ; .;'         ;,\\8 |  ;  ;
-              ` ;/   / `_      ; ;;    ;  ; ;
-                 |/.'  /0)    ;  ; `    ;  ; ;
-                ,/'   /       ; ; ;  ;   ; ; ; ;
-               /_   /         ;    ;  `    ;  ;
-              `?8P"  .      ;  ; ; ; ;     ;  ;;
-              | ;  .:: `     ;; ; ;   `  ;  ;
-              `' `--._      ;;  ;;  ; ;   ;   ;
-               `-..__..--''   ; ;    ;;   ; ;   ;
-                           ;    ; ; ;   ;     ;
 
-        """
         # Main Classes
         # These are loaded below as to not load them twice.
         # self.player - The player character class
@@ -120,11 +104,11 @@ class VernsAdventure:
         # self.basement_gen_room - where you turn on the power.
 
         choosing = True
-        print(self.ascii_image)
-        print("Welcome to my game!")
+        end_game = False
         while choosing:
-            player_option = input("Load(L), Start New(S), Quit(Q), or How to play(H)?\n").upper()
-            if player_option == "S":
+            print("Chapter One: The Lost Mall")
+            player_option = input("Load(L), Start New(S), Quit(Q), or How to play(H)?\n").lower()
+            if player_option == "s":
                 # Loads defaults in classes for game
                 self.player = VernLion()
                 self.starting_room = StartingRoom()
@@ -143,10 +127,26 @@ class VernsAdventure:
                 self.basement_gen_room = BasementGenRoom()
                 print_intro()
                 choosing = False
-            elif player_option == "Q":
+            elif player_option == "q":
+                self.player = VernLion()
+                self.starting_room = StartingRoom()
+                self.side_room = SideRoom()
+                self.main_plaza = MainPlaza()
+                self.small_den = SmallDen()
+                self.west_wing = WestWing()
+                self.cemetery = Cemetery()
+                self.toy_shop = ToyShop()
+                self.pet_shop = PetShop()
+                self.up_stairs_hallway = UpstairsHallway()
+                self.animal_den = AnimalDen()
+                self.shoe_store = ShoeStore()
+                self.bathroom = Bathroom()
+                self.basement_entryway = BasementEnter()
+                self.basement_gen_room = BasementGenRoom()
+                choosing = False
+                end_game = True
                 print("Goodbye!")
-                sys.exit(0)
-            elif player_option == "L":
+            elif player_option == "l":
                 # getting loaded settings
                 new_value_dictionary = load_game_state("chapter_one.save")
                 # if the dictionary is none it can not load a game
@@ -214,11 +214,6 @@ class VernsAdventure:
             # prints instructions
             elif player_option == "H":
                 print_help()
-            else:
-                #
-                print(self.ascii_image)
-                print("Welcome to my game!")
-                continue
 
         # location dictionary
         # used for general actions to run player actions in any room.
@@ -262,7 +257,7 @@ class VernsAdventure:
         self.player_old_room = self.player.get_location()
         self.player_new_room = self.player_old_room
         # main game play loop
-        while self.playing:
+        while self.playing and not end_game:
             # if they reached a new room announce it
             if self.player_old_room != self.player_new_room:
                 print(f"You have gone to the {self.player_new_room}.")
@@ -1414,4 +1409,4 @@ class VernsAdventure:
 
 
 if __name__ == "__main__":
-    VernsAdventure()
+    ChapterOne()
