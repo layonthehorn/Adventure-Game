@@ -65,6 +65,8 @@ class ToyShop:
                 print("Hey it opened up!")
                 self.locker_opened = True
                 self.inventory.append("red fuse")
+                print("And a tail? What is this?")
+                self.inventory.append("toy lion tail")
                 return True
             else:
                 print(f"This {item} is not helpful here.")

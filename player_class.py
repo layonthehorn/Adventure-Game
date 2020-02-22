@@ -67,7 +67,8 @@ class VernLion:
             "soldering iron": "It's used to repair wires and circuits.",
             "soldering wire": "Used to fix circuits and connections.",
             "capacitor": "A part to a circuit board, might be handy.",
-            "circuit board": "A repaired part to a machine somewhere."
+            "circuit board": "A repaired part to a machine somewhere.",
+            "toy lion tail": "A toy tail for a child to wear. I guess even humans wanted to be lions..."
         }
 
     # returns his location
@@ -192,6 +193,9 @@ class VernLion:
                 return False
             elif "self" in item_list and "knife" in item_list:
                 print("I don't think that's a great plan...")
+                return False
+            elif "self" in item_list and "toy lion tail" in item_list:
+                print("I already have a tail thank you. Might save this for my daughter though.")
                 return False
 
             # small thing for player repeating the eat fish command
