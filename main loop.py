@@ -834,6 +834,8 @@ class VernsAdventure:
                     self.toy_shop.print_description_shelves()
                 elif "crane" in p_list[1]:
                     self.toy_shop.print_description_crane()
+                elif "lock" in p_list[1]:
+                    self.toy_shop.print_description_locker()
                 elif p_list[1] != "self" and p_list[1] != "map":
                     print(f"I don't know where {p_list[1]} is.")
             except IndexError:
@@ -854,6 +856,10 @@ class VernsAdventure:
             try:
                 if "crane" in p_list[1]:
                     self.toy_shop.operate_crane()
+                elif "shelve" in p_list[1]:
+                    print("And do what with them?")
+                elif "lock" in p_list[1]:
+                    print("I can't really do that.")
                 else:
                     print("I can't use that.")
             except IndexError:
@@ -874,6 +880,15 @@ class VernsAdventure:
                             self.player.increase_score()
                     else:
                         print(f"I don't have a(n) {choice_list[0]}")
+                elif "lock" in choice_list[1]:
+                    if self.toy_shop.open_locker(choice_list[0]):
+                        self.player.use_item(choice_list[0])
+                        self.player.increase_score()
+                    else:
+                        print(f"I don't have a(n) {choice_list[0]}")
+                elif "shelve" in p_list[1]:
+                    print("Nothing to be done there.")
+
                 else:
                     print(f"I can't do anything to {choice_list[1]}")
 

@@ -50,9 +50,13 @@ class VernLion:
             "self": "It's you... You should not see this item in your inventory. Please report it!",
             "cheetah keyring": "It's a cheetah keyring. Cute but not really useful to you right now.",
             "cat toy": "A lion plush stuff with catnip. You druggie...",
+            # in toy shop
             "red fuse": "It's a red fuse. Much larger than the one from the bunker.",
+            # in side room
             "green fuse": "It's a green fuse. Much larger than the one from the bunker.",
+            # in cemetery
             "gold fuse": "It's a gold fuse. Much larger than the one from the bunker.",
+            # in ?
             "blue fuse": "It's a blue fuse. Much larger than the one from the bunker.",
             "fish": "A very tasty if small fish. Should you?.. Eat it?",
             "bones": "Bones are all that's left of the little fish you ate. How could you?",

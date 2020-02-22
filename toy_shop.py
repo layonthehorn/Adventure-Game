@@ -1,10 +1,10 @@
 class ToyShop:
-    def __init__(self, items_contained=None, bool_list=(False, False, False)):
+    def __init__(self, items_contained=None, bool_list=(False, False, False, False)):
         if items_contained is None:
             items_contained = ["soldering wire"]
         self.inventory = items_contained
 
-        self.crane_fixed, self.crane_won, self.shelves_looked = bool_list
+        self.crane_fixed, self.crane_won, self.shelves_looked, self.locker_opened = bool_list
 
     # returns the items in the room.
     def get_inventory(self):
@@ -12,13 +12,13 @@ class ToyShop:
 
     # returns bools for saving
     def get_bools(self):
-        return self.crane_fixed, self.crane_won, self.shelves_looked
+        return self.crane_fixed, self.crane_won, self.shelves_looked, self.locker_opened
 
     # this prints a description along with a item list
     def print_description_room(self):
         print("It’s an old toy shop, full of things a parent would buy for their children. It’s a mess with old toys "
               "strewn across the floor and 'shelves', many of which are now broken. There is a 'crane' machine that’s still "
-              "operational after so long.")
+              "operational after so long. As well as an old 'locker' behind the registers.")
         if "soldering wire" in self.inventory:
             print("There's old wire used to repair things here too.")
         print("You can go back to the 'west wing' from here.")
@@ -50,6 +50,28 @@ class ToyShop:
             print("That odd raygun is still here.")
         else:
             print("Just junk left now.")
+
+    def print_description_locker(self):
+        if not self.locker_opened:
+            print("locked cabinet of sorts, with old toys from the old world, and there's a fuse in there")
+        elif "red fuse" in self.inventory:
+            print("I wonder what the fuse is for.")
+        else:
+            print("I beat the lock after all.")
+
+    def open_locker(self, item):
+        if not self.locker_opened:
+            if item == "circuit board":
+                print("Hey it opened up!")
+                self.locker_opened = True
+                self.inventory.append("red fuse")
+                return True
+            else:
+                print(f"This {item} is not helpful here.")
+                return False
+        else:
+            print("It's already unlocked now.")
+            return False
 
     def operate_crane(self):
         if not self.crane_won:
