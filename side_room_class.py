@@ -27,6 +27,13 @@ class SideRoom:
             print("There's a 'light switch' on the wall and an exit back to the 'bunker' \nbut otherwise it's too dark "
                   "to see.")
 
+    def print_description_light(self):
+        print("It's a light switch.")
+        if self.light_switch:
+            print("I hope there is power in here still.")
+        else:
+            print("I can't believe there is still power here.")
+
     def print_description_computer(self):
         if self.light_switch:
             print("An old but still working 'computer'.\nMaybe someone left some information on it.")

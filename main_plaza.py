@@ -1,17 +1,17 @@
 class MainPlaza:
-    def __init__(self, items_contained=None, bool_list=(False, False, False, False)):
+    def __init__(self, items_contained=None, bool_list=(False, False, False, False, False)):
         if items_contained is None:
             items_contained = ["strange keys", "map"]
         self.inventory = items_contained
 
-        self.exit_unlocked, self.upstairs_unlocked, self.map_gotten, self.car_looked = bool_list
+        self.exit_unlocked, self.upstairs_unlocked, self.map_gotten, self.car_looked, self.car_oper = bool_list
 
     # returns the items in the room.
     def get_inventory(self):
         return self.inventory
 
     def get_bools(self):
-        return self.exit_unlocked, self.upstairs_unlocked, self.map_gotten, self.car_looked
+        return self.exit_unlocked, self.upstairs_unlocked, self.map_gotten, self.car_looked, self.car_oper
 
     # this prints a description along with a item list
     def print_description_room(self):
@@ -75,6 +75,14 @@ class MainPlaza:
             print("I should get the battery. Might come in handy.")
         else:
             print("I think I'm done messing with it.")
+
+    def operate_car(self):
+        if not self.car_oper:
+            print("It won't start but there are some odd keys in here.")
+            self.inventory.append("strange keys")
+            self.car_oper = True
+        else:
+            print("No point in trying to start it again.")
 
     # this pops off the items and returns it
     def get_item(self, item):

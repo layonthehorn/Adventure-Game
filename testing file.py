@@ -46,7 +46,7 @@ value_dictionary = {
     "side room bools": (True, False),
     "side room items": [],
     # main plaza data
-    "main plaza bools": (True, True, False, False),
+    "main plaza bools": (True, True, False, False, False),
     "main plaza items": ["strange keys", "map"],
     # small den data
     "small den bools": (False, False),
@@ -111,6 +111,6 @@ def load_game_state(file_name):
 
 
 if __name__ == "__main__":
-    save_game_state(value_dictionary, "save game")
-    item_dict = load_game_state("save game")
+    save_game_state(value_dictionary, "chapter_one.save")
+    item_dict = load_game_state("chapter_one.save")
     print_db_file(item_dict)

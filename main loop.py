@@ -148,7 +148,7 @@ class VernsAdventure:
                 sys.exit(0)
             elif player_option == "L":
                 # getting loaded settings
-                new_value_dictionary = load_game_state("save game")
+                new_value_dictionary = load_game_state("chapter_one.save")
                 # if the dictionary is none it can not load a game
                 if new_value_dictionary is None:
                     print("No save games found.")
@@ -369,7 +369,7 @@ class VernsAdventure:
                             }
         try:
             # writes data to save file with pickle
-            with open("save game", 'wb+') as db_file:
+            with open("chapter_one.save", 'wb+') as db_file:
                 pickle.dump(value_dictionary, db_file)
         except IOError:
             print("Could not open file for saving...")
@@ -474,6 +474,10 @@ class VernsAdventure:
             try:
                 if p_list[1] == "door":
                     self.starting_room.open_door()
+                elif "box" in p_list[1]:
+                    print("There's no operating the fuse box directly.")
+                elif "robot" in p_list[1]:
+                    print("I can't start it. It's only good for parts.")
                 else:
                     print("I can't use that.")
             except IndexError:
@@ -496,6 +500,9 @@ class VernsAdventure:
                             self.player.increase_score()
                     else:
                         print(f"I don't have a(n) {choice_list[0]}")
+
+                elif "door" in p_list[1]:
+                    print("I can't use any thing on the door. I have to restore the power.")
 
                 # attempt to fix robot
                 elif "robot" in choice_list[1]:
@@ -532,6 +539,8 @@ class VernsAdventure:
             try:
                 if p_list[1] == "room":
                     self.side_room.print_description_room()
+                elif "light" in p_list[1] or "switch" in p_list[1]:
+                    self.side_room.print_description_light()
                 elif "pc" in p_list[1] or "computer" in p_list[1]:
                     self.side_room.print_description_computer()
                 elif "safe" in p_list[1]:
@@ -577,14 +586,12 @@ class VernsAdventure:
                 pass
             try:
                 # place holding in case player attempts to use an item on an object here.
-                if choice_list[1] is None:
-                    if choice_list[0] in self.player.inventory:
-                        pass
-                        # if self.starting_room.fix_fuse_box(choice_list[0]):
-                        #     self.player.use_item(choice_list[0])
-                        #     self.player.increase_score()
-                    else:
-                        print(f"I don't have a(n) {choice_list[0]}")
+                if "light" in p_list[1] or "switch" in p_list[1]:
+                    print("I don't have to use any thing on it. ")
+                elif "pc" in p_list[1] or "computer" in p_list[1]:
+                    print("It's working just fine.")
+                elif "safe" in p_list[1]:
+                    print("As much as I would like to destroy this thing, no. Not going to help.")
                 else:
                     print(f"I can't do anything to {choice_list[1]}")
 
@@ -634,8 +641,11 @@ class VernsAdventure:
         # allows the player to operate things. Placeholder
         elif p_list[0] == "oper":
             try:
-                if p_list[1] is None:
-                    pass
+
+                if "car" in p_list[1]:
+                    self.main_plaza.operate_car()
+                elif "gate" in p_list[1]:
+                    self.main_plaza.print_description_door()
                 else:
                     print("I can't use that.")
             except IndexError:
@@ -654,6 +664,10 @@ class VernsAdventure:
                         if self.main_plaza.unlock_gate(choice_list[0]):
                             self.player.use_item(choice_list[0])
                             self.player.increase_score()
+
+                    elif "car" in p_list[1]:
+                        print("No point is using things on this car. It will never start.")
+
                     else:
                         print(f"I don't have a(n) {choice_list[0]}")
                 else:
@@ -691,8 +705,8 @@ class VernsAdventure:
         # allows player to operate things. Placeholder
         elif p_list[0] == "oper":
             try:
-                if p_list[1] is None:
-                    pass
+                if "animal" in p_list[1]:
+                    print("It's not alive to mess with.")
                 else:
                     print("I can't use that.")
             except IndexError:
