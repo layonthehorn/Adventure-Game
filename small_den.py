@@ -55,9 +55,10 @@ class SmallDen:
     def print_description_workbench(self):
         print("It's a work bench with assortment of tools and materials.")
         if not self.tool_repaired:
-            print("I wonder if I can fix that circuit board?")
-            print("Looks like I need...")
+
             if len(self.workbench_inventory) < 3:
+                print("I wonder if I can fix that circuit board?")
+                print("Looks like I need...")
                 for item in self.workbench_items_needed:
                     if item not in self.workbench_inventory:
                         print(f"a(n) {item}")
@@ -94,7 +95,7 @@ class SmallDen:
             else:
                 print("I still need more parts.")
         else:
-            print("It's fixed already.")
+            print("The board is fixed now.")
 
     # player trying to get a chunk of meat
     def animal_cutting(self, item):
