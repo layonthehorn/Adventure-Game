@@ -791,6 +791,11 @@ class VernsAdventure:
                     else:
                         print(f"I don't have a(n) {choice_list[0]}")
 
+                elif "vend" in p_list[1] or "mach" in p_list[1]:
+                    print("There's no reason to do that.")
+                else:
+                    print(f"I can't do anything to {choice_list[1]}")
+
             except IndexError:
                 print("Use what with what?")
 
@@ -814,8 +819,10 @@ class VernsAdventure:
         # allows player to operate things. Placeholder
         elif p_list[0] == "oper":
             try:
-                if p_list[1] is None:
-                    pass
+                if "kiosk" in p_list[1]:
+                    print("That's not how it works.")
+                elif "vend" in p_list[1] or "mach" in p_list[1]:
+                    print("It's not a functional machine anymore.")
                 else:
                     print("I can't use that.")
             except IndexError:
