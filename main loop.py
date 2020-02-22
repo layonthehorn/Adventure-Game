@@ -743,6 +743,7 @@ class VernsAdventure:
                     if choice_list[0] in self.player.inventory:
                         if self.small_den.give_missing_part(choice_list[0]):
                             self.player.increase_score()
+                            self.player.use_item(choice_list[0])
                     else:
                         print(f"I don't have a(n) {choice_list[0]}")
                 elif "barn" in choice_list[1]:
