@@ -62,7 +62,8 @@ class VernLion:
             "shovel": "It's an old entrenching tool. Useful for digging and many other things.",
             "soldering iron": "It's used to repair wires and circuits.",
             "soldering wire": "Used to fix circuits and connections.",
-            "capacitor": "A part to a circuit board, might be handy."
+            "capacitor": "A part to a circuit board, might be handy.",
+            "circuit board": "A repaired part to a machine somewhere."
         }
 
     # returns his location

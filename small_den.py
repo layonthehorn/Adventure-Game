@@ -6,7 +6,7 @@ class SmallDen:
             work_inventory = []
 
         self.inventory = items_contained
-        self.workbench_items_needed = ("", "", "")
+        self.workbench_items_needed = ("soldering iron", "soldering wire", "capacitor")
         self.workbench_inventory = work_inventory
         self.animal_cut, self.barn_looked, self.tool_repaired, self.have_parts = bool_list
 
@@ -55,19 +55,46 @@ class SmallDen:
     def print_description_workbench(self):
         print("It's a work bench with assortment of tools and materials.")
         if not self.tool_repaired:
-            print("I wonder if I can fix that, .")
-        elif "tool" in self.inventory:
+            print("I wonder if I can fix that circuit board?")
+            print("Looks like I need...")
+            if len(self.workbench_inventory) < 3:
+                for item in self.workbench_items_needed:
+                    if item not in self.workbench_inventory:
+                        print(f"a(n) {item}")
+            else:
+                print("I can fix the board now!")
+        elif "circuit board" in self.inventory:
             print("I repaired it.")
         else:
             print("I don't think there's anything else to do here.")
 
     # gets missing parts to work bench
     def give_missing_part(self, item):
-        return False
+        if len(self.workbench_inventory) < 3:
+            if item in self.workbench_items_needed:
+                print("That's one part of this.")
+                self.workbench_inventory.append(item)
+                if len(self.workbench_inventory) == 3:
+                    print("Hey, that's all I need!")
+                return True
+            else:
+                print(f"The {item} wouldn't help me.")
+                return False
+        else:
+            print("It has everything it needs.")
+            return False
 
     # if you have the parts you can repair the item
     def operate_work_bench(self):
-        pass
+        if not self.tool_repaired:
+            if len(self.workbench_inventory) == 3:
+                print("You fixed the board!")
+                self.inventory.append("circuit board")
+                self.tool_repaired = True
+            else:
+                print("I still need more parts.")
+        else:
+            print("It's fixed already.")
 
     # player trying to get a chunk of meat
     def animal_cutting(self, item):
