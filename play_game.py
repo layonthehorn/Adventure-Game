@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 from chapter_one import ChapterOne
 
 ascii_image = """                 

@@ -279,8 +279,6 @@ class ChapterOne:
                         self.small_den.give_item("meat")
                     elif result == "drugged":
                         self.player.increase_score()
-                    else:
-                        pass
                 location_actions(player_choice)
 
                 # finds players new location to see if they changed rooms
