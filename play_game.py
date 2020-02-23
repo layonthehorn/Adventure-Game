@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 from chapter_one import ChapterOne
+import os
 
 # Temporary ascii art from https://ascii.co.uk/art/lion
 ascii_image = """                 
@@ -19,6 +20,13 @@ ascii_image = """
                    ;    ; ; ;   ;     ;
 
 """
+
+# makes sure the save directory is a thing
+save_dir = os.path.join(os.getcwd(), "saves")
+# print(save_dir)
+if not os.path.isdir(save_dir):
+    os.makedirs(save_dir)
+
 
 choosing = True
 
