@@ -664,24 +664,28 @@ class ChapterOne:
                         if self.main_plaza.unlock_gate(choice_list[0]):
                             self.player.use_item(choice_list[0])
                             self.player.increase_score()
+                        else:
+                            print(f"I don't have a(n) {choice_list[0]}")
 
                 elif "desk" in choice_list[1]:
                     if choice_list[0] in self.player.inventory:
                         if self.main_plaza.open_desk(choice_list[0]):
                             self.player.use_item(choice_list[0])
                             self.player.increase_score()
+                        else:
+                            print(f"I don't have a(n) {choice_list[0]}")
 
                 elif "pay" in choice_list[1]:
                     if choice_list[0] in self.player.inventory:
                         if self.main_plaza.use_phone(choice_list[0]):
                             self.player.use_item(choice_list[0])
                             self.player.increase_score()
+                        else:
+                            print(f"I don't have a(n) {choice_list[0]}")
 
-                    elif "car" in p_list[1]:
-                        print("No point is using things on this car. It will never start.")
+                elif "car" in p_list[1]:
+                    print("No point is using things on this car. It will never start.")
 
-                    else:
-                        print(f"I don't have a(n) {choice_list[0]}")
                 else:
                     print(f"I can't do anything to {choice_list[1]}")
 
