@@ -93,7 +93,7 @@ class PlayerClass:
 
     # prints your score
     def print_score(self):
-        print(f"Your score is {self.player_score} out of 'Unknown Final Value'.")
+        print(f"Your score is {self.player_score}.")
 
     # sets player score
     def increase_score(self):

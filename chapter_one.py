@@ -1424,7 +1424,7 @@ class ChapterOne:
     def exit_game(self):
         print("You escaped the mall! You are back with Johnson and Katie.")
         print("Maybe they can explain what happened to you.")
-        print(f"Your score was, {self.player.get_score()}.")
+        self.player.print_score()
         input("Press enter to end game.\nThank you for playing!")
         self.end_game()
 
