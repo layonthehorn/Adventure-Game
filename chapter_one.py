@@ -27,6 +27,7 @@ def print_help():
           "\ngo {location}: How you change rooms."
           "\nsave: How you save your game."
           "\nend: Exit game and will ask to save or not."
+          "\nhint: This will give you a hint on how to continue."
           "\nhelp: This menu.")
 
 
@@ -381,6 +382,8 @@ class ChapterOne:
             if action == "inv":
                 self.player.check_inventory()
             # prints actions that can be taken
+            elif action == "hint":
+                self.hint_system()
             elif action == "help":
                 print_help()
             # ends game
@@ -1405,15 +1408,23 @@ class ChapterOne:
         if not self.starting_room.robot_fixed:
             print("You should find a way to get that fuse loose.")
         elif not self.starting_room.fuse_box:
-            print("You should use your fuse somewhere.")
+            print("Keep playing for more hints.")
         elif not self.starting_room.door_opened:
-            print("You should open the door.")
+            print("Keep playing for more hints.")
         elif not self.main_plaza.car_looked:
             print("You should look over that car.")
         elif not self.toy_shop.crane_fixed:
-            print("Maybe a item you have will make the crane game winnable.")
+            print("Keep playing for more hints.")
         elif not self.toy_shop.crane_won:
-            print("I wonder if you can get those keys yet.")
+            print("Keep playing for more hints.")
+        elif not self.main_plaza.upstairs_unlocked:
+            print("Maybe you have some keys that would help you now.")
+        elif not self.small_den.animal_cut:
+            print("Getting some meat would be a good idea.")
+        elif not self.bathroom.cabinet_looked:
+            print("Keep playing for more hints")
+        else:
+            print("Keep playing for more hints")
 
 
 if __name__ == "__main__":
