@@ -1232,7 +1232,7 @@ class AnimalDen:
 
     # returns bools for saving
     def get_bools(self):
-        return self.animal_drugged, self.entered_after_drugged, self.found_fur, self.meat_just_taken,self.hole_tried
+        return self.animal_drugged, self.entered_after_drugged, self.found_fur, self.meat_just_taken, self.hole_tried
 
     # this prints a description along with a item list
     def print_description_room(self):
