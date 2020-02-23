@@ -27,7 +27,7 @@ while choosing:
     if user_input == "1":
         ChapterOne()
     elif user_input == "2":
-        print("Not Yet made.")
+        print("Not Yet Made.")
     elif user_input == "q":
         print("Good bye!")
         choosing = False

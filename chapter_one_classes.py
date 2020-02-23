@@ -2,7 +2,8 @@ import time
 
 
 # Player Class
-class VernLion:
+class PlayerClass:
+    """This is the main player class. It holds the player inventory and score among other things."""
     def __init__(self, player_inventory=None, player_start="bunker", score=0, player_misc=(False, 0)):
 
         if player_inventory is None:
@@ -251,7 +252,8 @@ class VernLion:
 # Bunker Areas
 
 
-class StartingRoom:
+class Bunker:
+    """This is the bunker class. It acts as the starting room for the player."""
     def __init__(self, items_contained=None, bool_list=(False, False, False)):
         if items_contained is None:
             items_contained = ["fuse"]
@@ -370,7 +372,8 @@ class StartingRoom:
             self.door_opened = True
 
 
-class SideRoom:
+class ComputerRoom:
+    """The side room to the bunker."""
     def __init__(self, items_contained=None, bool_list=(False, False)):
         if items_contained is None:
             items_contained = ["wrench"]
@@ -499,6 +502,7 @@ class SideRoom:
 
 
 class MainPlaza:
+    """Main plaza class. Acts as the hub that connects all the other areas together."""
     def __init__(self, items_contained=None, bool_list=(False, False, False, False, False)):
         if items_contained is None:
             items_contained = ["strange keys", "map"]
@@ -603,6 +607,7 @@ class MainPlaza:
 
 
 class SmallDen:
+    """A small animal pen that holds a dead animal and a workbench."""
     def __init__(self, items_contained=None, bool_list=(False, False, False, False), work_inventory=None):
         if items_contained is None:
             items_contained = ["meat"]
@@ -733,6 +738,7 @@ class SmallDen:
 
 
 class WestWing:
+    """A hallway that connects to the western rooms."""
     def __init__(self, items_contained=None, bool_list=(False, False)):
         if items_contained is None:
             items_contained = []
@@ -820,6 +826,7 @@ class WestWing:
 
 
 class PetShop:
+    """The petshop class. attached to the west wing."""
     def __init__(self, items_contained=None, bool_list=(False, False, False)):
         if items_contained is None:
             items_contained = ["mane brush"]
@@ -911,6 +918,7 @@ class PetShop:
 
 
 class ToyShop:
+    """The toyshop class. attached to the west wing."""
     def __init__(self, items_contained=None, bool_list=(False, False, False, False)):
         if items_contained is None:
             items_contained = ["soldering wire"]
@@ -1026,6 +1034,7 @@ class ToyShop:
 
 
 class Cemetery:
+    """The cemetery class. attached to the west wing."""
     def __init__(self, items_contained=None, bool_list=(False, False, False)):
         if items_contained is None:
             items_contained = ["lion plush"]
@@ -1102,6 +1111,7 @@ class Cemetery:
 
 
 class UpstairsHallway:
+    """The upstairs hallway that connects to the animal den, shoe store, and bathroom."""
     def __init__(self, items_contained=None, bool_list=(False, False)):
         if items_contained is None:
             items_contained = []
@@ -1208,6 +1218,7 @@ class UpstairsHallway:
 
 
 class AnimalDen:
+    """A upstairs animal den. Connected to the upstairs hallway."""
     def __init__(self, items_contained=None, bool_list=(False, False, False, False, False)):
         if items_contained is None:
             items_contained = ["meat"]
@@ -1292,16 +1303,19 @@ class AnimalDen:
             print("I should see if something took my bate in the animal den.")
             self.inventory.remove("meat")
             self.meat_just_taken = True
-            return False
+            return "meat"
         elif "drugged meat" in self.inventory:
             print("I should check my trap in the animal den.")
             self.inventory.remove("drugged meat")
             self.inventory.append("fur sample")
             self.animal_drugged = True
-            return True
+            return "drugged"
+        else:
+            return "none"
 
 
 class Bathroom:
+    """A upstairs bathroom. Connected to the upstairs hallway."""
     def __init__(self, items_contained=None, bool_list=(False, False)):
         if items_contained is None:
             items_contained = ["knife"]
@@ -1382,6 +1396,7 @@ class Bathroom:
 
 
 class ShoeStore:
+    """A upstairs shoe store. Connected to the upstairs hallway."""
     def __init__(self, items_contained=None, bool_list=(False, False, False, False)):
         if items_contained is None:
             items_contained = []
@@ -1509,6 +1524,7 @@ class ShoeStore:
 
 
 class BasementEntry:
+    """A basement room that is attached to the shoe store."""
     def __init__(self, items_contained=None, bool_list=(False, False)):
         if items_contained is None:
             items_contained = ["shovel"]
@@ -1618,6 +1634,7 @@ class BasementEntry:
 
 
 class BasementGenRoom:
+    """A basement generator room that is attached to the shoe store."""
     def __init__(self, items_contained=None, generator_inv=None, bool_list=(False, False)):
         if items_contained is None:
             items_contained = ["soldering iron"]

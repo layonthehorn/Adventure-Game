@@ -1,7 +1,7 @@
 import pickle
 import re
 
-from chapter_one_classes import VernLion, StartingRoom, SideRoom, MainPlaza, SmallDen, WestWing, ToyShop, PetShop, Cemetery, UpstairsHallway, AnimalDen, Bathroom, ShoeStore, BasementEntry, BasementGenRoom
+from chapter_one_classes import PlayerClass, Bunker, ComputerRoom, MainPlaza, SmallDen, WestWing, ToyShop, PetShop, Cemetery, UpstairsHallway, AnimalDen, Bathroom, ShoeStore, BasementEntry, BasementGenRoom
 
 
 # loading saved game
@@ -113,9 +113,9 @@ class ChapterOne:
             player_option = input("Load(L), Start New(S), Quit(Q), or How to play(H)?\n").lower()
             if player_option == "s":
                 # Loads defaults in classes for game
-                self.player = VernLion()
-                self.starting_room = StartingRoom()
-                self.side_room = SideRoom()
+                self.player = PlayerClass()
+                self.starting_room = Bunker()
+                self.side_room = ComputerRoom()
                 self.main_plaza = MainPlaza()
                 self.small_den = SmallDen()
                 self.west_wing = WestWing()
@@ -143,16 +143,16 @@ class ChapterOne:
 
                     # loading saved settings for classes
                     # player data
-                    self.player = VernLion(new_value_dictionary["player inventory"],
-                                           new_value_dictionary["player location"],
-                                           new_value_dictionary["player score"],
-                                           new_value_dictionary["player misc"])
+                    self.player = PlayerClass(new_value_dictionary["player inventory"],
+                                              new_value_dictionary["player location"],
+                                              new_value_dictionary["player score"],
+                                              new_value_dictionary["player misc"])
                     # bunker data
-                    self.starting_room = StartingRoom(new_value_dictionary["starting room items"],
-                                                      new_value_dictionary["starting room bools"])
+                    self.starting_room = Bunker(new_value_dictionary["starting room items"],
+                                                new_value_dictionary["starting room bools"])
                     # side room data
-                    self.side_room = SideRoom(new_value_dictionary["side room items"],
-                                              new_value_dictionary["side room bools"])
+                    self.side_room = ComputerRoom(new_value_dictionary["side room items"],
+                                                  new_value_dictionary["side room bools"])
                     # main plaza data
                     self.main_plaza = MainPlaza(new_value_dictionary["main plaza items"],
                                                 new_value_dictionary["main plaza bools"])
@@ -274,10 +274,13 @@ class ChapterOne:
                 # if the player is in the animal den it checks if it needs to run the
                 # checking if they placed the meat in the animal den
                 if p_local == self.up_stairs_hallway_name:
-                    if not self.animal_den.drug_animal():
+                    result = self.animal_den.drug_animal()
+                    if result == "meat":
                         self.small_den.give_item("meat")
-                    else:
+                    elif result == "drugged":
                         self.player.increase_score()
+                    else:
+                        pass
                 location_actions(player_choice)
 
                 # finds players new location to see if they changed rooms
