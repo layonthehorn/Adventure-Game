@@ -96,6 +96,9 @@ chapter_two = {
     "player score": 2,
     "player misc": (False, 0),
     "player location": "small den",
+    # example
+    "example room items": ["temp"],
+    "example room bools": (False, False)
 
 }
 

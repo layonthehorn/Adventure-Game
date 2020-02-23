@@ -3,7 +3,7 @@ import time
 
 class PlayerClass:
     """This is the main player class. It holds the player inventory and score among other things."""
-    def __init__(self, player_inventory=None, player_start="bunker", score=0, player_misc=(False, 0)):
+    def __init__(self, player_inventory=None, player_start="example", score=0, player_misc=(False, 0)):
 
         if player_inventory is None:
             player_inventory = ["self"]
@@ -133,3 +133,54 @@ class PlayerClass:
     # looking at self
     def look_self(self):
         print("A nervous lion is what you are. Somehow still alive but for how long? Hopefully long enough.")
+
+
+class ExampleRoom:
+    """This is the bunker class. It acts as the starting room for the player."""
+    def __init__(self, items_contained=None, bool_list=(False, False, False)):
+        if items_contained is None:
+            items_contained = ["temp"]
+        self.inventory = items_contained
+        self.bool_one, self.bool_two, self.bool_three = bool_list
+
+    # returns the items in the room.
+    def get_inventory(self):
+        return self.inventory
+
+    def get_bools(self):
+        return self.bool_one, self.bool_two, self.bool_three
+
+    # this prints a description along with a item list
+    def print_description_room(self):
+        print("It's an example room. use temp with box.")
+        print("go outside should work too but only print something."
+              "")
+        if len(self.inventory) > 0:
+            for item in self.inventory:
+                print(f"There is a(n) {item}")
+
+    # this pops off the items and returns it
+    def get_item(self, item):
+        if item in self.inventory:
+            location = self.inventory.index(item)
+            return self.inventory.pop(location)
+        else:
+            return None
+
+    # dropping item back into room
+    def give_item(self, item):
+        if item not in self.inventory:
+            self.inventory.append(item)
+
+    def testing_using_items(self, item):
+        if not self.bool_one:
+            if item == "temp":
+                print("Worked with temp item")
+                self.bool_one = False
+                return True
+            else:
+                print("Wrong item")
+                return False
+        else:
+            print("Already used.")
+            return False
