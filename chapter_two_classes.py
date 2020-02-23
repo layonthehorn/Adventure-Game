@@ -158,12 +158,16 @@ class ExampleRoom:
 
     # allows getting a print function form the look dictionary.
     def get_look_commands(self, look_at):
-        for key in self.look_dict:
-            for name in key:
-                if look_at in name:
-                    look_command = self.look_dict.get(key)
-                    look_command()
-                    return True
+        # you have to enter at least three letters
+        if len(look_at) >= 3:
+            for key in self.look_dict:
+                for name in key:
+                    if look_at in name:
+                        look_command = self.look_dict.get(key)
+                        look_command()
+                        # if match is found returns true
+                        return True
+        # no match found returns False
         return False
 
     # this prints a description along with a item list
