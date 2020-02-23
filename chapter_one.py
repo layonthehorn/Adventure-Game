@@ -1466,6 +1466,11 @@ class ChapterOne:
             print("What would help with getting down long falls?")
         elif not self.basement_entryway.door_unlocked:
             print("There's a code somewhere, or you could try and fry the lock.")
+        elif len(self.basement_gen_room.get_gen_inventory) < 4:
+            print("You need to get four fuses to fix the generator")
+            print("Check around the other places you have been before.")
+        elif self.main_plaza.exit_unlocked:
+            print("The exit is open now.")
         else:
             print("Keep playing for more hints.")
 
