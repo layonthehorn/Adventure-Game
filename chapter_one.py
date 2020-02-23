@@ -665,17 +665,17 @@ class ChapterOne:
                             self.player.use_item(choice_list[0])
                             self.player.increase_score()
 
-                    elif "desk" in choice_list[1]:
-                        if choice_list[0] in self.player.inventory:
-                            if self.main_plaza.open_desk(choice_list[0]):
-                                self.player.use_item(choice_list[0])
-                                self.player.increase_score()
+                elif "desk" in choice_list[1]:
+                    if choice_list[0] in self.player.inventory:
+                        if self.main_plaza.open_desk(choice_list[0]):
+                            self.player.use_item(choice_list[0])
+                            self.player.increase_score()
 
-                    elif "pay" in choice_list[1]:
-                        if choice_list[0] in self.player.inventory:
-                            if self.main_plaza.use_phone(choice_list[0]):
-                                self.player.use_item(choice_list[0])
-                                self.player.increase_score()
+                elif "pay" in choice_list[1]:
+                    if choice_list[0] in self.player.inventory:
+                        if self.main_plaza.use_phone(choice_list[0]):
+                            self.player.use_item(choice_list[0])
+                            self.player.increase_score()
 
                     elif "car" in p_list[1]:
                         print("No point is using things on this car. It will never start.")
