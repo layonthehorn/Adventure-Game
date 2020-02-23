@@ -1,21 +1,7 @@
 import pickle
 import re
 
-from cemetery import Cemetery
-from main_plaza import MainPlaza
-from player_class import VernLion
-from side_room_class import SideRoom
-from small_den import SmallDen
-from starting_room_class import StartingRoom
-from west_wing import WestWing
-from toy_shop import ToyShop
-from pet_shop import PetShop
-from upstairs_hallway import UpstairsHallway
-from animal_den import AnimalDen
-from bathroom import Bathroom
-from shoe_store import ShoeStore
-from basement_enter import BasementEnter
-from basement_final_room import BasementGenRoom
+from chapter_one_classes import VernLion, StartingRoom, SideRoom, MainPlaza, SmallDen, WestWing, ToyShop, PetShop, Cemetery, UpstairsHallway, AnimalDen, Bathroom, ShoeStore, BasementEntry, BasementGenRoom
 
 
 # loading saved game
@@ -140,7 +126,7 @@ class ChapterOne:
                 self.animal_den = AnimalDen()
                 self.shoe_store = ShoeStore()
                 self.bathroom = Bathroom()
-                self.basement_entryway = BasementEnter()
+                self.basement_entryway = BasementEntry()
                 self.basement_gen_room = BasementGenRoom()
                 print_intro()
                 choosing = False
@@ -200,7 +186,7 @@ class ChapterOne:
                                                 new_value_dictionary["shoe store bools"])
 
                     # basement entryway data
-                    self.basement_entryway = BasementEnter(new_value_dictionary["basement entry items"],
+                    self.basement_entryway = BasementEntry(new_value_dictionary["basement entry items"],
                                                            new_value_dictionary["basement entry bools"])
 
                     # basement generator room data
