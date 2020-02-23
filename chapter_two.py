@@ -195,11 +195,15 @@ class ChapterTwo:
                 self.player.set_location(self.end_name)
 
             # looks at player map
-            elif general_list[0] == "look" and general_list[1] == "map":
-                self.player.look_player_map()
+            elif general_list[0] == "look":
+                if general_list[1] == "map":
+                    self.player.look_player_map()
             # looks at self
-            elif general_list[0] == "look" and general_list[1] == "self":
-                self.player.look_self()
+                elif general_list[1] == "self":
+                    self.player.look_self()
+                else:
+                    if not loc_name.get_look_commands(general_list[1]):
+                        print(f"I can't look at the {general_list[1]}.")
         except IndexError:
             pass
         # gets an item from the current room
@@ -271,17 +275,17 @@ class ChapterTwo:
     def example_area(self, player_choice):
         # looking at things
         p_list = player_choice.split(" ", 1)
-        if p_list[0] == "look":
-            try:
-                if p_list[1] == "room":
-                    self.example.print_description_room()
-                elif p_list[1] != "self" and p_list[1] != "map":
-                    print(f"I don't know where {p_list[1]} is.")
-            except IndexError:
-                print("Look at what?")
+        # if p_list[0] == "look":
+        #     try:
+        #         if p_list[1] == "room":
+        #             self.example.print_description_room()
+        #         elif p_list[1] != "self" and p_list[1] != "map":
+        #             print(f"I don't know where {p_list[1]} is.")
+        #     except IndexError:
+        #         print("Look at what?")
 
         # opens door
-        elif p_list[0] == "oper":
+        if p_list[0] == "oper":
             try:
                 if p_list[1] == "door":
                     print("testing operating")

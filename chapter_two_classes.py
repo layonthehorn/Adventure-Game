@@ -143,12 +143,28 @@ class ExampleRoom:
         self.inventory = items_contained
         self.bool_one, self.bool_two, self.bool_three = bool_list
 
+        self.look_dict = {
+            ("room", "place"): self.print_description_room,
+            ("box", "fuse"): self.print_description_box,
+            ("door", "exit"): self.print_description_door
+                         }
+
     # returns the items in the room.
     def get_inventory(self):
         return self.inventory
 
     def get_bools(self):
         return self.bool_one, self.bool_two, self.bool_three
+
+    # allows getting a print function form the look dictionary.
+    def get_look_commands(self, look_at):
+        for key in self.look_dict:
+            for name in key:
+                if look_at in name:
+                    look_command = self.look_dict.get(key)
+                    look_command()
+                    return True
+        return False
 
     # this prints a description along with a item list
     def print_description_room(self):
@@ -158,6 +174,12 @@ class ExampleRoom:
         if len(self.inventory) > 0:
             for item in self.inventory:
                 print(f"There is a(n) {item}")
+
+    def print_description_box(self):
+        print("its a box")
+
+    def print_description_door(self):
+        print("it's a door")
 
     # this pops off the items and returns it
     def get_item(self, item):
