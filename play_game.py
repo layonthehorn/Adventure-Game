@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 from chapter_one import ChapterOne
 
+# Temporary ascii art from https://ascii.co.uk/art/lion
 ascii_image = """                 
                 ,  ,, ,
            , ,; ; ;;  ; ;  ;

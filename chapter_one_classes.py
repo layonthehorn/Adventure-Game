@@ -70,7 +70,8 @@ class PlayerClass:
             "soldering wire": "Used to fix circuits and connections.",
             "capacitor": "A part to a circuit board, might be handy.",
             "circuit board": "A repaired part to a machine somewhere.",
-            "toy lion tail": "A toy tail for a child to wear. I guess even humans wanted to be lions..."
+            "toy lion tail": "A toy tail for a child to wear. I guess even humans wanted to be lions...",
+            "owl figurine": "A nice little owl toy. Has hoot hoot written on the bottom."
         }
 
     # returns his location
@@ -1405,7 +1406,7 @@ class ShoeStore:
     """A upstairs shoe store. Connected to the upstairs hallway."""
     def __init__(self, items_contained=None, bool_list=(False, False, False, False)):
         if items_contained is None:
-            items_contained = []
+            items_contained = ["owl figurine"]
         self.inventory = items_contained
 
         self.first_entered, self.elevator_opened, self.elevator_roped, self.weak_roped = bool_list

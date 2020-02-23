@@ -68,8 +68,6 @@ class ChapterOne:
         self.basement_gen_room_name = "basement generator room"
         self.playing = True
 
-        # Temporary ascii art from https://ascii.co.uk/art/lion
-
         # Main Classes
         # These are loaded below as to not load them twice.
         # self.player - The player character class
