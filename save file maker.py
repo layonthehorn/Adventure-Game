@@ -35,7 +35,7 @@ import pickle
 # this file is built to generate custom save games for testing.
 value_dictionary = {
     # player data
-    "player inventory": ["self", "drugged meat"],
+    "player inventory": ["self"],
     "player score": 2,
     "player misc": (False, 0),
     "player location": "small den",
@@ -46,7 +46,7 @@ value_dictionary = {
     "side room bools": (True, False),
     "side room items": [],
     # main plaza data
-    "main plaza bools": (True, True, False, False, False),
+    "main plaza bools": (True, True, False, False, False, False, False),
     "main plaza items": ["strange keys", "map"],
     # small den data
     "small den bools": (False, False, False, False),

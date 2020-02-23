@@ -71,7 +71,9 @@ class PlayerClass:
             "capacitor": "A part to a circuit board, might be handy.",
             "circuit board": "A repaired part to a machine somewhere.",
             "toy lion tail": "A toy tail for a child to wear. I guess even humans wanted to be lions...",
-            "owl figurine": "A nice little owl toy. Has hoot hoot written on the bottom."
+            "owl figurine": "A nice little owl toy. Has hoot hoot written on the bottom.",
+            "coin": "Useful for just about nothing now that the human world has fallen.",
+            "screw driver": "Useful for taking things apart and also breaking them open."
         }
 
     # returns his location
@@ -504,19 +506,19 @@ class ComputerRoom:
 
 class MainPlaza:
     """Main plaza class. Acts as the hub that connects all the other areas together."""
-    def __init__(self, items_contained=None, bool_list=(False, False, False, False, False)):
+    def __init__(self, items_contained=None, bool_list=(False, False, False, False, False, False, False)):
         if items_contained is None:
             items_contained = ["strange keys", "map"]
         self.inventory = items_contained
 
-        self.exit_unlocked, self.upstairs_unlocked, self.map_gotten, self.car_looked, self.car_oper = bool_list
+        self.exit_unlocked, self.upstairs_unlocked, self.map_gotten, self.car_looked, self.car_oper, self.desk_opened, self.phone_used = bool_list
 
     # returns the items in the room.
     def get_inventory(self):
         return self.inventory
 
     def get_bools(self):
-        return self.exit_unlocked, self.upstairs_unlocked, self.map_gotten, self.car_looked, self.car_oper
+        return self.exit_unlocked, self.upstairs_unlocked, self.map_gotten, self.car_looked, self.car_oper, self.desk_opened, self.phone_used
 
     def is_exit_unlocked(self):
         return self.exit_unlocked
@@ -526,7 +528,8 @@ class MainPlaza:
         print("It's a large Main Plaza of the mall. There is a path to the 'west wing' too.")
         print("You emerge into the plaza of an old shopping mall. It is falling apart, "
               "\nwith much of the furnishings removed or smashed. Nature is starting to reclaim it too, judging by all "
-              "\nthe foliage that’s popped up. There is an old 'car' parked nearby, for some strange reason.")
+              "\nthe foliage that’s popped up. There is an old 'car' parked nearby, for some strange reason."
+              "\nThere is a 'desk' over by the main entrance near a 'payphone'.")
         if self.exit_unlocked:
             print("The 'exit' is open! I can get out.")
         else:
@@ -546,6 +549,51 @@ class MainPlaza:
             print("You can go upstairs now at least.")
         else:
             print("It's open and you can go upstairs.")
+
+    def print_description_desk(self):
+        if not self.desk_opened:
+            print("There's a old locked drawer here. I wonder how to get in.")
+        elif "coin" in self.inventory:
+            print("That coin is still there.")
+        else:
+            print("There's nothing else in the rotting desk.")
+
+    def print_description_phone(self):
+        if not self.phone_used:
+            print("I wonder if it still works?")
+        elif "blue fuse" in self.inventory:
+            print("How did that get in there?")
+        else:
+            print("I know it does not work now...")
+
+    def open_desk(self, item):
+        if not self.desk_opened:
+            if item == "screw driver":
+                print("I got it open!")
+                self.inventory.append("coin")
+                self.desk_opened = True
+                return True
+            else:
+                print(f"I can't open it with a(n) {item}.")
+                return False
+        else:
+            print("It's already opened.")
+            return False
+
+    def use_phone(self, item):
+        if not self.phone_used:
+            if item == "coin":
+                print("Hey, something fell out when I tried to use it!")
+                self.inventory.append("blue fuse")
+                self.phone_used = True
+                return True
+
+            else:
+                print(f"I can use a(n) {item} with it.")
+                return False
+        else:
+            print("It's not going to work all now.")
+            return False
 
     def go_upstairs(self):
         if self.upstairs_unlocked:
@@ -1406,7 +1454,7 @@ class ShoeStore:
     """A upstairs shoe store. Connected to the upstairs hallway."""
     def __init__(self, items_contained=None, bool_list=(False, False, False, False)):
         if items_contained is None:
-            items_contained = ["owl figurine"]
+            items_contained = ["owl figurine", "screw driver"]
         self.inventory = items_contained
 
         self.first_entered, self.elevator_opened, self.elevator_roped, self.weak_roped = bool_list
@@ -1423,7 +1471,9 @@ class ShoeStore:
     def print_description_room(self):
         print("It’s an old shoe store. It smells of musty leather and fabric. It used to be where a human would go to "
               "\nget some footwear, but now it appears someone had turned it into a living space, judging by the mess "
-              "\nthey’ve left.")
+              "they’ve left.")
+        if "screw driver" in self.inventory:
+            print("There's a screw driver on the old shelves around the place.")
 
         if self.elevator_opened:
             print("The 'elevator' shaft is opened now.")

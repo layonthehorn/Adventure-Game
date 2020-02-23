@@ -603,6 +603,10 @@ class ChapterOne:
                     self.main_plaza.print_description_car()
                 elif "gate" in p_list[1]:
                     self.main_plaza.print_description_door()
+                elif "pay" in p_list[1]:
+                    self.main_plaza.print_description_phone()
+                elif "desk" in p_list[1]:
+                    self.main_plaza.print_description_desk()
                 elif p_list[1] != "self" and p_list[1] != "map":
                     print(f"I don't know where {p_list[1]} is.")
             except IndexError:
@@ -638,6 +642,10 @@ class ChapterOne:
                     self.main_plaza.operate_car()
                 elif "gate" in p_list[1]:
                     self.main_plaza.print_description_door()
+                elif "desk" in p_list[1]:
+                    print("Not really anything to play with on it.")
+                elif "pay" in p_list[1]:
+                    print("I need money to use it.")
                 else:
                     print("I can't use that.")
             except IndexError:
@@ -656,6 +664,18 @@ class ChapterOne:
                         if self.main_plaza.unlock_gate(choice_list[0]):
                             self.player.use_item(choice_list[0])
                             self.player.increase_score()
+
+                    elif "desk" in choice_list[1]:
+                        if choice_list[0] in self.player.inventory:
+                            if self.main_plaza.open_desk(choice_list[0]):
+                                self.player.use_item(choice_list[0])
+                                self.player.increase_score()
+
+                    elif "pay" in choice_list[1]:
+                        if choice_list[0] in self.player.inventory:
+                            if self.main_plaza.use_phone(choice_list[0]):
+                                self.player.use_item(choice_list[0])
+                                self.player.increase_score()
 
                     elif "car" in p_list[1]:
                         print("No point is using things on this car. It will never start.")
@@ -1366,6 +1386,8 @@ class ChapterOne:
             try:
                 if "gen" in p_list[1]:
                     self.basement_gen_room.operate_generator()
+                elif "spec" in p_list[1]:
+                    print("It's a piece of paper. Nothing to mess with really.")
                 else:
                     print("I can't use that.")
             except IndexError:
@@ -1385,6 +1407,9 @@ class ChapterOne:
                             self.player.increase_score()
                     else:
                         print(f"I don't have a(n) {choice_list[0]}")
+
+                elif "spec" in choice_list[1]:
+                    print("It's a piece of paper. Nothing to mess with really.")
                 else:
                     print(f"I can't do anything to {choice_list[1]}")
 
