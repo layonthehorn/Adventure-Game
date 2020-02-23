@@ -1404,6 +1404,7 @@ class ChapterOne:
     def end_game(self):
         self.playing = False
 
+    # hint system for cheaters
     def hint_system(self):
         if not self.starting_room.robot_fixed:
             print("You should find a way to get that fuse loose.")
