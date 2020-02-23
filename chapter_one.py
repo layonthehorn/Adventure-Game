@@ -1422,9 +1422,23 @@ class ChapterOne:
         elif not self.small_den.animal_cut:
             print("Getting some meat would be a good idea.")
         elif not self.bathroom.cabinet_looked:
-            print("Keep playing for more hints")
+            print("Keep playing for more hints.")
+        elif not self.animal_den.animal_drugged:
+            print("Maybe place that meat somewhere?")
+        elif not self.west_wing.pet_shop_unlocked:
+            print("What can you use to unlock the pet store?")
+        elif not self.cemetery.found_rope:
+            print("Keep playing for more hints.")
+        elif not self.pet_shop.rope_fixed:
+            print("What is like a leash?")
+        elif not self.shoe_store.elevator_opened:
+            print("Keep playing for more hints.")
+        elif not self.shoe_store.elevator_roped:
+            print("What would help with getting down long falls?")
+        elif not self.basement_entryway.door_unlocked:
+            print("There's a code somewhere, or you could try and fry the lock.")
         else:
-            print("Keep playing for more hints")
+            print("Keep playing for more hints.")
 
 
 if __name__ == "__main__":
