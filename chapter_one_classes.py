@@ -508,7 +508,7 @@ class MainPlaza:
     """Main plaza class. Acts as the hub that connects all the other areas together."""
     def __init__(self, items_contained=None, bool_list=(False, False, False, False, False, False, False)):
         if items_contained is None:
-            items_contained = ["strange keys", "map"]
+            items_contained = ["map"]
         self.inventory = items_contained
 
         self.exit_unlocked, self.upstairs_unlocked, self.map_gotten, self.car_looked, self.car_oper, self.desk_opened, self.phone_used = bool_list
