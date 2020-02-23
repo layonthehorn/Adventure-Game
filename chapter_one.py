@@ -248,6 +248,12 @@ class ChapterOne:
         player_choice = ""
         # main game play loop
         while self.playing and not end_game:
+
+            # if the generator is working and the exit is locked it opens the exit.
+            if self.basement_gen_room.is_generator_working():
+                if not self.main_plaza.is_exit_unlocked():
+                    self.main_plaza.unlock_exit()
+
             # if they reached a new room announce it
             if self.player_old_room != self.player_new_room:
                 print(f"You have gone to the {self.player_new_room}.")

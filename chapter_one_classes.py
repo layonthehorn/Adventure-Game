@@ -517,6 +517,9 @@ class MainPlaza:
     def get_bools(self):
         return self.exit_unlocked, self.upstairs_unlocked, self.map_gotten, self.car_looked, self.car_oper
 
+    def is_exit_unlocked(self):
+        return self.exit_unlocked
+
     # this prints a description along with a item list
     def print_description_room(self):
         print("It's a large Main Plaza of the mall. There is a path to the 'west wing' too.")
@@ -556,6 +559,9 @@ class MainPlaza:
         else:
             print("Right now the power is out, I'm trapped.")
             return False
+
+    def unlock_exit(self):
+        self.exit_unlocked = True
 
     def unlock_gate(self, item):
         if not self.upstairs_unlocked:
@@ -1656,6 +1662,10 @@ class BasementGenRoom:
     # returns bools for saving
     def get_bools(self):
         return self.fuses_fixed, self.generator_working
+
+    # used for flags if generator is working.
+    def is_generator_working(self):
+        return self.generator_working
 
     # this prints a description along with a item list
     def print_description_room(self):
