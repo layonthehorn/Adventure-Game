@@ -262,6 +262,11 @@ class Bunker:
             items_contained = ["fuse"]
         self.inventory = items_contained
         self.fuse_box, self.door_opened, self.robot_fixed = bool_list
+        self.look_dict = {
+            "room": self.print_description_room,
+            "fuse box": self.print_description_box,
+            "exit door": self.print_description_door
+        }
 
     # returns the items in the room.
     def get_inventory(self):
@@ -269,6 +274,19 @@ class Bunker:
 
     def get_bools(self):
         return self.fuse_box, self.door_opened, self.robot_fixed
+
+    # gets looking commands from room.
+    def get_look_commands(self, look_at):
+        # you have to enter at least three letters
+        if len(look_at) >= 3:
+            for key in self.look_dict:
+                if look_at in key:
+                    look_command = self.look_dict.get(key)
+                    look_command()
+                    # if match is found returns true
+                    return True
+        # no match found returns False
+        return False
 
     # this prints a description along with a item list
     def print_description_room(self):

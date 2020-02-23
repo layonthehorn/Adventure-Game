@@ -143,12 +143,6 @@ class ExampleRoom:
         self.inventory = items_contained
         self.bool_one, self.bool_two, self.bool_three = bool_list
 
-        # self.look_dict = {
-        #     ("room", "area"): self.print_description_room,
-        #     ("box", "fuse"): self.print_description_box,
-        #     ("door", "exit"): self.print_description_door
-        #                  }
-
         self.look_dict = {
             "room": self.print_description_room,
             "fuse box": self.print_description_box,
@@ -161,20 +155,6 @@ class ExampleRoom:
 
     def get_bools(self):
         return self.bool_one, self.bool_two, self.bool_three
-
-    # # allows getting a print function form the look dictionary.
-    # def get_look_commands(self, look_at):
-    #     # you have to enter at least three letters
-    #     if len(look_at) >= 3:
-    #         for key in self.look_dict:
-    #             for name in key:
-    #                 if look_at in name:
-    #                     look_command = self.look_dict.get(key)
-    #                     look_command()
-    #                     # if match is found returns true
-    #                     return True
-    #     # no match found returns False
-    #     return False
 
     # allows getting a print function form the look dictionary.
     def get_look_commands(self, look_at):
