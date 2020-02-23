@@ -30,10 +30,6 @@ def print_help():
           "\nhelp: This menu.")
 
 
-def print_loading():
-    print("Game Loaded.")
-
-
 def print_intro():
     print("""
 You wake up, alone and afraid in an old fallout shelter, built some time in the past, but abandoned 
@@ -194,7 +190,7 @@ class ChapterOne:
                                                              new_value_dictionary["basement gen inv"],
                                                              new_value_dictionary["basement gen bools"])
                     # tells player it loaded the game
-                    print_loading()
+                    print("Loaded Game.")
                     print(f"You are in the {self.player.get_location()} room.")
                     choosing = False
 
@@ -269,6 +265,7 @@ class ChapterOne:
             # gets the room the player is in
             p_local = self.player.get_location()
             location_actions = self.location_dict.get(p_local, None)
+
             # if it does not find a room moves them to the main plaza
             if location_actions is None:
                 print("You entered a un-built place. Moving to main plaza.")
@@ -1403,6 +1400,20 @@ class ChapterOne:
     # a end game function
     def end_game(self):
         self.playing = False
+
+    def hint_system(self):
+        if not self.starting_room.robot_fixed:
+            print("You should find a way to get that fuse loose.")
+        elif not self.starting_room.fuse_box:
+            print("You should use your fuse somewhere.")
+        elif not self.starting_room.door_opened:
+            print("You should open the door.")
+        elif not self.main_plaza.car_looked:
+            print("You should look over that car.")
+        elif not self.toy_shop.crane_fixed:
+            print("Maybe a item you have will make the crane game winnable.")
+        elif not self.toy_shop.crane_won:
+            print("I wonder if you can get those keys yet.")
 
 
 if __name__ == "__main__":
