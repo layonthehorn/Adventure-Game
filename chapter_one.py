@@ -1290,7 +1290,7 @@ class ChapterOne:
         # allows player to move around
         elif p_list[0] == "go":
             try:
-                if "up" in p_list[1]:
+                if "up" in p_list[1] or "shoe" in p_list[1]:
                     self.player.set_location(self.shoe_store_name)
                 elif "gen" in p_list[1]:
                     if self.basement_entryway.go_gen_room():

@@ -1530,9 +1530,10 @@ class BasementEntry:
               "from you.")
         print("This place is not on the map... How strange.")
         if self.door_unlocked:
-            print("The door is open and you can enter.")
+            print("The door is open and you can enter the 'generator room'.")
         else:
             print("You'll have to figure out how to open the door.")
+        print("You can go back 'up' to the shoe store.")
         if len(self.inventory) > 0:
             for item in self.inventory:
                 print(f"There is a(n) {item}")
@@ -1651,6 +1652,7 @@ class BasementGenRoom:
         else:
             print("There is a large panel with spaces for four large fuses. You should get your eyes out for them.")
             print("There is a 'spec' sheet by it you might want to take note of.")
+        print("You can go back to the 'basement entry'")
         if len(self.inventory) > 0:
             for item in self.inventory:
                 print(f"There is a(n) {item}")
