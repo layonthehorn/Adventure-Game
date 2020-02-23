@@ -1,4 +1,7 @@
 import pickle
+import os
+import sys
+
 
 # testing pickling classes
 # class Testing:
@@ -33,7 +36,7 @@ import pickle
 
 
 # this file is built to generate custom save games for testing.
-value_dictionary = {
+chapter_one = {
     # player data
     "player inventory": ["self"],
     "player score": 2,
@@ -87,6 +90,16 @@ value_dictionary = {
 }
 
 
+chapter_two = {
+    # player data
+    "player inventory": ["self"],
+    "player score": 2,
+    "player misc": (False, 0),
+    "player location": "small den",
+
+}
+
+
 def print_db_file(db):
     if db is None:
         print("nothing to do...")
@@ -112,7 +125,25 @@ def load_game_state(file_name):
 
 
 if __name__ == "__main__":
-    save_location = "saves/chapter_one.save"
-    save_game_state(value_dictionary, save_location)
+
+    save_dir = os.path.join(os.getcwd(), "saves")
+    # print(save_dir)
+    if not os.path.isdir(save_dir):
+        os.makedirs(save_dir)
+
+    save_location = ""
+
+    user_input = input("1, or 2? ")
+    if user_input == "1":
+        save_location = "saves/chapter_one.save"
+        save_data = chapter_one
+    elif user_input == "2":
+        save_location = "saves/chapter_two.save"
+        save_data = chapter_two
+    else:
+        print("Not a accepted value.")
+        sys.exit(0)
+
+    save_game_state(save_data, save_location)
     item_dict = load_game_state(save_location)
     print_db_file(item_dict)

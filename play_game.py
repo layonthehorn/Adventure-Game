@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 from chapter_one import ChapterOne
+from chapter_two import ChapterTwo
 import os
 
 # Temporary ascii art from https://ascii.co.uk/art/lion
@@ -37,7 +38,7 @@ while choosing:
     if user_input == "1":
         ChapterOne()
     elif user_input == "2":
-        print("Not Yet Made.")
+        ChapterTwo()
     elif user_input == "q":
         print("Good bye!")
         choosing = False
