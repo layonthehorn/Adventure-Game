@@ -15,6 +15,7 @@ You have to try and get out of a mall and join your friends outside. Use the com
 - use {item} With/on {item}: how you use things with other things.
 - go {location}: How you change rooms.
 - save: How you save your game.
+- hint: Gives you a hint towards finishing the game.
 - end: Exit game and will ask to save or not.
 
 ### Credits
