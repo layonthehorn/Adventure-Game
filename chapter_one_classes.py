@@ -617,7 +617,7 @@ class SmallDen:
     """A small animal pen that holds a dead animal and a workbench."""
     def __init__(self, items_contained=None, bool_list=(False, False, False, False), work_inventory=None):
         if items_contained is None:
-            items_contained = ["meat"]
+            items_contained = []
         if work_inventory is None:
             work_inventory = []
 
