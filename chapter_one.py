@@ -603,7 +603,7 @@ class ChapterOne:
                     self.main_plaza.print_description_car()
                 elif "gate" in p_list[1]:
                     self.main_plaza.print_description_door()
-                elif "pay" in p_list[1]:
+                elif "pay" in p_list[1] or "phone" in p_list[1]:
                     self.main_plaza.print_description_phone()
                 elif "desk" in p_list[1]:
                     self.main_plaza.print_description_desk()
@@ -644,7 +644,7 @@ class ChapterOne:
                     self.main_plaza.print_description_door()
                 elif "desk" in p_list[1]:
                     print("Not really anything to play with on it.")
-                elif "pay" in p_list[1]:
+                elif "pay" in p_list[1] or "phone" in p_list[1]:
                     print("I need money to use it.")
                 else:
                     print("I can't use that.")
@@ -675,7 +675,7 @@ class ChapterOne:
                         else:
                             print(f"I don't have a(n) {choice_list[0]}")
 
-                elif "pay" in choice_list[1]:
+                elif "pay" in choice_list[1] or "phone" in p_list[1]:
                     if choice_list[0] in self.player.inventory:
                         if self.main_plaza.use_phone(choice_list[0]):
                             self.player.use_item(choice_list[0])
