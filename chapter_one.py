@@ -45,9 +45,6 @@ room and there is a door that appears to be locked.
 """)
 
 
-
-
-
 class ChapterOne:
     """This is a text adventure game, chapter one. All that is needed is to initialize it and the game will start."""
     def __init__(self):
