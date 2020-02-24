@@ -28,6 +28,7 @@ class FunctionClass:
                 if operate in key:
                     oper_command = self.oper_dict.get(key)
                     oper_command()
+                    break
             else:
                 print(f"I can't operate the {operate}.")
         else:

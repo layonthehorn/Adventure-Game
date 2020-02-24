@@ -195,6 +195,7 @@ class ChapterOne:
                 if not self.main_plaza.is_exit_unlocked():
                     self.main_plaza.unlock_exit()
 
+            # if mane is brushed updates the safe and mirror bools
             if self.player.is_mane_brushed():
                 if not self.side_room.is_safe_unlocked():
                     self.side_room.safe_unlocked = True
