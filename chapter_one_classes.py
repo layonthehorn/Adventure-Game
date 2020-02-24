@@ -36,6 +36,7 @@ class FunctionClass:
                         try:
                             oper_command()
                         except TypeError:
+                            # for the one function that takes a argument
                             oper_command(player_bool)
                         break
                 else:
@@ -53,7 +54,11 @@ class FunctionClass:
                 for key in self.go_dict:
                     if go in key:
                         go_command = self.go_dict.get(key)
-                        go_command(player_object)
+                        try:
+                            go_command(player_object)
+                        except TypeError:
+                            # for the one go command that does not have a player object to be used.
+                            go_command()
                         break
                 else:
                     print(f"I can't go to {go}.")
@@ -1465,7 +1470,8 @@ class AnimalDen(FunctionClass):
             print("I'm sure it's around but I can't see it right now.")
 
     # Vern enters the hole once and never again
-    def enter_hole(self, dummy):
+    def enter_hole(self):
+        # dummy parameter is only here to prevent it from crashing with the player object.
         if self.hole_tried:
             print("Nope. Never again...")
         else:
