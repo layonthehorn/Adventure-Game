@@ -32,12 +32,23 @@ def print_help():
 
 
 def print_intro():
-    print("""
+    print(""" 
+Vern the lion was traveling with his friend Johnson and his daughter Katie. 
+On their way to Harrisburg, they stopped for the night and he shared a drink with his friend. 
+Things got out of hand and one drink turned into many. 
+The next thing Vern knew he woke up with a massive headache in a strange place.
+
 You wake up, alone and afraid in an old fallout shelter, built some time in the past, but abandoned 
 long ago. It appears a group had set themselves up here before the end, judging by the things that were left 
 behind. The room smells of mould and rust. There is a disabled robot in the corner, an entry to a smaller 
 room and there is a door that appears to be locked.
 """)
+
+
+def print_outro():
+    print("""
+Vern escapes the mall and reunites with Johnson and Katie. After a debriefing between them, 
+they continued onwards to Harrisburg. Hopefully, There would be no complications there.""")
 
 
 class ChapterOne:
@@ -367,10 +378,9 @@ class ChapterOne:
 
     # a winning game function
     def exit_game(self):
-        print("You escaped the mall! You are back with Johnson and Katie.")
-        print("Maybe they can explain what happened to you.")
+        print_outro()
         self.player.print_score()
-        input("Press enter to end game.\nThank you for playing!")
+        input("Press enter to exit Chapter One.\nThank you for playing!")
         self.end_game()
 
     # a end game function
