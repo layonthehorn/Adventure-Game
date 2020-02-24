@@ -390,7 +390,6 @@ class ChapterOne:
             except ValueError:
                 pass
             try:
-                # if the player makes the drugged meat it increases your score
                 if self.player.combine_items(choice_list[0], choice_list[1]):
                     self.player.increase_score()
 
@@ -403,13 +402,17 @@ class ChapterOne:
                 choice_list = self.use_pattern.split(action)
                 if '' in choice_list:
                     choice_list.remove('')
-                print(choice_list)
                 loc_name.get_use_commands(self.player, choice_list)
             except IndexError:
                 print("Use what with what?")
+
+        # operating objects
         elif general_list[0] == "oper":
             try:
-                loc_name.get_oper_commands(general_list[1])
+                if self.player.get_location() == self.side_room_name and "safe" in general_list[1]:
+                    self.side_room.operate_safe(self.player.is_mane_brushed())
+                else:
+                    loc_name.get_oper_commands(general_list[1])
 
             except IndexError:
                 print("Operate what?")

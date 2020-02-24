@@ -494,7 +494,6 @@ class ComputerRoom(FunctionClass):
             "bunker": self.go_bunker
         }
         self.oper_dict = {
-            "safe": self.operate_safe,
             "light switch": self.turn_on_switch,
             "computer": self.use_computer
         }
