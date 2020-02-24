@@ -23,10 +23,13 @@ ascii_image = """
 """
 
 # makes sure the save directory is a thing
-save_dir = os.path.join(os.getcwd(), "saves")
-# print(save_dir)
-if not os.path.isdir(save_dir):
-    os.makedirs(save_dir)
+try:
+    save_dir = os.path.join(os.getcwd(), "saves")
+    # print(save_dir)
+    if not os.path.isdir(save_dir):
+        os.makedirs(save_dir)
+except IOError:
+    print("Could not create save folder. Save feature will not work.")
 
 
 choosing = True

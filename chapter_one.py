@@ -309,6 +309,7 @@ class ChapterOne:
     # general actions that can be done anywhere
     def general_actions(self, action):
         # finds player location
+        # this makes all your actions dependent on the room you are in
         loc_name = self.switcher_dictionary.get(self.player.get_location(), None)
         if loc_name is None:
             print("no matching location found, defaulting to bunker.")
@@ -360,7 +361,7 @@ class ChapterOne:
         # gets an item from the current room
         elif general_list[0] == "get":
             try:
-                if general_list[1] in loc_name.inventory:
+                if general_list[1] in loc_name.get_inventory():
                     self.player.get_item(loc_name.get_item(general_list[1]))
                 else:
                     print(f"There isn't a(n) {general_list[1]} to get.")
@@ -372,7 +373,7 @@ class ChapterOne:
             try:
                 # if player tries to drop self print message.
                 if general_list[1] != 'self':
-                    if general_list[1] in self.player.inventory:
+                    if general_list[1] in self.player.get_inventory():
                         loc_name.give_item(self.player.drop_item(general_list[1]))
                     else:
                         print(f"I don't have a(n) {general_list[1]} to drop.")
