@@ -1474,11 +1474,10 @@ class AnimalDen(FunctionClass):
 
         self.go_dict = {
             "hallway": self.go_hallway,
-        }
-
-        self.oper_dict = {
             "hole": self.enter_hole
         }
+
+        self.oper_dict = {}
 
         self.use_dict = {}
 
@@ -1523,7 +1522,7 @@ class AnimalDen(FunctionClass):
             print("I'm sure it's around but I can't see it right now.")
 
     # Vern enters the hole once and never again
-    def enter_hole(self):
+    def enter_hole(self, dummy):
         if self.hole_tried:
             print("Nope. Never again...")
         else:
