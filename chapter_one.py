@@ -289,7 +289,7 @@ class ChapterOne:
                 elif general_list[1] == "self":
                     self.player.look_self()
                 else:
-                    loc_name.get_look_commands(general_list[1])
+                    loc_name.get_look_commands(general_list[1], self.player.is_mane_brushed())
             except IndexError:
                 print("Look at what?")
 

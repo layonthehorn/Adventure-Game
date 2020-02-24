@@ -6,13 +6,16 @@ class FunctionClass:
     """Never to be called. Only used for giving all other classes the same methods."""
 
     # allows getting a print function form the look dictionary.
-    def get_look_commands(self, look_at):
+    def get_look_commands(self, look_at, player_bool):
         # you have to enter at least three letters
         if len(look_at) >= 3:
             for key in self.look_dict:
                 if look_at in key:
                     look_command = self.look_dict.get(key)
-                    look_command()
+                    try:
+                        look_command()
+                    except TypeError:
+                        look_command(player_bool)
                     break
             else:
                 print(f"I can't look at {look_at}.")
