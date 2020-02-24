@@ -1,6 +1,88 @@
 import time
 
 
+class FunctionClass:
+    """Never to be called. Only used for giving all other classes the same methods."""
+
+    # allows getting a print function form the look dictionary.
+    def get_look_commands(self, look_at):
+        # you have to enter at least three letters
+        if len(look_at) >= 3:
+            for key in self.look_dict:
+                if look_at in key:
+                    look_command = self.look_dict.get(key)
+                    look_command()
+                    break
+            else:
+                print(f"I can't look at {look_at}.")
+
+        else:
+            print(f"I can't go to {look_at}.")
+
+    # allows getting operate commands
+    def get_oper_commands(self, operate):
+        # you have to enter at least three letters
+        if len(operate) >= 3:
+            for key in self.oper_dict:
+                if operate in key:
+                    oper_command = self.oper_dict.get(key)
+                    oper_command()
+                    break
+            else:
+                print(f"I can't operate {operate}.")
+        else:
+            print(f"I can't go to {operate}.")
+
+    # allows getting go commands
+    def get_go_commands(self, player_object, go):
+        # you have to enter at least three letters
+        if len(go) >= 2:
+            for key in self.go_dict:
+                if go in key:
+                    go_command = self.go_dict.get(key)
+                    go_command(player_object)
+                    break
+            else:
+                print(f"I can't go to {go}.")
+        else:
+            print(f"I can't go to {go}.")
+
+    # allows using item on objects
+    def get_use_commands(self, player_object, use_list):
+        item = use_list[0]
+        room_object = use_list[1]
+        # you have to enter at least three letters
+        if len(room_object) >= 3:
+            for key in self.use_dict:
+                if room_object in key:
+                    use_command = self.use_dict.get(key)
+                    if use_command(item):
+                        player_object.use_item(item)
+                        player_object.increase_score()
+                    break
+            else:
+                print(f"I can't find the {room_object}.")
+        else:
+            print(f"What is a(n) {room_object}.")
+
+    # returns the items in the room.
+    def get_inventory(self):
+        return self.inventory
+
+    # returns item to room
+    def get_item(self, item):
+        if item in self.inventory:
+            location = self.inventory.index(item)
+            return self.inventory.pop(location)
+        else:
+            return None
+
+    # dropping item back into room
+    def give_item(self, item):
+        if item not in self.inventory:
+            self.inventory.append(item)
+
+
 class PlayerClass:
     """This is the main player class. It holds the player inventory and score among other things."""
     def __init__(self, player_inventory=None, player_start="example", score=0, player_misc=(False, 0)):
@@ -135,7 +217,7 @@ class PlayerClass:
         print("A nervous lion is what you are. Somehow still alive but for how long? Hopefully long enough.")
 
 
-class ExampleRoom:
+class ExampleRoom(FunctionClass):
     """This is the bunker class. It acts as the starting room for the player."""
     def __init__(self, items_contained=None, bool_list=(False, False, False)):
         if items_contained is None:
@@ -149,25 +231,21 @@ class ExampleRoom:
             "exit door": self.print_description_door
                          }
 
-    # returns the items in the room.
-    def get_inventory(self):
-        return self.inventory
+        self.go_dict = {
+            "outside": self.go_outside,
+            "side room": self.go_sideroom
+        }
+        self.oper_dict = {
+            "door": self.operate_door,
+            "fuse box": self.operate_fuse_box
+                        }
+
+        self.use_dict = {
+            "fuse box": self.testing_using_items
+        }
 
     def get_bools(self):
         return self.bool_one, self.bool_two, self.bool_three
-
-    # allows getting a print function form the look dictionary.
-    def get_look_commands(self, look_at):
-        # you have to enter at least three letters
-        if len(look_at) >= 3:
-            for key in self.look_dict:
-                if look_at in key:
-                    look_command = self.look_dict.get(key)
-                    look_command()
-                    # if match is found returns true
-                    return True
-        # no match found returns False
-        return False
 
     # this prints a description along with a item list
     def print_description_room(self):
@@ -184,18 +262,19 @@ class ExampleRoom:
     def print_description_door(self):
         print("it's a door")
 
-    # this pops off the items and returns it
-    def get_item(self, item):
-        if item in self.inventory:
-            location = self.inventory.index(item)
-            return self.inventory.pop(location)
+    def operate_door(self):
+        if not self.bool_one:
+            self.bool_one = True
+            print("switched to new value door")
         else:
-            return None
+            print("stays the same door")
 
-    # dropping item back into room
-    def give_item(self, item):
-        if item not in self.inventory:
-            self.inventory.append(item)
+    def operate_fuse_box(self):
+        if not self.bool_two:
+            self.bool_two = True
+            print("switched to new value box")
+        else:
+            print("stays the same box")
 
     def testing_using_items(self, item):
         if not self.bool_one:
@@ -209,3 +288,10 @@ class ExampleRoom:
         else:
             print("Already used.")
             return False
+
+    def go_outside(self, player_object):
+        print("going outside")
+        player_object.set_location("")
+
+    def go_sideroom(self, player_object):
+        print("going sideroom")

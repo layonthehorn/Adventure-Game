@@ -99,7 +99,6 @@ class ChapterTwo:
             # action dictionary for each of the rooms special actions
             # also holds the end and exit game functions
             self.location_dict = {
-                self.example_name: self.example_area,
                 self.exit_name: self.exit_game,
                 self.end_name: self.end_game
             }
@@ -122,18 +121,8 @@ class ChapterTwo:
 
             # gets the room the player is in
             p_local = self.player.get_location()
-            location_actions = self.location_dict.get(p_local, None)
 
-            # if it does not find a room moves them to the main plaza
-            if location_actions is None:
-                print("You entered a un-built place. Moving to example place.")
-                self.player.set_location(self.example_name)
-                location_actions = self.example_area
             if p_local != self.end_name and p_local != self.exit_name:
-                # runs the players actions in the room they are in
-
-                location_actions(player_choice)
-
                 # finds players new location to see if they changed rooms
                 self.player_new_room = self.player.get_location()
                 print("")
@@ -193,7 +182,7 @@ class ChapterTwo:
             input("Press enter to quit. Goodbye!")
             self.player.set_location(self.end_name)
 
-        # looks at player map
+        # looking at things
         elif general_list[0] == "look":
             try:
                 if general_list[1] == "map":
@@ -202,8 +191,7 @@ class ChapterTwo:
                 elif general_list[1] == "self":
                     self.player.look_self()
                 else:
-                    if not loc_name.get_look_commands(general_list[1]):
-                        print(f"I can't look at the {general_list[1]}.")
+                    loc_name.get_look_commands(general_list[1])
             except IndexError:
                 print("Look at what?")
 
@@ -213,6 +201,7 @@ class ChapterTwo:
                 self.get_items(loc_name, general_list[1])
             except IndexError:
                 print("Get what?")
+
         # drops item to current room
         elif general_list[0] == "drop":
             try:
@@ -223,6 +212,8 @@ class ChapterTwo:
                     print("Now how would I do that?")
             except IndexError:
                 print("Drop what?")
+
+        # combining items
         elif general_list[0] == "com":
             # tries to combine items
             choice_list = self.combine_pattern.split(action)
@@ -237,16 +228,30 @@ class ChapterTwo:
 
             except IndexError:
                 print("Combine what with what?")
+
+        # using items on objects
         elif general_list[0] == "use":
             try:
-                pass
+                choice_list = self.use_pattern.split(action)
+                if '' in choice_list:
+                    choice_list.remove('')
+                print(choice_list)
+                loc_name.get_use_commands(self.player, choice_list)
             except IndexError:
                 print("Use what with what?")
         elif general_list[0] == "oper":
             try:
-                pass
+                loc_name.get_oper_commands(general_list[1])
+
             except IndexError:
                 print("Operate what?")
+
+        # going to new areas.
+        elif general_list[0] == "go":
+            try:
+                loc_name.get_go_commands(self.player, general_list[1])
+            except IndexError:
+                print("Go where?")
         else:
             print(f"I don't know how to {general_list[0]} something.")
 
@@ -285,58 +290,4 @@ class ChapterTwo:
     def hint_system(self):
         print("Keep playing for more hints.")
 
-    def example_area(self, player_choice):
-        # looking at things
-        p_list = player_choice.split(" ", 1)
-        # if p_list[0] == "look":
-        #     try:
-        #         if p_list[1] == "room":
-        #             self.example.print_description_room()
-        #         elif p_list[1] != "self" and p_list[1] != "map":
-        #             print(f"I don't know where {p_list[1]} is.")
-        #     except IndexError:
-        #         print("Look at what?")
 
-        # opens door
-        if p_list[0] == "oper":
-            try:
-                if p_list[1] == "door":
-                    print("testing operating")
-                else:
-                    print("I can't use that.")
-            except IndexError:
-                print("Operate what?")
-
-        # player fixing objects
-        elif p_list[0] == "use":
-            # using fuse to fix door
-            choice_list = self.use_pattern.split(player_choice)
-            try:
-                choice_list.remove('')
-            except ValueError:
-                pass
-            try:
-                # attempt to fix fuse box
-                if "box" in choice_list[1]:
-                    if choice_list[0] in self.player.inventory:
-                        if self.example.testing_using_items(choice_list[0]):
-                            self.player.use_item(choice_list[0])
-                            self.player.increase_score()
-                    else:
-                        print(f"I don't have a(n) {choice_list[0]}")
-
-                else:
-                    print(f"I can't do anything to {choice_list[1]}")
-
-            except IndexError:
-                print("Use what with what?")
-
-        # allows the player to leave
-        elif p_list[0] == "go":
-            try:
-                if p_list[1] == "outside":
-                    print("tesing going outside.")
-                else:
-                    print(f"I can't go to {p_list[1]}.")
-            except IndexError:
-                print("Go where?")
