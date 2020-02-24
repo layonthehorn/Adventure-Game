@@ -409,10 +409,7 @@ class ChapterOne:
         # operating objects
         elif general_list[0] == "oper":
             try:
-                if self.player.get_location() == self.side_room_name and "safe" in general_list[1]:
-                    self.side_room.operate_safe(self.player.is_mane_brushed())
-                else:
-                    loc_name.get_oper_commands(general_list[1])
+                loc_name.get_oper_commands(general_list[1], self.player.is_mane_brushed())
 
             except IndexError:
                 print("Operate what?")

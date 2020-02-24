@@ -24,7 +24,7 @@ class FunctionClass:
             print(f"I can't go to {look_at}.")
 
     # allows getting operate commands
-    def get_oper_commands(self, operate):
+    def get_oper_commands(self, operate, player_bool):
         # you have to enter at least three letters
         if len(operate) >= 3:
             if len(self.oper_dict) < 1:
@@ -33,7 +33,10 @@ class FunctionClass:
                 for key in self.oper_dict:
                     if operate in key:
                         oper_command = self.oper_dict.get(key)
-                        oper_command()
+                        try:
+                            oper_command()
+                        except TypeError:
+                            oper_command(player_bool)
                         break
                 else:
                     print(f"I can't operate the {operate}.")
@@ -1067,7 +1070,7 @@ class PetShop(FunctionClass):
               "\nthings for a lion like you. Though you aren’t too fond of having to go to a pet store to get anything "
               "\neven remotely useful for you. In the back room of the store there is a fish display 'tank'. You seem "
               "\noddly attracted to it...")
-        print("There is a 'leash repairing' machine off in one of the corners and a small 'fridge'.")
+        print("There is a 'leash machine' off in one of the corners and a small 'fridge'.")
         if "mane brush" in self.inventory:
             print("I might need a clean up and that brush looks handy.")
 
@@ -1664,11 +1667,11 @@ class ShoeStore(FunctionClass):
         }
 
         self.oper_dict = {
-            "elevator": self.fix_elevator
+            "elevator": self.operate_elevator_doors
         }
 
         self.use_dict = {
-            "elevator": self.operate_elevator_doors
+            "elevator": self.fix_elevator
         }
 
     # returns bools for saving
