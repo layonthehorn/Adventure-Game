@@ -225,10 +225,7 @@ class ChapterOne:
 
             # gets the room the player is in
             p_local = self.player.get_location()
-
-            # if it does not find a room moves them to the main plaza
             if p_local != self.end_name and p_local != self.exit_name:
-                # runs the players actions in the room they are in
 
                 # if the player is in the animal den it checks if it needs to run the
                 # checking if they placed the meat in the animal den
@@ -334,12 +331,12 @@ class ChapterOne:
         # prints inventory
         if action == "inv":
             self.player.check_inventory()
-        # prints actions that can be taken
         elif action == "hint":
             self.hint_system()
+        # prints help page
         elif action == "help":
             print_help()
-        # ends game
+        # saves the game
         elif action == "save":
             print("Game has been saved!")
             self.save_game_state()
@@ -349,7 +346,7 @@ class ChapterOne:
         # in case input is blank
         elif action == "":
             print("Vern taps his foot on the ground. \n'I get so sick of waiting for something to happen.'")
-        # ends game asks to save
+        # ends game and asks to save
         elif action == "end":
             save = input("Save game? ").lower()
             if save == 'y':

@@ -1,6 +1,7 @@
 import time
 
 
+# function class for inheritance.
 class FunctionClass:
     """Never to be called. Only used for giving all other classes the same methods."""
 
@@ -347,8 +348,6 @@ class PlayerClass:
 
 
 # Bunker Areas
-
-
 class Bunker(FunctionClass):
     """This is the bunker class. It acts as the starting room for the player."""
 
@@ -613,8 +612,6 @@ class ComputerRoom(FunctionClass):
 
 
 # Main Plaza Areas
-
-
 class MainPlaza(FunctionClass):
     """Main plaza class. Acts as the hub that connects all the other areas together."""
 
@@ -936,8 +933,6 @@ class SmallDen(FunctionClass):
 
 
 # West Wing Areas
-
-
 class WestWing(FunctionClass):
     """A hallway that connects to the western rooms."""
 
@@ -1340,8 +1335,6 @@ class Cemetery(FunctionClass):
 
 
 # Upstairs Areas
-
-
 class UpstairsHallway(FunctionClass):
     """The upstairs hallway that connects to the animal den, shoe store, and bathroom."""
 
@@ -1797,8 +1790,6 @@ class ShoeStore(FunctionClass):
 
 
 # Basement Areas
-
-
 class BasementEntry(FunctionClass):
     """A basement room that is attached to the shoe store."""
 
