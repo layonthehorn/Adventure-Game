@@ -50,6 +50,7 @@ class ChapterOne:
         self.save_location = "saves/chapter_one.save"
 
         # building the rooms and player names
+        self.player_name = "player"
         self.main_plaza_name = "plaza"
         self.starting_room_name = "bunker"
         self.side_room_name = "side room"
@@ -121,59 +122,39 @@ class ChapterOne:
 
                     # loading saved settings for classes
                     # player data
-                    self.player = PlayerClass(new_value_dictionary["player inventory"],
-                                              new_value_dictionary["player location"],
-                                              new_value_dictionary["player score"],
-                                              new_value_dictionary["player misc"])
+                    self.player = new_value_dictionary.get(self.player_name)
                     # bunker data
-                    self.starting_room = Bunker(new_value_dictionary["starting room items"],
-                                                new_value_dictionary["starting room bools"])
+                    self.starting_room = new_value_dictionary.get(self.starting_room_name)
                     # side room data
-                    self.side_room = ComputerRoom(new_value_dictionary["side room items"],
-                                                  new_value_dictionary["side room bools"])
+                    self.side_room = new_value_dictionary.get(self.side_room_name)
                     # main plaza data
-                    self.main_plaza = MainPlaza(new_value_dictionary["main plaza items"],
-                                                new_value_dictionary["main plaza bools"])
+                    self.main_plaza = new_value_dictionary.get(self.main_plaza_name)
                     # small den data
-                    self.small_den = SmallDen(new_value_dictionary["small den items"],
-                                              new_value_dictionary["small den bools"],
-                                              new_value_dictionary["workbench inventory"])
+                    self.small_den = new_value_dictionary.get(self.small_den_name)
                     # west wing data
-                    self.west_wing = WestWing(new_value_dictionary["west wing items"],
-                                              new_value_dictionary["west wing bools"])
+                    self.west_wing = new_value_dictionary.get(self.west_wing_name)
                     # cemetery data
-                    self.cemetery = Cemetery(new_value_dictionary["cemetery items"],
-                                             new_value_dictionary["cemetery bools"])
+                    self.cemetery = new_value_dictionary.get(self.cemetery_name)
                     # toy shop data
-                    self.toy_shop = ToyShop(new_value_dictionary["toy shop items"],
-                                            new_value_dictionary["toy shop bools"])
+                    self.toy_shop = new_value_dictionary.get(self.toy_shop_name)
                     # pet shop data
-                    self.pet_shop = PetShop(new_value_dictionary["pet shop items"],
-                                            new_value_dictionary["pet shop bools"])
+                    self.pet_shop = new_value_dictionary.get(self.pet_shop_name)
                     # upstairs hallway data
-                    self.up_stairs_hallway = UpstairsHallway(new_value_dictionary["upstairs hallway items"],
-                                                             new_value_dictionary["upstairs hallway bools"])
+                    self.up_stairs_hallway = new_value_dictionary.get(self.up_stairs_hallway_name)
                     # animal den data
-                    self.animal_den = AnimalDen(new_value_dictionary["animal den items"],
-                                                new_value_dictionary["animal den bools"])
+                    self.animal_den = new_value_dictionary.get(self.animal_den_name)
                     # bathroom data
-                    self.bathroom = Bathroom(new_value_dictionary["bathroom items"],
-                                             new_value_dictionary["bathroom bools"])
+                    self.bathroom = new_value_dictionary.get(self.bathroom_name)
                     # shoe store data
-                    self.shoe_store = ShoeStore(new_value_dictionary["shoe store items"],
-                                                new_value_dictionary["shoe store bools"])
-
+                    self.shoe_store = new_value_dictionary.get(self.shoe_store_name)
                     # basement entryway data
-                    self.basement_entryway = BasementEntry(new_value_dictionary["basement entry items"],
-                                                           new_value_dictionary["basement entry bools"])
-
+                    self.basement_entryway = new_value_dictionary.get(self.basement_entryway_name)
                     # basement generator room data
-                    self.basement_gen_room = BasementGenRoom(new_value_dictionary["basement gen items"],
-                                                             new_value_dictionary["basement gen inv"],
-                                                             new_value_dictionary["basement gen bools"])
+                    self.basement_gen_room = new_value_dictionary.get(self.basement_gen_room_name)
+
                     # tells player it loaded the game
                     print("Loaded Game.")
-                    print(f"You are in the {self.player.get_location()} room.")
+                    print(f"You are in the {self.player.get_location()} area.")
                     choosing = False
 
             # prints instructions
@@ -187,6 +168,9 @@ class ChapterOne:
             self.player_old_room = self.player.get_location()
             self.player_new_room = self.player_old_room
             self.switcher_dictionary = {
+                # player only here for saving
+                self.player_name: self.player,
+                # rest here for saving and getting rooms
                 self.starting_room_name: self.starting_room,
                 self.side_room_name: self.side_room,
                 self.main_plaza_name: self.main_plaza,
@@ -248,61 +232,11 @@ class ChapterOne:
 
     # saves games
     def save_game_state(self):
-        value_dictionary = {
-                            # player data
-                            "player inventory": self.player.get_inventory(),
-                            "player score": self.player.get_score(),
-                            "player location": self.player.get_location(),
-                            "player misc": self.player.get_misc(),
-                            # starting room data
-                            "starting room bools": self.starting_room.get_bools(),
-                            "starting room items": self.starting_room.get_inventory(),
-                            # side/computer room data
-                            "side room bools": self.side_room.get_bools(),
-                            "side room items": self.side_room.get_inventory(),
-                            # main plaza data
-                            "main plaza bools": self.main_plaza.get_bools(),
-                            "main plaza items": self.main_plaza.get_inventory(),
-                            # small den data
-                            "small den items": self.small_den.get_inventory(),
-                            "small den bools": self.small_den.get_bools(),
-                            "workbench inventory": self.small_den.get_parts(),
-                            # west wing data
-                            "west wing items": self.west_wing.get_inventory(),
-                            "west wing bools": self.west_wing.get_bools(),
-                            # cemetery data
-                            "cemetery items": self.cemetery.get_inventory(),
-                            "cemetery bools": self.cemetery.get_bools(),
-                            # toy shop data
-                            "toy shop items": self.toy_shop.get_inventory(),
-                            "toy shop bools": self.toy_shop.get_bools(),
-                            # pet shop data
-                            "pet shop items": self.toy_shop.get_inventory(),
-                            "pet shop bools": self.toy_shop.get_bools(),
-                            # bathroom data
-                            "bathroom items": self.bathroom.get_inventory(),
-                            "bathroom bools": self.bathroom.get_bools(),
-                            # animal den data
-                            "animal den items": self.animal_den.get_inventory(),
-                            "animal den bools": self.animal_den.get_bools(),
-                            # upstairs hallway data
-                            "upstairs hallway items": self.up_stairs_hallway.get_inventory(),
-                            "upstairs hallway bools": self.up_stairs_hallway.get_bools(),
-                            # shoe store data
-                            "shoe store items": self.shoe_store.get_inventory(),
-                            "shoe store bools": self.shoe_store.get_bools(),
-                            # basement entryway data
-                            "basement entry items": self.basement_entryway.get_inventory(),
-                            "basement entry bools": self.basement_entryway.get_bools(),
-                            # basement generator room data
-                            "basement gen items": self.basement_gen_room.get_inventory(),
-                            "basement gen bools": self.basement_gen_room.get_bools(),
-                            "basement gen inv": self.basement_gen_room.get_gen_inventory()
-                            }
+
         try:
             # writes data to save file with pickle
             with open(self.save_location, 'wb+') as db_file:
-                pickle.dump(value_dictionary, db_file)
+                pickle.dump(self.switcher_dictionary, db_file)
         except IOError:
             print("Could not open file for saving...")
 
@@ -311,7 +245,8 @@ class ChapterOne:
         # finds player location
         # this makes all your actions dependent on the room you are in
         loc_name = self.switcher_dictionary.get(self.player.get_location(), None)
-        if loc_name is None:
+        # if you reach an unbuilt area or somehow retrieve the player class
+        if loc_name is None or self.player.get_location() == self.player_name:
             print("no matching location found, defaulting to bunker.")
             loc_name = self.starting_room
             self.player.set_location(self.starting_room_name)

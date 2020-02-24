@@ -99,15 +99,13 @@ class FunctionClass:
 class PlayerClass:
     """This is the main player class. It holds the player inventory and score among other things."""
 
-    def __init__(self, player_inventory=None, player_start="bunker", score=0, player_misc=(False, 0)):
+    def __init__(self):
 
-        if player_inventory is None:
-            player_inventory = ["self"]
-
-        self.inventory = player_inventory
-        self.location = player_start
-        self.player_score = score
-        self.mane_brushed, self.fish_counter = player_misc
+        self.inventory = ["self"]
+        self.location = "bunker"
+        self.player_score = 0
+        self.mane_brushed = False
+        self.fish_counter = 0
 
         self.map_of_building = """
           ---------MAP----------
@@ -349,11 +347,9 @@ class PlayerClass:
 class Bunker(FunctionClass):
     """This is the bunker class. It acts as the starting room for the player."""
 
-    def __init__(self, items_contained=None, bool_list=(False, False, False)):
-        if items_contained is None:
-            items_contained = ["fuse"]
-        self.inventory = items_contained
-        self.fuse_box, self.door_opened, self.robot_fixed = bool_list
+    def __init__(self):
+        self.inventory = ["fuse"]
+        self.fuse_box, self.door_opened, self.robot_fixed = (False, False, False)
         self.look_dict = {
             "room": self.print_description_room,
             "fuse box": self.print_description_box,
@@ -372,9 +368,6 @@ class Bunker(FunctionClass):
             "robot": self.fix_robot,
             "fuse box": self.fix_fuse_box
         }
-
-    def get_bools(self):
-        return self.fuse_box, self.door_opened, self.robot_fixed
 
     # this prints a description along with a item list
     def print_description_room(self):
@@ -481,11 +474,10 @@ class Bunker(FunctionClass):
 class ComputerRoom(FunctionClass):
     """The side room to the bunker."""
 
-    def __init__(self, items_contained=None, bool_list=(False, False)):
-        if items_contained is None:
-            items_contained = ["wrench"]
-        self.inventory = items_contained
-        self.light_switch, self.safe_opened = bool_list
+    def __init__(self):
+
+        self.inventory = ["wrench"]
+        self.light_switch, self.safe_opened = (False, False)
 
         self.look_dict = {
             "room": self.print_description_room,
@@ -614,10 +606,9 @@ class ComputerRoom(FunctionClass):
 class MainPlaza(FunctionClass):
     """Main plaza class. Acts as the hub that connects all the other areas together."""
 
-    def __init__(self, items_contained=None, bool_list=(False, False, False, False, False, False, False)):
-        if items_contained is None:
-            items_contained = ["map"]
-        self.inventory = items_contained
+    def __init__(self):
+        self.inventory = ["map"]
+        self.exit_unlocked, self.upstairs_unlocked, self.map_gotten, self.car_looked, self.car_oper, self.desk_opened, self.phone_used = (False, False, False, False, False, False, False)
         self.look_dict = {
             "room": self.print_description_room,
             "car": self.print_description_car,
@@ -643,11 +634,6 @@ class MainPlaza(FunctionClass):
             "gate": self.unlock_gate,
             "pay phone": self.use_phone
         }
-
-        self.exit_unlocked, self.upstairs_unlocked, self.map_gotten, self.car_looked, self.car_oper, self.desk_opened, self.phone_used = bool_list
-
-    def get_bools(self):
-        return self.exit_unlocked, self.upstairs_unlocked, self.map_gotten, self.car_looked, self.car_oper, self.desk_opened, self.phone_used
 
     def is_exit_unlocked(self):
         return self.exit_unlocked
@@ -798,16 +784,12 @@ class MainPlaza(FunctionClass):
 class SmallDen(FunctionClass):
     """A small animal pen that holds a dead animal and a workbench."""
 
-    def __init__(self, items_contained=None, bool_list=(False, False, False, False), work_inventory=None):
-        if items_contained is None:
-            items_contained = []
-        if work_inventory is None:
-            work_inventory = []
+    def __init__(self):
 
-        self.inventory = items_contained
+        self.inventory = []
         self.workbench_items_needed = ("soldering iron", "soldering wire", "capacitor")
-        self.workbench_inventory = work_inventory
-        self.animal_cut, self.barn_looked, self.tool_repaired, self.have_parts = bool_list
+        self.workbench_inventory = []
+        self.animal_cut, self.barn_looked, self.tool_repaired, self.have_parts = (False, False, False, False)
 
         self.look_dict = {
             "room": self.print_description_room,
@@ -826,13 +808,6 @@ class SmallDen(FunctionClass):
         self.use_dict = {"work bench": self.give_missing_part,
                          "animal": self.animal_cutting
                          }
-
-    # returns bools for saving
-    def get_bools(self):
-        return self.animal_cut, self.barn_looked, self.tool_repaired, self.have_parts
-
-    def get_parts(self):
-        return self.workbench_inventory
 
     # this prints a description along with a item list
     def print_description_room(self):
@@ -935,12 +910,10 @@ class SmallDen(FunctionClass):
 class WestWing(FunctionClass):
     """A hallway that connects to the western rooms."""
 
-    def __init__(self, items_contained=None, bool_list=(False, False)):
-        if items_contained is None:
-            items_contained = []
-        self.inventory = items_contained
+    def __init__(self):
+        self.inventory = []
 
-        self.pet_shop_unlocked, self.vend_looked = bool_list
+        self.pet_shop_unlocked, self.vend_looked = (False, False)
 
         self.look_dict = {
             "room": self.print_description_room,
@@ -959,10 +932,6 @@ class WestWing(FunctionClass):
 
         self.use_dict = {"kiosk": self.unlock_pet_shop
                          }
-
-    # returns bools for saving
-    def get_bools(self):
-        return self.pet_shop_unlocked, self.vend_looked
 
     # this prints a description along with a item list
     def print_description_room(self):
@@ -1037,12 +1006,10 @@ class WestWing(FunctionClass):
 class PetShop(FunctionClass):
     """The petshop class. attached to the west wing."""
 
-    def __init__(self, items_contained=None, bool_list=(False, False, False)):
-        if items_contained is None:
-            items_contained = ["mane brush"]
-        self.inventory = items_contained
+    def __init__(self):
+        self.inventory = ["mane brush"]
 
-        self.fish_looked, self.rope_fixed, self.fridge_checked = bool_list
+        self.fish_looked, self.rope_fixed, self.fridge_checked = (False, False, False)
         self.look_dict = {
             "room": self.print_description_room,
             "fish": self.print_description_fish,
@@ -1060,10 +1027,6 @@ class PetShop(FunctionClass):
         self.use_dict = {
             "leash machine": self.lengthen_rope
         }
-
-    # returns bools for saving
-    def get_bools(self):
-        return self.fish_looked, self.rope_fixed, self.fridge_checked
 
     # this prints a description along with a item list
     def print_description_room(self):
@@ -1134,12 +1097,10 @@ class PetShop(FunctionClass):
 class ToyShop(FunctionClass):
     """The toyshop class. attached to the west wing."""
 
-    def __init__(self, items_contained=None, bool_list=(False, False, False, False)):
-        if items_contained is None:
-            items_contained = ["soldering wire"]
-        self.inventory = items_contained
+    def __init__(self):
+        self.inventory = ["soldering wire"]
 
-        self.crane_fixed, self.crane_won, self.shelves_looked, self.locker_opened = bool_list
+        self.crane_fixed, self.crane_won, self.shelves_looked, self.locker_opened = (False, False, False, False)
         self.look_dict = {
             "room": self.print_description_room,
             "crane": self.print_description_crane,
@@ -1159,10 +1120,6 @@ class ToyShop(FunctionClass):
             "locker": self.open_locker,
             "crane": self.fix_crane
         }
-
-    # returns bools for saving
-    def get_bools(self):
-        return self.crane_fixed, self.crane_won, self.shelves_looked, self.locker_opened
 
     # this prints a description along with a item list
     def print_description_room(self):
@@ -1257,12 +1214,10 @@ class ToyShop(FunctionClass):
 class Cemetery(FunctionClass):
     """The cemetery class. attached to the west wing."""
 
-    def __init__(self, items_contained=None, bool_list=(False, False, False)):
-        if items_contained is None:
-            items_contained = ["lion plush"]
-        self.inventory = items_contained
+    def __init__(self):
+        self.inventory = ["lion plush"]
 
-        self.first_entered, self.found_rope, self.grave_dug_up = bool_list
+        self.first_entered, self.found_rope, self.grave_dug_up = (False, False, False)
 
         self.look_dict = {
             "room": self.print_description_room,
@@ -1279,10 +1234,6 @@ class Cemetery(FunctionClass):
         self.use_dict = {
             "graves": self.dig_grave
         }
-
-    # returns bools for saving
-    def get_bools(self):
-        return self.first_entered, self.found_rope, self.grave_dug_up
 
     # this prints a description along with a item list
     def print_description_room(self):
@@ -1337,12 +1288,9 @@ class Cemetery(FunctionClass):
 class UpstairsHallway(FunctionClass):
     """The upstairs hallway that connects to the animal den, shoe store, and bathroom."""
 
-    def __init__(self, items_contained=None, bool_list=(False, False)):
-        if items_contained is None:
-            items_contained = []
-        self.inventory = items_contained
-
-        self.book_looked, self.furniture_looked = bool_list
+    def __init__(self):
+        self.inventory = []
+        self.book_looked, self.furniture_looked = (False, False)
         self.look_dict = {
             "room": self.print_description_room,
             "book": self.print_description_book,
@@ -1360,10 +1308,6 @@ class UpstairsHallway(FunctionClass):
             "book": self.read_book}
 
         self.use_dict = {}
-
-    # returns bools for saving
-    def get_bools(self):
-        return self.book_looked, self.furniture_looked
 
     # this prints a description along with a item list
     def print_description_room(self):
@@ -1464,12 +1408,10 @@ class UpstairsHallway(FunctionClass):
 class AnimalDen(FunctionClass):
     """A upstairs animal den. Connected to the upstairs hallway."""
 
-    def __init__(self, items_contained=None, bool_list=(False, False, False, False, False)):
-        if items_contained is None:
-            items_contained = ["meat"]
-        self.inventory = items_contained
+    def __init__(self):
+        self.inventory = []
 
-        self.animal_drugged, self.entered_after_drugged, self.found_fur, self.meat_just_taken, self.hole_tried = bool_list
+        self.animal_drugged, self.entered_after_drugged, self.found_fur, self.meat_just_taken, self.hole_tried = (False, False, False, False, False)
 
         self.look_dict = {
             "room": self.print_description_room,
@@ -1485,10 +1427,6 @@ class AnimalDen(FunctionClass):
         self.oper_dict = {}
 
         self.use_dict = {}
-
-    # returns bools for saving
-    def get_bools(self):
-        return self.animal_drugged, self.entered_after_drugged, self.found_fur, self.meat_just_taken, self.hole_tried
 
     # this prints a description along with a item list
     def print_description_room(self):
@@ -1564,12 +1502,10 @@ class AnimalDen(FunctionClass):
 class Bathroom(FunctionClass):
     """A upstairs bathroom. Connected to the upstairs hallway."""
 
-    def __init__(self, items_contained=None, bool_list=(False, False)):
-        if items_contained is None:
-            items_contained = ["knife"]
-        self.inventory = items_contained
+    def __init__(self):
+        self.inventory = ["knife"]
 
-        self.looked_dryer, self.cabinet_looked = bool_list
+        self.looked_dryer, self.cabinet_looked = (False, False)
 
         self.look_dict = {
             "room": self.print_description_room,
@@ -1587,10 +1523,6 @@ class Bathroom(FunctionClass):
         self.oper_dict = {}
 
         self.use_dict = {}
-
-    # returns bools for saving
-    def get_bools(self):
-        return self.looked_dryer, self.cabinet_looked
 
     # this prints a description along with a item list
     def print_description_room(self):
@@ -1650,12 +1582,10 @@ class Bathroom(FunctionClass):
 class ShoeStore(FunctionClass):
     """A upstairs shoe store. Connected to the upstairs hallway."""
 
-    def __init__(self, items_contained=None, bool_list=(False, False, False, False)):
-        if items_contained is None:
-            items_contained = ["owl figurine", "screw driver"]
-        self.inventory = items_contained
+    def __init__(self):
+        self.inventory = ["owl figurine", "screw driver"]
 
-        self.first_entered, self.elevator_opened, self.elevator_roped, self.weak_roped = bool_list
+        self.first_entered, self.elevator_opened, self.elevator_roped, self.weak_roped = (False, False, False, False)
 
         self.look_dict = {
             "room": self.print_description_room,
@@ -1675,10 +1605,6 @@ class ShoeStore(FunctionClass):
         self.use_dict = {
             "elevator": self.fix_elevator
         }
-
-    # returns bools for saving
-    def get_bools(self):
-        return self.first_entered, self.elevator_opened, self.elevator_roped, self.weak_roped
 
     # this prints a description along with a item list
     def print_description_room(self):
@@ -1791,12 +1717,10 @@ class ShoeStore(FunctionClass):
 class BasementEntry(FunctionClass):
     """A basement room that is attached to the shoe store."""
 
-    def __init__(self, items_contained=None, bool_list=(False, False)):
-        if items_contained is None:
-            items_contained = ["shovel"]
-        self.inventory = items_contained
+    def __init__(self):
+        self.inventory = ["shovel"]
 
-        self.door_unlocked, self.soda_used = bool_list
+        self.door_unlocked, self.soda_used = (False, False)
 
         self.look_dict = {
             "room": self.print_description_room,
@@ -1817,10 +1741,6 @@ class BasementEntry(FunctionClass):
         self.use_dict = {
             "pad": self.entering_code
         }
-
-    # returns bools for saving
-    def get_bools(self):
-        return self.door_unlocked, self.soda_used
 
     # this prints a description along with a item list
     def print_description_room(self):
@@ -1908,15 +1828,11 @@ class BasementEntry(FunctionClass):
 class BasementGenRoom(FunctionClass):
     """A basement generator room that is attached to the shoe store."""
 
-    def __init__(self, items_contained=None, generator_inv=None, bool_list=(False, False)):
-        if items_contained is None:
-            items_contained = ["soldering iron"]
-        if generator_inv is None:
-            generator_inv = []
-        self.generator_inventory = generator_inv
-        self.inventory = items_contained
+    def __init__(self):
+        self.generator_inventory = []
+        self.inventory = ["soldering iron"]
         self.fuses_needed = ("green fuse", "red fuse", "blue fuse", "gold fuse")
-        self.fuses_fixed, self.generator_working = bool_list
+        self.fuses_fixed, self.generator_working = (False, False)
 
         self.look_dict = {
             "room": self.print_description_room,
