@@ -45,10 +45,7 @@ room and there is a door that appears to be locked.
 """)
 
 
-def print_outro():
-    print("""
-Vern escapes the mall and reunites with Johnson and Katie. After a debriefing between them, 
-they continued onwards to Harrisburg. Hopefully, There would be no complications there.""")
+
 
 
 class ChapterOne:
@@ -378,7 +375,7 @@ class ChapterOne:
 
     # a winning game function
     def exit_game(self):
-        print_outro()
+        self.print_outro()
         self.player.print_score()
         input("Press enter to exit Chapter One.\nThank you for playing!")
         self.end_game()
@@ -428,6 +425,17 @@ class ChapterOne:
             print("The exit is open now.")
         else:
             print("Keep playing for more hints.")
+
+    def print_outro(self):
+        if "toy lion tail" in self.player.get_inventory():
+            print("""
+Vern escapes the mall and reunites with Johnson and Katie. After a debriefing between them 
+and giving Katie the toy lion tail, they continued onwards to Harrisburg. 
+Hopefully, There would be no complications there.""")
+        else:
+            print("""
+Vern escapes the mall and reunites with Johnson and Katie. After a debriefing between them, 
+they continued onwards to Harrisburg. Hopefully, There would be no complications there.""")
 
 
 if __name__ == "__main__":
