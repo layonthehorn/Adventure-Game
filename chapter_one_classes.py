@@ -1460,7 +1460,6 @@ class AnimalDen(FunctionClass):
 
     # Vern enters the hole once and never again
     def enter_hole(self):
-        # dummy parameter is only here to prevent it from crashing with the player object.
         if self.hole_tried:
             print("Nope. Never again...")
         else:
