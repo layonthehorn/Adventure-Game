@@ -490,7 +490,8 @@ class ComputerRoom(FunctionClass):
         self.look_dict = {
             "room": self.print_description_room,
             "light switch": self.print_description_light,
-            "computer": self.print_description_computer
+            "computer": self.print_description_computer,
+            "safe": self.print_description_safe
         }
 
         self.go_dict = {
@@ -498,7 +499,8 @@ class ComputerRoom(FunctionClass):
         }
         self.oper_dict = {
             "light switch": self.turn_on_switch,
-            "computer": self.use_computer
+            "computer": self.use_computer,
+            "safe": self.operate_safe
         }
 
         self.use_dict = {}
