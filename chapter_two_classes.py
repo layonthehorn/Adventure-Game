@@ -8,13 +8,16 @@ class FunctionClass:
     def get_look_commands(self, look_at):
         # you have to enter at least three letters
         if len(look_at) >= 3:
-            for key in self.look_dict:
-                if look_at in key:
-                    look_command = self.look_dict.get(key)
-                    look_command()
-                    break
-            else:
+            if len(self.look_dict) < 1:
                 print(f"I can't look at {look_at}.")
+            else:
+                for key in self.look_dict:
+                    if look_at in key:
+                        look_command = self.look_dict.get(key)
+                        look_command()
+                        break
+                else:
+                    print(f"I can't look at {look_at}.")
 
         else:
             print(f"I can't go to {look_at}.")
@@ -23,27 +26,33 @@ class FunctionClass:
     def get_oper_commands(self, operate):
         # you have to enter at least three letters
         if len(operate) >= 3:
-            for key in self.oper_dict:
-                if operate in key:
-                    oper_command = self.oper_dict.get(key)
-                    oper_command()
-                    break
+            if len(self.oper_dict) < 1:
+                print(f"I can't operate the {operate}.")
             else:
-                print(f"I can't operate {operate}.")
+                for key in self.oper_dict:
+                    if operate in key:
+                        oper_command = self.oper_dict.get(key)
+                        oper_command()
+                        break
+                else:
+                    print(f"I can't operate the {operate}.")
         else:
-            print(f"I can't go to {operate}.")
+            print(f"I can't operate the {operate}.")
 
     # allows getting go commands
     def get_go_commands(self, player_object, go):
         # you have to enter at least three letters
         if len(go) >= 2:
-            for key in self.go_dict:
-                if go in key:
-                    go_command = self.go_dict.get(key)
-                    go_command(player_object)
-                    break
-            else:
+            if len(self.go_dict) < 1:
                 print(f"I can't go to {go}.")
+            else:
+                for key in self.go_dict:
+                    if go in key:
+                        go_command = self.go_dict.get(key)
+                        go_command(player_object)
+                        break
+                else:
+                    print(f"I can't go to {go}.")
         else:
             print(f"I can't go to {go}.")
 
@@ -53,6 +62,8 @@ class FunctionClass:
         room_object = use_list[1]
         # you have to enter at least three letters
         if len(room_object) >= 3:
+            if len(self.use_dict) < 1:
+                print(f"I can't find the {room_object}.")
             for key in self.use_dict:
                 if room_object in key:
                     use_command = self.use_dict.get(key)
@@ -155,7 +166,7 @@ class PlayerClass:
 
     # returns if your mane has been brushed
     def is_mane_brushed(self):
-        return self.mane_brushed
+        return self.bool_one
 
     # allows changing his location
     def set_location(self, room):

@@ -429,7 +429,7 @@ class ChapterOne:
             except IndexError:
                 print("Go where?")
         else:
-            print(f"I don't know how to {general_list[0]} something.")
+            print(f"I don't know how to {general_list[0]}.")
 
     # a winning game function
     def exit_game(self):
