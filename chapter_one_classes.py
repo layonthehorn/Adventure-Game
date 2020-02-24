@@ -1,9 +1,103 @@
 import time
 
 
+class FunctionClass:
+    """Never to be called. Only used for giving all other classes the same methods."""
+
+    # allows getting a print function form the look dictionary.
+    def get_look_commands(self, look_at):
+        # you have to enter at least three letters
+        if len(look_at) >= 3:
+            if len(self.look_dict) < 1:
+                print(f"I can't look at {look_at}.")
+            else:
+                for key in self.look_dict:
+                    if look_at in key:
+                        look_command = self.look_dict.get(key)
+                        look_command()
+                        break
+                else:
+                    print(f"I can't look at {look_at}.")
+
+        else:
+            print(f"I can't go to {look_at}.")
+
+    # allows getting operate commands
+    def get_oper_commands(self, operate):
+        # you have to enter at least three letters
+        if len(operate) >= 3:
+            if len(self.oper_dict) < 1:
+                print(f"I can't operate the {operate}.")
+            else:
+                for key in self.oper_dict:
+                    if operate in key:
+                        oper_command = self.oper_dict.get(key)
+                        oper_command()
+                        break
+                else:
+                    print(f"I can't operate the {operate}.")
+        else:
+            print(f"I can't operate the {operate}.")
+
+    # allows getting go commands
+    def get_go_commands(self, player_object, go):
+        # you have to enter at least three letters
+        if len(go) >= 2:
+            if len(self.go_dict) < 1:
+                print(f"I can't go to {go}.")
+            else:
+                for key in self.go_dict:
+                    if go in key:
+                        go_command = self.go_dict.get(key)
+                        go_command(player_object)
+                        break
+                else:
+                    print(f"I can't go to {go}.")
+        else:
+            print(f"I can't go to {go}.")
+
+    # allows using item on objects
+    def get_use_commands(self, player_object, use_list):
+        item = use_list[0]
+        room_object = use_list[1]
+        # you have to enter at least three letters
+        if len(room_object) >= 3:
+            if len(self.use_dict) < 1:
+                print(f"I can't find the {room_object}.")
+            for key in self.use_dict:
+                if room_object in key:
+                    use_command = self.use_dict.get(key)
+                    if use_command(item):
+                        player_object.use_item(item)
+                        player_object.increase_score()
+                    break
+            else:
+                print(f"I can't find the {room_object}.")
+        else:
+            print(f"What is a(n) {room_object}.")
+
+    # returns the items in the room.
+    def get_inventory(self):
+        return self.inventory
+
+    # returns item to room
+    def get_item(self, item):
+        if item in self.inventory:
+            location = self.inventory.index(item)
+            return self.inventory.pop(location)
+        else:
+            return None
+
+    # dropping item back into room
+    def give_item(self, item):
+        if item not in self.inventory:
+            self.inventory.append(item)
+
+
 # Player Class
 class PlayerClass:
     """This is the main player class. It holds the player inventory and score among other things."""
+
     def __init__(self, player_inventory=None, player_start="bunker", score=0, player_misc=(False, 0)):
 
         if player_inventory is None:
@@ -255,8 +349,9 @@ class PlayerClass:
 # Bunker Areas
 
 
-class Bunker:
+class Bunker(FunctionClass):
     """This is the bunker class. It acts as the starting room for the player."""
+
     def __init__(self, items_contained=None, bool_list=(False, False, False)):
         if items_contained is None:
             items_contained = ["fuse"]
@@ -268,25 +363,21 @@ class Bunker:
             "exit door": self.print_description_door
         }
 
-    # returns the items in the room.
-    def get_inventory(self):
-        return self.inventory
+        self.go_dict = {
+            "side room": self.go_sideroom,
+            "outside": self.go_outside
+        }
+        self.oper_dict = {
+            "door": self.open_door
+        }
+
+        self.use_dict = {
+            "robot": self.fix_robot,
+            "fuse box": self.fix_fuse_box
+        }
 
     def get_bools(self):
         return self.fuse_box, self.door_opened, self.robot_fixed
-
-    # gets looking commands from room.
-    def get_look_commands(self, look_at):
-        # you have to enter at least three letters
-        if len(look_at) >= 3:
-            for key in self.look_dict:
-                if look_at in key:
-                    look_command = self.look_dict.get(key)
-                    look_command()
-                    # if match is found returns true
-                    return True
-        # no match found returns False
-        return False
 
     # this prints a description along with a item list
     def print_description_room(self):
@@ -322,7 +413,7 @@ class Bunker:
     def look_robot(self):
         if not self.robot_fixed:
             print("It's a robot and it has a fuse!")
-        elif 'fuse' in self.inventory:
+        elif 'fuse' in self.inventory and self.robot_fixed:
             print("I can get the fuse now.")
         else:
             print("I took the robots fuse.")
@@ -339,20 +430,17 @@ class Bunker:
         else:
             return None
 
-    def go_outside(self):
+    def go_outside(self, player_object):
         if self.door_opened:
-            return True
+            player_object.set_location("plaza")
         elif self.fuse_box and not self.door_opened:
             print("I need to open the door first.")
-            return False
         elif not self.fuse_box:
             print("I need to power the door and open it first.")
-            return False
 
-    # dropping item back into room
-    def give_item(self, item):
-        if item not in self.inventory:
-            self.inventory.append(item)
+    @staticmethod
+    def go_sideroom(player_object):
+        player_object.set_location("side room")
 
     # attempts to fix fuse box
     def fix_fuse_box(self, item):
@@ -393,17 +481,31 @@ class Bunker:
             self.door_opened = True
 
 
-class ComputerRoom:
+class ComputerRoom(FunctionClass):
     """The side room to the bunker."""
+
     def __init__(self, items_contained=None, bool_list=(False, False)):
         if items_contained is None:
             items_contained = ["wrench"]
         self.inventory = items_contained
         self.light_switch, self.safe_opened = bool_list
 
-    # returns the items in the room.
-    def get_inventory(self):
-        return self.inventory
+        self.look_dict = {
+            "room": self.print_description_room,
+            "light switch": self.print_description_light,
+            "computer": self.print_description_computer
+        }
+
+        self.go_dict = {
+            "bunker": self.go_bunker
+        }
+        self.oper_dict = {
+            "safe": self.operate_safe,
+            "light switch": self.turn_on_switch,
+            "computer": self.use_computer
+        }
+
+        self.use_dict = {}
 
     def get_bools(self):
         return self.light_switch, self.safe_opened
@@ -447,6 +549,10 @@ class ComputerRoom:
         else:
             print("It's too dark to see.")
 
+    @staticmethod
+    def go_bunker(player_object):
+        player_object.set_location("bunker")
+
     def operate_safe(self, mane_brushed):
         if self.light_switch:
             if not self.safe_opened:
@@ -469,20 +575,6 @@ class ComputerRoom:
         else:
             print("It's too dark to see.")
             return False
-
-    # this pops off the items and returns it
-    def get_item(self, item):
-
-        if item in self.inventory:
-            location = self.inventory.index(item)
-            return self.inventory.pop(location)
-        else:
-            return None
-
-    # dropping item back into room
-    def give_item(self, item):
-        if item not in self.inventory:
-            self.inventory.append(item)
 
     # turns on light switch
     def turn_on_switch(self):
@@ -519,21 +611,44 @@ class ComputerRoom:
         else:
             print("You can't see anything to use it.")
 
+
 # Main Plaza Areas
 
 
-class MainPlaza:
+class MainPlaza(FunctionClass):
     """Main plaza class. Acts as the hub that connects all the other areas together."""
+
     def __init__(self, items_contained=None, bool_list=(False, False, False, False, False, False, False)):
         if items_contained is None:
             items_contained = ["map"]
         self.inventory = items_contained
+        self.look_dict = {
+            "room": self.print_description_room,
+            "car": self.print_description_car,
+            "desk": self.print_description_desk,
+            "pay phone": self.print_description_phone,
+            "gate": self.print_description_door
+        }
+
+        self.go_dict = {
+            "bunker": self.go_bunker,
+            "exit": self.go_exit,
+            "upstairs": self.go_upstairs,
+            "west wing": self.go_west_wing,
+            "small den": self.go_small_den
+        }
+
+        self.oper_dict = {
+            "car": self.operate_car
+        }
+
+        self.use_dict = {
+            "desk": self.open_desk,
+            "gate": self.unlock_gate,
+            "pay phone": self.use_phone
+        }
 
         self.exit_unlocked, self.upstairs_unlocked, self.map_gotten, self.car_looked, self.car_oper, self.desk_opened, self.phone_used = bool_list
-
-    # returns the items in the room.
-    def get_inventory(self):
-        return self.inventory
 
     def get_bools(self):
         return self.exit_unlocked, self.upstairs_unlocked, self.map_gotten, self.car_looked, self.car_oper, self.desk_opened, self.phone_used
@@ -584,6 +699,17 @@ class MainPlaza:
         else:
             print("I know it does not work now...")
 
+    def print_description_car(self):
+        print("It's an old beat up Nissan Laurel. Not that you know what that is. It's seen better days.")
+        if not self.car_looked:
+            print("Hey this thing has a battery in it!")
+            self.inventory.append("battery")
+            self.car_looked = True
+        elif "battery" in self.inventory:
+            print("I should get the battery. Might come in handy.")
+        else:
+            print("I think I'm done messing with it.")
+
     def open_desk(self, item):
         if not self.desk_opened:
             if item == "screw driver":
@@ -613,23 +739,6 @@ class MainPlaza:
             print("It's not going to work all now.")
             return False
 
-    def go_upstairs(self):
-        if self.upstairs_unlocked:
-            return True
-        else:
-            print("It's locked. I'll have to figure out how to get up there.")
-            return False
-
-    def go_exit(self):
-        if self.exit_unlocked:
-            return True
-        else:
-            print("Right now the power is out, I'm trapped.")
-            return False
-
-    def unlock_exit(self):
-        self.exit_unlocked = True
-
     def unlock_gate(self, item):
         if not self.upstairs_unlocked:
             if item == "keys":
@@ -642,16 +751,32 @@ class MainPlaza:
             print("The gate is unlocked already.")
             return False
 
-    def print_description_car(self):
-        print("It's an old beat up Nissan Laurel. Not that you know what that is. It's seen better days.")
-        if not self.car_looked:
-            print("Hey this thing has a battery in it!")
-            self.inventory.append("battery")
-            self.car_looked = True
-        elif "battery" in self.inventory:
-            print("I should get the battery. Might come in handy.")
+    def go_upstairs(self, player_object):
+        if self.upstairs_unlocked:
+            player_object.set_location("upstairs hallway")
         else:
-            print("I think I'm done messing with it.")
+            print("It's locked. I'll have to figure out how to get up there.")
+
+    def go_exit(self, player_object):
+        if self.exit_unlocked:
+            player_object.set_location("exit")
+        else:
+            print("Right now the power is out, I'm trapped.")
+
+    @staticmethod
+    def go_west_wing(player_object):
+        player_object.set_location("west wing")
+
+    @staticmethod
+    def go_small_den(player_object):
+        player_object.set_location("small den")
+
+    @staticmethod
+    def go_bunker(player_object):
+        player_object.set_location("bunker")
+
+    def unlock_exit(self):
+        self.exit_unlocked = True
 
     def operate_car(self):
         if not self.car_oper:
@@ -673,14 +798,10 @@ class MainPlaza:
         else:
             return None
 
-    # dropping item back into room
-    def give_item(self, item):
-        if item not in self.inventory:
-            self.inventory.append(item)
 
-
-class SmallDen:
+class SmallDen(FunctionClass):
     """A small animal pen that holds a dead animal and a workbench."""
+
     def __init__(self, items_contained=None, bool_list=(False, False, False, False), work_inventory=None):
         if items_contained is None:
             items_contained = []
@@ -692,9 +813,23 @@ class SmallDen:
         self.workbench_inventory = work_inventory
         self.animal_cut, self.barn_looked, self.tool_repaired, self.have_parts = bool_list
 
-    # returns the items in the room.
-    def get_inventory(self):
-        return self.inventory
+        self.look_dict = {
+            "room": self.print_description_room,
+            "barn": self.print_description_barn,
+            "animal": self.print_description_animal_body,
+            "work bench": self.print_description_workbench
+        }
+
+        self.go_dict = {
+            "main plaza": self.go_main_plaza
+        }
+        self.oper_dict = {
+            "work bench": self.operate_work_bench
+        }
+
+        self.use_dict = {"work bench": self.give_missing_part,
+                         "animal": self.animal_cutting
+                         }
 
     # returns bools for saving
     def get_bools(self):
@@ -705,7 +840,8 @@ class SmallDen:
 
     # this prints a description along with a item list
     def print_description_room(self):
-        print("It's some small den... or maybe a corral? It's not totally clear. \nThere is a exit back the 'main plaza'.")
+        print(
+            "It's some small den... or maybe a corral? It's not totally clear. \nThere is a exit back the 'main plaza'.")
         print("There is a small 'barn' of some kind built from old doors and scrap.")
         print("There is a dead body of an 'animal' here.")
         if self.barn_looked:
@@ -794,24 +930,17 @@ class SmallDen:
             print("It's already cut up. I'm done with it.")
             return False
 
-    # this pops off the items and returns it
-    def get_item(self, item):
-        if item in self.inventory:
-            location = self.inventory.index(item)
-            return self.inventory.pop(location)
-        else:
-            return None
+    @staticmethod
+    def go_main_plaza(player_object):
+        player_object.set_location("plaza")
 
-    # dropping item back into room
-    def give_item(self, item):
-        if item not in self.inventory:
-            self.inventory.append(item)
 
 # West Wing Areas
 
 
-class WestWing:
+class WestWing(FunctionClass):
     """A hallway that connects to the western rooms."""
+
     def __init__(self, items_contained=None, bool_list=(False, False)):
         if items_contained is None:
             items_contained = []
@@ -819,9 +948,23 @@ class WestWing:
 
         self.pet_shop_unlocked, self.vend_looked = bool_list
 
-    # returns the items in the room.
-    def get_inventory(self):
-        return self.inventory
+        self.look_dict = {
+            "room": self.print_description_room,
+            "vending machine": self.print_description_vending,
+            "kiosk": self.print_description_kiosk
+        }
+
+        self.go_dict = {
+            "main plaza": self.go_main_plaza,
+            "pet shop": self.go_pet_shop,
+            "toy shop": self.go_toy_shop,
+            "cemetery": self.go_cemetery
+        }
+        self.oper_dict = {
+        }
+
+        self.use_dict = {"kiosk": self.unlock_pet_shop
+                         }
 
     # returns bools for saving
     def get_bools(self):
@@ -841,26 +984,6 @@ class WestWing:
             for item in self.inventory:
                 print(f"There is a(n) {item}")
 
-    # this pops off the items and returns it
-    def get_item(self, item):
-        if item in self.inventory:
-            location = self.inventory.index(item)
-            return self.inventory.pop(location)
-        else:
-            return None
-
-    # dropping item back into room
-    def give_item(self, item):
-        if item not in self.inventory:
-            self.inventory.append(item)
-
-    def go_pet_shop(self):
-        if self.pet_shop_unlocked:
-            return True
-        else:
-            print("The 'kiosk' is demanding something.")
-            return False
-
     def print_description_kiosk(self):
         if not self.pet_shop_unlocked:
             print("It's a terminal to submit a pet for entering the shop. Old world store had theses a lot.")
@@ -878,6 +1001,25 @@ class WestWing:
             print("That old soda is still here.")
         else:
             print("there's nothing else of value within it.")
+
+    def go_pet_shop(self, player_object):
+        if self.pet_shop_unlocked:
+            player_object.set_location("pet shop")
+        else:
+            print("The 'kiosk' is demanding something.")
+            return False
+
+    @staticmethod
+    def go_toy_shop(player_object):
+        player_object.set_location("toy shop")
+
+    @staticmethod
+    def go_cemetery(player_object):
+        player_object.set_location("cemetery")
+
+    @staticmethod
+    def go_main_plaza(player_object):
+        player_object.set_location("plaza")
 
     def unlock_pet_shop(self, item):
         if not self.pet_shop_unlocked:
@@ -898,18 +1040,32 @@ class WestWing:
             return False
 
 
-class PetShop:
+class PetShop(FunctionClass):
     """The petshop class. attached to the west wing."""
+
     def __init__(self, items_contained=None, bool_list=(False, False, False)):
         if items_contained is None:
             items_contained = ["mane brush"]
         self.inventory = items_contained
 
         self.fish_looked, self.rope_fixed, self.fridge_checked = bool_list
+        self.look_dict = {
+            "room": self.print_description_room,
+            "fish": self.print_description_fish,
+            "leash machine": self.print_description_leash_machine,
+            "fridge": self.print_description_fridge,
+            "shelves": self.print_description_selves
+        }
 
-    # returns the items in the room.
-    def get_inventory(self):
-        return self.inventory
+        self.go_dict = {
+            "west wing": self.go_west_wing
+        }
+
+        self.oper_dict = {}
+
+        self.use_dict = {
+            "leash machine": self.lengthen_rope
+        }
 
     # returns bools for saving
     def get_bools(self):
@@ -953,6 +1109,10 @@ class PetShop:
     def print_description_selves():
         print("They are ruined and there is nothing to get from them. Just old junk and random dog care products.")
 
+    @staticmethod
+    def go_west_wing(player_object):
+        player_object.set_location("west wing")
+
     def print_description_leash_machine(self):
         print("It's a machine to repair leases.")
         if self.rope_fixed:
@@ -976,32 +1136,35 @@ class PetShop:
             print("It's very broken and there's nothing else I can do with it.")
             return False
 
-    # this pops off the items and returns it
-    def get_item(self, item):
-        if item in self.inventory:
-            location = self.inventory.index(item)
-            return self.inventory.pop(location)
-        else:
-            return None
 
-    # dropping item back into room
-    def give_item(self, item):
-        if item not in self.inventory:
-            self.inventory.append(item)
-
-
-class ToyShop:
+class ToyShop(FunctionClass):
     """The toyshop class. attached to the west wing."""
+
     def __init__(self, items_contained=None, bool_list=(False, False, False, False)):
         if items_contained is None:
             items_contained = ["soldering wire"]
         self.inventory = items_contained
 
         self.crane_fixed, self.crane_won, self.shelves_looked, self.locker_opened = bool_list
+        self.look_dict = {
+            "room": self.print_description_room,
+            "crane": self.print_description_crane,
+            "locker": self.print_description_locker,
+            "shelves": self.print_description_shelves
+        }
 
-    # returns the items in the room.
-    def get_inventory(self):
-        return self.inventory
+        self.go_dict = {
+            "west wing": self.go_west_wing
+        }
+
+        self.oper_dict = {
+            "crane": self.operate_crane
+        }
+
+        self.use_dict = {
+            "locker": self.open_locker,
+            "crane": self.fix_crane
+        }
 
     # returns bools for saving
     def get_bools(self):
@@ -1052,6 +1215,10 @@ class ToyShop:
         else:
             print("I beat the lock after all.")
 
+    @staticmethod
+    def go_west_wing(player_object):
+        player_object.set_location("west wing")
+
     def open_locker(self, item):
         if not self.locker_opened:
             if item == "circuit board":
@@ -1068,17 +1235,6 @@ class ToyShop:
             print("It's already unlocked now.")
             return False
 
-    def operate_crane(self):
-        if not self.crane_won:
-            if self.crane_fixed:
-                print("The keys dropped into the pail in the front.")
-                self.inventory.append("keys")
-                self.crane_won = True
-            else:
-                print("You tried to get the keys out but the claw let them slip away.")
-        else:
-            print("There's nothing else in it you want.")
-
     def fix_crane(self, item):
         if not self.crane_fixed:
             if item == "battery":
@@ -1092,22 +1248,21 @@ class ToyShop:
             print("It's working for the moment.")
             return False
 
-    # this pops off the items and returns it
-    def get_item(self, item):
-        if item in self.inventory:
-            location = self.inventory.index(item)
-            return self.inventory.pop(location)
+    def operate_crane(self):
+        if not self.crane_won:
+            if self.crane_fixed:
+                print("The keys dropped into the pail in the front.")
+                self.inventory.append("keys")
+                self.crane_won = True
+            else:
+                print("You tried to get the keys out but the claw let them slip away.")
         else:
-            return None
-
-    # dropping item back into room
-    def give_item(self, item):
-        if item not in self.inventory:
-            self.inventory.append(item)
+            print("There's nothing else in it you want.")
 
 
-class Cemetery:
+class Cemetery(FunctionClass):
     """The cemetery class. attached to the west wing."""
+
     def __init__(self, items_contained=None, bool_list=(False, False, False)):
         if items_contained is None:
             items_contained = ["lion plush"]
@@ -1115,9 +1270,21 @@ class Cemetery:
 
         self.first_entered, self.found_rope, self.grave_dug_up = bool_list
 
-    # returns the items in the room.
-    def get_inventory(self):
-        return self.inventory
+        self.look_dict = {
+            "room": self.print_description_room,
+            "graves": self.print_description_graves
+
+        }
+
+        self.go_dict = {
+            "west wing": self.go_west_wing
+        }
+
+        self.oper_dict = {}
+
+        self.use_dict = {
+            "graves": self.dig_grave
+        }
 
     # returns bools for saving
     def get_bools(self):
@@ -1167,34 +1334,40 @@ class Cemetery:
             print("I have already dug that up.")
             return False
 
-    # this pops off the items and returns it
-    def get_item(self, item):
-        if item in self.inventory:
-            location = self.inventory.index(item)
-            return self.inventory.pop(location)
-        else:
-            return None
+    @staticmethod
+    def go_west_wing(player_object):
+        player_object.set_location("west wing")
 
-    # dropping item back into room
-    def give_item(self, item):
-        if item not in self.inventory:
-            self.inventory.append(item)
 
 # Upstairs Areas
 
 
-class UpstairsHallway:
+class UpstairsHallway(FunctionClass):
     """The upstairs hallway that connects to the animal den, shoe store, and bathroom."""
+
     def __init__(self, items_contained=None, bool_list=(False, False)):
         if items_contained is None:
             items_contained = []
         self.inventory = items_contained
 
         self.book_looked, self.furniture_looked = bool_list
+        self.look_dict = {
+            "room": self.print_description_room,
+            "book": self.print_description_book,
+            "furniture": self.print_description_furniture
+        }
 
-    # returns the items in the room.
-    def get_inventory(self):
-        return self.inventory
+        self.go_dict = {
+            "main plaza": self.go_main_plaza,
+            "bathroom": self.go_bathroom,
+            "shoe store": self.go_shoe_store,
+            "animal den": self.go_animal_den
+        }
+
+        self.oper_dict = {
+            "book": self.read_book}
+
+        self.use_dict = {}
 
     # returns bools for saving
     def get_bools(self):
@@ -1252,19 +1425,22 @@ class UpstairsHallway:
                       "\nhow they are looking at her.")
                 print("")
             elif page == "two":
-                print("Things have gone well so far. I've helped Martha get used to not eating meat all the time again.")
+                print(
+                    "Things have gone well so far. I've helped Martha get used to not eating meat all the time again.")
                 print("Poor sweetheart. She doesn't even remember being human at all.")
                 print("What am I going to do?")
                 print("")
             elif page == "three":
                 print("Others are changing too now. This is getting out of hand.")
-                print("I had convinced the others that Martha couldn't infect them but now they aren't listening to me.")
+                print(
+                    "I had convinced the others that Martha couldn't infect them but now they aren't listening to me.")
                 print("I can't let them hurt her. We survived the end together and")
                 print("The journal ends suddenly here...")
                 print("")
             elif page == "four":
                 print("This page is dated much older than the rest.")
-                print("Hey, I found a sweet new place to live for a while. Gotta clean out all the old bodies first though.")
+                print(
+                    "Hey, I found a sweet new place to live for a while. Gotta clean out all the old bodies first though.")
                 print("Weird cat things. Everywhere they show up things go to shit.")
                 # Vern talking to himself
                 print("\nVern taps his foot on the ground and growls to himself.")
@@ -1276,22 +1452,26 @@ class UpstairsHallway:
             else:
                 print(f"I can't find page {page}.")
 
-    # this pops off the items and returns it
-    def get_item(self, item):
-        if item in self.inventory:
-            location = self.inventory.index(item)
-            return self.inventory.pop(location)
-        else:
-            return None
+    @staticmethod
+    def go_main_plaza(player_object):
+        player_object.set_location("plaza")
 
-    # dropping item back into room
-    def give_item(self, item):
-        if item not in self.inventory:
-            self.inventory.append(item)
+    @staticmethod
+    def go_shoe_store(player_object):
+        player_object.set_location("shoe store")
+
+    @staticmethod
+    def go_animal_den(player_object):
+        player_object.set_location("animal den")
+
+    @staticmethod
+    def go_bathroom(player_object):
+        player_object.set_location("bathroom")
 
 
-class AnimalDen:
+class AnimalDen(FunctionClass):
     """A upstairs animal den. Connected to the upstairs hallway."""
+
     def __init__(self, items_contained=None, bool_list=(False, False, False, False, False)):
         if items_contained is None:
             items_contained = ["meat"]
@@ -1299,9 +1479,21 @@ class AnimalDen:
 
         self.animal_drugged, self.entered_after_drugged, self.found_fur, self.meat_just_taken, self.hole_tried = bool_list
 
-    # returns the items in the room.
-    def get_inventory(self):
-        return self.inventory
+        self.look_dict = {
+            "room": self.print_description_room,
+            "animal": self.print_description_animal,
+            "hole": self.print_description_hole
+        }
+
+        self.go_dict = {
+            "hallway": self.go_hallway,
+        }
+
+        self.oper_dict = {
+            "hole": self.enter_hole
+        }
+
+        self.use_dict = {}
 
     # returns bools for saving
     def get_bools(self):
@@ -1326,25 +1518,22 @@ class AnimalDen:
             for item in self.inventory:
                 print(f"There is a(n) {item}")
 
-    # this pops off the items and returns it
-    def get_item(self, item):
-        if item in self.inventory:
-            location = self.inventory.index(item)
-            return self.inventory.pop(location)
-        else:
-            return None
-
-    # dropping item back into room
-    def give_item(self, item):
-        if item not in self.inventory:
-            self.inventory.append(item)
-
     # Vern talking about the odd hole in the wall
     def print_description_hole(self):
         if self.hole_tried:
             print("I'm never going in there again.")
         else:
             print("I wonder what's inside?")
+
+    # talks about the animal
+    def print_description_animal(self):
+        if self.animal_drugged:
+            print("it's a small animal. Pretty fuzzy too.")
+            if not self.found_fur:
+                print("Hey, that fur might help me out.")
+                self.found_fur = True
+        else:
+            print("I'm sure it's around but I can't see it right now.")
 
     # Vern enters the hole once and never again
     def enter_hole(self):
@@ -1358,16 +1547,6 @@ class AnimalDen:
             print("Suddenly Vern crawls from the hole and drops to the ground.")
             print("Wow, that thing was not nice. It's a good thing that us lions can fight.")
             self.hole_tried = True
-
-    # talks about the animal
-    def print_description_animal(self):
-        if self.animal_drugged:
-            print("it's a small animal. Pretty fuzzy too.")
-            if not self.found_fur:
-                print("Hey, that fur might help me out.")
-                self.found_fur = True
-        else:
-            print("I'm sure it's around but I can't see it right now.")
 
     # if this returns true it does not add the meat item back to the other room.
     # if it returns false then it adds it for the player to try again.
@@ -1386,9 +1565,14 @@ class AnimalDen:
         else:
             return "none"
 
+    @staticmethod
+    def go_hallway(player_object):
+        player_object.set_location("upstairs hallway")
 
-class Bathroom:
+
+class Bathroom(FunctionClass):
     """A upstairs bathroom. Connected to the upstairs hallway."""
+
     def __init__(self, items_contained=None, bool_list=(False, False)):
         if items_contained is None:
             items_contained = ["knife"]
@@ -1396,9 +1580,22 @@ class Bathroom:
 
         self.looked_dryer, self.cabinet_looked = bool_list
 
-    # returns the items in the room.
-    def get_inventory(self):
-        return self.inventory
+        self.look_dict = {
+            "room": self.print_description_room,
+            "dryer": self.print_description_dryer,
+            "graffiti": self.print_description_graffiti,
+            "mirror": self.print_description_mirror,
+            "medical cabinet": self.print_description_medical
+
+        }
+
+        self.go_dict = {
+            "hallway": self.go_hallway,
+        }
+
+        self.oper_dict = {}
+
+        self.use_dict = {}
 
     # returns bools for saving
     def get_bools(self):
@@ -1454,22 +1651,14 @@ class Bathroom:
         else:
             print("There's nothing else of value here.")
 
-    # this pops off the items and returns it
-    def get_item(self, item):
-        if item in self.inventory:
-            location = self.inventory.index(item)
-            return self.inventory.pop(location)
-        else:
-            return None
-
-    # dropping item back into room
-    def give_item(self, item):
-        if item not in self.inventory:
-            self.inventory.append(item)
+    @staticmethod
+    def go_hallway(player_object):
+        player_object.set_location("upstairs hallway")
 
 
-class ShoeStore:
+class ShoeStore(FunctionClass):
     """A upstairs shoe store. Connected to the upstairs hallway."""
+
     def __init__(self, items_contained=None, bool_list=(False, False, False, False)):
         if items_contained is None:
             items_contained = ["owl figurine", "screw driver"]
@@ -1477,9 +1666,24 @@ class ShoeStore:
 
         self.first_entered, self.elevator_opened, self.elevator_roped, self.weak_roped = bool_list
 
-    # returns the items in the room.
-    def get_inventory(self):
-        return self.inventory
+        self.look_dict = {
+            "room": self.print_description_room,
+            "elevator": self.print_description_elevator
+
+        }
+
+        self.go_dict = {
+            "hallway": self.go_hallway,
+            "elevator": self.go_elevator
+        }
+
+        self.oper_dict = {
+            "elevator": self.fix_elevator
+        }
+
+        self.use_dict = {
+            "elevator": self.operate_elevator_doors
+        }
 
     # returns bools for saving
     def get_bools(self):
@@ -1534,11 +1738,6 @@ class ShoeStore:
         else:
             return None
 
-    # dropping item back into room
-    def give_item(self, item):
-        if item not in self.inventory:
-            self.inventory.append(item)
-
     def operate_elevator_doors(self):
         if not self.elevator_opened:
             print("I got the doors opened now.")
@@ -1578,28 +1777,31 @@ class ShoeStore:
                 return False
 
     # tries to go down the shaft. Fails if the strong rope is not used
-    def go_elevator(self):
+    def go_elevator(self, player_object):
         # if the elevator has not being opened fail
         if not self.elevator_opened:
             print("I should open it first.")
-            return False
         # if weak rope has been used and
         if self.weak_roped:
             print("I'm not going down that rope. It's not safe at all.")
-            return False
         # if you used the strong rope then you can go
         elif self.elevator_roped:
             print("Ok, it looks safe... Maybe not but here I go.")
-            return True
+            player_object.set_location("basement entry")
         else:
             print("I'll have to find a way to climb down it.")
-            return False
+
+    @staticmethod
+    def go_hallway(player_object):
+        player_object.set_location("upstairs hallway")
+
 
 # Basement Areas
 
 
-class BasementEntry:
+class BasementEntry(FunctionClass):
     """A basement room that is attached to the shoe store."""
+
     def __init__(self, items_contained=None, bool_list=(False, False)):
         if items_contained is None:
             items_contained = ["shovel"]
@@ -1607,9 +1809,25 @@ class BasementEntry:
 
         self.door_unlocked, self.soda_used = bool_list
 
-    # returns the items in the room.
-    def get_inventory(self):
-        return self.inventory
+        self.look_dict = {
+            "room": self.print_description_room,
+            "note": self.print_description_note,
+            "pad": self.print_description_pad
+
+        }
+
+        self.go_dict = {
+            "shoe store up": self.go_shoe_store,
+            "generator room": self.go_gen_room
+        }
+
+        self.oper_dict = {
+            "pad": self.entering_code
+        }
+
+        self.use_dict = {
+            "pad": self.entering_code
+        }
 
     # returns bools for saving
     def get_bools(self):
@@ -1624,7 +1842,7 @@ class BasementEntry:
             print("The door is open and you can enter the 'generator room'.")
         else:
             print("You'll have to figure out how to open the door.")
-        print("You can go back 'up' to the shoe store.")
+        print("You can go back 'up' to the 'shoe store'.")
         if len(self.inventory) > 0:
             for item in self.inventory:
                 print(f"There is a(n) {item}")
@@ -1648,25 +1866,15 @@ class BasementEntry:
         else:
             print("I wonder what that means.")
 
-    # this pops off the items and returns it
-    def get_item(self, item):
-        if item in self.inventory:
-            location = self.inventory.index(item)
-            return self.inventory.pop(location)
-        else:
-            return None
-
-    # dropping item back into room
-    def give_item(self, item):
-        if item not in self.inventory:
-            self.inventory.append(item)
-
-    def go_gen_room(self):
+    def go_gen_room(self, player_object):
         if self.door_unlocked:
-            return True
+            player_object.set_location("basement generator room")
         else:
             print("The door is locked. I can't go there yet.")
-            return False
+
+    @staticmethod
+    def go_shoe_store(player_object):
+        player_object.set_location("shoe store")
 
     # tries to enter codes or items to bypass the door.
     def entering_code(self, item=None):
@@ -1681,7 +1889,7 @@ class BasementEntry:
                     number = input("")
                     # counts through the player input and makes sure are only numbers.
                     for digit in number:
-                        if digit not in "0123456789":
+                        if not digit.isdigit():
                             print("ERROR!")
                             print("Oops! Wrong button.")
                             break
@@ -1708,8 +1916,9 @@ class BasementEntry:
             return False
 
 
-class BasementGenRoom:
+class BasementGenRoom(FunctionClass):
     """A basement generator room that is attached to the shoe store."""
+
     def __init__(self, items_contained=None, generator_inv=None, bool_list=(False, False)):
         if items_contained is None:
             items_contained = ["soldering iron"]
@@ -1720,9 +1929,23 @@ class BasementGenRoom:
         self.fuses_needed = ("green fuse", "red fuse", "blue fuse", "gold fuse")
         self.fuses_fixed, self.generator_working = bool_list
 
-    # returns the items in the room.
-    def get_inventory(self):
-        return self.inventory
+        self.look_dict = {
+            "room": self.print_description_room,
+            "generator": self.print_description_generator,
+            "spec sheet": self.print_description_spec
+        }
+
+        self.go_dict = {
+            "basement entry": self.go_basement_entry
+        }
+
+        self.oper_dict = {
+            "generator": self.operate_generator
+        }
+
+        self.use_dict = {
+            "generator": self.add_item_generator
+        }
 
     # gets the number of fuses installed in the generator.
     def get_gen_inventory(self):
@@ -1770,19 +1993,6 @@ class BasementGenRoom:
         else:
             print("I got them all. Took long enough too...")
 
-    # this pops off the items and returns it
-    def get_item(self, item):
-        if item in self.inventory:
-            location = self.inventory.index(item)
-            return self.inventory.pop(location)
-        else:
-            return None
-
-    # dropping item back into room
-    def give_item(self, item):
-        if item not in self.inventory:
-            self.inventory.append(item)
-
     def add_item_generator(self, item):
         if len(self.generator_inventory) < 4:
             if item in self.fuses_needed:
@@ -1810,3 +2020,7 @@ class BasementGenRoom:
             print(f"It's missing {remainder} fuses still. You'll have to find them somewhere first.")
         else:
             print("It's already running.")
+
+    @staticmethod
+    def go_basement_entry(player_object):
+        player_object.set_location("basement entry")

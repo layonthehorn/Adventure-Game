@@ -145,7 +145,6 @@ class ChapterTwo:
             print(f"I don't have a(n) {item} to drop.")
 
     # general actions that can be done anywhere
-
     def general_actions(self, action):
         # finds player location
         loc_name = self.switcher_dictionary.get(self.player.get_location(), None)
