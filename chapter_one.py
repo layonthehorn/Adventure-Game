@@ -84,23 +84,6 @@ class ChapterOne:
         # self.basement_entry - where you have to go to finish the game
         # self.basement_gen_room - where you turn on the power.
 
-        # dummy classes if the player quits rather than loads or starts new.
-        # self.player = ""
-        # self.starting_room = ""
-        # self.side_room = ""
-        # self.main_plaza = ""
-        # self.small_den = ""
-        # self.west_wing = ""
-        # self.cemetery = ""
-        # self.toy_shop = ""
-        # self.pet_shop = ""
-        # self.up_stairs_hallway = ""
-        # self.animal_den = ""
-        # self.shoe_store = ""
-        # self.bathroom = ""
-        # self.basement_entryway = ""
-        # self.basement_gen_room = ""
-
         choosing = True
         end_game = False
         while choosing:
@@ -220,27 +203,6 @@ class ChapterOne:
                 self.basement_entryway_name: self.basement_entryway
             }
 
-        # action dictionary for each of the rooms special actions
-            self.location_dict = {
-                self.starting_room_name: self.starting_area,
-                self.side_room_name: self.side_area,
-                self.main_plaza_name: self.main_plaza_area,
-                self.small_den_name: self.small_den_area,
-                self.west_wing_name: self.west_wing_area,
-                self.cemetery_name: self.cemetery_area,
-                self.pet_shop_name: self.pet_shop_area,
-                self.toy_shop_name: self.toy_shop_area,
-                self.up_stairs_hallway_name: self.up_stairs_hallway_area,
-                self.bathroom_name: self.bathroom_area,
-                self.animal_den_name: self.animal_den_area,
-                self.shoe_store_name: self.shoe_store_area,
-                self.basement_entryway_name: self.basement_entryway_area,
-                self.basement_gen_room_name: self.basement_gen_area,
-                self.exit_name: self.exit_game,
-                self.end_name: self.end_game
-            }
-
-        player_choice = ""
         # main game play loop
         while self.playing and not end_game:
 
@@ -263,13 +225,8 @@ class ChapterOne:
 
             # gets the room the player is in
             p_local = self.player.get_location()
-            location_actions = self.location_dict.get(p_local, None)
 
             # if it does not find a room moves them to the main plaza
-            if location_actions is None:
-                print("You entered a un-built place. Moving to main plaza.")
-                self.player.set_location(self.main_plaza_name)
-                location_actions = self.main_plaza_area
             if p_local != self.end_name and p_local != self.exit_name:
                 # runs the players actions in the room they are in
 
@@ -281,7 +238,6 @@ class ChapterOne:
                         self.small_den.give_item("meat")
                     elif result == "drugged":
                         self.player.increase_score()
-                location_actions(player_choice)
 
                 # finds players new location to see if they changed rooms
                 self.player_new_room = self.player.get_location()
@@ -366,57 +322,62 @@ class ChapterOne:
 
     # general actions that can be done anywhere
     def general_actions(self, action):
-
         # finds player location
         loc_name = self.switcher_dictionary.get(self.player.get_location(), None)
         if loc_name is None:
             print("no matching location found, defaulting to bunker.")
             loc_name = self.starting_room
+            self.player.set_location(self.starting_room_name)
 
         # splits the input on the first space
         general_list = action.split(" ", 1)
-        try:
-            # prints inventory
-            if action == "inv":
-                self.player.check_inventory()
-            # prints actions that can be taken
-            elif action == "hint":
-                self.hint_system()
-            elif action == "help":
-                print_help()
-            # ends game
-            elif action == "save":
-                print("Game has been saved!")
+        # prints inventory
+        if action == "inv":
+            self.player.check_inventory()
+        # prints actions that can be taken
+        elif action == "hint":
+            self.hint_system()
+        elif action == "help":
+            print_help()
+        # ends game
+        elif action == "save":
+            print("Game has been saved!")
+            self.save_game_state()
+        # prints score
+        elif action == "score":
+            self.player.print_score()
+        # in case input is blank
+        elif action == "":
+            print("Vern taps his foot on the ground. \n'I get so sick of waiting for something to happen.'")
+        # ends game asks to save
+        elif action == "end":
+            save = input("Save game? ").lower()
+            if save == 'y':
+                print('Saved!')
                 self.save_game_state()
-            # prints score
-            elif action == "score":
-                self.player.print_score()
-            # in case input is blank
-            elif action == "":
-                print("Vern taps his foot on the ground. \n'I get so sick of waiting for something to happen.'")
-            # ends game asks to save
-            elif action == "end":
-                save = input("Save game? ").lower()
-                if save == 'y':
-                    print('Saved!')
-                    self.save_game_state()
-                input("Press enter to quit. Goodbye!")
-                self.player.set_location(self.end_name)
+            input("Press enter to quit. Goodbye!")
+            self.player.set_location(self.end_name)
 
-            # looks at player map
-            elif general_list[0] == "look" and general_list[1] == "map":
-                self.player.look_player_map()
-            # looks at self
-            elif general_list[0] == "look" and general_list[1] == "self":
-                self.player.look_self()
-        except IndexError:
-            pass
+        # looking at things
+        elif general_list[0] == "look":
+            try:
+                if general_list[1] == "map":
+                    self.player.look_player_map()
+                # looks at self
+                elif general_list[1] == "self":
+                    self.player.look_self()
+                else:
+                    loc_name.get_look_commands(general_list[1])
+            except IndexError:
+                print("Look at what?")
+
         # gets an item from the current room
-        if general_list[0] == "get":
+        elif general_list[0] == "get":
             try:
                 self.get_items(loc_name, general_list[1])
             except IndexError:
                 print("Get what?")
+
         # drops item to current room
         elif general_list[0] == "drop":
             try:
@@ -427,6 +388,8 @@ class ChapterOne:
                     print("Now how would I do that?")
             except IndexError:
                 print("Drop what?")
+
+        # combining items
         elif general_list[0] == "com":
             # tries to combine items
             choice_list = self.combine_pattern.split(action)
@@ -442,983 +405,31 @@ class ChapterOne:
             except IndexError:
                 print("Combine what with what?")
 
-    # bunker actions
-    def starting_area(self, player_choice):
-        # looking at things
-        p_list = player_choice.split(" ", 1)
-        if p_list[0] == "look":
+        # using items on objects
+        elif general_list[0] == "use":
             try:
-                if p_list[1] == "room":
-                    self.starting_room.print_description_room()
-                elif "box" in p_list[1]:
-                    self.starting_room.print_description_box()
-                elif "door" in p_list[1]:
-                    self.starting_room.print_description_door()
-                elif "robot" in p_list[1]:
-                    self.starting_room.look_robot()
-                elif p_list[1] != "self" and p_list[1] != "map":
-                    print(f"I don't know where {p_list[1]} is.")
+                choice_list = self.use_pattern.split(action)
+                if '' in choice_list:
+                    choice_list.remove('')
+                print(choice_list)
+                loc_name.get_use_commands(self.player, choice_list)
             except IndexError:
-                print("Look at what?")
-
-        # opens door
-        elif p_list[0] == "oper":
+                print("Use what with what?")
+        elif general_list[0] == "oper":
             try:
-                if p_list[1] == "door":
-                    self.starting_room.open_door()
-                elif "box" in p_list[1]:
-                    print("There's no operating the fuse box directly.")
-                elif "robot" in p_list[1]:
-                    print("I can't start it. It's only good for parts.")
-                else:
-                    print("I can't use that.")
+                loc_name.get_oper_commands(general_list[1])
+
             except IndexError:
                 print("Operate what?")
 
-        # player fixing objects
-        elif p_list[0] == "use":
-            # using fuse to fix door
-            choice_list = self.use_pattern.split(player_choice)
+        # going to new areas.
+        elif general_list[0] == "go":
             try:
-                choice_list.remove('')
-            except ValueError:
-                pass
-            try:
-                # attempt to fix fuse box
-                if "box" in choice_list[1]:
-                    if choice_list[0] in self.player.inventory:
-                        if self.starting_room.fix_fuse_box(choice_list[0]):
-                            self.player.use_item(choice_list[0])
-                            self.player.increase_score()
-                    else:
-                        print(f"I don't have a(n) {choice_list[0]}")
-
-                elif "door" in p_list[1]:
-                    print("I can't use any thing on the door. I have to restore the power.")
-
-                # attempt to fix robot
-                elif "robot" in choice_list[1]:
-                    if choice_list[0] in self.player.inventory:
-                        if self.starting_room.fix_robot(choice_list[0]):
-                            self.player.use_item(choice_list[0])
-                            self.player.increase_score()
-                    else:
-                        print(f"I don't have a(n) {choice_list[0]}")
-                else:
-                    print(f"I can't do anything to {choice_list[1]}")
-
-            except IndexError:
-                print("Use what with what?")
-
-        # allows the player to leave
-        elif p_list[0] == "go":
-            try:
-                if p_list[1] == "outside" or "plaza" in p_list[1]:
-                    if self.starting_room.go_outside():
-                        self.player.set_location(self.main_plaza_name)
-                elif "side" in p_list[1]:
-                    self.player.set_location("side room")
-                else:
-                    print(f"I can't go to {p_list[1]}.")
+                loc_name.get_go_commands(self.player, general_list[1])
             except IndexError:
                 print("Go where?")
-
-    # side room actions
-    def side_area(self, player_choice):
-        # looking at things
-        p_list = player_choice.split(" ", 1)
-        if p_list[0] == "look":
-            try:
-                if p_list[1] == "room":
-                    self.side_room.print_description_room()
-                elif "light" in p_list[1] or "switch" in p_list[1]:
-                    self.side_room.print_description_light()
-                elif "pc" in p_list[1] or "computer" in p_list[1]:
-                    self.side_room.print_description_computer()
-                elif "safe" in p_list[1]:
-                    self.side_room.print_description_safe()
-                elif p_list[1] != "self" and p_list[1] != "map":
-                    print(f"I don't know where {p_list[1]} is.")
-            except IndexError:
-                print("Look at what?")
-
-        # player using things
-        elif p_list[0] == "oper":
-            try:
-                if "light" in p_list[1] or "switch" in p_list[1]:
-                    if not self.side_room.light_switch:
-                        self.player.increase_score()
-                    self.side_room.turn_on_switch()
-                elif "pc" in p_list[1] or "computer" in p_list[1]:
-                    self.side_room.use_computer()
-                elif "safe" in p_list[1]:
-                    if self.side_room.operate_safe(self.player.is_mane_brushed()):
-                        self.player.increase_score()
-                else:
-                    print("I can't operate that.")
-            except IndexError:
-                print("Operate what?")
-
-        # allows the player to leave
-        elif p_list[0] == "go":
-            try:
-                if "bunker" in p_list[1]:
-                    self.player.set_location(self.starting_room_name)
-                else:
-                    print(f"I can't go to {p_list[1]}.")
-            except IndexError:
-                print("Go where?")
-
-        # allows the player to use items on objects
-        elif p_list[0] == "use":
-            choice_list = self.use_pattern.split(player_choice)
-            try:
-                choice_list.remove('')
-            except ValueError:
-                pass
-            try:
-                # place holding in case player attempts to use an item on an object here.
-                if "light" in p_list[1] or "switch" in p_list[1]:
-                    print("I don't have to use any thing on it. ")
-                elif "pc" in p_list[1] or "computer" in p_list[1]:
-                    print("It's working just fine.")
-                elif "safe" in p_list[1]:
-                    print("As much as I would like to destroy this thing, no. Not going to help.")
-                else:
-                    print(f"I can't do anything to {choice_list[1]}")
-
-            except IndexError:
-                print("Use what with what?")
-
-    # main plaza actions
-    def main_plaza_area(self, player_choice):
-        p_list = player_choice.split(" ", 1)
-
-        # allows player to look at things
-        if p_list[0] == "look":
-            try:
-                if p_list[1] == "room":
-                    self.main_plaza.print_description_room()
-                elif "car" in p_list[1]:
-                    self.main_plaza.print_description_car()
-                elif "gate" in p_list[1]:
-                    self.main_plaza.print_description_door()
-                elif "pay" in p_list[1] or "phone" in p_list[1]:
-                    self.main_plaza.print_description_phone()
-                elif "desk" in p_list[1]:
-                    self.main_plaza.print_description_desk()
-                elif p_list[1] != "self" and p_list[1] != "map":
-                    print(f"I don't know where {p_list[1]} is.")
-            except IndexError:
-                print("look at what?")
-
-        # allows player to leave
-        elif p_list[0] == "go":
-            try:
-                if p_list[1] == "bunker":
-                    self.player.set_location(self.starting_room_name)
-                elif "west" in p_list[1]:
-                    self.player.set_location(self.west_wing_name)
-                elif "up" in p_list[1]:
-                    if self.main_plaza.go_upstairs():
-                        self.player.set_location(self.up_stairs_hallway_name)
-
-                elif "exit" in p_list[1]:
-                    if self.main_plaza.go_exit():
-                        self.player.set_location(self.exit_name)
-
-                elif "den" in p_list[1]:
-                    self.player.set_location(self.small_den_name)
-                else:
-                    print(f"I can't go to {p_list[1]}.")
-            except IndexError:
-                print("Go where?")
-
-        # allows the player to operate things. Placeholder
-        elif p_list[0] == "oper":
-            try:
-
-                if "car" in p_list[1]:
-                    self.main_plaza.operate_car()
-                elif "gate" in p_list[1]:
-                    self.main_plaza.print_description_door()
-                elif "desk" in p_list[1]:
-                    print("Not really anything to play with on it.")
-                elif "pay" in p_list[1] or "phone" in p_list[1]:
-                    print("I need money to use it.")
-                else:
-                    print("I can't use that.")
-            except IndexError:
-                print("Operate what?")
-
-        # allows the player to use items with objects
-        elif p_list[0] == "use":
-            choice_list = self.use_pattern.split(player_choice)
-            try:
-                choice_list.remove('')
-            except ValueError:
-                pass
-            try:
-                if "gate" in choice_list[1]:
-                    if choice_list[0] in self.player.inventory:
-                        if self.main_plaza.unlock_gate(choice_list[0]):
-                            self.player.use_item(choice_list[0])
-                            self.player.increase_score()
-                        else:
-                            print(f"I don't have a(n) {choice_list[0]}")
-
-                elif "desk" in choice_list[1]:
-                    if choice_list[0] in self.player.inventory:
-                        if self.main_plaza.open_desk(choice_list[0]):
-                            self.player.use_item(choice_list[0])
-                            self.player.increase_score()
-                        else:
-                            print(f"I don't have a(n) {choice_list[0]}")
-
-                elif "pay" in choice_list[1] or "phone" in p_list[1]:
-                    if choice_list[0] in self.player.inventory:
-                        if self.main_plaza.use_phone(choice_list[0]):
-                            self.player.use_item(choice_list[0])
-                            self.player.increase_score()
-                        else:
-                            print(f"I don't have a(n) {choice_list[0]}")
-
-                elif "car" in p_list[1]:
-                    print("No point is using things on this car. It will never start.")
-
-                else:
-                    print(f"I can't do anything to {choice_list[1]}")
-
-            except IndexError:
-                print("Use what with what?")
-
-    # small den actions
-    def small_den_area(self, player_choice):
-        p_list = player_choice.split(" ", 1)
-
-        # player looking at things
-        if p_list[0] == "look":
-            try:
-                if p_list[1] == "room":
-                    self.small_den.print_description_room()
-                elif "animal" in p_list[1]:
-                    self.small_den.print_description_animal_body()
-                elif "work" in p_list[1]:
-                    self.small_den.print_description_workbench()
-                elif "barn" in p_list[1]:
-                    self.small_den.print_description_barn()
-                elif p_list[1] != "self" and p_list[1] != "map":
-                    print(f"I don't know where {p_list[1]} is.")
-            except IndexError:
-                print("look at what?")
-
-        # allows player to move around
-        elif p_list[0] == "go":
-            try:
-                if "plaza" in p_list[1] or p_list[1] == "outside":
-                    self.player.set_location(self.main_plaza_name)
-                elif "barn" in p_list[1]:
-                    print("I'm already here.")
-                else:
-                    print(f"I can't go to {p_list[1]}.")
-            except IndexError:
-                print("Go where?")
-
-        # allows player to operate things. Placeholder
-        elif p_list[0] == "oper":
-            try:
-                if "animal" in p_list[1]:
-                    print("It's not alive to mess with.")
-                elif "work" in p_list[1]:
-                    self.small_den.operate_work_bench()
-                elif "barn" in p_list[1]:
-                    print("I can't really do much with it.")
-                else:
-                    print("I can't use that.")
-            except IndexError:
-                print("Operate what?")
-
-        # allows player to use items with objects
-        elif p_list[0] == "use":
-            choice_list = self.use_pattern.split(player_choice)
-            try:
-                choice_list.remove('')
-            except ValueError:
-                pass
-            try:
-                # asks for knife to get meat from animal.
-                if "animal" in choice_list[1]:
-                    if choice_list[0] in self.player.inventory:
-                        if self.small_den.animal_cutting(choice_list[0]):
-                            self.player.increase_score()
-                    else:
-                        print(f"I don't have a(n) {choice_list[0]}")
-                elif "work" in choice_list[1]:
-                    if choice_list[0] in self.player.inventory:
-                        if self.small_den.give_missing_part(choice_list[0]):
-                            self.player.increase_score()
-                            self.player.use_item(choice_list[0])
-                    else:
-                        print(f"I don't have a(n) {choice_list[0]}")
-                elif "barn" in choice_list[1]:
-                    print("There's nothing that needs to be done to the barn.")
-
-                else:
-                    print(f"I can't do anything to {choice_list[1]}")
-
-            except IndexError:
-                print("Use what with what?")
-
-    # west wing actions
-    def west_wing_area(self, player_choice):
-        p_list = player_choice.split(" ", 1)
-
-        # player looking at objects
-        if p_list[0] == "look":
-            try:
-                if p_list[1] == "room":
-                    self.west_wing.print_description_room()
-                elif "kiosk" in p_list[1]:
-                    self.west_wing.print_description_kiosk()
-                elif "vend" in p_list[1] or "mach" in p_list[1]:
-                    self.west_wing.print_description_vending()
-                elif p_list[1] != "self" and p_list[1] != "map":
-                    print(f"I don't know where {p_list[1]} is.")
-            except IndexError:
-                print("look at what?")
-
-        # allows player to use items on objects
-        elif p_list[0] == "use":
-            # attempting to unlock pet store
-            choice_list = self.use_pattern.split(player_choice)
-            try:
-                choice_list.remove('')
-            except ValueError:
-                pass
-            try:
-                # using an item on the kiosk
-                if "kiosk" in p_list[1]:
-                    if choice_list[0] in self.player.inventory:
-                        if self.west_wing.unlock_pet_shop(choice_list[0]):
-                            self.player.use_item(choice_list[0])
-                            self.player.increase_score()
-                    else:
-                        print(f"I don't have a(n) {choice_list[0]}")
-
-                elif "vend" in p_list[1] or "mach" in p_list[1]:
-                    print("There's no reason to do that.")
-                else:
-                    print(f"I can't do anything to {choice_list[1]}")
-
-            except IndexError:
-                print("Use what with what?")
-
-        # allows player to move around
-        elif p_list[0] == "go":
-            try:
-                if "plaza" in p_list[1] or p_list[1] == "outside":
-                    self.player.set_location(self.main_plaza_name)
-                elif "toy" in p_list[1]:
-                    self.player.set_location(self.toy_shop_name)
-                elif "cem" in p_list[1]:
-                    self.player.set_location(self.cemetery_name)
-                elif "pet" in p_list[1]:
-                    if self.west_wing.go_pet_shop():
-                        self.player.set_location(self.pet_shop_name)
-                else:
-                    print(f"I can't go to {p_list[1]}.")
-            except IndexError:
-                print("Go where?")
-
-        # allows player to operate things. Placeholder
-        elif p_list[0] == "oper":
-            try:
-                if "kiosk" in p_list[1]:
-                    print("That's not how it works.")
-                elif "vend" in p_list[1] or "mach" in p_list[1]:
-                    print("It's not a functional machine anymore.")
-                else:
-                    print("I can't use that.")
-            except IndexError:
-                print("Operate what?")
-
-    # toy shop actions
-    def toy_shop_area(self, player_choice):
-        p_list = player_choice.split(" ", 1)
-
-        # allows player to look at things
-        if p_list[0] == "look":
-            try:
-                if "room" in p_list[1]:
-                    self.toy_shop.print_description_room()
-                elif "shelve" in p_list[1]:
-                    self.toy_shop.print_description_shelves()
-                elif "crane" in p_list[1]:
-                    self.toy_shop.print_description_crane()
-                elif "lock" in p_list[1]:
-                    self.toy_shop.print_description_locker()
-                elif p_list[1] != "self" and p_list[1] != "map":
-                    print(f"I don't know where {p_list[1]} is.")
-            except IndexError:
-                print("look at what?")
-
-        # allows player to move around
-        elif p_list[0] == "go":
-            try:
-                if "west" in p_list[1]:
-                    self.player.set_location(self.west_wing_name)
-                else:
-                    print(f"I can't go to {p_list[1]}.")
-            except IndexError:
-                print("Go where?")
-
-        # allows player to operate things
-        elif p_list[0] == "oper":
-            try:
-                if "crane" in p_list[1]:
-                    self.toy_shop.operate_crane()
-                elif "shelve" in p_list[1]:
-                    print("And do what with them?")
-                elif "lock" in p_list[1]:
-                    print("I can't really do that.")
-                else:
-                    print("I can't use that.")
-            except IndexError:
-                print("Operate what?")
-
-        # allows player to use items on objects
-        elif p_list[0] == "use":
-            choice_list = self.use_pattern.split(player_choice)
-            try:
-                choice_list.remove('')
-            except ValueError:
-                pass
-            try:
-                if "crane" in choice_list[1]:
-                    if choice_list[0] in self.player.inventory:
-                        if self.toy_shop.fix_crane(choice_list[0]):
-                            self.player.use_item(choice_list[0])
-                            self.player.increase_score()
-                    else:
-                        print(f"I don't have a(n) {choice_list[0]}")
-                elif "lock" in choice_list[1]:
-                    if choice_list[0] in self.player.inventory:
-                        if self.toy_shop.open_locker(choice_list[0]):
-                            self.player.use_item(choice_list[0])
-                            self.player.increase_score()
-                    else:
-                        print(f"I don't have a(n) {choice_list[0]}")
-                elif "shelve" in p_list[1]:
-                    print("Nothing to be done there.")
-
-                else:
-                    print(f"I can't do anything to {choice_list[1]}")
-
-            except IndexError:
-                print("Use what with what?")
-
-    # pet shot actions
-    def pet_shop_area(self, player_choice):
-        p_list = player_choice.split(" ", 1)
-
-        # allows the player to look at things
-        if p_list[0] == "look":
-            try:
-                if p_list[1] == "room":
-                    self.pet_shop.print_description_room()
-                elif "fish" in p_list[1]:
-                    self.pet_shop.print_description_fish()
-                elif "dis" in p_list[1]:
-                    self.pet_shop.print_description_selves()
-                elif "mach" in p_list[1] or "leash" in p_list[1]:
-                    self.pet_shop.print_description_leash_machine()
-                elif "fridge" in p_list[1]:
-                    self.pet_shop.print_description_fridge()
-                elif p_list[1] != "self" and p_list[1] != "map":
-                    print(f"I don't know where {p_list[1]} is.")
-            except IndexError:
-                print("look at what?")
-
-        # allows player to move around
-        elif p_list[0] == "go":
-            try:
-                if "west" in p_list[1]:
-                    self.player.set_location(self.west_wing_name)
-                else:
-                    print(f"I can't go to {p_list[1]}.")
-            except IndexError:
-                print("Go where?")
-
-        # allows player to operate things
-        elif p_list[0] == "oper":
-            try:
-                if "fish" in p_list[1]:
-                    print("How would I operate the tank?")
-                elif "dis" in p_list[1]:
-                    print("There's nothing I want to mess with there.")
-                elif "mach" in p_list[1] or "leash" in p_list[1]:
-                    print("It need a item to be used with.")
-                elif "fridge" in p_list[1]:
-                    print("Not much to be done with a broken fridge.")
-                else:
-                    print("I can't use that.")
-            except IndexError:
-                print("Operate what?")
-
-        # allows player to use items with objects
-        elif p_list[0] == "use":
-            choice_list = self.use_pattern.split(player_choice)
-            try:
-                choice_list.remove('')
-            except ValueError:
-                pass
-            try:
-                if "leash" in choice_list[1] or "mach" in choice_list[1]:
-                    if choice_list[0] in self.player.inventory:
-                        if self.pet_shop.lengthen_rope(choice_list[0]):
-                            self.player.use_item(choice_list[0])
-                            self.player.increase_score()
-                    else:
-                        print(f"I don't have a(n) {choice_list[0]}")
-                elif "fish" in p_list[1]:
-                    print("I don't need to do that.")
-                elif "dis" in p_list[1]:
-                    print("No point in that. I don't want to mess with them.")
-                elif "fridge" in p_list[1]:
-                    print("Nothing to be done to it.")
-                else:
-                    print(f"I can't do anything to {choice_list[1]}")
-
-            except IndexError:
-                print("Use what with what?")
-
-    # cemetery actions
-    def cemetery_area(self, player_choice):
-        p_list = player_choice.split(" ", 1)
-
-        # allows player to look at things
-        if p_list[0] == "look":
-            try:
-                if p_list[1] == "room":
-                    self.cemetery.print_description_room()
-                elif "grave" in p_list[1]:
-                    self.cemetery.print_description_graves()
-                elif p_list[1] != "self" and p_list[1] != "map":
-                    print(f"I don't know where {p_list[1]} is.")
-            except IndexError:
-                print("look at what?")
-
-        # allows player to move around
-        elif p_list[0] == "go":
-            try:
-                if "west" in p_list[1]:
-                    self.player.set_location(self.west_wing_name)
-                else:
-                    print(f"I can't go to {p_list[1]}.")
-            except IndexError:
-                print("Go where?")
-
-        # allows player to operate things. Placeholder
-        elif p_list[0] == "oper":
-            try:
-                if "grave" in p_list[1]:
-                    print("I don't really see anything to mess with like that.")
-                else:
-                    print("I can't use that.")
-            except IndexError:
-                print("Operate what?")
-
-        # allows player to use items on objects. Placeholder
-        elif p_list[0] == "use":
-            choice_list = self.use_pattern.split(player_choice)
-            try:
-                choice_list.remove('')
-            except ValueError:
-                pass
-            try:
-                if "grave" in choice_list[1]:
-                    if choice_list[0] in self.player.inventory:
-                        if self.cemetery.dig_grave(choice_list[0]):
-                            self.player.use_item(choice_list[0])
-                            self.player.increase_score()
-                    else:
-                        print(f"I don't have a(n) {choice_list[0]}")
-                else:
-                    print(f"I can't do anything to {choice_list[1]}")
-
-            except IndexError:
-                print("Use what with what?")
-
-    # upstairs hallway actions
-    def up_stairs_hallway_area(self, player_choice):
-        p_list = player_choice.split(" ", 1)
-
-        # allows player to look around
-        if p_list[0] == "look":
-            try:
-                if p_list[1] == "room":
-                    self.up_stairs_hallway.print_description_room()
-                elif "book" in p_list[1]:
-                    self.up_stairs_hallway.print_description_book()
-                elif "furn" in p_list[1]:
-                    self.up_stairs_hallway.print_description_furniture()
-                elif p_list[1] != "self" and p_list[1] != "map":
-                    print(f"I don't know where {p_list[1]} is.")
-            except IndexError:
-                print("look at what?")
-
-        # allows player to move around
-        elif p_list[0] == "go":
-            try:
-                if "den" in p_list[1]:
-                    self.player.set_location(self.animal_den_name)
-                elif "shoe" in p_list[1]:
-                    self.player.set_location(self.shoe_store_name)
-                elif "bath" in p_list[1]:
-                    self.player.set_location(self.bathroom_name)
-                elif "down" in p_list[1] or "plaza" in p_list[1] or p_list[1] == "outside":
-                    self.player.set_location(self.main_plaza_name)
-                else:
-                    print(f"I can't go to {p_list[1]}.")
-            except IndexError:
-                print("Go where?")
-
-        # allows player to operate things.
-        elif p_list[0] == "oper":
-            try:
-                if "book" in p_list[1]:
-                    self.up_stairs_hallway.read_book()
-                elif "furn" in p_list[1]:
-                    print("There's nothing to operate on it.")
-                else:
-                    print("I can't use that.")
-            except IndexError:
-                print("Operate what?")
-
-        # allows player to use items on objects.
-        elif p_list[0] == "use":
-            choice_list = self.use_pattern.split(player_choice)
-            try:
-                choice_list.remove('')
-            except ValueError:
-                pass
-            try:
-                if "book" in p_list[1]:
-                    print("It's a book. Why would I do that?")
-                elif "furn" in p_list[1]:
-                    print("There's no point to using anything on it.")
-
-                else:
-                    print(f"I can't do anything to {choice_list[1]}")
-
-            except IndexError:
-                print("Use what with what?")
-
-    # animal den actions
-    def animal_den_area(self, player_choice):
-        pass
-        p_list = player_choice.split(" ", 1)
-        if p_list[0] == "look":
-            try:
-                if p_list[1] == "room":
-                    self.animal_den.print_description_room()
-                elif "animal" in p_list[1]:
-                    self.animal_den.print_description_animal()
-                elif "hole" in p_list[1]:
-                    self.animal_den.print_description_hole()
-                elif p_list[1] != "self" and p_list[1] != "map":
-                    print(f"I don't know where {p_list[1]} is.")
-            except IndexError:
-                print("look at what?")
-
-        # allows player to move around
-        elif p_list[0] == "go":
-            try:
-                if "hall" in p_list[1]:
-                    self.player.set_location(self.up_stairs_hallway_name)
-                elif "hole" in p_list[1]:
-                    self.animal_den.enter_hole()
-                else:
-                    print(f"I can't go to {p_list[1]}.")
-            except IndexError:
-                print("Go where?")
-
-        # allows player to operate things. Placeholder
-        elif p_list[0] == "oper":
-            try:
-                if p_list[1] is None:
-                    pass
-                else:
-                    print("I can't use that.")
-            except IndexError:
-                print("Operate what?")
-
-        # allows player to use items on objects. Placeholder
-        elif p_list[0] == "use":
-            choice_list = self.use_pattern.split(player_choice)
-            try:
-                choice_list.remove('')
-            except ValueError:
-                pass
-            try:
-                if choice_list[1] is None:
-                    if choice_list[0] in self.player.inventory:
-                        pass
-                        # if self.starting_room.fix_fuse_box(choice_list[0]):
-                        #     self.player.use_item(choice_list[0])
-                        #     self.player.increase_score()
-                    else:
-                        print(f"I don't have a(n) {choice_list[0]}")
-                else:
-                    print(f"I can't do anything to {choice_list[1]}")
-
-            except IndexError:
-                print("Use what with what?")
-
-    # bathroom actions
-    def bathroom_area(self, player_choice):
-        pass
-        p_list = player_choice.split(" ", 1)
-
-        # allows player to look at things
-        if p_list[0] == "look":
-            try:
-                if p_list[1] == "room":
-                    self.bathroom.print_description_room()
-                elif "mirror" in p_list[1]:
-                    self.bathroom.print_description_mirror(self.player.is_mane_brushed())
-                elif "graffiti" in p_list[1]:
-                    self.bathroom.print_description_graffiti()
-                elif "cabinet" in p_list[1]:
-                    self.bathroom.print_description_medical()
-                elif "dryer" in p_list[1]:
-                    self.bathroom.print_description_dryer()
-                elif p_list[1] != "self" and p_list[1] != "map":
-                    print(f"I don't know where {p_list[1]} is.")
-            except IndexError:
-                print("look at what?")
-
-        # allows player to move around
-        elif p_list[0] == "go":
-            try:
-                if "hall" in p_list[1]:
-                    self.player.set_location(self.up_stairs_hallway_name)
-                else:
-                    print(f"I can't go to {p_list[1]}.")
-            except IndexError:
-                print("Go where?")
-
-        # allows player to operate things. Placeholder
-        elif p_list[0] == "oper":
-            try:
-                if p_list[1] is None:
-                    pass
-                else:
-                    print("I can't use that.")
-            except IndexError:
-                print("Operate what?")
-
-        # allows player to use things. Placeholder
-        elif p_list[0] == "use":
-            choice_list = self.use_pattern.split(player_choice)
-            try:
-                choice_list.remove('')
-            except ValueError:
-                pass
-            try:
-                if choice_list[1] is None:
-                    if choice_list[0] in self.player.inventory:
-                        pass
-                        # if self.starting_room.fix_fuse_box(choice_list[0]):
-                        #     self.player.use_item(choice_list[0])
-                        #     self.player.increase_score()
-                    else:
-                        print(f"I don't have a(n) {choice_list[0]}")
-                else:
-                    print(f"I can't do anything to {choice_list[1]}")
-
-            except IndexError:
-                print("Use what with what?")
-
-    # shoe store actions
-    def shoe_store_area(self, player_choice):
-        p_list = player_choice.split(" ", 1)
-        if p_list[0] == "look":
-            try:
-                if p_list[1] == "room":
-                    self.shoe_store.print_description_room()
-                elif "ele" in p_list[1]:
-                    self.shoe_store.print_description_elevator()
-                elif p_list[1] != "self" and p_list[1] != "map":
-                    print(f"I don't know where {p_list[1]} is.")
-            except IndexError:
-                print("look at what?")
-
-        # allows player to move around
-        elif p_list[0] == "go":
-            try:
-                if "hall" in p_list[1]:
-                    self.player.set_location(self.up_stairs_hallway_name)
-                elif "ele" in p_list[1]:
-                    if self.shoe_store.go_elevator():
-                        self.player.set_location(self.basement_entryway_name)
-                else:
-                    print(f"I can't go to {p_list[1]}.")
-            except IndexError:
-                print("Go where?")
-
-        # opens door
-        elif p_list[0] == "oper":
-            try:
-                if "ele" in p_list[1]:
-                    self.shoe_store.operate_elevator_doors()
-                else:
-                    print("I can't use that.")
-            except IndexError:
-                print("Operate what?")
-
-        elif p_list[0] == "use":
-            choice_list = self.use_pattern.split(player_choice)
-            try:
-                choice_list.remove('')
-            except ValueError:
-                pass
-            try:
-                if "ele" in choice_list[1]:
-                    if choice_list[0] in self.player.inventory:
-                        if self.shoe_store.fix_elevator(choice_list[0]):
-                            if choice_list[0] == "strong rope":
-                                self.player.use_item(choice_list[0])
-                                self.player.increase_score()
-                            else:
-                                self.player.use_item(choice_list[0])
-                    else:
-                        print(f"I don't have a(n) {choice_list[0]}")
-                else:
-                    print(f"I can't do anything to {choice_list[1]}")
-
-            except IndexError:
-                print("Use what with what?")
-
-    # basement entryway actions
-    def basement_entryway_area(self, player_choice):
-        p_list = player_choice.split(" ", 1)
-        if p_list[0] == "look":
-            try:
-                if p_list[1] == "room":
-                    self.basement_entryway.print_description_room()
-                elif "pad" in p_list[1]:
-                    self.basement_entryway.print_description_pad()
-                elif "note" in p_list[1]:
-                    self.basement_entryway.print_description_note()
-                elif p_list[1] != "self" and p_list[1] != "map":
-                    print(f"I don't know where {p_list[1]} is.")
-            except IndexError:
-                print("look at what?")
-
-        # allows player to move around
-        elif p_list[0] == "go":
-            try:
-                if "up" in p_list[1] or "shoe" in p_list[1]:
-                    self.player.set_location(self.shoe_store_name)
-                elif "gen" in p_list[1]:
-                    if self.basement_entryway.go_gen_room():
-                        self.player.set_location(self.basement_gen_room_name)
-                else:
-                    print(f"I can't go to {p_list[1]}.")
-            except IndexError:
-                print("Go where?")
-
-        # opens door
-        elif p_list[0] == "oper":
-            try:
-                if "pad" in p_list[1]:
-                    self.basement_entryway.entering_code()
-                else:
-                    print("I can't use that.")
-            except IndexError:
-                print("Operate what?")
-
-        elif p_list[0] == "use":
-            choice_list = self.use_pattern.split(player_choice)
-            try:
-                choice_list.remove('')
-            except ValueError:
-                pass
-            try:
-                if "pad" in choice_list[1]:
-                    if choice_list[0] in self.player.inventory:
-                        if self.basement_entryway.entering_code(choice_list[0]):
-                            self.player.use_item(choice_list[0])
-                            self.player.increase_score()
-                    else:
-                        print(f"I don't have a(n) {choice_list[0]}")
-                else:
-                    print(f"I can't do anything to {choice_list[1]}")
-
-            except IndexError:
-                print("Use what with what?")
-
-    # basement generator actions
-    def basement_gen_area(self, player_choice):
-        p_list = player_choice.split(" ", 1)
-        if p_list[0] == "look":
-            try:
-                if p_list[1] == "room":
-                    self.basement_gen_room.print_description_room()
-                elif "spec" in p_list[1]:
-                    self.basement_gen_room.print_description_spec()
-                elif "gen" in p_list[1]:
-                    self.basement_gen_room.print_description_generator()
-                elif p_list[1] != "self" and p_list[1] != "map":
-                    print(f"I don't know where {p_list[1]} is.")
-            except IndexError:
-                print("look at what?")
-
-        # allows player to move around
-        elif p_list[0] == "go":
-            try:
-                if "entry" in p_list[1]:
-                    self.player.set_location(self.basement_entryway_name)
-                else:
-                    print(f"I can't go to {p_list[1]}.")
-            except IndexError:
-                print("Go where?")
-
-        # opens door
-        elif p_list[0] == "oper":
-            try:
-                if "gen" in p_list[1]:
-                    self.basement_gen_room.operate_generator()
-                elif "spec" in p_list[1]:
-                    print("It's a piece of paper. Nothing to mess with really.")
-                else:
-                    print("I can't use that.")
-            except IndexError:
-                print("Operate what?")
-
-        elif p_list[0] == "use":
-            choice_list = self.use_pattern.split(player_choice)
-            try:
-                choice_list.remove('')
-            except ValueError:
-                pass
-            try:
-                if "gen" in choice_list[1]:
-                    if choice_list[0] in self.player.inventory:
-                        if self.basement_gen_room.add_item_generator(choice_list[0]):
-                            self.player.use_item(choice_list[0])
-                            self.player.increase_score()
-                    else:
-                        print(f"I don't have a(n) {choice_list[0]}")
-
-                elif "spec" in choice_list[1]:
-                    print("It's a piece of paper. Nothing to mess with really.")
-                else:
-                    print(f"I can't do anything to {choice_list[1]}")
-
-            except IndexError:
-                print("Use what with what?")
+        else:
+            print(f"I don't know how to {general_list[0]} something.")
 
     # a winning game function
     def exit_game(self):
