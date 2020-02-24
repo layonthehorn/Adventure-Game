@@ -15,6 +15,7 @@ class FunctionClass:
                     try:
                         look_command()
                     except TypeError:
+                        # for the single look command that takes an argument.
                         look_command(player_bool)
                     break
             else:
