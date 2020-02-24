@@ -9,16 +9,13 @@ class FunctionClass:
     def get_look_commands(self, look_at):
         # you have to enter at least three letters
         if len(look_at) >= 3:
-            if len(self.look_dict) < 1:
-                print(f"I can't look at {look_at}.")
+            for key in self.look_dict:
+                if look_at in key:
+                    look_command = self.look_dict.get(key)
+                    look_command()
+                    break
             else:
-                for key in self.look_dict:
-                    if look_at in key:
-                        look_command = self.look_dict.get(key)
-                        look_command()
-                        break
-                else:
-                    print(f"I can't look at {look_at}.")
+                print(f"I can't look at {look_at}.")
 
         else:
             print(f"I can't go to {look_at}.")
@@ -27,20 +24,17 @@ class FunctionClass:
     def get_oper_commands(self, operate, player_bool):
         # you have to enter at least three letters
         if len(operate) >= 3:
-            if len(self.oper_dict) < 1:
-                print(f"I can't operate the {operate}.")
+            for key in self.oper_dict:
+                if operate in key:
+                    oper_command = self.oper_dict.get(key)
+                    try:
+                        oper_command()
+                    except TypeError:
+                        # for the one function that takes a argument
+                        oper_command(player_bool)
+                    break
             else:
-                for key in self.oper_dict:
-                    if operate in key:
-                        oper_command = self.oper_dict.get(key)
-                        try:
-                            oper_command()
-                        except TypeError:
-                            # for the one function that takes a argument
-                            oper_command(player_bool)
-                        break
-                else:
-                    print(f"I can't operate the {operate}.")
+                print(f"I can't operate the {operate}.")
         else:
             print(f"I can't operate the {operate}.")
 
@@ -48,20 +42,17 @@ class FunctionClass:
     def get_go_commands(self, player_object, go):
         # you have to enter at least three letters
         if len(go) >= 2:
-            if len(self.go_dict) < 1:
-                print(f"I can't go to {go}.")
+            for key in self.go_dict:
+                if go in key:
+                    go_command = self.go_dict.get(key)
+                    try:
+                        go_command(player_object)
+                    except TypeError:
+                        # for the one go command that does not have a player object to be used.
+                        go_command()
+                    break
             else:
-                for key in self.go_dict:
-                    if go in key:
-                        go_command = self.go_dict.get(key)
-                        try:
-                            go_command(player_object)
-                        except TypeError:
-                            # for the one go command that does not have a player object to be used.
-                            go_command()
-                        break
-                else:
-                    print(f"I can't go to {go}.")
+                print(f"I can't go to {go}.")
         else:
             print(f"I can't go to {go}.")
 
@@ -71,8 +62,6 @@ class FunctionClass:
         room_object = use_list[1]
         # you have to enter at least three letters
         if len(room_object) >= 3:
-            if len(self.use_dict) < 1:
-                print(f"I can't find the {room_object}.")
             for key in self.use_dict:
                 if room_object in key:
                     use_command = self.use_dict.get(key)
