@@ -96,14 +96,6 @@ class ChapterTwo:
                 self.example_name: self.example,
             }
 
-            # action dictionary for each of the rooms special actions
-            # also holds the end and exit game functions
-            self.location_dict = {
-                self.exit_name: self.exit_game,
-                self.end_name: self.end_game
-            }
-
-        player_choice = ""
         # main game play loop
         while self.playing and not end_game:
 
@@ -133,17 +125,6 @@ class ChapterTwo:
                 # Winning game ending
                 self.exit_game()
 
-    # getting things
-    def get_items(self, room, item):
-        self.player.get_item(room.get_item(item))
-
-    # drops items to a room
-    def drop_items(self, room, item):
-        if item in self.player.inventory:
-            room.give_item(self.player.drop_item(item))
-        else:
-            print(f"I don't have a(n) {item} to drop.")
-
     # general actions that can be done anywhere
     def general_actions(self, action):
         # finds player location
@@ -151,18 +132,19 @@ class ChapterTwo:
         if loc_name is None:
             print("no matching location found, defaulting to bunker.")
             loc_name = self.example
+            self.player.set_location(self.example_name)
 
         # splits the input on the first space
         general_list = action.split(" ", 1)
         # prints inventory
         if action == "inv":
             self.player.check_inventory()
-        # prints actions that can be taken
         elif action == "hint":
             self.hint_system()
+        # prints help page
         elif action == "help":
             print_help()
-        # ends game
+        # saves the game
         elif action == "save":
             print("Game has been saved!")
             self.save_game_state()
@@ -172,7 +154,7 @@ class ChapterTwo:
         # in case input is blank
         elif action == "":
             print("Vern taps his foot on the ground. \n'I get so sick of waiting for something to happen.'")
-        # ends game asks to save
+        # ends game and asks to save
         elif action == "end":
             save = input("Save game? ").lower()
             if save == 'y':
@@ -197,7 +179,10 @@ class ChapterTwo:
         # gets an item from the current room
         elif general_list[0] == "get":
             try:
-                self.get_items(loc_name, general_list[1])
+                if general_list[1] in loc_name.inventory:
+                    self.player.get_item(loc_name.get_item(general_list[1]))
+                else:
+                    print(f"There isn't a(n) {general_list[1]} to get.")
             except IndexError:
                 print("Get what?")
 
@@ -206,7 +191,10 @@ class ChapterTwo:
             try:
                 # if player tries to drop self print message.
                 if general_list[1] != 'self':
-                    self.drop_items(loc_name, general_list[1])
+                    if general_list[1] in self.player.inventory:
+                        loc_name.give_item(self.player.drop_item(general_list[1]))
+                    else:
+                        print(f"I don't have a(n) {general_list[1]} to drop.")
                 else:
                     print("Now how would I do that?")
             except IndexError:
@@ -252,7 +240,7 @@ class ChapterTwo:
             except IndexError:
                 print("Go where?")
         else:
-            print(f"I don't know how to {general_list[0]} something.")
+            print(f"I don't know how to {general_list[0]}.")
 
     # saves games
     def save_game_state(self):
