@@ -83,11 +83,8 @@ class FunctionClass:
 
     # returns item to room
     def get_item(self, item):
-        if item in self.inventory:
-            location = self.inventory.index(item)
-            return self.inventory.pop(location)
-        else:
-            return None
+        location = self.inventory.index(item)
+        return self.inventory.pop(location)
 
     # dropping item back into room
     def give_item(self, item):
@@ -215,8 +212,6 @@ class PlayerClass:
 
         if item in self.inventory:
             print("I don't need more of these.")
-        elif item is None:
-            pass
         else:
             self.inventory.append(item)
             print("I picked up the ", item)

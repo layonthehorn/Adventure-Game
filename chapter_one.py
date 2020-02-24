@@ -246,17 +246,6 @@ class ChapterOne:
                 # Winning game ending
                 self.exit_game()
 
-    # getting things
-    def get_items(self, room, item):
-        self.player.get_item(room.get_item(item))
-
-    # drops items to a room
-    def drop_items(self, room, item):
-        if item in self.player.inventory:
-            room.give_item(self.player.drop_item(item))
-        else:
-            print(f"I don't have a(n) {item} to drop.")
-
     # saves games
     def save_game_state(self):
         value_dictionary = {
@@ -371,7 +360,10 @@ class ChapterOne:
         # gets an item from the current room
         elif general_list[0] == "get":
             try:
-                self.get_items(loc_name, general_list[1])
+                if general_list[1] in loc_name.inventory:
+                    self.player.get_item(loc_name.get_item(general_list[1]))
+                else:
+                    print(f"There isn't a(n) {general_list[1]} to get.")
             except IndexError:
                 print("Get what?")
 
@@ -380,7 +372,10 @@ class ChapterOne:
             try:
                 # if player tries to drop self print message.
                 if general_list[1] != 'self':
-                    self.drop_items(loc_name, general_list[1])
+                    if general_list[1] in self.player.inventory:
+                        loc_name.give_item(self.player.drop_item(general_list[1]))
+                    else:
+                        print(f"I don't have a(n) {general_list[1]} to drop.")
                 else:
                     print("Now how would I do that?")
             except IndexError:
