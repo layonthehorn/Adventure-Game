@@ -12,11 +12,7 @@ class FunctionClass:
             for key in self.look_dict:
                 if look_at in key:
                     look_command = self.look_dict.get(key)
-                    try:
-                        look_command()
-                    except TypeError:
-                        # for the single look command that takes an argument.
-                        look_command(player_bool)
+                    look_command()
                     break
             else:
                 print(f"I can't look at {look_at}.")
@@ -31,12 +27,7 @@ class FunctionClass:
             for key in self.oper_dict:
                 if operate in key:
                     oper_command = self.oper_dict.get(key)
-                    try:
-                        oper_command()
-                    except TypeError:
-                        # for the one function that takes a argument
-                        oper_command(player_bool)
-                    break
+                    oper_command()
             else:
                 print(f"I can't operate the {operate}.")
         else:
@@ -475,7 +466,7 @@ class ComputerRoom(FunctionClass):
     def __init__(self):
 
         self.inventory = ["wrench"]
-        self.light_switch, self.safe_opened = (False, False)
+        self.light_switch, self.safe_opened, self.safe_unlocked = (False, False, False)
 
         self.look_dict = {
             "room": self.print_description_room,
@@ -495,8 +486,8 @@ class ComputerRoom(FunctionClass):
 
         self.use_dict = {}
 
-    def get_bools(self):
-        return self.light_switch, self.safe_opened
+    def is_safe_unlocked(self):
+        return self.safe_unlocked
 
     # this prints a description along with a item list
     def print_description_room(self):
@@ -541,10 +532,10 @@ class ComputerRoom(FunctionClass):
     def go_bunker(player_object):
         player_object.set_location("bunker")
 
-    def operate_safe(self, mane_brushed):
+    def operate_safe(self):
         if self.light_switch:
             if not self.safe_opened:
-                if mane_brushed:
+                if self.safe_unlocked:
                     print("I SUPPOSE YOU ARE CLEAN ENOUGH... FINE I'LL OPEN.\n")
                     print("Piece of junk... About damn time.")
                     self.inventory.append("green fuse")
@@ -1503,7 +1494,7 @@ class Bathroom(FunctionClass):
     def __init__(self):
         self.inventory = ["knife"]
 
-        self.looked_dryer, self.cabinet_looked = (False, False)
+        self.looked_dryer, self.cabinet_looked, self.mane_combed = (False, False, False)
 
         self.look_dict = {
             "room": self.print_description_room,
@@ -1534,10 +1525,9 @@ class Bathroom(FunctionClass):
                 print(f"There is a(n) {item}")
 
     # bool will be if player has brushed mane
-    @staticmethod
-    def print_description_mirror(bool_val):
+    def print_description_mirror(self):
         print("It's an old cracked mirror. Kinda dirty too...")
-        if bool_val:
+        if self.mane_combed:
             print("At least I look nicer than I thought I did.")
         else:
             print("My mane needs to be cleaned up pretty badly.")

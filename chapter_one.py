@@ -195,6 +195,11 @@ class ChapterOne:
                 if not self.main_plaza.is_exit_unlocked():
                     self.main_plaza.unlock_exit()
 
+            if self.player.is_mane_brushed():
+                if not self.side_room.is_safe_unlocked():
+                    self.side_room.safe_unlocked = True
+                    self.bathroom.mane_combed = True
+
             # if they reached a new room announce it
             if self.player_old_room != self.player_new_room:
                 print(f"You have gone to the {self.player_new_room}.")
