@@ -388,10 +388,8 @@ class ChapterOne:
             self.stat_dictionary["combine"] += 1
             # tries to combine items
             choice_list = self.combine_pattern.split(action)
-            try:
+            if '' in choice_list:
                 choice_list.remove('')
-            except ValueError:
-                pass
             try:
                 if self.player.combine_items(choice_list[0], choice_list[1]):
                     self.player.increase_score()
