@@ -96,7 +96,7 @@ class ChapterOne:
         end_game = False
         while choosing:
             print("Chapter One: The Lost Mall")
-            player_option = input("Load(L), Start New(S), Quit(Q), or How to play(H)?\n").lower()
+            player_option = input("Load(l), Start New(s), Quit(q), or How to play(h)?\n").lower()
             if player_option == "s":
                 # Loads defaults in classes for game
                 self.player = PlayerClass()
@@ -184,7 +184,7 @@ class ChapterOne:
                     choosing = False
 
             # prints instructions
-            elif player_option == "H":
+            elif player_option == "h":
                 print_help()
 
         # location dictionary
