@@ -6,7 +6,7 @@ class FunctionClass:
     """Never to be called. Only used for giving all other classes the same methods."""
 
     # allows getting a print function form the look dictionary.
-    def get_look_commands(self, look_at, player_bool):
+    def get_look_commands(self, look_at):
         # you have to enter at least three letters
         if len(look_at) >= 3:
             for key in self.look_dict:
@@ -21,7 +21,7 @@ class FunctionClass:
             print(f"I can't go to {look_at}.")
 
     # allows getting operate commands
-    def get_oper_commands(self, operate, player_bool):
+    def get_oper_commands(self, operate):
         # you have to enter at least three letters
         if len(operate) >= 3:
             for key in self.oper_dict:

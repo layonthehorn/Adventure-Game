@@ -353,7 +353,7 @@ class ChapterOne:
                 elif general_list[1] == "self":
                     self.player.look_self()
                 else:
-                    loc_name.get_look_commands(general_list[1], self.player.is_mane_brushed())
+                    loc_name.get_look_commands(general_list[1])
             except IndexError:
                 print("Look at what?")
 
@@ -412,7 +412,7 @@ class ChapterOne:
         elif general_list[0] == "oper":
             self.stat_dictionary["operate"] += 1
             try:
-                loc_name.get_oper_commands(general_list[1], self.player.is_mane_brushed())
+                loc_name.get_oper_commands(general_list[1])
 
             except IndexError:
                 print("Operate what?")
