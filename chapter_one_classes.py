@@ -203,6 +203,8 @@ class PlayerClass:
 
         if item in self.inventory:
             print("I don't need more of these.")
+        elif item is None:
+            pass
         else:
             self.inventory.append(item)
             print("I picked up the ", item)
