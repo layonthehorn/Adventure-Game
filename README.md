@@ -16,6 +16,8 @@ You have to try and get out of a mall and join your friends outside. Use the com
 - go {location}: How you change rooms.
 - save: How you save your game.
 - hint: Gives you a hint towards finishing the game.
+- help: Prints this list of commands.
+- stat: Prints stats on commands used.
 - end: Exit game and will ask to save or not.
 
 ### Credits

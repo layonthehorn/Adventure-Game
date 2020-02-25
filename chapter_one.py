@@ -28,7 +28,8 @@ def print_help():
           "\nsave: How you save your game."
           "\nend: Exit game and will ask to save or not."
           "\nhint: This will give you a hint on how to continue."
-          "\nhelp: This menu.")
+          "\nhelp: This menu."
+          "\nstat: Prints stats on commands used.")
 
 
 def print_intro():
@@ -72,6 +73,7 @@ class ChapterOne:
         self.bathroom_name = "bathroom"
         self.basement_entryway_name = "basement entry"
         self.basement_gen_room_name = "basement generator room"
+        self.stat_dictionary_name = "stat dictionary"
         self.playing = True
 
         # Main Classes
@@ -112,6 +114,23 @@ class ChapterOne:
                 self.bathroom = Bathroom()
                 self.basement_entryway = BasementEntry()
                 self.basement_gen_room = BasementGenRoom()
+                # to keep a running toll of all actions preformed
+                self.stat_dictionary = {"look": 0,
+                                        "inventory": 0,
+                                        "get": 0,
+                                        "help": 0,
+                                        "": 0,
+                                        "operate": 0,
+                                        "combine": 0,
+                                        "drop": 0,
+                                        "score": 0,
+                                        "use": 0,
+                                        "go": 0,
+                                        "save": 0,
+                                        "hint": 0,
+                                        "end": 0,
+                                        "unknown": 0,
+                                        "stat": 0}
                 print_intro()
                 choosing = False
             elif player_option == "q":
@@ -156,6 +175,8 @@ class ChapterOne:
                     self.basement_entryway = new_value_dictionary.get(self.basement_entryway_name)
                     # basement generator room data
                     self.basement_gen_room = new_value_dictionary.get(self.basement_gen_room_name)
+                    # stat dictionary data
+                    self.stat_dictionary = new_value_dictionary.get(self.stat_dictionary_name)
 
                     # tells player it loaded the game
                     print("Loaded Game.")
@@ -172,10 +193,30 @@ class ChapterOne:
         if not end_game:
             self.player_old_room = self.player.get_location()
             self.player_new_room = self.player_old_room
-            self.switcher_dictionary = {
+
+            # dictionary for saving game state
+            self.save_dictionary = {
                 # player only here for saving
                 self.player_name: self.player,
-                # rest here for saving and getting rooms
+                self.starting_room_name: self.starting_room,
+                self.side_room_name: self.side_room,
+                self.main_plaza_name: self.main_plaza,
+                self.west_wing_name: self.west_wing,
+                self.cemetery_name: self.cemetery,
+                self.pet_shop_name: self.pet_shop,
+                self.toy_shop_name: self.toy_shop,
+                self.small_den_name: self.small_den,
+                self.up_stairs_hallway_name: self.up_stairs_hallway,
+                self.shoe_store_name: self.shoe_store,
+                self.animal_den_name: self.animal_den,
+                self.bathroom_name: self.bathroom,
+                self.basement_gen_room_name: self.basement_gen_room,
+                self.basement_entryway_name: self.basement_entryway,
+                self.stat_dictionary_name: self.stat_dictionary
+            }
+
+            # switcher dictionary for running actions
+            self.switcher_dictionary = {
                 self.starting_room_name: self.starting_room,
                 self.side_room_name: self.side_room,
                 self.main_plaza_name: self.main_plaza,
@@ -213,7 +254,7 @@ class ChapterOne:
 
             # if you reach the exit then don't ask for actions from player
             if self.player.location != self.exit_name:
-                print("Verbs look, inv(entory), get, oper(ate), com(bine), drop, score, use, go, save, end, help")
+                print("Verbs look, inv(entory), get, oper(ate), com(bine), drop, score, use, go, save, end, help, stat")
                 player_choice = input("").lower()
                 # general actions shared by rooms
                 self.general_actions(player_choice)
@@ -247,7 +288,7 @@ class ChapterOne:
         try:
             # writes data to save file with pickle
             with open(self.save_location, 'wb+') as db_file:
-                pickle.dump(self.switcher_dictionary, db_file)
+                pickle.dump(self.save_dictionary, db_file)
         except IOError:
             print("Could not open file for saving...")
 
@@ -257,7 +298,7 @@ class ChapterOne:
         # this makes all your actions dependent on the room you are in
         loc_name = self.switcher_dictionary.get(self.player.get_location(), None)
         # if you reach an unbuilt area or somehow retrieve the player class
-        if loc_name is None or self.player.get_location() == self.player_name:
+        if loc_name is None:
             print("no matching location found, defaulting to bunker.")
             loc_name = self.starting_room
             self.player.set_location(self.starting_room_name)
@@ -266,26 +307,37 @@ class ChapterOne:
         general_list = action.split(" ", 1)
         # prints inventory
         if action == "inv":
+            self.stat_dictionary["inventory"] += 1
             self.player.check_inventory()
+        elif action == "stat":
+            self.stat_dictionary["stat"] += 1
+            self.print_stats()
         elif action == "hint":
+            self.stat_dictionary["hint"] += 1
             self.hint_system()
         # prints help page
         elif action == "help":
+            self.stat_dictionary["help"] += 1
             print_help()
         # saves the game
         elif action == "save":
+            self.stat_dictionary["save"] += 1
             print("Game has been saved!")
             self.save_game_state()
         # prints score
         elif action == "score":
+            self.stat_dictionary["score"] += 1
             self.player.print_score()
         # in case input is blank
         elif action == "":
+            self.stat_dictionary[""] += 1
             print("Vern taps his foot on the ground. \n'I get so sick of waiting for something to happen.'")
         # ends game and asks to save
         elif action == "end":
+            self.stat_dictionary["end"] += 1
             save = input("Save game? ").lower()
             if save == 'y':
+                self.stat_dictionary["save"] += 1
                 print('Saved!')
                 self.save_game_state()
             input("Press enter to quit. Goodbye!")
@@ -293,6 +345,7 @@ class ChapterOne:
 
         # looking at things
         elif general_list[0] == "look":
+            self.stat_dictionary["look"] += 1
             try:
                 if general_list[1] == "map":
                     self.player.look_player_map()
@@ -306,6 +359,7 @@ class ChapterOne:
 
         # gets an item from the current room
         elif general_list[0] == "get":
+            self.stat_dictionary["get"] += 1
             try:
                 if general_list[1] in loc_name.get_inventory():
                     self.player.get_item(loc_name.get_item(general_list[1]))
@@ -316,6 +370,7 @@ class ChapterOne:
 
         # drops item to current room
         elif general_list[0] == "drop":
+            self.stat_dictionary["drop"] += 1
             try:
                 # if player tries to drop self print message.
                 if general_list[1] != 'self':
@@ -330,6 +385,7 @@ class ChapterOne:
 
         # combining items
         elif general_list[0] == "com":
+            self.stat_dictionary["combine"] += 1
             # tries to combine items
             choice_list = self.combine_pattern.split(action)
             try:
@@ -345,6 +401,7 @@ class ChapterOne:
 
         # using items on objects
         elif general_list[0] == "use":
+            self.stat_dictionary["use"] += 1
             try:
                 choice_list = self.use_pattern.split(action)
                 if '' in choice_list:
@@ -355,6 +412,7 @@ class ChapterOne:
 
         # operating objects
         elif general_list[0] == "oper":
+            self.stat_dictionary["operate"] += 1
             try:
                 loc_name.get_oper_commands(general_list[1], self.player.is_mane_brushed())
 
@@ -363,11 +421,13 @@ class ChapterOne:
 
         # going to new areas.
         elif general_list[0] == "go":
+            self.stat_dictionary["go"] += 1
             try:
                 loc_name.get_go_commands(self.player, general_list[1])
             except IndexError:
                 print("Go where?")
         else:
+            self.stat_dictionary["unknown"] += 1
             print(f"I don't know how to {general_list[0]}.")
 
     # a winning game function
@@ -433,6 +493,21 @@ Hopefully, There would be no complications there.""")
             print("""
 Vern escapes the mall and reunites with Johnson and Katie. After a debriefing between them, 
 they continued onwards to Harrisburg. Hopefully, There would be no complications there.""")
+        self.print_stats()
+
+    # a formatted print of all commands that have been used
+    def print_stats(self):
+        print(f"""
+\t\t\t\t\tStatistics Of Command Usage
+
+{"Used 'look'":<16} {self.stat_dictionary["look"]:<4} times. {"":>6} {"Used 'get'":<16} {self.stat_dictionary["get"]:<4} times.
+{"Used 'inventory'":<16} {self.stat_dictionary["inventory"]:<4} times. {"":>6} {"Used 'help'":<16} {self.stat_dictionary["help"]:<4} times.
+{"Used 'end'":<16} {self.stat_dictionary[""]:<4} times. {"":>6} {"Used 'operate'":<16} {self.stat_dictionary["operate"]:<4} times.
+{"Used 'combine'":<16} {self.stat_dictionary["combine"]:<4} times. {"":>6} {"Used 'drop'":<16} {self.stat_dictionary["drop"]:<4} times.
+{"Used 'score'":<16} {self.stat_dictionary["score"]:<4} times. {"":>6} {"Used 'use'":<16} {self.stat_dictionary["use"]:<4} times.
+{"Used 'go'":<16} {self.stat_dictionary["go"]:<4} times. {"":>6} {"Used 'save'":<16} {self.stat_dictionary["save"]:<4} times.
+{"Used 'hint'":<16} {self.stat_dictionary["help"]:<4} times. {"":>6} {"Used 'stat'":<16} {self.stat_dictionary["stat"]:<4} times.
+{"Unknown command":<16} {self.stat_dictionary["unknown"]:<4} times. {"":>6} {"Entered nothing":<16} {self.stat_dictionary[""]:<4} times.""")
 
 
 if __name__ == "__main__":
