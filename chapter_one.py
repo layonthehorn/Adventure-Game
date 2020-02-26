@@ -312,7 +312,7 @@ class ChapterOne:
             print_help()
 
         # for debugging only
-        elif action =="debug player":
+        elif action == "debug player":
             print(self.player)
         elif action == "debug room":
             print(loc_name)
