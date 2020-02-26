@@ -73,12 +73,14 @@ class FunctionClass:
 
     # returns item to room
     def get_item(self, item):
+        if item == "map":
+            print("Hey a map, this might help me out.")
         location = self.inventory.index(item)
         return self.inventory.pop(location)
 
     # dropping item back into room
     def give_item(self, item):
-        if item not in self.inventory:
+        if item not in self.inventory and item:
             self.inventory.append(item)
 
 
@@ -199,13 +201,18 @@ class PlayerClass:
 
         if item in self.inventory:
             print("I don't need more of these.")
-        else:
+        # if item is not false or none
+        elif item:
             self.inventory.append(item)
             print("I picked up the ", item)
 
     # getting item out of inventory
     def drop_item(self, item):
-        if item in self.inventory:
+        # prevents dropping the map.
+        if item in self.inventory and item == "map":
+            print("I might need it, I'm not going to drop it.")
+        # otherwise if the item is in your inventory allows you to drop it
+        elif item in self.inventory:
             location = self.inventory.index(item)
             print("I dropped the ", item)
             return self.inventory.pop(location)
@@ -608,8 +615,8 @@ class MainPlaza(FunctionClass):
 
     def __init__(self):
         self.inventory = ["map"]
-        self.exit_unlocked, self.upstairs_unlocked, self.map_gotten, self.car_looked, self.car_oper, self.desk_opened, self.phone_used = (
-            False, False, False, False, False, False, False)
+        self.exit_unlocked, self.upstairs_unlocked, self.car_looked, self.car_oper, self.desk_opened, self.phone_used = (
+            False, False, False, False, False, False)
         self.look_dict = {
             "room": self.print_description_room,
             "car": self.print_description_car,
@@ -637,7 +644,7 @@ class MainPlaza(FunctionClass):
         }
 
     def __str__(self):
-        return f"""Inventory {self.inventory}\nExit unlocked {self.exit_unlocked}\nUpstairs unlocked {self.upstairs_unlocked}\nMap gotten {self.map_gotten}\nCar looked{self.car_looked}\nCar operated {self.car_oper}\nDesk opened {self.desk_opened}\nPhone used {self.phone_used}"""
+        return f"""Inventory {self.inventory}\nExit unlocked {self.exit_unlocked}\nUpstairs unlocked {self.upstairs_unlocked}\nCar looked{self.car_looked}\nCar operated {self.car_oper}\nDesk opened {self.desk_opened}\nPhone used {self.phone_used}"""
 
     # this prints a description along with a item list
     def print_description_room(self):
@@ -765,18 +772,6 @@ class MainPlaza(FunctionClass):
             self.car_oper = True
         else:
             print("No point in trying to start it again.")
-
-    # this pops off the items and returns it
-    def get_item(self, item):
-
-        if item in self.inventory:
-            if item == "map" and not self.map_gotten:
-                print("A map of the place! I should take a 'look'.")
-                self.map_gotten = True
-            location = self.inventory.index(item)
-            return self.inventory.pop(location)
-        else:
-            return None
 
 
 class SmallDen(FunctionClass):
