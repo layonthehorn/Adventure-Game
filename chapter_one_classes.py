@@ -88,7 +88,7 @@ class PlayerClass:
 
     def __init__(self):
 
-        self.inventory = ["self"]
+        self.inventory = ["self", "map"]
         self.started = True
         self.location = "bunker"
         self.player_score = 0
@@ -111,22 +111,6 @@ class PlayerClass:
             "shoe store": "SS",
             "bathroom": "RR",
         }
-        self.possible_locations = ("plaza",
-                                   "bunker",
-                                   "side room",
-                                   "small den",
-                                   "west wing",
-                                   "cemetery",
-                                   "toy shop",
-                                   "pet shop",
-                                   "exit",
-                                   "end",
-                                   "upstairs hallway",
-                                   "animal den",
-                                   "shoe store",
-                                   "bathroom",
-                                   "basement entry",
-                                   "basement generator room")
 
         self.item_dictionary = {
             "wrench": "Used for unstucking random things. Always handy with robots.",
@@ -325,10 +309,12 @@ class PlayerClass:
             print("Let me check my map.\n*Map crinkling sounds.*")
             time.sleep(1.5)
             rooms = []
+            p_local = "??"
             for room in self.places:
                 if self.map_dictionary.get(self.location,"") == room:
 
                     rooms.append("@@")
+                    p_local = room
                 else:
                     rooms.append(room)
             print(f"""
@@ -348,7 +334,7 @@ class PlayerClass:
                                                    |Cemetery: C         |
                                                    |Fallout Shelter: FS |
                                                    |Computer Room: CR   |
-                                                   |You: @@             |
+                                                   |You: @@ in room {p_local}  |
                                                    +--------------------+  
                    """)
         else:
