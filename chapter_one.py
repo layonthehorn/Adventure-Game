@@ -180,7 +180,7 @@ class ChapterOne:
 
                     # tells player it loaded the game
                     print("Loaded Game.")
-                    print(f"You are in the {self.player.get_location()} area.")
+                    print(f"You are in the {self.player.location} area.")
                     choosing = False
 
             # prints instructions
@@ -191,7 +191,7 @@ class ChapterOne:
         # used for general actions to run player actions in any room.
         # if the player is going to actually play builds rest of game
         if not end_game:
-            self.player_old_room = self.player.get_location()
+            self.player_old_room = self.player.location
             self.player_new_room = self.player_old_room
 
             # dictionary for saving game state
@@ -237,13 +237,13 @@ class ChapterOne:
         while self.playing and not end_game:
 
             # if the generator is working and the exit is locked it opens the exit.
-            if self.basement_gen_room.is_generator_working():
-                if not self.main_plaza.is_exit_unlocked():
-                    self.main_plaza.unlock_exit()
+            if self.basement_gen_room.generator_working:
+                if not self.main_plaza.exit_unlocked:
+                    self.main_plaza.exit_unlocked = True
 
             # if mane is brushed updates the safe and mirror bools
-            if self.player.is_mane_brushed():
-                if not self.side_room.is_safe_unlocked():
+            if self.player.mane_brushed:
+                if not self.side_room.safe_unlocked:
                     self.side_room.safe_unlocked = True
                     self.bathroom.mane_combed = True
 
@@ -260,7 +260,7 @@ class ChapterOne:
                 self.general_actions(player_choice)
 
             # gets the room the player is in
-            p_local = self.player.get_location()
+            p_local = self.player.location
             if p_local != self.end_name and p_local != self.exit_name:
 
                 # if the player is in the animal den it checks if it needs to run the
@@ -273,7 +273,7 @@ class ChapterOne:
                         self.player.increase_score()
 
                 # finds players new location to see if they changed rooms
-                self.player_new_room = self.player.get_location()
+                self.player_new_room = self.player.location
                 print("")
             elif p_local == self.end_name:
                 # ends game after player asks to
@@ -296,12 +296,12 @@ class ChapterOne:
     def general_actions(self, action):
         # finds player location
         # this makes all your actions dependent on the room you are in
-        loc_name = self.switcher_dictionary.get(self.player.get_location(), None)
+        loc_name = self.switcher_dictionary.get(self.player.location, None)
         # if you reach an unbuilt area or somehow retrieve the player class
         if loc_name is None:
             print("no matching location found, defaulting to bunker.")
             loc_name = self.starting_room
-            self.player.set_location(self.starting_room_name)
+            self.player.location = self.starting_room_name
 
         # splits the input on the first space
         general_list = action.split(" ", 1)
@@ -341,7 +341,7 @@ class ChapterOne:
                 print('Saved!')
                 self.save_game_state()
             input("Press enter to quit. Goodbye!")
-            self.player.set_location(self.end_name)
+            self.player.location = self.end_name
 
         # looking at things
         elif general_list[0] == "look":
@@ -361,7 +361,7 @@ class ChapterOne:
         elif general_list[0] == "get":
             self.stat_dictionary["get"] += 1
             try:
-                if general_list[1] in loc_name.get_inventory():
+                if general_list[1] in loc_name.inventory:
                     self.player.get_item(loc_name.get_item(general_list[1]))
                 else:
                     print(f"There isn't a(n) {general_list[1]} to get.")
@@ -374,7 +374,7 @@ class ChapterOne:
             try:
                 # if player tries to drop self print message.
                 if general_list[1] != 'self':
-                    if general_list[1] in self.player.get_inventory():
+                    if general_list[1] in self.player.inventory:
                         loc_name.give_item(self.player.drop_item(general_list[1]))
                     else:
                         print(f"I don't have a(n) {general_list[1]} to drop.")
@@ -473,7 +473,7 @@ class ChapterOne:
             print("What would help with getting down long falls?")
         elif not self.basement_entryway.door_unlocked:
             print("There's a code somewhere, or you could try and fry the lock.")
-        elif len(self.basement_gen_room.get_gen_inventory()) < 4:
+        elif len(self.basement_gen_room.generator_inventory) < 4:
             print("You need to get four fuses to fix the generator")
             print("Check around the other places you have been before.")
         elif self.main_plaza.exit_unlocked:
@@ -482,7 +482,7 @@ class ChapterOne:
             print("Keep playing for more hints.")
 
     def print_outro(self):
-        if "toy lion tail" in self.player.get_inventory():
+        if "toy lion tail" in self.player.inventory:
             print("""
 Vern escapes the mall and reunites with Johnson and Katie. After a debriefing between them 
 and giving Katie the toy lion tail, they continued onwards to Harrisburg. 
