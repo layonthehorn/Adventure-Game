@@ -88,7 +88,7 @@ class PlayerClass:
 
     def __init__(self):
 
-        self.inventory = ["self", "map"]
+        self.inventory = ["self"]
         self.started = True
         self.location = "bunker"
         self.player_score = 0
@@ -313,9 +313,12 @@ class PlayerClass:
             for room in self.places:
                 if self.map_dictionary.get(self.location,"") == room:
 
+                    # if the player is on the map it changes that room to the player symbol
                     rooms.append("@@")
+                    # then puts the room symbol in the legend
                     p_local = room
                 else:
+                    # other wise just puts rooms there normally
                     rooms.append(room)
             print(f"""
               ---------MAP----------
