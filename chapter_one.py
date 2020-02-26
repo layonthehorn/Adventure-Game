@@ -297,26 +297,32 @@ class ChapterOne:
         # splits the input on the first space
         general_list = action.split(" ", 1)
         # prints inventory
-        if action == "inv":
+        if general_list[0] == "inv":
             self.stat_dictionary["inventory"] += 1
             self.player.check_inventory()
-        elif action == "stat":
+        elif general_list[0] == "stat":
             self.stat_dictionary["stat"] += 1
             self.print_stats()
-        elif action == "hint":
+        elif general_list[0] == "hint":
             self.stat_dictionary["hint"] += 1
             self.hint_system()
         # prints help page
-        elif action == "help":
+        elif general_list[0] == "help":
             self.stat_dictionary["help"] += 1
             print_help()
+
+        # for debugging only
+        elif action =="debug player":
+            print(self.player)
+        elif action == "debug room":
+            print(loc_name)
         # saves the game
-        elif action == "save":
+        elif general_list[0] == "save":
             self.stat_dictionary["save"] += 1
             print("Game has been saved!")
             self.save_game_state()
         # prints score
-        elif action == "score":
+        elif general_list[0] == "score":
             self.stat_dictionary["score"] += 1
             self.player.print_score()
         # in case input is blank
@@ -324,7 +330,7 @@ class ChapterOne:
             self.stat_dictionary[""] += 1
             print("Vern taps his foot on the ground. \n'I get so sick of waiting for something to happen.'")
         # ends game and asks to save
-        elif action == "end":
+        elif general_list[0] == "end":
             self.stat_dictionary["end"] += 1
             save = input("Save game? ").lower()
             if save == 'y':

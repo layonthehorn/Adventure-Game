@@ -138,7 +138,7 @@ class PlayerClass:
             "green fuse": "It's a green fuse. Much larger than the one from the bunker.",
             # in cemetery
             "gold fuse": "It's a gold fuse. Much larger than the one from the bunker.",
-            # in ?
+            # in main plaza
             "blue fuse": "It's a blue fuse. Much larger than the one from the bunker.",
             "fish": "A very tasty if small fish. Should you?.. Eat it?",
             "bones": "Bones are all that's left of the little fish you ate. How could you?",
@@ -299,7 +299,7 @@ class PlayerClass:
 
         # No matching items found
         else:
-            print("I don't have all I need")
+            print("I don't have all I need.")
             return False
 
     # looking at map
@@ -318,6 +318,9 @@ class PlayerClass:
             print("This meat smells awful...")
         if self.mane_brushed:
             print("At least I'm cleaned up now.")
+
+    def __str__(self):
+        return f"""Inventory {self.inventory}\nLocation {self.location}\nScore {self.player_score}\nMane brushed {self.mane_brushed}\nFish counter {self.fish_counter}"""
 
 
 # Bunker Areas
@@ -345,6 +348,9 @@ class Bunker(FunctionClass):
             "robot": self.fix_robot,
             "fuse box": self.fix_fuse_box
         }
+
+    def __str__(self):
+        return f"""Inventory {self.inventory}\nFuse fixed {self.fuse_box}\nRobot fixed {self.robot_fixed}\nDoor opened {self.door_opened}"""
 
     # this prints a description along with a item list
     def print_description_room(self):
@@ -461,6 +467,9 @@ class ComputerRoom(FunctionClass):
         }
 
         self.use_dict = {}
+
+    def __str__(self):
+        return f"""Inventory {self.inventory}\nLight switch {self.light_switch}\nSafe ready to open {self.safe_opened}\nSafe unlocked {self.safe_unlocked}"""
 
     # this prints a description along with a item list
     def print_description_room(self):
@@ -596,6 +605,9 @@ class MainPlaza(FunctionClass):
             "gate": self.unlock_gate,
             "pay phone": self.use_phone
         }
+
+    def __str__(self):
+        return f"""Inventory {self.inventory}\nExit unlocked {self.exit_unlocked}\nUpstairs unlocked {self.upstairs_unlocked}\nMap gotten {self.map_gotten}\nCar looked{self.car_looked}\nCar operated {self.car_oper}\nDesk opened {self.desk_opened}\nPhone used {self.phone_used}"""
 
     # this prints a description along with a item list
     def print_description_room(self):
@@ -765,6 +777,9 @@ class SmallDen(FunctionClass):
                          "animal": self.animal_cutting
                          }
 
+    def __str__(self):
+        return f"""Inventory {self.inventory}\nWorkbench inventory {self.workbench_inventory}\nAnimal cut {self.animal_cut}\nBarn looked {self.barn_looked}\nHave parts {self.have_parts}\nTool fixed {self.tool_repaired}"""
+
     # this prints a description along with a item list
     def print_description_room(self):
         print(
@@ -889,6 +904,9 @@ class WestWing(FunctionClass):
         self.use_dict = {"kiosk": self.unlock_pet_shop
                          }
 
+    def __str__(self):
+        return f"""Inventory {self.inventory}\nPet shop unlocked {self.pet_shop_unlocked}\nVending looked {self.vend_looked}"""
+
     # this prints a description along with a item list
     def print_description_room(self):
         print("To the west of the plaza sits the west wing. While it is quite dilapidated, it appears someone has "
@@ -984,6 +1002,9 @@ class PetShop(FunctionClass):
             "leash machine": self.lengthen_rope
         }
 
+    def __str__(self):
+        return f"""Inventory {self.inventory}\nFish looked {self.fish_looked}\nRope fixed {self.rope_fixed}\nFridge checked {self.fridge_checked}"""
+
     # this prints a description along with a item list
     def print_description_room(self):
         print("It’s an old pet shop. Humans would go here with their pets to buy care products for whatever animal "
@@ -1076,6 +1097,9 @@ class ToyShop(FunctionClass):
             "locker": self.open_locker,
             "crane": self.fix_crane
         }
+
+    def __str__(self):
+        return f"""Inventory {self.inventory}\nCrane fixed {self.crane_fixed}\nCrane won {self.crane_won}\nShelves looked {self.shelves_looked}\nLocker opened {self.locker_opened}"""
 
     # this prints a description along with a item list
     def print_description_room(self):
@@ -1191,6 +1215,9 @@ class Cemetery(FunctionClass):
             "graves": self.dig_grave
         }
 
+    def __str__(self):
+        return f"""Inventory {self.inventory}\nFirst entered {self.first_entered}\nFound rope {self.found_rope}\nDug graves {self.grave_dug_up}"""
+
     # this prints a description along with a item list
     def print_description_room(self):
         print("You stumble into a makeshift cemetery. The atmosphere of the room makes you uneasy. At some point it "
@@ -1264,6 +1291,9 @@ class UpstairsHallway(FunctionClass):
             "book": self.read_book}
 
         self.use_dict = {}
+
+    def __str__(self):
+        return f"""Inventory {self.inventory}\nBook looked {self.book_looked}\nFurniture looked {self.furniture_looked}"""
 
     # this prints a description along with a item list
     def print_description_room(self):
@@ -1384,6 +1414,9 @@ class AnimalDen(FunctionClass):
 
         self.use_dict = {}
 
+    def __str__(self):
+        return f"""Inventory {self.inventory}\nAnimal drugged {self.animal_drugged}\nEntered after drugged {self.entered_after_drugged}\nFound fur {self.found_fur}\nMeat just taken {self.meat_just_taken}\nHole tried {self.hole_tried}"""
+
     # this prints a description along with a item list
     def print_description_room(self):
         print("Once an old utility cabinet, it has now been claimed by some kind of animal. Judging by the sounds "
@@ -1480,6 +1513,9 @@ class Bathroom(FunctionClass):
 
         self.use_dict = {}
 
+    def __str__(self):
+        return f"""Inventory {self.inventory}\nDryer looked {self.looked_dryer}\nCabinet looked {self.cabinet_looked}\nMane combed {self.mane_combed}"""
+
     # this prints a description along with a item list
     def print_description_room(self):
         print("It’s an old restroom. You can probably guess what "
@@ -1560,6 +1596,9 @@ class ShoeStore(FunctionClass):
         self.use_dict = {
             "elevator": self.fix_elevator
         }
+
+    def __str__(self):
+        return f"""Inventory {self.inventory}\n First entered {self.first_entered}\nElevator opened {self.elevator_opened}\nElevator roped {self.elevator_roped}\nWeak roped {self.weak_roped}"""
 
     # this prints a description along with a item list
     def print_description_room(self):
@@ -1695,6 +1734,9 @@ class BasementEntry(FunctionClass):
             "pad": self.entering_code
         }
 
+    def __str__(self):
+        return f"""Inventory {self.inventory}\nDoor unlocked {self.door_unlocked}\n Soda used {self.soda_used}"""
+
     # this prints a description along with a item list
     def print_description_room(self):
         print("It's a dark basement lit only by emergency lights. There is a door with a electronic 'pad' lock across "
@@ -1804,6 +1846,9 @@ class BasementGenRoom(FunctionClass):
         self.use_dict = {
             "generator": self.add_item_generator
         }
+
+    def __str__(self):
+        return f"""Inventory {self.inventory}\nGenerator Inventory {self.generator_inventory}\nGenerator working {self.generator_working}\nFuses fixed {self.fuses_fixed}"""
 
     # this prints a description along with a item list
     def print_description_room(self):
