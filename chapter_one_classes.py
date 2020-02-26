@@ -1,6 +1,7 @@
 import time
 
-#test
+
+# test
 # function class for inheritance.
 class FunctionClass:
     """Never to be called. Only used for giving all other classes the same methods."""
@@ -93,6 +94,23 @@ class PlayerClass:
         self.player_score = 0
         self.mane_brushed = False
         self.fish_counter = 0
+        mp, up, pet, shoe, rest, ani, den, west, toy, cem, fall, com = (
+            "MP", "UH", 'PS', 'SS', 'RR', 'AD', 'SD', 'WW', 'TS', 'C ', 'FS', 'CR')
+        self.places = [mp, up, pet, shoe, rest, ani, den, west, toy, cem, fall, com]
+        self.map_dictionary = {
+            "plaza": "MP",
+            "bunker": "FS",
+            "side room": "CR",
+            "small den": "SD",
+            "west wing": "WW",
+            "cemetery": "C ",
+            "toy shop": "TS",
+            "pet shop": "PS",
+            "upstairs hallway": "UH",
+            "animal den": "AD",
+            "shoe store": "SS",
+            "bathroom": "RR",
+        }
         self.possible_locations = ("plaza",
                                    "bunker",
                                    "side room",
@@ -110,26 +128,6 @@ class PlayerClass:
                                    "basement entry",
                                    "basement generator room")
 
-        self.map_of_building = """
-          ---------MAP----------
-                                               +--------------------+
-                   SS                          |Legend:             |
-                   ||                          |                    |
-               AD--UP--RR                      |Main Plaza: MP      |
-            C   SD ||                          |Upper Hall: UH      |
-            ||   \\\\||                          |Pet Shop: PS        |
-        PS--WW-----MP----EXIT                  |Shoe Store: SS      |
-            ||     ||                          |Restroom: RR        |
-            TS     FS--CR                      |Animal Den: AD      |
-                                               |Small Den: SD       |
-                                               |West wing: WW       |
-                                               |Toy Shop: TS        |
-                                               |Cemetery: C         |
-                                               |Fallout Shelter: FS |
-                                               |Computer Room: CR   |
-                                               |                    |
-                                               +--------------------+  
-               """
         self.item_dictionary = {
             "wrench": "Used for unstucking random things. Always handy with robots.",
             "fuse": "Lots of old world tech uses this to keep power flowing.",
@@ -184,11 +182,9 @@ class PlayerClass:
         # prevents printing the message when you start the game.
         if self.started:
             self.started = False
-        elif location in self.possible_locations:
-            print(f"You have gone to the {location}.")
-            self.__location = location
         else:
-            print("Error. Not an accepted location.")
+            print(f"You have gone to the {location}.")
+        self.__location = location
 
     # prints your score
     def print_score(self):
@@ -328,7 +324,33 @@ class PlayerClass:
         if "map" in self.inventory:
             print("Let me check my map.\n*Map crinkling sounds.*")
             time.sleep(1.5)
-            print(self.map_of_building)
+            rooms = []
+            for room in self.places:
+                if self.map_dictionary.get(self.location,"") == room:
+
+                    rooms.append("@@")
+                else:
+                    rooms.append(room)
+            print(f"""
+              ---------MAP----------
+                                                   +--------------------+
+                       {rooms[3]}                          |Legend:             |
+                       ||                          |                    |
+                   {rooms[5]}--{rooms[1]}--{rooms[4]}                      |Main Plaza: MP      |
+                {rooms[9]}  {rooms[6]} ||                          |Upper Hall: UH      |
+                ||   \\\\||                          |Pet Shop: PS        |
+            {rooms[2]}--{rooms[7]}-----{rooms[0]}----EXIT                  |Shoe Store: SS      |
+                ||     ||                          |Restroom: RR        |
+                {rooms[8]}     {rooms[10]}--{rooms[11]}                      |Animal Den: AD      |
+                                                   |Small Den: SD       |
+                                                   |West wing: WW       |
+                                                   |Toy Shop: TS        |
+                                                   |Cemetery: C         |
+                                                   |Fallout Shelter: FS |
+                                                   |Computer Room: CR   |
+                                                   |You: @@             |
+                                                   +--------------------+  
+                   """)
         else:
             print("I don't have one.")
 
@@ -598,7 +620,7 @@ class MainPlaza(FunctionClass):
     def __init__(self):
         self.inventory = ["map"]
         self.exit_unlocked, self.upstairs_unlocked, self.map_gotten, self.car_looked, self.car_oper, self.desk_opened, self.phone_used = (
-        False, False, False, False, False, False, False)
+            False, False, False, False, False, False, False)
         self.look_dict = {
             "room": self.print_description_room,
             "car": self.print_description_car,
@@ -1417,7 +1439,7 @@ class AnimalDen(FunctionClass):
         self.inventory = []
 
         self.animal_drugged, self.entered_after_drugged, self.found_fur, self.meat_just_taken, self.hole_tried = (
-        False, False, False, False, False)
+            False, False, False, False, False)
 
         self.look_dict = {
             "room": self.print_description_room,
