@@ -3,7 +3,7 @@ import re
 
 from chapter_one_classes import PlayerClass, Bunker, ComputerRoom, MainPlaza, SmallDen, WestWing, ToyShop, PetShop, Cemetery, UpstairsHallway, AnimalDen, Bathroom, ShoeStore, BasementEntry, BasementGenRoom
 
-# testing.
+
 # loading saved game
 def load_game_state(file_name):
     try:
@@ -191,8 +191,6 @@ class ChapterOne:
         # used for general actions to run player actions in any room.
         # if the player is going to actually play builds rest of game
         if not end_game:
-            self.player_old_room = self.player.location
-            self.player_new_room = self.player_old_room
 
             # dictionary for saving game state
             self.save_dictionary = {
@@ -247,11 +245,6 @@ class ChapterOne:
                     self.side_room.safe_unlocked = True
                     self.bathroom.mane_combed = True
 
-            # if they reached a new room announce it
-            if self.player_old_room != self.player_new_room:
-                print(f"You have gone to the {self.player_new_room}.")
-                self.player_old_room = self.player_new_room
-
             # if you reach the exit then don't ask for actions from player
             if self.player.location != self.exit_name:
                 print("Verbs look, inv(entory), get, oper(ate), com(bine), drop, score, use, go, save, end, help, stat")
@@ -272,8 +265,6 @@ class ChapterOne:
                     elif result == "drugged":
                         self.player.increase_score()
 
-                # finds players new location to see if they changed rooms
-                self.player_new_room = self.player.location
                 print("")
             elif p_local == self.end_name:
                 # ends game after player asks to

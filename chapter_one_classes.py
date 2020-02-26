@@ -88,6 +88,7 @@ class PlayerClass:
     def __init__(self):
 
         self.inventory = ["self"]
+        self.started = True
         self.location = "bunker"
         self.player_score = 0
         self.mane_brushed = False
@@ -154,6 +155,19 @@ class PlayerClass:
             "coin": "Useful for just about nothing now that the human world has fallen.",
             "screw driver": "Useful for taking things apart and also breaking them open."
         }
+
+    @property
+    def location(self):
+        return self.__location
+
+    @location.setter
+    def location(self, location):
+        # prevents printing the message when you start the game.
+        if self.started:
+            self.started = False
+        else:
+            print(f"You have gone to the {location}.")
+        self.__location = location
 
     # prints your score
     def print_score(self):
