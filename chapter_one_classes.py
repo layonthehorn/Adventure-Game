@@ -1,6 +1,6 @@
 import time
 
-
+#test
 # function class for inheritance.
 class FunctionClass:
     """Never to be called. Only used for giving all other classes the same methods."""
