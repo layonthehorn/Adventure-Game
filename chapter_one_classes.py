@@ -93,6 +93,22 @@ class PlayerClass:
         self.player_score = 0
         self.mane_brushed = False
         self.fish_counter = 0
+        self.possible_locations = ("plaza",
+                                   "bunker",
+                                   "side room",
+                                   "small den",
+                                   "west wing",
+                                   "cemetery",
+                                   "toy shop",
+                                   "pet shop",
+                                   "exit",
+                                   "end",
+                                   "upstairs hallway",
+                                   "animal den",
+                                   "shoe store",
+                                   "bathroom",
+                                   "basement entry",
+                                   "basement generator room")
 
         self.map_of_building = """
           ---------MAP----------
@@ -156,6 +172,9 @@ class PlayerClass:
             "screw driver": "Useful for taking things apart and also breaking them open."
         }
 
+    def __str__(self):
+        return f"""Inventory {self.inventory}\nLocation {self.location}\nScore {self.player_score}\nMane brushed {self.mane_brushed}\nFish counter {self.fish_counter}"""
+
     @property
     def location(self):
         return self.__location
@@ -165,9 +184,11 @@ class PlayerClass:
         # prevents printing the message when you start the game.
         if self.started:
             self.started = False
-        else:
+        elif location in self.possible_locations:
             print(f"You have gone to the {location}.")
-        self.__location = location
+            self.__location = location
+        else:
+            print("Error. Not an accepted location.")
 
     # prints your score
     def print_score(self):
@@ -318,9 +339,6 @@ class PlayerClass:
             print("This meat smells awful...")
         if self.mane_brushed:
             print("At least I'm cleaned up now.")
-
-    def __str__(self):
-        return f"""Inventory {self.inventory}\nLocation {self.location}\nScore {self.player_score}\nMane brushed {self.mane_brushed}\nFish counter {self.fish_counter}"""
 
 
 # Bunker Areas
@@ -579,7 +597,8 @@ class MainPlaza(FunctionClass):
 
     def __init__(self):
         self.inventory = ["map"]
-        self.exit_unlocked, self.upstairs_unlocked, self.map_gotten, self.car_looked, self.car_oper, self.desk_opened, self.phone_used = (False, False, False, False, False, False, False)
+        self.exit_unlocked, self.upstairs_unlocked, self.map_gotten, self.car_looked, self.car_oper, self.desk_opened, self.phone_used = (
+        False, False, False, False, False, False, False)
         self.look_dict = {
             "room": self.print_description_room,
             "car": self.print_description_car,
@@ -1397,7 +1416,8 @@ class AnimalDen(FunctionClass):
     def __init__(self):
         self.inventory = []
 
-        self.animal_drugged, self.entered_after_drugged, self.found_fur, self.meat_just_taken, self.hole_tried = (False, False, False, False, False)
+        self.animal_drugged, self.entered_after_drugged, self.found_fur, self.meat_just_taken, self.hole_tried = (
+        False, False, False, False, False)
 
         self.look_dict = {
             "room": self.print_description_room,
