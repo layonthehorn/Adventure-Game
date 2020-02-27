@@ -1,130 +1,56 @@
+from chapter_one_classes import FunctionClass
 import time
 
 
-class FunctionClass:
-    """Never to be called. Only used for giving all other classes the same methods."""
-
-    # allows getting a print function form the look dictionary.
-    def get_look_commands(self, look_at):
-        # you have to enter at least three letters
-        if len(look_at) >= 3:
-            if len(self.look_dict) < 1:
-                print(f"I can't look at {look_at}.")
-            else:
-                for key in self.look_dict:
-                    if look_at in key:
-                        look_command = self.look_dict.get(key)
-                        look_command()
-                        break
-                else:
-                    print(f"I can't look at {look_at}.")
-
-        else:
-            print(f"I can't go to {look_at}.")
-
-    # allows getting operate commands
-    def get_oper_commands(self, operate):
-        # you have to enter at least three letters
-        if len(operate) >= 3:
-            if len(self.oper_dict) < 1:
-                print(f"I can't operate the {operate}.")
-            else:
-                for key in self.oper_dict:
-                    if operate in key:
-                        oper_command = self.oper_dict.get(key)
-                        oper_command()
-                        break
-                else:
-                    print(f"I can't operate the {operate}.")
-        else:
-            print(f"I can't operate the {operate}.")
-
-    # allows getting go commands
-    def get_go_commands(self, player_object, go):
-        # you have to enter at least three letters
-        if len(go) >= 2:
-            if len(self.go_dict) < 1:
-                print(f"I can't go to {go}.")
-            else:
-                for key in self.go_dict:
-                    if go in key:
-                        go_command = self.go_dict.get(key)
-                        go_command(player_object)
-                        break
-                else:
-                    print(f"I can't go to {go}.")
-        else:
-            print(f"I can't go to {go}.")
-
-    # allows using item on objects
-    def get_use_commands(self, player_object, use_list):
-        item = use_list[0]
-        room_object = use_list[1]
-        # you have to enter at least three letters
-        if len(room_object) >= 3:
-            if len(self.use_dict) < 1:
-                print(f"I can't find the {room_object}.")
-            for key in self.use_dict:
-                if room_object in key:
-                    use_command = self.use_dict.get(key)
-                    if use_command(item):
-                        player_object.use_item(item)
-                        player_object.increase_score()
-                    break
-            else:
-                print(f"I can't find the {room_object}.")
-        else:
-            print(f"What is a(n) {room_object}.")
-
-    # returns the items in the room.
-    def get_inventory(self):
-        return self.inventory
-
-    # returns item to room
-    def get_item(self, item):
-        location = self.inventory.index(item)
-        return self.inventory.pop(location)
-
-    # dropping item back into room
-    def give_item(self, item):
-        if item not in self.inventory:
-            self.inventory.append(item)
-
-
+# Player Class
 class PlayerClass:
     """This is the main player class. It holds the player inventory and score among other things."""
-    def __init__(self, player_inventory=None, player_start="example", score=0, player_misc=(False, 0)):
 
-        if player_inventory is None:
-            player_inventory = ["self"]
+    def __init__(self):
 
-        self.inventory = player_inventory
-        self.location = player_start
-        self.player_score = score
-        self.bool_one, self.misc_counter = player_misc
+        self.inventory = ["self"]
+        self.started = True
+        self.location = "bunker"
+        self.player_score = 0
+        #
+        # mp, up, pet, shoe, rest, ani, den, west, toy, cem, fall, com = (
+        #     "MP", "UH", 'PS', 'SS', 'RR', 'AD', 'SD', 'WW', 'TS', 'C ', 'FS', 'CR')
+        self.places = []
+        self.map_dictionary = {
+            "plaza": "MP",
+            "bunker": "FS",
+            "side room": "CR",
+            "small den": "SD",
+            "west wing": "WW",
+            "cemetery": "C ",
+            "toy shop": "TS",
+            "pet shop": "PS",
+            "upstairs hallway": "UH",
+            "animal den": "AD",
+            "shoe store": "SS",
+            "bathroom": "RR",
+        }
 
-        self.map_of_building = """
-
-               """
         self.item_dictionary = {
-            "temp": "Used for holding a place for real items.",
+            "temp": "Temporary item...",
 
         }
 
-    # returns his location
-    def get_location(self):
-        return self.location
+    def __str__(self):
+        return f"""Inventory {self.inventory}\nLocation {self.location}\nScore {self.player_score}"""
 
-    # returns a list of his inventory
-    def get_inventory(self):
-        return self.inventory
+    @property
+    def location(self):
+        return self.__location
 
-    def get_misc(self):
-        return self.bool_one, self.misc_counter
-
-    # returns the players score for saving
-    def get_score(self):
-        return self.player_score
+    @location.setter
+    def location(self, location):
+        # prevents printing the message when you start the game.
+        if self.started:
+            self.started = False
+        else:
+            print(f"You have gone to the {location}.")
+        self.__location = location
 
     # prints your score
     def print_score(self):
@@ -155,21 +81,18 @@ class PlayerClass:
 
         if item in self.inventory:
             print("I don't need more of these.")
-        else:
+        # if item is not false or none
+        elif item:
             self.inventory.append(item)
             print("I picked up the ", item)
 
-    # returns if your mane has been brushed
-    def is_mane_brushed(self):
-        return self.bool_one
-
-    # allows changing his location
-    def set_location(self, room):
-        self.location = room
-
     # getting item out of inventory
     def drop_item(self, item):
-        if item in self.inventory:
+        # prevents dropping the map.
+        if item in self.inventory and item == "map":
+            print("I might need it, I'm not going to drop it.")
+        # otherwise if the item is in your inventory allows you to drop it
+        elif item in self.inventory:
             location = self.inventory.index(item)
             print("I dropped the ", item)
             return self.inventory.pop(location)
@@ -192,13 +115,12 @@ class PlayerClass:
             item_list = (item_1, item_2)
 
             # item crafting results
-            if "meat" in item_list and "drugs" in item_list:
+            if "" in item_list and "" in item_list:
                 self.inventory.remove(item_1)
                 self.inventory.remove(item_2)
-                self.inventory.append("drugged meat")
-                print("I made drugged meat. Still nasty after that.")
+                self.inventory.append("")
+                print("Replace me!")
                 return True
-
             # no matches found
             else:
                 print(f"I can't combine {item_1} and {item_2}.")
@@ -206,7 +128,7 @@ class PlayerClass:
 
         # No matching items found
         else:
-            print("I don't have all I need")
+            print("I don't have all I need.")
             return False
 
     # looking at map
@@ -214,7 +136,39 @@ class PlayerClass:
         if "map" in self.inventory:
             print("Let me check my map.\n*Map crinkling sounds.*")
             time.sleep(1.5)
-            print(self.map_of_building)
+            rooms = []
+            p_local = "??"
+            for room in self.places:
+                if self.map_dictionary.get(self.location,"") == room:
+
+                    # if the player is on the map it changes that room to the player symbol
+                    rooms.append("@@")
+                    # then puts the room symbol in the legend
+                    p_local = room
+                else:
+                    # other wise just puts rooms there normally
+                    rooms.append(room)
+            print("Map not made yet.")
+            # print(f"""
+            #   ---------MAP----------
+            #                                        +--------------------+
+            #            {rooms[3]}                          |Legend:             |
+            #            ||                          |                    |
+            #        {rooms[5]}--{rooms[1]}--{rooms[4]}                      |Main Plaza: MP      |
+            #     {rooms[9]}  {rooms[6]} ||                          |Upper Hall: UH      |
+            #     ||   \\\\||                          |Pet Shop: PS        |
+            # {rooms[2]}--{rooms[7]}-----{rooms[0]}----EXIT                  |Shoe Store: SS      |
+            #     ||     ||                          |Restroom: RR        |
+            #     {rooms[8]}     {rooms[10]}--{rooms[11]}                      |Animal Den: AD      |
+            #                                        |Small Den: SD       |
+            #                                        |West wing: WW       |
+            #                                        |Toy Shop: TS        |
+            #                                        |Cemetery: C         |
+            #                                        |Fallout Shelter: FS |
+            #                                        |Computer Room: CR   |
+            #                                        |You: @@ in room {p_local}  |
+            #                                        +--------------------+
+            #        """)
         else:
             print("I don't have one.")
 
@@ -231,27 +185,12 @@ class ExampleRoom(FunctionClass):
         self.inventory = items_contained
         self.bool_one, self.bool_two, self.bool_three = bool_list
 
-        self.look_dict = {
-            "room": self.print_description_room,
-            "fuse box": self.print_description_box,
-            "exit door": self.print_description_door
-                         }
+        self.look_dict = {}
 
-        self.go_dict = {
-            "outside": self.go_outside,
-            "side room": self.go_sideroom
-        }
-        self.oper_dict = {
-            "door": self.operate_door,
-            "fuse box": self.operate_fuse_box
-                        }
+        self.go_dict = {}
+        self.oper_dict = {}
 
-        self.use_dict = {
-            "fuse box": self.testing_using_items
-        }
-
-    def get_bools(self):
-        return self.bool_one, self.bool_two, self.bool_three
+        self.use_dict = {}
 
     # this prints a description along with a item list
     def print_description_room(self):
@@ -295,9 +234,10 @@ class ExampleRoom(FunctionClass):
             print("Already used.")
             return False
 
-    def go_outside(self, player_object):
+    @staticmethod
+    def go_outside(player_object):
         print("going outside")
-        player_object.set_location("")
+        player_object.location = ""
 
     def go_sideroom(self, player_object):
         print("going sideroom")
