@@ -168,6 +168,13 @@ class PlayerClass:
         # prevents printing the message when you start the game.
         if self.started:
             self.started = False
+        # makes sure that you do not enter a bad location.
+        elif location not in ("plaza", "bunker",
+                              "side room", "small den", "west wing", "cemetery", "toy shop",
+                              "pet shop", "exit", "end", "upstairs hallway", "animal den",
+                              "shoe store", "bathroom", "basement entry", "basement generator room"):
+            print("Could not find matching location. Moving to bunker.")
+            location = "bunker"
         else:
             print(f"You have gone to the {location}.")
         self.__location = location
@@ -318,7 +325,7 @@ class PlayerClass:
             rooms = []
             p_local = "??"
             for room in self.places:
-                if self.map_dictionary.get(self.location,"") == room:
+                if self.map_dictionary.get(self.location, "") == room:
 
                     # if the player is on the map it changes that room to the player symbol
                     rooms.append("@@")

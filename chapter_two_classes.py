@@ -48,6 +48,9 @@ class PlayerClass:
         # prevents printing the message when you start the game.
         if self.started:
             self.started = False
+        elif location not in ():
+            print("Could not find matching location. Moving to None.")
+            location = None
         else:
             print(f"You have gone to the {location}.")
         self.__location = location

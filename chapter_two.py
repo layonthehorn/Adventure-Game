@@ -168,12 +168,7 @@ class ChapterOne:
     def general_actions(self, action):
         # finds player location
         # this makes all your actions dependent on the room you are in
-        loc_name = self.switcher_dictionary.get(self.player.location, None)
-        # if you reach an unbuilt area or somehow retrieve the player class
-        if loc_name is None:
-            print("no matching location found, defaulting to bunker.")
-            loc_name = None
-            self.player.location = None
+        loc_name = self.switcher_dictionary.get(self.player.location)
 
         # splits the input on the first space
         general_list = action.split(" ", 1)
