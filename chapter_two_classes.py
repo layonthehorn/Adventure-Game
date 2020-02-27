@@ -50,6 +50,7 @@ class PlayerClass:
             self.started = False
         elif location not in ():
             print("Could not find matching location. Moving to None.")
+            print(f"Could not fine {location}... Possible missing spelling in code?")
             location = None
         else:
             print(f"You have gone to the {location}.")

@@ -173,6 +173,7 @@ class PlayerClass:
                               "side room", "small den", "west wing", "cemetery", "toy shop",
                               "pet shop", "exit", "end", "upstairs hallway", "animal den",
                               "shoe store", "bathroom", "basement entry", "basement generator room"):
+            print(f"Could not fine {location}... Possible missing spelling in code?")
             print("Could not find matching location. Moving to bunker.")
             location = "bunker"
         else:
