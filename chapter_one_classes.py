@@ -573,17 +573,6 @@ class ComputerRoom(FunctionClass):
             print("It's too dark to see.")
             return False
 
-    # dropping item in room
-    def drop_item(self, item):
-        if not self.light_switch:
-            print("It's too dark to see.")
-        elif item in self.player_object.inventory:
-            print(f"I dropped the {item}.")
-            self.inventory.append(item)
-            self.player_object.inventory.remove(item)
-        else:
-            print(f"I don't have a(n) {item} to drop.")
-
     # gives item to player
     def get_item(self, item):
         if not self.light_switch:
