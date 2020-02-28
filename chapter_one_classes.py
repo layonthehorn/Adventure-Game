@@ -59,7 +59,6 @@ class FunctionClass:
                 if room_object in key:
                     use_command = self.use_dict.get(key)
                     use_command(item)
-
                     break
             else:
                 print(f"I can't find the {room_object}.")
@@ -475,6 +474,7 @@ class Bunker(FunctionClass):
             print("The door is already opened.")
         elif self.fuse_box and not self.door_opened:
             print("The door has opened! Now I can go outside!")
+            self.player_object.increase_score()
             self.door_opened = True
 
 
@@ -557,21 +557,18 @@ class ComputerRoom(FunctionClass):
                     print("I SUPPOSE YOU ARE CLEAN ENOUGH... FINE I'LL OPEN.\n")
                     print("Piece of junk... About damn time.")
                     self.inventory.append("green fuse")
+                    self.player_object.increase_score()
                     self.safe_opened = True
-                    return True
                 else:
                     print("The safe buzzes and a voice barks out.")
                     print("HEY, A SCRUFFY THING LIKE YOU CAN'T OPEN ME.\n")
                     print("What The fuck?\n")
                     print("YES, YOU. CLEAN YOURSELF UP IF YOU WANT ME TO OPEN.\n")
                     print("Great a talking safe. Always happy to find new pains in my tail.")
-                    return False
             else:
                 print("It's already opened and I would prefer never to deal with it again.")
-                return False
         else:
             print("It's too dark to see.")
-            return False
 
     # gives item to player
     def get_item(self, item):
@@ -592,6 +589,7 @@ class ComputerRoom(FunctionClass):
         if not self.light_switch:
             print("The light is on now!")
             self.light_switch = True
+            self.player_object.increase_score()
         else:
             print("The switch is already on.")
 
@@ -886,6 +884,7 @@ class SmallDen(FunctionClass):
                 print("You fixed the board!")
                 self.inventory.append("circuit board")
                 self.tool_repaired = True
+                self.player_object.increase_score()
             else:
                 print("I still need more parts.")
         else:
@@ -1209,6 +1208,7 @@ class ToyShop(FunctionClass):
                 print("The keys dropped into the pail in the front.")
                 self.inventory.append("keys")
                 self.crane_won = True
+                self.player_object.increase_score()
             else:
                 print("You tried to get the keys out but the claw let them slip away.")
         else:
@@ -1670,6 +1670,7 @@ class ShoeStore(FunctionClass):
         if not self.elevator_opened:
             print("I got the doors opened now.")
             self.elevator_opened = True
+            self.player_object.increase_score()
         else:
             print("The doors are already opened.")
 
@@ -1817,6 +1818,7 @@ class BasementEntry(FunctionClass):
 
                 if password == "404167":
                     print("That Password is accepted. The door is open now!")
+                    self.player_object.increase_score()
                     self.door_unlocked = True
                 else:
                     print("That was not accepted... I wonder what the code is?")
@@ -1920,6 +1922,7 @@ class BasementGenRoom(FunctionClass):
         if not self.generator_working and len(self.generator_inventory) == 4:
             print("You flip the massive switch and the generator roars to life!")
             self.generator_working = True
+            self.player_object.increase_score()
         elif not self.generator_working and len(self.generator_inventory) < 4:
             remainder = 4 - len(self.generator_inventory)
             print(f"It's missing {remainder} fuses still. You'll have to find them somewhere first.")
