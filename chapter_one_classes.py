@@ -36,17 +36,13 @@ class FunctionClass:
             print(f"I can't operate the {operate}.")
 
     # allows getting go commands
-    def get_go_commands(self, player_object, go):
+    def get_go_commands(self, go):
         # you have to enter at least three letters
         if len(go) >= 2:
             for key in self.go_dict:
                 if go in key:
                     go_command = self.go_dict.get(key)
-                    try:
-                        go_command(player_object)
-                    except TypeError:
-                        # for the one go command that does not have a player object to be used.
-                        go_command()
+                    go_command()
                     break
             else:
                 print(f"I can't go to {go}.")
@@ -54,7 +50,7 @@ class FunctionClass:
             print(f"I can't go to {go}.")
 
     # allows using item on objects
-    def get_use_commands(self, player_object, use_list):
+    def get_use_commands(self, use_list):
         item = use_list[0]
         room_object = use_list[1]
         # you have to enter at least three letters
@@ -62,26 +58,34 @@ class FunctionClass:
             for key in self.use_dict:
                 if room_object in key:
                     use_command = self.use_dict.get(key)
-                    if use_command(item):
-                        player_object.use_item(item)
-                        player_object.increase_score()
+                    use_command(item)
+
                     break
             else:
                 print(f"I can't find the {room_object}.")
         else:
             print(f"What is a(n) {room_object}.")
 
-    # returns item to room
+    # gives item to player
     def get_item(self, item):
-        if item == "map":
-            print("Hey a map, this might help me out.")
-        location = self.inventory.index(item)
-        return self.inventory.pop(location)
+        if item in self.inventory:
+            if item == "map":
+                print("Hey a map, this might help me out.")
+            else:
+                print(f"I got the {item}.")
+            self.inventory.remove(item)
+            self.player_object.inventory.append(item)
+        else:
+            print(f"There isn't a(n) {item} to get.")
 
     # dropping item back into room
-    def give_item(self, item):
-        if item not in self.inventory and item:
+    def drop_item(self, item):
+        if item in self.player_object.inventory:
+            print(f"I dropped the {item}.")
             self.inventory.append(item)
+            self.player_object.inventory.remove(item)
+        else:
+            print(f"I don't have a(n) {item} to drop.")
 
 
 # Player Class
@@ -203,16 +207,6 @@ class PlayerClass:
                 # should not be shown to player as being an item.
                 if item != "self":
                     print("{:20}{:<5}".format(item, self.item_dictionary.get(item, "Error, Report me pls!")))
-
-    # allows getting items into his inventory
-    def get_item(self, item):
-
-        if item in self.inventory:
-            print("I don't need more of these.")
-        # if item is not false or none
-        elif item:
-            self.inventory.append(item)
-            print("I picked up the ", item)
 
     # getting item out of inventory
     def drop_item(self, item):
@@ -371,8 +365,9 @@ class PlayerClass:
 class Bunker(FunctionClass):
     """This is the bunker class. It acts as the starting room for the player."""
 
-    def __init__(self):
+    def __init__(self, player_object):
         self.inventory = []
+        self.player_object = player_object
         self.fuse_box, self.door_opened, self.robot_fixed = (False, False, False)
         self.look_dict = {
             "room": self.print_description_room,
@@ -434,31 +429,29 @@ class Bunker(FunctionClass):
         else:
             print("I took the robots fuse.")
 
-    def go_outside(self, player_object):
+    def go_outside(self):
         if self.door_opened:
-            player_object.location = "plaza"
+            self.player_object.location = "plaza"
         elif self.fuse_box and not self.door_opened:
             print("I need to open the door first.")
         elif not self.fuse_box:
             print("I need to power the door and open it first.")
 
-    @staticmethod
-    def go_sideroom(player_object):
-        player_object.location = "side room"
+    def go_sideroom(self):
+        self.player_object.location = "side room"
 
     # attempts to fix fuse box
     def fix_fuse_box(self, item):
         if not self.fuse_box:
             if item == "fuse":
                 print("the fuse box is now working!")
+                self.player_object.use_item(item)
+                self.player_object.increase_score()
                 self.fuse_box = True
-                return True
             else:
                 print(f"I can't use {item} with the fuse box.")
-                return False
         else:
             print("There is nothing else I need to do here.")
-            return False
 
     # used to get fuse loose from robot
     def fix_robot(self, item):
@@ -467,13 +460,12 @@ class Bunker(FunctionClass):
                 print("The robot's fuse is loose!")
                 self.robot_fixed = True
                 self.inventory.append("fuse")
-                return True
+                self.player_object.use_item(item)
+                self.player_object.increase_score()
             else:
                 print(f"I can't use {item} with the robot.")
-                return False
         else:
             print("I don't have to mess with it anymore.")
-            return False
 
     # tries to open door will fail if fuse box is not working.
     def open_door(self):
@@ -489,9 +481,10 @@ class Bunker(FunctionClass):
 class ComputerRoom(FunctionClass):
     """The side room to the bunker."""
 
-    def __init__(self):
+    def __init__(self, player_object):
 
         self.inventory = ["wrench"]
+        self.player_object = player_object
         self.light_switch, self.safe_opened, self.safe_unlocked = (False, False, False)
 
         self.look_dict = {
@@ -554,9 +547,8 @@ class ComputerRoom(FunctionClass):
         else:
             print("It's too dark to see.")
 
-    @staticmethod
-    def go_bunker(player_object):
-        player_object.location = "bunker"
+    def go_bunker(self):
+        self.player_object.location = "bunker"
 
     def operate_safe(self):
         if self.light_switch:
@@ -580,6 +572,31 @@ class ComputerRoom(FunctionClass):
         else:
             print("It's too dark to see.")
             return False
+
+    # dropping item in room
+    def drop_item(self, item):
+        if not self.light_switch:
+            print("It's too dark to see.")
+        elif item in self.player_object.inventory:
+            print(f"I dropped the {item}.")
+            self.inventory.append(item)
+            self.player_object.inventory.remove(item)
+        else:
+            print(f"I don't have a(n) {item} to drop.")
+
+    # gives item to player
+    def get_item(self, item):
+        if not self.light_switch:
+            print("It's too dark to see.")
+        elif item in self.inventory:
+            if item == "map":
+                print("Hey a map, this might help me out.")
+            else:
+                print(f"I got the {item}.")
+            self.inventory.remove(item)
+            self.player_object.inventory.append(item)
+        else:
+            print(f"There isn't a(n) {item} to get.")
 
     # turns on light switch
     def turn_on_switch(self):
@@ -621,8 +638,9 @@ class ComputerRoom(FunctionClass):
 class MainPlaza(FunctionClass):
     """Main plaza class. Acts as the hub that connects all the other areas together."""
 
-    def __init__(self):
+    def __init__(self, player_object):
         self.inventory = ["map"]
+        self.player_object = player_object
         self.exit_unlocked, self.upstairs_unlocked, self.car_looked, self.car_oper, self.desk_opened, self.phone_used = (
             False, False, False, False, False, False)
         self.look_dict = {
@@ -714,13 +732,12 @@ class MainPlaza(FunctionClass):
                 print("I got it open!")
                 self.inventory.append("coin")
                 self.desk_opened = True
-                return True
+                self.player_object.use_item(item)
+                self.player_object.increase_score()
             else:
                 print(f"I can't open it with a(n) {item}.")
-                return False
         else:
             print("It's already opened.")
-            return False
 
     def use_phone(self, item):
         if not self.phone_used:
@@ -728,50 +745,45 @@ class MainPlaza(FunctionClass):
                 print("Hey, something fell out when I tried to use it!")
                 self.inventory.append("blue fuse")
                 self.phone_used = True
-                return True
+                self.player_object.use_item(item)
+                self.player_object.increase_score()
 
             else:
                 print(f"I can use a(n) {item} with it.")
-                return False
         else:
             print("It's not going to work all now.")
-            return False
 
     def unlock_gate(self, item):
         if not self.upstairs_unlocked:
             if item == "keys":
                 self.upstairs_unlocked = True
-                return True
+                self.player_object.use_item(item)
+                self.player_object.increase_score()
             else:
                 print(f"I can't unlock it with {item}.")
-                return False
         else:
             print("The gate is unlocked already.")
-            return False
 
-    def go_upstairs(self, player_object):
+    def go_upstairs(self):
         if self.upstairs_unlocked:
-            player_object.location = "upstairs hallway"
+            self.player_object.location = "upstairs hallway"
         else:
             print("It's locked. I'll have to figure out how to get up there.")
 
-    def go_exit(self, player_object):
+    def go_exit(self):
         if self.exit_unlocked:
-            player_object.location = "exit"
+            self.player_object.location = "exit"
         else:
             print("Right now the power is out, I'm trapped.")
 
-    @staticmethod
-    def go_west_wing(player_object):
-        player_object.location = "west wing"
+    def go_west_wing(self):
+        self.player_object.location = "west wing"
 
-    @staticmethod
-    def go_small_den(player_object):
-        player_object.location = "small den"
+    def go_small_den(self):
+        self.player_object.location = "small den"
 
-    @staticmethod
-    def go_bunker(player_object):
-        player_object.location = "bunker"
+    def go_bunker(self):
+        self.player_object.location = "bunker"
 
     def operate_car(self):
         if not self.car_oper:
@@ -785,9 +797,10 @@ class MainPlaza(FunctionClass):
 class SmallDen(FunctionClass):
     """A small animal pen that holds a dead animal and a workbench."""
 
-    def __init__(self):
+    def __init__(self, player_object):
 
         self.inventory = []
+        self.player_object = player_object
         self.workbench_items_needed = ("soldering iron", "soldering wire", "capacitor")
         self.workbench_inventory = []
         self.animal_cut, self.barn_looked, self.tool_repaired, self.have_parts = (False, False, False, False)
@@ -870,13 +883,12 @@ class SmallDen(FunctionClass):
                 self.workbench_inventory.append(item)
                 if len(self.workbench_inventory) == 3:
                     print("Hey, that's all I need!")
-                return True
+                self.player_object.use_item(item)
+                self.player_object.increase_score()
             else:
                 print(f"The {item} wouldn't help me.")
-                return False
         else:
             print("It has everything it needs.")
-            return False
 
     # if you have the parts you can repair the item
     def operate_work_bench(self):
@@ -897,26 +909,25 @@ class SmallDen(FunctionClass):
                 print("I cut off a chunk of meat. Gross...")
                 self.inventory.append("meat")
                 self.animal_cut = True
-                return True
+                self.player_object.use_item(item)
+                self.player_object.increase_score()
             else:
                 print(f"I can't do any thing with the {item}.")
-                return False
         else:
             print("It's already cut up. I'm done with it.")
-            return False
 
-    @staticmethod
-    def go_main_plaza(player_object):
-        player_object.location = "plaza"
+    def go_main_plaza(self):
+        self.player_object.location = "plaza"
 
 
 # West Wing Areas
 class WestWing(FunctionClass):
     """A hallway that connects to the western rooms."""
 
-    def __init__(self):
-        self.inventory = []
+    def __init__(self, player_object):
 
+        self.inventory = []
+        self.player_object = player_object
         self.pet_shop_unlocked, self.vend_looked = (False, False)
 
         self.look_dict = {
@@ -972,24 +983,21 @@ class WestWing(FunctionClass):
         else:
             print("there's nothing else of value within it.")
 
-    def go_pet_shop(self, player_object):
+    def go_pet_shop(self):
         if self.pet_shop_unlocked:
-            player_object.location = "pet shop"
+            self.player_object.location = "pet shop"
         else:
             print("The 'kiosk' is demanding something.")
             return False
 
-    @staticmethod
-    def go_toy_shop(player_object):
-        player_object.location = "toy shop"
+    def go_toy_shop(self):
+        self.player_object.location = "toy shop"
 
-    @staticmethod
-    def go_cemetery(player_object):
-        player_object.location = "cemetery"
+    def go_cemetery(self):
+        self.player_object.location = "cemetery"
 
-    @staticmethod
-    def go_main_plaza(player_object):
-        player_object.location = "plaza"
+    def go_main_plaza(self):
+        self.player_object.location = "plaza"
 
     def unlock_pet_shop(self, item):
         if not self.pet_shop_unlocked:
@@ -997,25 +1005,23 @@ class WestWing(FunctionClass):
                 print("The shop accepted the sample as being a pet. You're in!")
                 print("The doors slide open and allow you through.")
                 self.pet_shop_unlocked = True
-                return True
+                self.player_object.use_item(item)
+                self.player_object.increase_score()
             elif item == "self":
                 print("Error. Exotic pets are not allowed. Including but not limited too: lions, bears, etc...")
                 print("I guess I will have to find something else to get in...")
-                return False
             else:
                 print(f"It doesn't like the {item}.")
-                return False
         else:
             print("It's already unlocked.")
-            return False
 
 
 class PetShop(FunctionClass):
     """The petshop class. attached to the west wing."""
 
-    def __init__(self):
+    def __init__(self, player_object):
         self.inventory = ["mane brush"]
-
+        self.player_object = player_object
         self.fish_looked, self.rope_fixed, self.fridge_checked = (False, False, False)
         self.look_dict = {
             "room": self.print_description_room,
@@ -1076,9 +1082,8 @@ class PetShop(FunctionClass):
     def print_description_selves():
         print("They are ruined and there is nothing to get from them. Just old junk and random dog care products.")
 
-    @staticmethod
-    def go_west_wing(player_object):
-        player_object.location = "west wing"
+    def go_west_wing(self):
+        self.player_object.location = "west wing"
 
     def print_description_leash_machine(self):
         print("It's a machine to repair leases.")
@@ -1095,20 +1100,20 @@ class PetShop(FunctionClass):
                 print("Hey, I got a much longer rope now!")
                 self.inventory.append("long rope")
                 self.rope_fixed = True
-                return True
+                self.player_object.use_item(item)
+                self.player_object.increase_score()
             else:
                 print(f"It rejected the {item}.")
-                return False
         else:
             print("It's very broken and there's nothing else I can do with it.")
-            return False
 
 
 class ToyShop(FunctionClass):
     """The toyshop class. attached to the west wing."""
 
-    def __init__(self):
+    def __init__(self, player_object):
         self.inventory = ["soldering wire"]
+        self.player_object = player_object
 
         self.crane_fixed, self.crane_won, self.shelves_looked, self.locker_opened = (False, False, False, False)
         self.look_dict = {
@@ -1179,9 +1184,8 @@ class ToyShop(FunctionClass):
         else:
             print("I beat the lock after all.")
 
-    @staticmethod
-    def go_west_wing(player_object):
-        player_object.location = "west wing"
+    def go_west_wing(self):
+        self.player_object.location = "west wing"
 
     def open_locker(self, item):
         if not self.locker_opened:
@@ -1191,26 +1195,24 @@ class ToyShop(FunctionClass):
                 self.inventory.append("red fuse")
                 print("And a tail? What is this?")
                 self.inventory.append("toy lion tail")
-                return True
+                self.player_object.use_item(item)
+                self.player_object.increase_score()
             else:
                 print(f"This {item} is not helpful here.")
-                return False
         else:
             print("It's already unlocked now.")
-            return False
 
     def fix_crane(self, item):
         if not self.crane_fixed:
             if item == "battery":
                 print("The crane is rigged to be won.\nNow I should try it again.")
                 self.crane_fixed = True
-                return True
+                self.player_object.use_item(item)
+                self.player_object.increase_score()
             else:
                 print(f"I can't fix it was a(n) {item}.")
-                return False
         else:
             print("It's working for the moment.")
-            return False
 
     def operate_crane(self):
         if not self.crane_won:
@@ -1227,9 +1229,9 @@ class ToyShop(FunctionClass):
 class Cemetery(FunctionClass):
     """The cemetery class. attached to the west wing."""
 
-    def __init__(self):
+    def __init__(self, player_object):
         self.inventory = ["lion plush"]
-
+        self.player_object = player_object
         self.first_entered, self.found_rope, self.grave_dug_up = (False, False, False)
 
         self.look_dict = {
@@ -1287,25 +1289,24 @@ class Cemetery(FunctionClass):
                 print("A fuse!")
                 self.inventory.append("gold fuse")
                 self.grave_dug_up = True
-                return True
+                self.player_object.use_item(item)
+                self.player_object.increase_score()
             else:
                 print(f"I can do anything with the {item}.")
-                return False
         else:
             print("I have already dug that up.")
-            return False
 
-    @staticmethod
-    def go_west_wing(player_object):
-        player_object.location = "west wing"
+    def go_west_wing(self):
+        self.player_object.location = "west wing"
 
 
 # Upstairs Areas
 class UpstairsHallway(FunctionClass):
     """The upstairs hallway that connects to the animal den, shoe store, and bathroom."""
 
-    def __init__(self):
+    def __init__(self, player_object):
         self.inventory = []
+        self.player_object = player_object
         self.book_looked, self.furniture_looked = (False, False)
         self.look_dict = {
             "room": self.print_description_room,
@@ -1407,29 +1408,25 @@ class UpstairsHallway(FunctionClass):
             else:
                 print(f"I can't find page {page}.")
 
-    @staticmethod
-    def go_main_plaza(player_object):
-        player_object.location = "plaza"
+    def go_main_plaza(self):
+        self.player_object.location = "plaza"
 
-    @staticmethod
-    def go_shoe_store(player_object):
-        player_object.location = "shoe store"
+    def go_shoe_store(self):
+        self.player_object.location = "shoe store"
 
-    @staticmethod
-    def go_animal_den(player_object):
-        player_object.location = "animal den"
+    def go_animal_den(self):
+        self.player_object.location = "animal den"
 
-    @staticmethod
-    def go_bathroom(player_object):
-        player_object.location = "bathroom"
+    def go_bathroom(self):
+        self.player_object.location = "bathroom"
 
 
 class AnimalDen(FunctionClass):
     """A upstairs animal den. Connected to the upstairs hallway."""
 
-    def __init__(self):
+    def __init__(self, player_object):
         self.inventory = []
-
+        self.player_object = player_object
         self.animal_drugged, self.entered_after_drugged, self.found_fur, self.meat_just_taken, self.hole_tried = (
             False, False, False, False, False)
 
@@ -1517,16 +1514,16 @@ class AnimalDen(FunctionClass):
         else:
             return "none"
 
-    @staticmethod
-    def go_hallway(player_object):
-        player_object.location = "upstairs hallway"
+    def go_hallway(self):
+        self.player_object.location = "upstairs hallway"
 
 
 class Bathroom(FunctionClass):
     """A upstairs bathroom. Connected to the upstairs hallway."""
 
-    def __init__(self):
+    def __init__(self, player_object):
         self.inventory = ["knife"]
+        self.player_object = player_object
 
         self.looked_dryer, self.cabinet_looked, self.mane_combed = (False, False, False)
 
@@ -1599,17 +1596,16 @@ class Bathroom(FunctionClass):
         else:
             print("There's nothing else of value here.")
 
-    @staticmethod
-    def go_hallway(player_object):
-        player_object.location = "upstairs hallway"
+    def go_hallway(self):
+        self.player_object.location = "upstairs hallway"
 
 
 class ShoeStore(FunctionClass):
     """A upstairs shoe store. Connected to the upstairs hallway."""
 
-    def __init__(self):
+    def __init__(self, player_object):
         self.inventory = ["owl figurine", "screw driver"]
-
+        self.player_object = player_object
         self.first_entered, self.elevator_opened, self.elevator_roped, self.weak_roped = (False, False, False, False)
 
         self.look_dict = {
@@ -1694,33 +1690,31 @@ class ShoeStore(FunctionClass):
     def fix_elevator(self, item):
         if not self.elevator_opened:
             print("I should open it first.")
-            return False
         # if you have used either the weak or strong rope
         if self.weak_roped or self.elevator_roped:
             if self.weak_roped:
                 print("I used a rope already but I should try and make the rope stronger.")
-                return False
             else:
                 print("It's ok for me to climb down now.")
-                return False
         else:
             # if the item is the rope it adds to room inventory and flips the flag variable
             if item == "rope":
                 print(f"I used the {item}. Maybe I can climb down.")
                 self.inventory.append(item)
                 self.weak_roped = True
-                return True
+                self.player_object.use_item(item)
+                self.player_object.increase_score()
             # if strong rope just flips the strong rope flag
             elif item == "long rope":
                 print(f"I used the {item}. Maybe I can climb down now.")
                 self.elevator_roped = True
-                return True
+                self.player_object.use_item(item)
+                self.player_object.increase_score()
             else:
                 print(f"I can use the {item} on the elevator.")
-                return False
 
     # tries to go down the shaft. Fails if the strong rope is not used
-    def go_elevator(self, player_object):
+    def go_elevator(self):
         # if the elevator has not being opened fail
         if not self.elevator_opened:
             print("I should open it first.")
@@ -1730,22 +1724,21 @@ class ShoeStore(FunctionClass):
         # if you used the strong rope then you can go
         elif self.elevator_roped:
             print("Ok, it looks safe... Maybe not but here I go.")
-            player_object.location = "basement entry"
+            self.player_object.location = "basement entry"
         else:
             print("I'll have to find a way to climb down it.")
 
-    @staticmethod
-    def go_hallway(player_object):
-        player_object.location = "upstairs hallway"
+    def go_hallway(self):
+        self.player_object.location = "upstairs hallway"
 
 
 # Basement Areas
 class BasementEntry(FunctionClass):
     """A basement room that is attached to the shoe store."""
 
-    def __init__(self):
+    def __init__(self, player_object):
         self.inventory = ["shovel"]
-
+        self.player_object = player_object
         self.door_unlocked, self.soda_used = (False, False)
 
         self.look_dict = {
@@ -1804,15 +1797,14 @@ class BasementEntry(FunctionClass):
         else:
             print("I wonder what that means.")
 
-    def go_gen_room(self, player_object):
+    def go_gen_room(self):
         if self.door_unlocked:
-            player_object.location = "basement generator room"
+            self.player_object.location = "basement generator room"
         else:
             print("The door is locked. I can't go there yet.")
 
-    @staticmethod
-    def go_shoe_store(player_object):
-        player_object.location = "shoe store"
+    def go_shoe_store(self):
+        self.player_object.location = "shoe store"
 
     # tries to enter codes or items to bypass the door.
     def entering_code(self, item=None):
@@ -1845,20 +1837,20 @@ class BasementEntry(FunctionClass):
                 print("It fizzles and sparks. The door opens.\nHuh? Can't believe that worked.")
                 self.door_unlocked = True
                 self.soda_used = True
-                return True
+                self.player_object.use_item(item)
+                self.player_object.increase_score()
             else:
                 print("That doesn't help me...")
-                return False
         else:
             print("It's open. I don't have to do anything else with it.")
-            return False
 
 
 class BasementGenRoom(FunctionClass):
     """A basement generator room that is attached to the shoe store."""
 
-    def __init__(self):
+    def __init__(self, player_object):
         self.generator_inventory = []
+        self.player_object = player_object
         self.inventory = ["soldering iron"]
         self.fuses_needed = ("green fuse", "red fuse", "blue fuse", "gold fuse")
         self.fuses_fixed, self.generator_working = (False, False)
@@ -1928,13 +1920,12 @@ class BasementGenRoom(FunctionClass):
                     self.generator_inventory.append(item)
                     print(f"I added the {item} to the generator. That's the last one!")
 
-                return True
+                self.player_object.use_item(item)
+                self.player_object.increase_score()
             else:
                 print("I can't use that on the generator.")
-                return False
         else:
             print("It's got all it needs. You should run it now.")
-            return False
 
     def operate_generator(self):
         if not self.generator_working and len(self.generator_inventory) == 4:
@@ -1946,6 +1937,5 @@ class BasementGenRoom(FunctionClass):
         else:
             print("It's already running.")
 
-    @staticmethod
-    def go_basement_entry(player_object):
-        player_object.location = "basement entry"
+    def go_basement_entry(self):
+        self.player_object.location = "basement entry"

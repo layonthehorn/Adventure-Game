@@ -100,20 +100,20 @@ class ChapterOne:
             if player_option == "s":
                 # Loads defaults in classes for game
                 self.player = PlayerClass()
-                self.starting_room = Bunker()
-                self.side_room = ComputerRoom()
-                self.main_plaza = MainPlaza()
-                self.small_den = SmallDen()
-                self.west_wing = WestWing()
-                self.cemetery = Cemetery()
-                self.toy_shop = ToyShop()
-                self.pet_shop = PetShop()
-                self.up_stairs_hallway = UpstairsHallway()
-                self.animal_den = AnimalDen()
-                self.shoe_store = ShoeStore()
-                self.bathroom = Bathroom()
-                self.basement_entryway = BasementEntry()
-                self.basement_gen_room = BasementGenRoom()
+                self.starting_room = Bunker(self.player)
+                self.side_room = ComputerRoom(self.player)
+                self.main_plaza = MainPlaza(self.player)
+                self.small_den = SmallDen(self.player)
+                self.west_wing = WestWing(self.player)
+                self.cemetery = Cemetery(self.player)
+                self.toy_shop = ToyShop(self.player)
+                self.pet_shop = PetShop(self.player)
+                self.up_stairs_hallway = UpstairsHallway(self.player)
+                self.animal_den = AnimalDen(self.player)
+                self.shoe_store = ShoeStore(self.player)
+                self.bathroom = Bathroom(self.player)
+                self.basement_entryway = BasementEntry(self.player)
+                self.basement_gen_room = BasementGenRoom(self.player)
                 # to keep a running toll of all actions preformed
                 self.stat_dictionary = {"look": 0,
                                         "inventory": 0,
@@ -352,10 +352,7 @@ class ChapterOne:
         elif general_list[0] == "get":
             self.stat_dictionary["get"] += 1
             try:
-                if general_list[1] in loc_name.inventory:
-                    self.player.get_item(loc_name.get_item(general_list[1]))
-                else:
-                    print(f"There isn't a(n) {general_list[1]} to get.")
+                loc_name.get_item(general_list[1])
             except IndexError:
                 print("Get what?")
 
@@ -365,10 +362,7 @@ class ChapterOne:
             try:
                 # if player tries to drop self print message.
                 if general_list[1] != 'self':
-                    if general_list[1] in self.player.inventory:
-                        loc_name.give_item(self.player.drop_item(general_list[1]))
-                    else:
-                        print(f"I don't have a(n) {general_list[1]} to drop.")
+                    loc_name.drop_item(general_list[1])
                 else:
                     print("Now how would I do that?")
             except IndexError:
@@ -395,7 +389,7 @@ class ChapterOne:
                 choice_list = self.use_pattern.split(action)
                 if '' in choice_list:
                     choice_list.remove('')
-                loc_name.get_use_commands(self.player, choice_list)
+                loc_name.get_use_commands(choice_list)
             except IndexError:
                 print("Use what with what?")
 
@@ -412,7 +406,7 @@ class ChapterOne:
         elif general_list[0] == "go":
             self.stat_dictionary["go"] += 1
             try:
-                loc_name.get_go_commands(self.player, general_list[1])
+                loc_name.get_go_commands(general_list[1])
             except IndexError:
                 print("Go where?")
         else:
