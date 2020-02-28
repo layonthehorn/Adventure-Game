@@ -1656,15 +1656,18 @@ class ShoeStore(FunctionClass):
         else:
             print("I need to figure out how to descend it.")
 
-    # this pops off the items and returns it
+    # gives item to player
     def get_item(self, item):
         if item in self.inventory:
-            # if item is rope and you have used it on the elevator it flips that flag back to false
             if item == "rope" and self.weak_roped:
                 print("I removed the short rope from the elevator.")
                 self.weak_roped = False
-            location = self.inventory.index(item)
-            return self.inventory.pop(location)
+            else:
+                print(f"I got the {item}.")
+            self.inventory.remove(item)
+            self.player_object.inventory.append(item)
+        else:
+            print(f"There isn't a(n) {item} to get.")
 
     def operate_elevator_doors(self):
         if not self.elevator_opened:
