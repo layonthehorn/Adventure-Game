@@ -164,12 +164,12 @@ class ChapterOne:
         except IOError:
             print("Could not open file for saving...")
 
-    # general actions that can be done anywhere
+        # general actions that can be done anywhere
+
     def general_actions(self, action):
         # finds player location
         # this makes all your actions dependent on the room you are in
         loc_name = self.switcher_dictionary.get(self.player.location)
-
         # splits the input on the first space
         general_list = action.split(" ", 1)
         # prints inventory
@@ -234,10 +234,7 @@ class ChapterOne:
         elif general_list[0] == "get":
             self.stat_dictionary["get"] += 1
             try:
-                if general_list[1] in loc_name.inventory:
-                    self.player.get_item(loc_name.get_item(general_list[1]))
-                else:
-                    print(f"There isn't a(n) {general_list[1]} to get.")
+                loc_name.get_item(general_list[1])
             except IndexError:
                 print("Get what?")
 
@@ -247,10 +244,7 @@ class ChapterOne:
             try:
                 # if player tries to drop self print message.
                 if general_list[1] != 'self':
-                    if general_list[1] in self.player.inventory:
-                        loc_name.give_item(self.player.drop_item(general_list[1]))
-                    else:
-                        print(f"I don't have a(n) {general_list[1]} to drop.")
+                    loc_name.drop_item(general_list[1])
                 else:
                     print("Now how would I do that?")
             except IndexError:
@@ -277,7 +271,7 @@ class ChapterOne:
                 choice_list = self.use_pattern.split(action)
                 if '' in choice_list:
                     choice_list.remove('')
-                loc_name.get_use_commands(self.player, choice_list)
+                loc_name.get_use_commands(choice_list)
             except IndexError:
                 print("Use what with what?")
 
@@ -294,7 +288,7 @@ class ChapterOne:
         elif general_list[0] == "go":
             self.stat_dictionary["go"] += 1
             try:
-                loc_name.get_go_commands(self.player, general_list[1])
+                loc_name.get_go_commands(general_list[1])
             except IndexError:
                 print("Go where?")
         else:

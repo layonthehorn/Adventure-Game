@@ -1,5 +1,68 @@
-from chapter_one_classes import FunctionClass
 import time
+
+
+# function class for inheritance.
+class FunctionClass:
+    """Never to be called. Only used for giving all other classes the same methods."""
+
+    # allows getting a print function form the look dictionary.
+    def get_look_commands(self, look_at):
+        # you have to enter at least three letters
+        if len(look_at) >= 3:
+            for key in self.look_dict:
+                if look_at in key:
+                    look_command = self.look_dict.get(key)
+                    look_command()
+                    break
+            else:
+                print(f"I can't look at {look_at}.")
+
+        else:
+            print(f"I can't go to {look_at}.")
+
+    # allows getting operate commands
+    def get_oper_commands(self, operate):
+        # you have to enter at least three letters
+        if len(operate) >= 3:
+            for key in self.oper_dict:
+                if operate in key:
+                    oper_command = self.oper_dict.get(key)
+                    oper_command()
+                    break
+            else:
+                print(f"I can't operate the {operate}.")
+        else:
+            print(f"I can't operate the {operate}.")
+
+    # allows getting go commands
+    def get_go_commands(self, go):
+        # you have to enter at least three letters
+        if len(go) >= 2:
+            for key in self.go_dict:
+                if go in key:
+                    go_command = self.go_dict.get(key)
+                    go_command()
+                    break
+            else:
+                print(f"I can't go to {go}.")
+        else:
+            print(f"I can't go to {go}.")
+
+    # allows using item on objects
+    def get_use_commands(self, use_list):
+        item = use_list[0]
+        room_object = use_list[1]
+        # you have to enter at least three letters
+        if len(room_object) >= 3:
+            for key in self.use_dict:
+                if room_object in key:
+                    use_command = self.use_dict.get(key)
+                    use_command(item)
+                    break
+            else:
+                print(f"I can't find the {room_object}.")
+        else:
+            print(f"What is a(n) {room_object}.")
 
 
 # Player Class
@@ -80,17 +143,6 @@ class PlayerClass:
                 if item != "self":
                     print("{:20}{:<5}".format(item, self.item_dictionary.get(item, "Error, Report me pls!")))
 
-    # allows getting items into his inventory
-    def get_item(self, item):
-
-        if item in self.inventory:
-            print("I don't need more of these.")
-        # if item is not false or none
-        elif item:
-            self.inventory.append(item)
-            print("I picked up the ", item)
-
-    # getting item out of inventory
     def drop_item(self, item):
         # prevents dropping the map.
         if item in self.inventory and item == "map":
@@ -182,18 +234,16 @@ class PlayerClass:
 
 
 class ExampleRoom(FunctionClass):
-    """This is the bunker class. It acts as the starting room for the player."""
-    def __init__(self, items_contained=None, bool_list=(False, False, False)):
-        if items_contained is None:
-            items_contained = ["temp"]
-        self.inventory = items_contained
-        self.bool_one, self.bool_two, self.bool_three = bool_list
+    """Example class."""
+    def __init__(self, player_object):
+
+        self.inventory = ["temp"]
+        self.player_object = player_object
+        self.bool_one, self.bool_two, self.bool_three = (False, False, False)
 
         self.look_dict = {}
-
         self.go_dict = {}
         self.oper_dict = {}
-
         self.use_dict = {}
 
     # this prints a description along with a item list
@@ -214,6 +264,7 @@ class ExampleRoom(FunctionClass):
     def operate_door(self):
         if not self.bool_one:
             self.bool_one = True
+            self.player_object.increase_score()
             print("switched to new value door")
         else:
             print("stays the same door")
@@ -221,6 +272,7 @@ class ExampleRoom(FunctionClass):
     def operate_fuse_box(self):
         if not self.bool_two:
             self.bool_two = True
+            self.player_object.increase_score()
             print("switched to new value box")
         else:
             print("stays the same box")
@@ -230,18 +282,16 @@ class ExampleRoom(FunctionClass):
             if item == "temp":
                 print("Worked with temp item")
                 self.bool_one = False
-                return True
+                self.player_object.use_item(item)
+                self.player_object.increase_score()
+
             else:
                 print("Wrong item")
-                return False
         else:
             print("Already used.")
-            return False
 
-    @staticmethod
-    def go_outside(player_object):
-        print("going outside")
-        player_object.location = ""
+    def go_outside(self):
+        self.player_object.location = "Place"
 
-    def go_sideroom(self, player_object):
-        print("going sideroom")
+    def go_sideroom(self):
+        self.player_object.location = "home"
