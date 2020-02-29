@@ -85,44 +85,56 @@ class FunctionClass:
     def sell_items(self):
         talking = True
         while talking:
-
-            for item in self.player_object.inventory:
-                print(item, end=", ")
-            print("\n")
-            choice = input("Sell what? q to quit. ").lower()
-            # if you do not have the thing you are trying to sell
-            if choice not in self.player_object.inventory and choice != "q":
-                print(f"You don't have a(n) {choice} to sell")
-            # if the item has a value in game
-            elif choice in self.player_object.item_values:
-                print("I'll take that. Thank you!")
-                # sells it
-                self.sell(choice)
-            elif choice == "q":
-                talking = False
+            if len(self.player_object.inventory) > 1:
+                for number, item in enumerate(self.player_object.inventory, 1):
+                    if item != "self":
+                        print(item, end=", ")
+                    if (number - 1) % 4 == 0:
+                        print("")
+                print("\n")
+                choice = input("Sell what? q to quit. ").lower()
+                # if you do not have the thing you are trying to sell
+                if choice not in self.player_object.inventory and choice != "q":
+                    print(f"You don't have a(n) {choice} to sell")
+                # if the item has a value in game
+                elif choice in self.player_object.item_values:
+                    print("I'll take that. Thank you!")
+                    # sells it
+                    self.sell(choice)
+                elif choice == "q":
+                    talking = False
+                else:
+                    print(f"I don't want to buy a(n) {choice}")
             else:
-                print(f"I don't want to buy a(n) {choice}")
+                print("You don't have anything to sell.")
+                talking = False
 
     # allows you to buy things
     def buy_items(self):
         talking = True
         while talking:
-            for item in self.shop_inventory:
-                print(item, end=", ")
-            print("\n")
-            choice = input("Buy what? q to quit. ").lower()
-            # if they have it to sell you
-            if choice in self.shop_inventory:
-                # if you have enough money
-                if self.player_object.player_wallet >= self.player_object.item_values.get(choice):
-                    self.buy(choice)
+            if len(self.shop_inventory) > 1:
+                for number, item in enumerate(self.shop_inventory, 0):
+                    print(item, end=", ")
+                    if number % 4 == 0:
+                        print("")
+                print("\n")
+                choice = input("Buy what? q to quit. ").lower()
+                # if they have it to sell you
+                if choice in self.shop_inventory:
+                    # if you have enough money
+                    if self.player_object.player_wallet >= self.player_object.item_values.get(choice):
+                        self.buy(choice)
+                    else:
+                        # if you are too poor
+                        print(f"You can't afford the {choice}. You need {self.player_object.item_values.get(choice) - self.player_object.player_wallet}.")
+                elif choice == "q":
+                    talking = False
                 else:
-                    # if you are too poor
-                    print(f"You can't afford the {choice}. You need {self.player_object.item_values.get(choice) - self.player_object.player_wallet}.")
-            elif choice == "q":
-                talking = False
+                    print(f"I don't have a(n) {choice} to sell you.")
             else:
-                print(f"I don't have a(n) {choice} to sell you.")
+                print("I am totally out of things to sell you.")
+                talking = False
 
     # controls selling items
     def sell(self, item):
