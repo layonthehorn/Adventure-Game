@@ -73,9 +73,9 @@ class FunctionClass:
     def get_item(self, item):
         if item in self.inventory:
             if item == "map":
-                print("Hey a map, this might help me out.")
+                print(f"Hey a {self.bold+item+self.end}, this might help me out.")
             else:
-                print(f"I got the {item}.")
+                print(f"I got the {self.bold+item+self.end}.")
             self.inventory.remove(item)
             self.player_object.inventory.append(item)
         else:
@@ -83,10 +83,12 @@ class FunctionClass:
 
     # dropping item back into room
     def drop_item(self, item):
-        if item in self.player_object.inventory:
-            print(f"I dropped the {item}.")
+        if item in self.player_object.inventory and item != "map":
+            print(f"I dropped the {self.bold+item+self.end}.")
             self.inventory.append(item)
             self.player_object.inventory.remove(item)
+        elif item in self.player_object.inventory and item != "map":
+            print("I might need it, I'm not going to drop it.")
         else:
             print(f"I don't have a(n) {item} to drop.")
 
@@ -103,8 +105,8 @@ class PlayerClass:
     """This is the main player class. It holds the player inventory and score among other things."""
 
     # class variables for print formatting
-    bold = '''\033[1m'''
-    end = '''\033[0;0m'''
+    bold = '\033[1m'
+    end = '\033[0;0m'
 
     def __init__(self):
 
@@ -220,24 +222,13 @@ class PlayerClass:
                 if item != "self":
                     print(f"{self.bold+item+self.end:<20}{self.item_dictionary.get(item, 'Error, Report me pls!'):<5}")
 
-    # getting item out of inventory
-    def drop_item(self, item):
-        # prevents dropping the map.
-        if item in self.inventory and item == "map":
-            print("I might need it, I'm not going to drop it.")
-        # otherwise if the item is in your inventory allows you to drop it
-        elif item in self.inventory:
-            location = self.inventory.index(item)
-            print("I dropped the ", item)
-            return self.inventory.pop(location)
-
     # removes items from player
     # can use any number of items.
     def use_item(self, *items):
         # never removes self from inventory.
         for item in items:
             if item != "self":
-                print("I used the ", self.bold, item, self.end)
+                print(f"I used the {self.bold+item+self.end}.")
                 self.inventory.remove(item)
             else:
                 # prints something random when you use yourself
@@ -581,7 +572,7 @@ class ComputerRoom(FunctionClass):
             if item == "map":
                 print("Hey a map, this might help me out.")
             else:
-                print(f"I got the {item}.")
+                print(f"I got the {self.bold+item+self.end}.")
             self.inventory.remove(item)
             self.player_object.inventory.append(item)
         else:
@@ -1646,7 +1637,7 @@ class ShoeStore(FunctionClass):
                 print("I removed the short rope from the elevator.")
                 self.weak_roped = False
             else:
-                print(f"I got the {item}.")
+                print(f"I got the {self.bold+item+self.end}.")
             self.inventory.remove(item)
             self.player_object.inventory.append(item)
         else:
