@@ -113,7 +113,7 @@ class FunctionClass:
     def buy_items(self):
         talking = True
         while talking:
-            if len(self.shop_inventory) > 1:
+            if len(self.shop_inventory) > 0:
                 for number, item in enumerate(self.shop_inventory, 0):
                     print(item, end=", ")
                     if number % 4 == 0:
