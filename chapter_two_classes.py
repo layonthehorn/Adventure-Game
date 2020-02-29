@@ -73,8 +73,9 @@ class PlayerClass:
 
         self.inventory = ["self"]
         self.started = True
-        self.location = "bunker"
-        self.player_score = 0
+        self.__location = "bunker"
+        self.__player_score = 0
+        self.__player_wallet = 0
         #
         # mp, up, pet, shoe, rest, ani, den, west, toy, cem, fall, com = (
         #     "MP", "UH", 'PS', 'SS', 'RR', 'AD', 'SD', 'WW', 'TS', 'C ', 'FS', 'CR')
@@ -100,7 +101,7 @@ class PlayerClass:
         }
 
     def __str__(self):
-        return f"""Inventory {self.inventory}\nLocation {self.location}\nScore {self.player_score}"""
+        return f"""Inventory {self.inventory}\nLocation {self.__location}\nScore {self.__player_score}"""
 
     @property
     def location(self):
@@ -108,10 +109,7 @@ class PlayerClass:
 
     @location.setter
     def location(self, location):
-        # prevents printing the message when you start the game.
-        if self.started:
-            self.started = False
-        elif location not in ():
+        if location not in ():
             print("Could not find matching location. Moving to None.")
             print(f"Could not fine {location}... Possible missing spelling in code?")
             location = None
@@ -119,14 +117,33 @@ class PlayerClass:
             print(f"You have gone to the {location}.")
         self.__location = location
 
+    @property
+    def player_wallet(self):
+        return self.__player_wallet
+
+    @player_wallet.setter
+    def player_wallet(self, new_value):
+        if new_value < 0:
+            print(f"You lost {new_value * -1} coins.")
+        elif new_value > 0:
+            print(f"You got {new_value} coins!")
+        else:
+            print("Error somehow got 0 dollars.")
+        self.__player_wallet += new_value
+        print(f"You have {self.__player_wallet} coins total now.")
+
+    @property
+    def player_score(self):
+        return self.__player_score
+
+    @player_score.setter
+    def player_score(self, new_value):
+        print("You're score went up!")
+        self.__player_score += 1
+
     # prints your score
     def print_score(self):
         print(f"Your score is {self.player_score}.")
-
-    # sets player score
-    def increase_score(self):
-        print("Your score went up!")
-        self.player_score += 1
 
     # prints his inventory
     def check_inventory(self):

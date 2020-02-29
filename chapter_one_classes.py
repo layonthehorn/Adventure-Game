@@ -94,8 +94,7 @@ class PlayerClass:
     def __init__(self):
 
         self.inventory = ["self"]
-        self.started = True
-        self.location = "bunker"
+        self.__location = "bunker"
         self.player_score = 0
         self.mane_brushed = False
         self.fish_counter = 0
@@ -168,11 +167,8 @@ class PlayerClass:
 
     @location.setter
     def location(self, location):
-        # prevents printing the message when you start the game.
-        if self.started:
-            self.started = False
         # makes sure that you do not enter a bad location.
-        elif location not in ("plaza", "bunker",
+        if location not in ("plaza", "bunker",
                               "side room", "small den", "west wing", "cemetery", "toy shop",
                               "pet shop", "exit", "end", "upstairs hallway", "animal den",
                               "shoe store", "bathroom", "basement entry", "basement generator room"):
