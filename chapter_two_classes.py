@@ -64,6 +64,81 @@ class FunctionClass:
         else:
             print(f"What is a(n) {room_object}.")
 
+    # general shop keeper function
+    def shop_keeper(self):
+        talking = True
+        print("Welcome to my shop!")
+        while talking:
+            print("Sell(s), Buy(b), or Quit(q)?")
+            choice = input("").lower()
+            if choice == "s":
+                self.sell_items()
+            elif choice == "b":
+                self.buy_items()
+            elif choice == "q":
+                print("Please come again.")
+                talking = False
+            else:
+                print(f"What do you mean by {choice}.")
+
+    # allows you to sell things
+    def sell_items(self):
+        talking = True
+        while talking:
+
+            for item in self.player_object.inventory:
+                print(item, end=", ")
+            print("\n")
+            choice = input("Sell what? q to quit. ").lower()
+            # if you do not have the thing you are trying to sell
+            if choice not in self.player_object.inventory and choice != "q":
+                print(f"You don't have a(n) {choice} to sell")
+            # if the item has a value in game
+            elif choice in self.player_object.item_values:
+                print("I'll take that. Thank you!")
+                # sells it
+                self.sell(choice)
+            elif choice == "q":
+                talking = False
+            else:
+                print(f"I don't want to buy a(n) {choice}")
+
+    # allows you to buy things
+    def buy_items(self):
+        talking = True
+        while talking:
+            for item in self.shop_inventory:
+                print(item, end=", ")
+            print("\n")
+            choice = input("Buy what? q to quit. ").lower()
+            # if they have it to sell you
+            if choice in self.shop_inventory:
+                # if you have enough money
+                if self.player_object.player_wallet >= self.player_object.item_values.get(choice):
+                    self.buy(choice)
+                else:
+                    # if you are too poor
+                    print(f"You can't afford the {choice}. You need {self.player_object.item_values.get(choice) - self.player_object.player_wallet}.")
+            elif choice == "q":
+                talking = False
+            else:
+                print(f"I don't have a(n) {choice} to sell you.")
+
+    # controls selling items
+    def sell(self, item):
+        self.player_object.inventory.remove(item)
+        self.shop_inventory.append(item)
+        print(f"You sold the {item}.")
+        self.player_object.player_wallet = self.player_object.item_values.get(item, 0)
+
+    # controls buying items
+    def buy(self, item):
+        self.player_object.inventory.append(item)
+        self.shop_inventory.remove(item)
+        print(f"You bought the {item}.")
+        # flipping the value in the dictionary to subtract
+        self.player_object.player_wallet = (self.player_object.item_values.get(item, 0) * -1)
+
 
 # Player Class
 class PlayerClass:
@@ -73,6 +148,7 @@ class PlayerClass:
 
         self.inventory = ["self"]
         self.started = True
+        self.item_values = {}
         self.__location = "bunker"
         self.__player_score = 0
         self.__player_wallet = 0
