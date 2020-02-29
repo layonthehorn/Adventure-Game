@@ -263,7 +263,7 @@ class PlayerClass:
             for item in self.inventory:
                 # should not be shown to player as being an item.
                 if item != "self":
-                    print(f"{self.bold,item,self.end:<20}{self.item_dictionary.get(item, 'Error, Report me pls!'):<5}")
+                    print(f"{self.bold + item + self.end:<20}{self.item_dictionary.get(item, 'Error, Report me pls!'):<5}")
 
     def drop_item(self, item):
         # prevents dropping the map.
