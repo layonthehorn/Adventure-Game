@@ -60,7 +60,6 @@ class ChapterOne:
     bold = '\033[1m'
     end = '\033[0m'
 
-
     def __init__(self):
 
         # pattern matching for actions
