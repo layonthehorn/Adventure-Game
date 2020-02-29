@@ -376,9 +376,7 @@ class ChapterOne:
             if '' in choice_list:
                 choice_list.remove('')
             try:
-                if self.player.combine_items(choice_list[0], choice_list[1]):
-                    self.player.increase_score()
-
+                self.player.combine_items(choice_list[0], choice_list[1])
             except IndexError:
                 print("Combine what with what?")
 

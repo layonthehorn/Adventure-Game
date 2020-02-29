@@ -1,5 +1,5 @@
 import time
-
+import random
 
 # test
 # function class for inheritance.
@@ -113,6 +113,8 @@ class PlayerClass:
         self.player_score = 0
         self.mane_brushed = False
         self.fish_counter = 0
+        self.use_remarks = ("I was useful after all.", "I feel used...", "I never knew I could use myself.",
+                            "At least I didn't ruffle my mane.", "I think I'm still in one piece after that.")
         mp, up, pet, shoe, rest, ani, den, west, toy, cem, fall, com = (
             "MP", "UH", 'PS', 'SS', 'RR', 'AD', 'SD', 'WW', 'TS', 'C ', 'FS', 'CR')
         self.places = [mp, up, pet, shoe, rest, ani, den, west, toy, cem, fall, com]
@@ -230,97 +232,91 @@ class PlayerClass:
             return self.inventory.pop(location)
 
     # removes items from player
-    def use_item(self, item):
+    # can use any number of items.
+    def use_item(self, *items):
         # never removes self from inventory.
-        if item != "self":
-            print("I used the ", item)
-            self.inventory.remove(item)
-        else:
-            print("I used myself?")
+        for item in items:
+            if item != "self":
+                print("I used the ", self.bold, item, self.end)
+                self.inventory.remove(item)
+            else:
+                # prints something random when you use yourself
+                print(random.choice(self.use_remarks))
 
     # combines items
-    def combine_items(self, item_1, item_2):
-        # debugging line to check the items being used.
-        # print(item_1, " ", item_2)
+    def combine_items(self, *item_list):
+        # unpacking the items to use later
+        item_1, item_2 = item_list
         if item_1 in self.inventory and item_2 in self.inventory:
-            # a list to make checking for contents easier
-            item_list = (item_1, item_2)
 
             # item crafting results
             if "meat" in item_list and "drugs" in item_list:
-                self.inventory.remove(item_1)
-                self.inventory.remove(item_2)
+                self.use_item(item_1, item_2)
                 self.inventory.append("drugged meat")
                 print("I made drugged meat. Still nasty after that.")
-                return True
+                self.increase_score()
+
             elif "lion plush" in item_list and "bag of catnip" in item_list:
-                self.inventory.remove(item_1)
-                self.inventory.remove(item_2)
+                self.use_item(item_1, item_2)
                 self.inventory.append("cat toy")
                 print("I am so ashamed of myself for this...")
-                return False
+
             # all using items on self reactions
             elif "self" in item_list and "cat toy" in item_list:
-                self.inventory.remove("cat toy")
+                self.use_item(item_1, item_2)
                 print("purrrrr Mmmmm catnip.")
-                return False
+
             elif "self" in item_list and "mane brush" in item_list:
-                self.inventory.remove("mane brush")
+                self.use_item(item_1, item_2)
                 print("Hey, I'm looking better now. That's good too.")
                 self.mane_brushed = True
-                return True
+                self.increase_score()
+
             elif "self" in item_list and "drugs" in item_list:
                 print("I'm not eating them...")
-                return False
+
             elif "self" in item_list and "meat" in item_list:
                 print("Nasty. I love meat but this is not appetizing at all.")
-                return False
+
             elif "self" in item_list and "drugged meat" in item_list:
                 print("Eating rotten meat is not any safer with medication in it.")
-                return False
+
             elif "self" in item_list and "soda" in item_list:
                 print("I hate sugary things...")
-                return False
+
             elif "self" in item_list and "bag of catnip" in item_list:
                 print("I need to stay sober right now... \nIf it was in a little cute toy I might... No, I better not.")
-                return False
+
             elif "self" in item_list and "knife" in item_list:
                 print("I don't think that's a great plan...")
-                return False
+
             elif "self" in item_list and "toy lion tail" in item_list:
                 print("I already have a tail thank you. Might save this for my daughter though.")
-                return False
 
             # small thing for player repeating the eat fish command
             elif "self" in item_list and "fish" in item_list:
                 if self.fish_counter == 0:
                     print("I really shouldn't. Though it is tasty looking...")
                     self.fish_counter += 1
-                    return False
                 elif self.fish_counter == 1:
                     print("Still shouldn't eat it.")
                     self.fish_counter += 1
-                    return False
                 elif self.fish_counter == 2:
                     print("No, I need to get rid of it. I keep getting temped.")
                     self.fish_counter += 1
-                    return False
                 else:
                     print("Vern finally gives in and eats the little fish.")
                     print("Oh no! I couldn't resist anymore...")
                     print("Now all I have is a pile of bones.")
                     self.inventory.append("bones")
-                    self.inventory.remove("fish")
-                    return True
+                    self.use_item(item_1, item_2)
             # no matches found
             else:
                 print(f"I can't combine {item_1} and {item_2}.")
-                return False
 
         # No matching items found
         else:
             print("I don't have all I need.")
-            return False
 
     # looking at map
     def look_player_map(self):
