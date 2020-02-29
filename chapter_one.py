@@ -41,6 +41,7 @@ def print_help():
 
 
 def print_intro():
+    clear()
     print(""" 
 Vern the lion was traveling with his friend Johnson and his daughter Katie. 
 On their way to Harrisburg, they stopped for the night and he shared a drink with his friend. 

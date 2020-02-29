@@ -229,7 +229,7 @@ class PlayerClass:
     @player_wallet.setter
     def player_wallet(self, new_value):
         if new_value < 0:
-            print(f"You lost {new_value * -1} coins.")
+            print(f"You lost {abs(new_value)} coins.")
         elif new_value > 0:
             print(f"You got {new_value} coins!")
         else:
