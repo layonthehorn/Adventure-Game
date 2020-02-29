@@ -2,7 +2,7 @@
 from chapter_one import ChapterOne
 # from chapter_two import ChapterTwo
 import os
-
+import platform
 # Temporary ascii art from https://ascii.co.uk/art/lion
 ascii_image = """                 
                 ,  ,, ,
@@ -32,18 +32,28 @@ except IOError:
     print("Could not create save folder. Save feature will not work.")
 
 
-choosing = True
+def clear():
+    if platform.system() == 'Linux':
+        os.system("clear")
+    elif platform.system() == 'Windows':
+        os.system('cls')
 
+
+choosing = True
 while choosing:
     print(ascii_image)
     print("Welcome to my game!")
     user_input = input("Which Chapter to play? (1, 2, or q to quit) ").lower()
     if user_input == "1":
+        clear()
         ChapterOne()
+        clear()
     elif user_input == "2":
+        clear()
         print("Not yet built.")
         # ChapterTwo()
     elif user_input == "q":
+        clear()
         print("Good bye!")
         choosing = False
         input("")

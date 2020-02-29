@@ -1,6 +1,7 @@
 import pickle
 import re
-
+import os
+import platform
 from chapter_one_classes import PlayerClass, Bunker, ComputerRoom, MainPlaza, SmallDen, WestWing, ToyShop, PetShop, Cemetery, UpstairsHallway, AnimalDen, Bathroom, ShoeStore, BasementEntry, BasementGenRoom
 
 
@@ -12,6 +13,13 @@ def load_game_state(file_name):
             return pickle_db
     except FileNotFoundError:
         return None
+
+
+def clear():
+    if platform.system() == 'Linux':
+        os.system("clear")
+    elif platform.system() == 'Windows':
+        os.system('cls')
 
 
 def print_help():
@@ -48,6 +56,11 @@ room and there is a door that appears to be locked.
 
 class ChapterOne:
     """This is a text adventure game, chapter one. All that is needed is to initialize it and the game will start."""
+    under_line = '\033[4m'
+    bold = '\033[1m'
+    end = '\033[0m'
+
+
     def __init__(self):
 
         # pattern matching for actions
@@ -233,7 +246,6 @@ class ChapterOne:
 
         # main game play loop
         while self.playing and not end_game:
-            print("")
 
             # if the generator is working and the exit is locked it opens the exit.
             if self.basement_gen_room.generator_working:
@@ -249,9 +261,9 @@ class ChapterOne:
             # if you reach the exit then don't ask for actions from player
             if self.player.location != self.exit_name:
 
-                print("Verbs look, inv(entory), get, oper(ate), com(bine), drop, score, use, go, save, end, help, stat")
+                print(f"{self.bold+'Verbs look, inv(entory), get, oper(ate), com(bine), drop, score, use, go, save, end, help, stat'+self.end}")
                 player_choice = input("").lower()
-                print("")
+                clear()
                 # general actions shared by rooms
                 self.general_actions(player_choice)
 
@@ -268,13 +280,13 @@ class ChapterOne:
                     elif result == "drugged":
                         self.player.increase_score()
 
-                print("")
             elif p_local == self.end_name:
                 # ends game after player asks to
                 self.end_game()
             else:
                 # Winning game ending
                 self.exit_game()
+            print("")
 
     # saves games
     def save_game_state(self):
@@ -329,7 +341,7 @@ class ChapterOne:
         # ends game and asks to save
         elif general_list[0] == "end":
             self.stat_dictionary["end"] += 1
-            save = input("Save game? ").lower()
+            save = input("Save game? (y/n)").lower()
             if save == 'y':
                 self.stat_dictionary["save"] += 1
                 print('Saved!')
