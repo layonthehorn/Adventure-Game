@@ -86,10 +86,10 @@ class FunctionClass:
         talking = True
         while talking:
             if len(self.player_object.inventory) > 1:
-                for number, item in enumerate(self.player_object.inventory, 1):
+                for number, item in enumerate(self.player_object.inventory):
                     if item != "self":
                         print(item, end=", ")
-                    if (number - 1) % 4 == 0:
+                    if number % 4 == 0 and item != "self":
                         print("")
                 print("\n")
                 choice = input("Sell what? q to quit. ").lower()
@@ -114,8 +114,7 @@ class FunctionClass:
         talking = True
         while talking:
             if len(self.shop_inventory) > 0:
-                print("")
-                for number, item in enumerate(self.shop_inventory, 0):
+                for number, item in enumerate(self.shop_inventory):
                     print(item, end=", ")
                     if (number + 1) % 4 == 0:
                         print("")
