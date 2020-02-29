@@ -5,6 +5,10 @@ import time
 class FunctionClass:
     """Never to be called. Only used for giving all other classes the same methods."""
 
+    # class variables for print formatting
+    bold = '''\033[1m'''
+    end = '''\033[0;0m'''
+
     # allows getting a print function form the look dictionary.
     def get_look_commands(self, look_at):
         # you have to enter at least three letters
@@ -87,6 +91,8 @@ class FunctionClass:
         while talking:
             if len(self.player_object.inventory) > 1:
                 for number, item in enumerate(self.player_object.inventory):
+                    # self is an item that never leaves your inventory
+                    # and I don't want to show it
                     if item != "self":
                         print(item, end=", ")
                     if number % 4 == 0 and item != "self":
@@ -151,10 +157,21 @@ class FunctionClass:
         # flipping the value in the dictionary to subtract
         self.player_object.player_wallet = (self.player_object.item_values.get(item, 0) * -1)
 
+    # prints items and bolds them for effect.
+    def print_items(self):
+        if len(self.inventory) > 0:
+            for item in self.inventory:
+                print(f"There is a(n) ", end="")
+                print(self.bold, item, self.end)
+
 
 # Player Class
 class PlayerClass:
     """This is the main player class. It holds the player inventory and score among other things."""
+
+    # class variables for print formatting
+    bold = '''\033[1m'''
+    end = '''\033[0;0m'''
 
     def __init__(self):
 
@@ -246,7 +263,7 @@ class PlayerClass:
             for item in self.inventory:
                 # should not be shown to player as being an item.
                 if item != "self":
-                    print("{:20}{:<5}".format(item, self.item_dictionary.get(item, "Error, Report me pls!")))
+                    print(f"{self.bold,item,self.end:<20}{self.item_dictionary.get(item, 'Error, Report me pls!'):<5}")
 
     def drop_item(self, item):
         # prevents dropping the map.

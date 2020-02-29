@@ -6,6 +6,10 @@ import time
 class FunctionClass:
     """Never to be called. Only used for giving all other classes the same methods."""
 
+    # class variables for print formatting
+    bold = '''\033[1m'''
+    end = '''\033[0;0m'''
+
     # allows getting a print function form the look dictionary.
     def get_look_commands(self, look_at):
         # you have to enter at least three letters
@@ -86,10 +90,21 @@ class FunctionClass:
         else:
             print(f"I don't have a(n) {item} to drop.")
 
+    # prints items and bolds them for effect.
+    def print_items(self):
+        if len(self.inventory) > 0:
+            for item in self.inventory:
+                print(f"There is a(n) ", end="")
+                print(self.bold, item, self.end)
+
 
 # Player Class
 class PlayerClass:
     """This is the main player class. It holds the player inventory and score among other things."""
+
+    # class variables for print formatting
+    bold = '''\033[1m'''
+    end = '''\033[0;0m'''
 
     def __init__(self):
 
@@ -201,7 +216,7 @@ class PlayerClass:
             for item in self.inventory:
                 # should not be shown to player as being an item.
                 if item != "self":
-                    print("{:20}{:<5}".format(item, self.item_dictionary.get(item, "Error, Report me pls!")))
+                    print(f"{self.bold+item+self.end:<20}{self.item_dictionary.get(item, 'Error, Report me pls!'):<5}")
 
     # getting item out of inventory
     def drop_item(self, item):
@@ -394,9 +409,7 @@ class Bunker(FunctionClass):
         if self.door_opened:
             print("The door to 'outside' is open.")
 
-        if len(self.inventory) > 0:
-            for item in self.inventory:
-                print(f"There is a(n) {item}")
+        self.print_items()
 
     # this prints a description of the fuse box
     def print_description_box(self):
@@ -511,9 +524,7 @@ class ComputerRoom(FunctionClass):
                   "\nThere is a 'light' switch by the entryway. In the corner is an old 'computer' which appears to still "
                   "\nbe operational. You can get back to the 'bunker' too.")
             print("There is an old 'safe' of some sort too.")
-            if len(self.inventory) > 0:
-                for item in self.inventory:
-                    print(f"There is a(n) {item}")
+            self.print_items()
         else:
             print("There's a 'light switch' on the wall and an exit back to the 'bunker' \nbut otherwise it's too dark "
                   "to see.")
@@ -670,9 +681,8 @@ class MainPlaza(FunctionClass):
             print("I can get 'upstairs' now at least. The 'gate' is unlocked now.")
         else:
             print("The path 'upstairs' is shut for now. The 'gate' is locked.")
-        if len(self.inventory) > 0:
-            for item in self.inventory:
-                print(f"There is a(n) {item}")
+        self.print_items()
+
 
     def print_description_door(self):
         if not self.upstairs_unlocked:
@@ -817,9 +827,7 @@ class SmallDen(FunctionClass):
         print("There is a dead body of an 'animal' here.")
         if self.barn_looked:
             print("And a 'work bench' too.")
-        if len(self.inventory) > 0:
-            for item in self.inventory:
-                print(f"There is a(n) {item}")
+        self.print_items()
 
     # print description of dead body
     def print_description_animal_body(self):
@@ -945,9 +953,7 @@ class WestWing(FunctionClass):
         else:
             print("The 'kiosk' is happy with your offering.")
         print("You can go to 'toy shop', 'main plaza', 'pet shop', and 'cemetery.")
-        if len(self.inventory) > 0:
-            for item in self.inventory:
-                print(f"There is a(n) {item}")
+        self.print_items()
 
     def print_description_kiosk(self):
         if not self.pet_shop_unlocked:
@@ -1039,9 +1045,7 @@ class PetShop(FunctionClass):
         if "mane brush" in self.inventory:
             print("I might need a clean up and that brush looks handy.")
 
-        if len(self.inventory) > 0:
-            for item in self.inventory:
-                print(f"There is a(n) {item}")
+        self.print_items()
 
     def print_description_fish(self):
         if not self.fish_looked:
@@ -1131,9 +1135,7 @@ class ToyShop(FunctionClass):
         if "soldering wire" in self.inventory:
             print("There's old wire used to repair things here too.")
         print("You can go back to the 'west wing' from here.")
-        if len(self.inventory) > 0:
-            for item in self.inventory:
-                print(f"There is a(n) {item}")
+        self.print_items()
 
     def print_description_crane(self):
         print("It's an old crane machine.")
@@ -1247,9 +1249,7 @@ class Cemetery(FunctionClass):
         if not self.first_entered:
             print("You don't think you should remove anything from here.")
             self.first_entered = True
-        if len(self.inventory) > 0:
-            for item in self.inventory:
-                print(f"There is a(n) {item}")
+        self.print_items()
 
     def print_description_graves(self):
         print("There are a lot of different graves here. Seems a large community both lived and died here.")
@@ -1320,9 +1320,7 @@ class UpstairsHallway(FunctionClass):
               "\nsome time, judging by the repurposed 'furniture' and empty food packaging all over the floor. Whoever "
               "\nlived here defended it fiercely, judging by all the old casings and bullet holes.")
         print("You can go to 'down stairs', 'shoe store', 'animal den', and 'bathroom'.")
-        if len(self.inventory) > 0:
-            for item in self.inventory:
-                print(f"There is a(n) {item}")
+        self.print_items()
 
     # for look furn
     def print_description_furniture(self):
@@ -1448,10 +1446,7 @@ class AnimalDen(FunctionClass):
             print("It took my meat and left. I'll have to get more and use something on it.")
             self.meat_just_taken = False
         print("You can go back to the 'hallway'.")
-        if len(self.inventory) > 0:
-            for item in self.inventory:
-                print(f"There is a(n) {item}")
-
+        self.print_items()
     # Vern talking about the odd hole in the wall
     def print_description_hole(self):
         if self.hole_tried:
@@ -1539,9 +1534,7 @@ class Bathroom(FunctionClass):
               "\nisn’t much better either. There is an old first aid 'cabinet' on the wall and a 'hand dryer' along side it. ")
         print("There is an old nasty looking 'mirror' on the wall.")
         print("You can go back to the 'hallway'.")
-        if len(self.inventory) > 0:
-            for item in self.inventory:
-                print(f"There is a(n) {item}")
+        self.print_items()
 
     # bool will be if player has brushed mane
     def print_description_mirror(self):
@@ -1638,9 +1631,7 @@ class ShoeStore(FunctionClass):
             self.first_entered = True
 
         print("You can go back the the 'hallway' from here.")
-        if len(self.inventory) > 0:
-            for item in self.inventory:
-                print(f"There is a(n) {item}")
+        self.print_items()
 
     def print_description_elevator(self):
         if not self.elevator_opened:
@@ -1763,9 +1754,7 @@ class BasementEntry(FunctionClass):
         else:
             print("You'll have to figure out how to open the door.")
         print("You can go back 'up' to the 'shoe store'.")
-        if len(self.inventory) > 0:
-            for item in self.inventory:
-                print(f"There is a(n) {item}")
+        self.print_items()
 
     def print_description_pad(self):
         print("It's an old electronic lock of some kind.")
@@ -1879,9 +1868,7 @@ class BasementGenRoom(FunctionClass):
             print("There is a large panel with spaces for four large fuses. You should get your eyes out for them.")
             print("There is a 'spec' sheet by it you might want to take note of.")
         print("You can go back to the 'basement entry'")
-        if len(self.inventory) > 0:
-            for item in self.inventory:
-                print(f"There is a(n) {item}")
+        self.print_items()
 
     def print_description_generator(self):
         print("It's a back up generator.")
