@@ -333,7 +333,7 @@ class ExampleRoom(FunctionClass):
         self.inventory = ["temp"]
         self.player_object = player_object
         self.bool_one, self.bool_two, self.bool_three = (False, False, False)
-
+        self.shop_inventory = []
         self.look_dict = {}
         self.go_dict = {}
         self.oper_dict = {}
