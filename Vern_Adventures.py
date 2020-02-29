@@ -32,10 +32,12 @@ except IOError:
     print("Could not create save folder. Save feature will not work.")
 
 
+# allows me to clear the screen when playing
 def clear():
-    if platform.system() == 'Linux':
+    operating = platform.system()
+    if operating == 'Linux' or operating == "Darwin":
         os.system("clear")
-    elif platform.system() == 'Windows':
+    elif operating == 'Windows':
         os.system('cls')
 
 

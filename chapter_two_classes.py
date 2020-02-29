@@ -147,7 +147,7 @@ class FunctionClass:
         self.player_object.inventory.remove(item)
         self.shop_inventory.append(item)
         print(f"You sold the {item}.")
-        self.player_object.player_wallet = self.player_object.item_values.get(item, 0)
+        self.player_object.change_player_wallet(self.player_object.item_values.get(item, 0))
 
     # controls buying items
     def buy(self, item):
@@ -155,7 +155,7 @@ class FunctionClass:
         self.shop_inventory.remove(item)
         print(f"You bought the {item}.")
         # flipping the value in the dictionary to subtract
-        self.player_object.player_wallet = (self.player_object.item_values.get(item, 0) * -1)
+        self.player_object.change_player_wallet((self.player_object.item_values.get(item, 0) * -1))
 
     # prints items and bolds them for effect.
     def print_items(self):
@@ -180,7 +180,7 @@ class PlayerClass:
         self.item_values = {}
         self.__location = "bunker"
         self.__player_score = 0
-        self.__player_wallet = 0
+        self.player_wallet = 0
         #
         # mp, up, pet, shoe, rest, ani, den, west, toy, cem, fall, com = (
         #     "MP", "UH", 'PS', 'SS', 'RR', 'AD', 'SD', 'WW', 'TS', 'C ', 'FS', 'CR')
@@ -222,20 +222,15 @@ class PlayerClass:
             print(f"You have gone to the {location}.")
         self.__location = location
 
-    @property
-    def player_wallet(self):
-        return self.__player_wallet
-
-    @player_wallet.setter
-    def player_wallet(self, new_value):
+    def change_player_wallet(self, new_value):
         if new_value < 0:
             print(f"You lost {abs(new_value)} coins.")
         elif new_value > 0:
             print(f"You got {new_value} coins!")
         else:
             print("Error somehow got 0 dollars.")
-        self.__player_wallet += new_value
-        print(f"You have {self.__player_wallet} coins total now.")
+        self.player_wallet += new_value
+        print(f"You have {self.player_wallet} coins total now.")
 
     @property
     def player_score(self):
@@ -243,8 +238,11 @@ class PlayerClass:
 
     @player_score.setter
     def player_score(self, new_value):
+        if new_value < 1:
+            new_value = 1
+            print("Error, cannot be less than one.")
         print("You're score went up!")
-        self.__player_score += 1
+        self.__player_score += new_value
 
     # prints your score
     def print_score(self):

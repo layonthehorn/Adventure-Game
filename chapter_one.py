@@ -15,10 +15,12 @@ def load_game_state(file_name):
         return None
 
 
+# allows me to clear the screen when playing
 def clear():
-    if platform.system() == 'Linux':
+    operating = platform.system()
+    if operating == 'Linux' or operating == "Darwin":
         os.system("clear")
-    elif platform.system() == 'Windows':
+    elif operating == 'Windows':
         os.system('cls')
 
 

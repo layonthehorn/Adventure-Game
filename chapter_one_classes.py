@@ -4,11 +4,12 @@ import os
 import platform
 
 
-# allows clearing of the screens
+# allows me to clear the screen when playing
 def clear():
-    if platform.system() == 'Linux':
+    operating = platform.system()
+    if operating == 'Linux' or operating == "Darwin":
         os.system("clear")
-    elif platform.system() == 'Windows':
+    elif operating == 'Windows':
         os.system('cls')
 
 
@@ -83,9 +84,9 @@ class FunctionClass:
     def get_item(self, item):
         if item in self.inventory:
             if item == "map":
-                print(f"Hey a {self.bold+item+self.end}, this might help me out.")
+                print(f"Hey a {self.bold + item + self.end}, this might help me out.")
             else:
-                print(f"I got the {self.bold+item+self.end}.")
+                print(f"I got the {self.bold + item + self.end}.")
             self.inventory.remove(item)
             self.player_object.inventory.append(item)
         else:
@@ -94,7 +95,7 @@ class FunctionClass:
     # dropping item back into room
     def drop_item(self, item):
         if item in self.player_object.inventory and item != "map":
-            print(f"I dropped the {self.bold+item+self.end}.")
+            print(f"I dropped the {self.bold + item + self.end}.")
             self.inventory.append(item)
             self.player_object.inventory.remove(item)
         elif item in self.player_object.inventory and item != "map":
@@ -198,9 +199,9 @@ class PlayerClass:
     def location(self, location):
         # makes sure that you do not enter a bad location.
         if location not in ("plaza", "bunker",
-                              "side room", "small den", "west wing", "cemetery", "toy shop",
-                              "pet shop", "exit", "end", "upstairs hallway", "animal den",
-                              "shoe store", "bathroom", "basement entry", "basement generator room"):
+                            "side room", "small den", "west wing", "cemetery", "toy shop",
+                            "pet shop", "exit", "end", "upstairs hallway", "animal den",
+                            "shoe store", "bathroom", "basement entry", "basement generator room"):
             print(f"Could not fine {location}... Possible missing spelling in code?")
             print("Could not find matching location. Moving to bunker.")
             location = "bunker"
@@ -230,7 +231,8 @@ class PlayerClass:
             for item in self.inventory:
                 # should not be shown to player as being an item.
                 if item != "self":
-                    print(f"{self.bold+item+self.end:<20}{self.item_dictionary.get(item, 'Error, Report me pls!'):<5}")
+                    print(
+                        f"{self.bold + item + self.end:<20}{self.item_dictionary.get(item, 'Error, Report me pls!'):<5}")
 
     # removes items from player
     # can use any number of items.
@@ -238,7 +240,7 @@ class PlayerClass:
         # never removes self from inventory.
         for item in items:
             if item != "self":
-                print(f"I used the {self.bold+item+self.end}.")
+                print(f"I used the {self.bold + item + self.end}.")
                 self.inventory.remove(item)
             else:
                 # prints something random when you use yourself
@@ -582,7 +584,7 @@ class ComputerRoom(FunctionClass):
             if item == "map":
                 print("Hey a map, this might help me out.")
             else:
-                print(f"I got the {self.bold+item+self.end}.")
+                print(f"I got the {self.bold + item + self.end}.")
             self.inventory.remove(item)
             self.player_object.inventory.append(item)
         else:
@@ -680,7 +682,6 @@ class MainPlaza(FunctionClass):
         else:
             print("The path 'upstairs' is shut for now. The 'gate' is locked.")
         self.print_items()
-
 
     def print_description_door(self):
         if not self.upstairs_unlocked:
@@ -1363,19 +1364,22 @@ class UpstairsHallway(FunctionClass):
                       "\nhow they are looking at her.")
 
             elif page == "two":
-                print("Things have gone well so far. I've helped Martha get used to not eating meat all the time again.")
+                print(
+                    "Things have gone well so far. I've helped Martha get used to not eating meat all the time again.")
                 print("Poor sweetheart. She doesn't even remember being human at all.")
                 print("What am I going to do?")
 
             elif page == "three":
                 print("Others are changing too now. This is getting out of hand.")
-                print("I had convinced the others that Martha couldn't infect them but now they aren't listening to me.")
+                print(
+                    "I had convinced the others that Martha couldn't infect them but now they aren't listening to me.")
                 print("I can't let them hurt her. We survived the end together and")
                 print("The journal ends suddenly here...")
 
             elif page == "four":
                 print("This page is dated much older than the rest.")
-                print("Hey, I found a sweet new place to live for a while. Gotta clean out all the old bodies first though.")
+                print(
+                    "Hey, I found a sweet new place to live for a while. Gotta clean out all the old bodies first though.")
                 print("Weird cat things. Everywhere they show up things go to shit.")
                 # Vern talking to himself
                 print("\nVern taps his foot on the ground and growls to himself.")
@@ -1443,6 +1447,7 @@ class AnimalDen(FunctionClass):
             self.meat_just_taken = False
         print("You can go back to the 'hallway'.")
         self.print_items()
+
     # Vern talking about the odd hole in the wall
     def print_description_hole(self):
         if self.hole_tried:
@@ -1646,7 +1651,7 @@ class ShoeStore(FunctionClass):
                 print("I removed the short rope from the elevator.")
                 self.weak_roped = False
             else:
-                print(f"I got the {self.bold+item+self.end}.")
+                print(f"I got the {self.bold + item + self.end}.")
             self.inventory.remove(item)
             self.player_object.inventory.append(item)
         else:
