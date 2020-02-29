@@ -114,9 +114,10 @@ class FunctionClass:
         talking = True
         while talking:
             if len(self.shop_inventory) > 0:
+                print("")
                 for number, item in enumerate(self.shop_inventory, 0):
                     print(item, end=", ")
-                    if number % 4 == 0:
+                    if (number + 1) % 4 == 0:
                         print("")
                 print("\n")
                 choice = input("Buy what? q to quit. ").lower()
