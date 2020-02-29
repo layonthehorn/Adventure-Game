@@ -31,10 +31,10 @@ class FunctionClass:
                     look_command()
                     break
             else:
-                print(f"I can't look at {look_at}.")
+                print(f"I can't look at the {look_at}.")
 
         else:
-            print(f"I can't look at {look_at}.")
+            print(f"I can't look at the {look_at}.")
 
     # allows getting operate commands
     def get_oper_commands(self, operate):
