@@ -134,9 +134,10 @@ class ChapterOne:
 
         # main game play loop
         while self.playing and not end_game:
-
+            print("")
             # if you reach the exit then don't ask for actions from player
             if self.player.location != self.exit_name:
+
                 print("Verbs look, inv(entory), get, oper(ate), com(bine), drop, score, use, go, save, end, help, stat")
                 player_choice = input("").lower()
                 # general actions shared by rooms
@@ -161,6 +162,7 @@ class ChapterOne:
             # writes data to save file with pickle
             with open(self.save_location, 'wb+') as db_file:
                 pickle.dump(self.save_dictionary, db_file)
+            print("Game has been saved!")
         except IOError:
             print("Could not open file for saving...")
 
@@ -195,7 +197,6 @@ class ChapterOne:
         # saves the game
         elif general_list[0] == "save":
             self.stat_dictionary["save"] += 1
-            print("Game has been saved!")
             self.save_game_state()
         # prints score
         elif general_list[0] == "score":
