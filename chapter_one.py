@@ -63,8 +63,10 @@ class ChapterOne:
     bold = '\033[1m'
     end = '\033[0m'
 
-    def __init__(self):
+    def __init__(self, testing=False):
 
+        # setting if we allow debug options
+        self.testing = testing
         # pattern matching for actions
         self.use_pattern = re.compile(r"^use\s|\swith\s|\son\s")
         self.combine_pattern = re.compile(r"^com\s|\swith\s|\son\s")
@@ -250,17 +252,6 @@ class ChapterOne:
         # main game play loop
         while self.playing and not end_game:
 
-            # if the generator is working and the exit is locked it opens the exit.
-            if self.basement_gen_room.generator_working:
-                if not self.main_plaza.exit_unlocked:
-                    self.main_plaza.exit_unlocked = True
-
-            # if mane is brushed updates the safe and mirror bools
-            if self.player.mane_brushed:
-                if not self.side_room.safe_unlocked:
-                    self.side_room.safe_unlocked = True
-                    self.bathroom.mane_combed = True
-
             # if you reach the exit then don't ask for actions from player
             if self.player.location != self.exit_name:
 
@@ -325,10 +316,18 @@ class ChapterOne:
             print_help()
 
         # for debugging only
+        # disabled by default
         elif action == "debug player":
-            print(self.player)
+            if self.testing:
+                print(self.player)
+                self.player.debug_player()
+            else:
+                print(f"I don't know how to {general_list[0]}.")
         elif action == "debug room":
-            print(loc_name)
+            if self.testing:
+                print(loc_name)
+            else:
+                print(f"I don't know how to {general_list[0]}.")
         # saves the game
         elif general_list[0] == "save":
             self.stat_dictionary["save"] += 1

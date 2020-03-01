@@ -240,9 +240,11 @@ class PlayerClass:
     def player_score(self, new_value):
         if new_value < 1:
             new_value = 1
-            print("Error, cannot be less than one.")
-        print("You're score went up!")
-        self.__player_score += new_value
+            print("You're score went up!")
+            self.__player_score += new_value
+        else:
+            print("You're score went up!")
+            self.__player_score = new_value
 
     # prints your score
     def print_score(self):

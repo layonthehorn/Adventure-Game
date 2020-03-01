@@ -125,10 +125,15 @@ class PlayerClass:
         self.__location = "bunker"
         self.player_score = 0
         self.mane_brushed = False
+        self.generator_working = False
         self.fish_counter = 0
         self.use_remarks = ("I was useful after all.", "I feel used...", "I never knew I could use myself.",
                             "At least I didn't ruffle my mane.", "I think I'm still in one piece after that.")
         self.places = ["MP", "UH", 'PS', 'SS', 'RR', 'AD', 'SD', 'WW', 'TS', 'C ', 'FS', 'CR']
+        self.accepted_locations = ("plaza", "bunker",
+                                   "side room", "small den", "west wing", "cemetery", "toy shop",
+                                   "pet shop", "exit", "end", "upstairs hallway", "animal den",
+                                   "shoe store", "bathroom", "basement entry", "basement generator room")
         self.map_dictionary = {
             "plaza": "MP",
             "bunker": "FS",
@@ -189,6 +194,17 @@ class PlayerClass:
     def __str__(self):
         return f"""Inventory {self.inventory}\nLocation {self.location}\nScore {self.player_score}\nMane brushed {self.mane_brushed}\nFish counter {self.fish_counter}"""
 
+    # enables changing player room for testing
+    def debug_player(self):
+        print("\nEnter location?\n")
+        for number, place in enumerate(self.accepted_locations):
+            print(f"{self.bold+place+self.end}", end=", ")
+            if (number + 1) % 4 == 0:
+                print("")
+        print("")
+        choice = input("")
+        self.location = choice
+
     @property
     def location(self):
         return self.__location
@@ -196,13 +212,10 @@ class PlayerClass:
     @location.setter
     def location(self, location):
         # makes sure that you do not enter a bad location.
-        if location not in ("plaza", "bunker",
-                            "side room", "small den", "west wing", "cemetery", "toy shop",
-                            "pet shop", "exit", "end", "upstairs hallway", "animal den",
-                            "shoe store", "bathroom", "basement entry", "basement generator room"):
+        if location not in self.accepted_locations:
             print(f"Could not fine {location}... Possible missing spelling in code?")
-            print("Could not find matching location. Moving to bunker.")
-            location = "bunker"
+            print("Could not find matching location. Canceling movement.")
+            location = self.__location
         else:
             print(f"You have gone to the {location}.")
         self.__location = location
@@ -491,7 +504,7 @@ class ComputerRoom(FunctionClass):
 
         self.inventory = ["wrench"]
         self.player_object = player_object
-        self.light_switch, self.safe_opened, self.safe_unlocked = (False, False, False)
+        self.light_switch, self.safe_opened = (False, False)
 
         self.look_dict = {
             "room": self.print_description_room,
@@ -512,7 +525,7 @@ class ComputerRoom(FunctionClass):
         self.use_dict = {}
 
     def __str__(self):
-        return f"""Inventory {self.inventory}\nLight switch {self.light_switch}\nSafe ready to open {self.safe_opened}\nSafe unlocked {self.safe_unlocked}"""
+        return f"""Inventory {self.inventory}\nLight switch {self.light_switch}\nSafe ready to open {self.safe_opened}"""
 
     # this prints a description along with a item list
     def print_description_room(self):
@@ -557,7 +570,7 @@ class ComputerRoom(FunctionClass):
     def operate_safe(self):
         if self.light_switch:
             if not self.safe_opened:
-                if self.safe_unlocked:
+                if self.player_object.mane_brushed:
                     print("I SUPPOSE YOU ARE CLEAN ENOUGH... FINE I'LL OPEN.\n")
                     print("Piece of junk... About damn time.")
                     self.inventory.append("green fuse")
@@ -633,8 +646,7 @@ class MainPlaza(FunctionClass):
     def __init__(self, player_object):
         self.inventory = ["map"]
         self.player_object = player_object
-        self.exit_unlocked, self.upstairs_unlocked, self.car_looked, self.car_oper, self.desk_opened, self.phone_used = (
-            False, False, False, False, False, False)
+        self.upstairs_unlocked, self.car_looked, self.car_oper, self.desk_opened, self.phone_used = (False, False, False, False, False)
         self.look_dict = {
             "room": self.print_description_room,
             "car": self.print_description_car,
@@ -662,7 +674,7 @@ class MainPlaza(FunctionClass):
         }
 
     def __str__(self):
-        return f"""Inventory {self.inventory}\nExit unlocked {self.exit_unlocked}\nUpstairs unlocked {self.upstairs_unlocked}\nCar looked{self.car_looked}\nCar operated {self.car_oper}\nDesk opened {self.desk_opened}\nPhone used {self.phone_used}"""
+        return f"""Inventory {self.inventory}\nUpstairs unlocked {self.upstairs_unlocked}\nCar looked{self.car_looked}\nCar operated {self.car_oper}\nDesk opened {self.desk_opened}\nPhone used {self.phone_used}"""
 
     # this prints a description along with a item list
     def print_description_room(self):
@@ -671,7 +683,7 @@ class MainPlaza(FunctionClass):
               "\nwith much of the furnishings removed or smashed. Nature is starting to reclaim it too, judging by all "
               "\nthe foliage that’s popped up. There is an old 'car' parked nearby, for some strange reason."
               "\nThere is a 'desk' over by the main entrance near a 'payphone'.")
-        if self.exit_unlocked:
+        if self.player_object.generator_working:
             print("The 'exit' is open! I can get out.")
         else:
             print("The 'exit' is locked and I'm trapped.")
@@ -761,7 +773,7 @@ class MainPlaza(FunctionClass):
             print("It's locked. I'll have to figure out how to get up there.")
 
     def go_exit(self):
-        if self.exit_unlocked:
+        if self.player_object.generator_working:
             self.player_object.location = "exit"
         else:
             print("Right now the power is out, I'm trapped.")
@@ -1408,6 +1420,7 @@ class AnimalDen(FunctionClass):
     def __init__(self, player_object):
         self.inventory = []
         self.player_object = player_object
+        self.animal_counter = 0
         self.animal_drugged, self.entered_after_drugged, self.found_fur, self.meat_just_taken, self.hole_tried = (
             False, False, False, False, False)
 
@@ -1439,7 +1452,7 @@ class AnimalDen(FunctionClass):
             print("Hey, my trap worked!")
             self.entered_after_drugged = True
         if self.animal_drugged:
-            print("Hey, looks like some sort of shaggy dog. Kinda fuzzy too, weird 'animal'.")
+            print("Hey, looks like some sort of shaggy dog. Kinda fuzzy too, weird looking 'animal'.")
         elif self.meat_just_taken:
             print("It took my meat and left. I'll have to get more and use something on it.")
             self.meat_just_taken = False
@@ -1457,7 +1470,7 @@ class AnimalDen(FunctionClass):
     def print_description_animal(self):
         if self.animal_drugged:
             print("it's a small animal. Pretty fuzzy too.")
-            if not self.found_fur:
+            if not self.found_fur and "fur sample" in self.inventory:
                 print("Hey, that fur might help me out.")
                 self.found_fur = True
         else:
@@ -1504,7 +1517,7 @@ class Bathroom(FunctionClass):
         self.inventory = ["knife"]
         self.player_object = player_object
 
-        self.looked_dryer, self.cabinet_looked, self.mane_combed = (False, False, False)
+        self.looked_dryer, self.cabinet_looked = (False, False)
 
         self.look_dict = {
             "room": self.print_description_room,
@@ -1524,7 +1537,7 @@ class Bathroom(FunctionClass):
         self.use_dict = {}
 
     def __str__(self):
-        return f"""Inventory {self.inventory}\nDryer looked {self.looked_dryer}\nCabinet looked {self.cabinet_looked}\nMane combed {self.mane_combed}"""
+        return f"""Inventory {self.inventory}\nDryer looked {self.looked_dryer}\nCabinet looked {self.cabinet_looked}\n"""
 
     # this prints a description along with a item list
     def print_description_room(self):
@@ -1538,7 +1551,7 @@ class Bathroom(FunctionClass):
     # bool will be if player has brushed mane
     def print_description_mirror(self):
         print("It's an old cracked mirror. Kinda dirty too...")
-        if self.mane_combed:
+        if self.player_object.mane_brushed:
             print("At least I look nicer than I thought I did.")
         else:
             print("My mane needs to be cleaned up pretty badly.")
@@ -1852,7 +1865,7 @@ class BasementGenRoom(FunctionClass):
         }
 
     def __str__(self):
-        return f"""Inventory {self.inventory}\nGenerator Inventory {self.generator_inventory}\nGenerator working {self.generator_working}\nFuses fixed {self.fuses_fixed}"""
+        return f"""Inventory {self.inventory}\nGenerator Inventory {self.generator_inventory}\nFuses fixed {self.fuses_fixed}"""
 
     # this prints a description along with a item list
     def print_description_room(self):
@@ -1906,6 +1919,7 @@ class BasementGenRoom(FunctionClass):
     def operate_generator(self):
         if not self.generator_working and len(self.generator_inventory) == 4:
             print("You flip the massive switch and the generator roars to life!")
+            self.player_object.generator_working = True
             self.generator_working = True
             self.player_object.increase_score()
         elif not self.generator_working and len(self.generator_inventory) < 4:
