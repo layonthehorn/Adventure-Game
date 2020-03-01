@@ -1,4 +1,15 @@
 import time
+import os
+import platform
+
+
+# allows me to clear the screen when playing
+def clear():
+    operating = platform.system()
+    if operating == 'Linux' or operating == "Darwin":
+        os.system("clear")
+    elif operating == 'Windows':
+        os.system('cls')
 
 
 # function class for inheritance.
@@ -73,8 +84,9 @@ class FunctionClass:
         talking = True
         print("Welcome to my shop!")
         while talking:
-            print("Sell(s), Buy(b), or Quit(q)?")
+            print("\nSell(s), Buy(b), or Quit(q)?")
             choice = input("").lower()
+            clear()
             if choice == "s":
                 self.sell_items()
             elif choice == "b":
@@ -101,10 +113,11 @@ class FunctionClass:
                         if (number + 1) % 4 == 0:
                             print("")
                     print("\n")
-                    choice = input("Sell what? q to quit. ").lower()
+                    choice = input("\nSell what? q to quit. ").lower()
+                    clear()
                     # if you do not have the thing you are trying to sell
                     if choice not in self.player_object.inventory and choice != "q":
-                        print(f"You don't have a(n) {choice} to sell")
+                        print(f"You don't have a(n) {self.bold + choice + self.end} to sell")
                     # if the item has a value in game
                     elif choice in self.player_object.sell_item_values:
                         print("I'll take that. Thank you!")
@@ -113,7 +126,7 @@ class FunctionClass:
                     elif choice == "q":
                         talking = False
                     else:
-                        print(f"I don't want to buy a(n) {choice}")
+                        print(f"I don't want to buy a(n) {self.bold + choice + self.end}")
                 else:
                     print("You don't have anything I want to buy.")
                     talking = False
@@ -132,7 +145,8 @@ class FunctionClass:
                     if (number + 1) % 4 == 0:
                         print("")
                 print("\n")
-                choice = input("Buy what? q to quit. ").lower()
+                choice = input("\nBuy what? q to quit. ").lower()
+                clear()
                 # if they have it to sell you
                 if choice in self.shop_inventory:
                     # if you have enough money
@@ -140,11 +154,11 @@ class FunctionClass:
                         self.buy(choice)
                     else:
                         # if you are too poor
-                        print(f"You can't afford the {choice}. You need {self.player_object.buy_item_values.get(choice) - self.player_object.player_wallet}.")
+                        print(f"You can't afford the {self.bold + choice + self.end}. You need {self.player_object.buy_item_values.get(choice) - self.player_object.player_wallet}.")
                 elif choice == "q":
                     talking = False
                 else:
-                    print(f"I don't have a(n) {choice} to sell you.")
+                    print(f"I don't have a(n) {self.bold + choice + self.end} to sell you.")
             else:
                 print("I am totally out of things to sell you.")
                 talking = False
@@ -154,14 +168,14 @@ class FunctionClass:
         self.player_object.inventory.remove(item)
         if item in self.player_object.buy_item_values:
             self.shop_inventory.append(item)
-        print(f"You sold the {item}.")
+        print(f"You sold the {self.bold + item + self.end}.")
         self.player_object.change_player_wallet(self.player_object.sell_item_values.get(item, 0))
 
     # controls buying items
     def buy(self, item):
         self.player_object.inventory.append(item)
         self.shop_inventory.remove(item)
-        print(f"You bought the {item}.")
+        print(f"You bought the {self.bold + item + self.end}.")
         self.player_object.change_player_wallet(self.player_object.buy_item_values.get(item, 0))
 
     # prints items and bolds them for effect.
