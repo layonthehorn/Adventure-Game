@@ -152,6 +152,7 @@ class ChapterOne:
                 choosing = False
                 end_game = True
             elif player_option == "l":
+                clear()
                 # getting loaded settings
                 new_value_dictionary = load_game_state(self.save_location)
                 # if the dictionary is none it can not load a game
