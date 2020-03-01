@@ -128,9 +128,7 @@ class PlayerClass:
         self.fish_counter = 0
         self.use_remarks = ("I was useful after all.", "I feel used...", "I never knew I could use myself.",
                             "At least I didn't ruffle my mane.", "I think I'm still in one piece after that.")
-        mp, up, pet, shoe, rest, ani, den, west, toy, cem, fall, com = (
-            "MP", "UH", 'PS', 'SS', 'RR', 'AD', 'SD', 'WW', 'TS', 'C ', 'FS', 'CR')
-        self.places = [mp, up, pet, shoe, rest, ani, den, west, toy, cem, fall, com]
+        self.places = ["MP", "UH", 'PS', 'SS', 'RR', 'AD', 'SD', 'WW', 'TS', 'C ', 'FS', 'CR']
         self.map_dictionary = {
             "plaza": "MP",
             "bunker": "FS",
