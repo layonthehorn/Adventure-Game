@@ -48,6 +48,7 @@ while choosing:
     user_input = input("Which Chapter to play? (1, 2, or q to quit) ").lower()
     if user_input == "1":
         clear()
+        # add True as parameter to enable debugging commands
         ChapterOne(True)
         clear()
     elif user_input == "2":

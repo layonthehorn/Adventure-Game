@@ -317,15 +317,19 @@ class ChapterOne:
 
         # for debugging only
         # disabled by default
-        elif action == "debug player":
+        elif general_list[0] == "debug":
             if self.testing:
-                print(self.player)
-                self.player.debug_player()
-            else:
-                print(f"I don't know how to {general_list[0]}.")
-        elif action == "debug room":
-            if self.testing:
-                print(loc_name)
+                pick = input("Player or room? ").lower()
+                if pick == "player":
+                    clear()
+                    print(self.player)
+                    self.player.debug_player()
+                elif pick == "room":
+                    clear()
+                    print(loc_name)
+                else:
+                    clear()
+                    print("Cannot debug print that.")
             else:
                 print(f"I don't know how to {general_list[0]}.")
         # saves the game
@@ -343,12 +347,12 @@ class ChapterOne:
         # ends game and asks to save
         elif general_list[0] == "end":
             self.stat_dictionary["end"] += 1
-            save = input("Save game? (y/n)").lower()
+            save = input("Save game? (y/n) ").lower()
             if save == 'y':
                 self.stat_dictionary["save"] += 1
                 print('Saved!')
                 self.save_game_state()
-            input("Press enter to quit. Goodbye!")
+            input("Press enter to quit. Goodbye! ")
             self.player.location = self.end_name
 
         # looking at things
@@ -432,7 +436,7 @@ class ChapterOne:
     def exit_game(self):
         self.print_outro()
         self.player.print_score()
-        input("Press enter to exit Chapter One.\nThank you for playing!")
+        input("Press enter to exit Chapter One.\nThank you for playing! ")
         self.end_game()
 
     # a end game function

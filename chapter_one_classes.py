@@ -202,7 +202,7 @@ class PlayerClass:
             if (number + 1) % 4 == 0:
                 print("")
         print("")
-        choice = input("")
+        choice = input("").lower()
         self.location = choice
 
     @property
@@ -337,6 +337,8 @@ class PlayerClass:
         if "map" in self.inventory:
             print("Let me check my map.\n*Map crinkling sounds.*")
             time.sleep(1.5)
+            if self.location == "basement entry" or self.location == "basement generator room":
+                print("\nThis place is not on the map at all.\n")
             rooms = []
             p_local = "??"
             for room in self.places:
@@ -369,6 +371,7 @@ class PlayerClass:
                                                    |You: @@ in room {p_local}  |
                                                    +--------------------+  
                    """)
+
         else:
             print("I don't have one.")
 
@@ -1877,7 +1880,7 @@ class BasementGenRoom(FunctionClass):
         if self.fuses_fixed:
             print("The power is on somewhere now. You should look around for it!")
         else:
-            print("There is a large panel with spaces for four large fuses. You should get your eyes out for them.")
+            print("There is a large panel with spaces for four large fuses. You should keep your eyes out for them.")
             print("There is a 'spec' sheet by it you might want to take note of.")
         print("You can go back to the 'basement entry'")
         self.print_items()
