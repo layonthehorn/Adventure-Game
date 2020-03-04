@@ -41,6 +41,7 @@ def clear():
         os.system('cls')
 
 
+clear()
 choosing = True
 while choosing:
     print(ascii_image)
