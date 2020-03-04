@@ -49,7 +49,7 @@ while choosing:
     if user_input == "1":
         clear()
         # add True as parameter to enable debugging commands
-        ChapterOne(True)
+        ChapterOne()
         clear()
     elif user_input == "2":
         clear()
