@@ -28,7 +28,7 @@ ascii_image = """
 
 # saving will not work the same on android
 def check_android():
-    if 'ANDROID_ARGUMENT' in environ:
+    if 'ANDROID_ARGUMENT' in environ or 'ANDROID_STORAGE' in environ:
         return True
     else:
         return False
