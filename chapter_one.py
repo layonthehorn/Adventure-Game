@@ -268,6 +268,7 @@ class ChapterOne:
                 self.end_game()
             else:
                 # Winning game ending
+                self.clear()
                 self.exit_game()
             print("")
 
