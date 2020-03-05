@@ -51,6 +51,7 @@ try:
 
 except IOError:
     print("Could not create save folder. Save feature will not work.")
+    input("Press Enter...")
 
 clear()
 choosing = True
