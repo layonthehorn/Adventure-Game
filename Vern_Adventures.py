@@ -36,20 +36,24 @@ def check_android():
 
 operating = platform.system()
 if (operating == 'Linux' or operating == "Darwin") and not check_android():
+    print("Found Linux or Mac.")
     # save location and clear if on linux or mac
     save_dir = f"/home/{getpass.getuser()}/Documents/vern_saves"
     clear = lambda: os.system("clear")
 elif operating == 'Windows':
+    print("Found Windows.")
     # save location and clear if on windows
     save_dir = f"C:/Users/{getpass.getuser()}/Documents/vern_saves"
     clear = lambda: os.system("cls")
 elif check_android():
+    print("Found Android.")
     # android system found
-    save_dir = os.path.join(os.getcwd(), "saves")
+    save_dir = os.path.join(os.getcwd(), "vern_saves")
     clear = lambda: os.system("clear")
 else:
     # unknown system
-    save_dir = os.path.join(os.getcwd(), "saves")
+    print("Found Unknown.")
+    save_dir = os.path.join(os.getcwd(), "vern_saves")
     clear = lambda: None
 # makes sure the save directory is a thing
 try:
