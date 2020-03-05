@@ -1,6 +1,7 @@
 import pickle
 import re
 import os
+from os import environ
 import platform
 import getpass
 from chapter_one_classes import PlayerClass, Bunker, ComputerRoom, MainPlaza, SmallDen, WestWing, ToyShop, PetShop, Cemetery, UpstairsHallway, AnimalDen, Bathroom, ShoeStore, BasementEntry, BasementGenRoom
@@ -14,6 +15,14 @@ def load_game_state(file_name):
             return pickle_db
     except FileNotFoundError:
         return None
+
+
+# saving will not work the same on android
+def check_android():
+    if 'ANDROID_ARGUMENT' in environ:
+        return True
+    else:
+        return False
 
 
 def print_help():
@@ -48,7 +57,7 @@ class ChapterOne:
         self.use_pattern = re.compile(r"^use\s|\swith\s|\son\s")
         self.combine_pattern = re.compile(r"^com\s|\swith\s|\son\s")
         operating = platform.system()
-        if operating == 'Linux' or operating == "Darwin":
+        if (operating == 'Linux' or operating == "Darwin") and not check_android():
             # save location and clear if on linux or mac
             self.save_location = f"/home/{getpass.getuser()}/Documents/vern_saves/chapter_one.save"
             self.clear = lambda: os.system("clear")
@@ -56,6 +65,10 @@ class ChapterOne:
             # save location and clear if on windows
             self.save_location = f"C:/Users/{getpass.getuser()}/Documents/vern_saves/chapter_one.save"
             self.clear = lambda: os.system("cls")
+        elif check_android():
+            # checks for the android system
+            self.save_location = "vern_saves/chapter_one.save"
+            self.clear = lambda: os.system("clear")
         else:
             # unknown system so clear is turned off
             self.save_location = "vern_saves/chapter_one.save"

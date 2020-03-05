@@ -2,6 +2,7 @@
 from chapter_one import ChapterOne
 # from chapter_two import ChapterTwo
 import os
+from os import environ
 import platform
 import getpass
 
@@ -24,8 +25,17 @@ ascii_image = """
 
 """
 
+
+# saving will not work the same on android
+def check_android():
+    if 'ANDROID_ARGUMENT' in environ:
+        return True
+    else:
+        return False
+
+
 operating = platform.system()
-if operating == 'Linux' or operating == "Darwin":
+if (operating == 'Linux' or operating == "Darwin") and not check_android():
     # save location and clear if on linux or mac
     save_dir = f"/home/{getpass.getuser()}/Documents/vern_saves"
     clear = lambda: os.system("clear")
@@ -33,8 +43,12 @@ elif operating == 'Windows':
     # save location and clear if on windows
     save_dir = f"C:/Users/{getpass.getuser()}/Documents/vern_saves"
     clear = lambda: os.system("cls")
+elif check_android():
+    # android system found
+    save_dir = os.path.join(os.getcwd(), "saves")
+    clear = lambda: os.system("clear")
 else:
-    # unknown system so clear is turned off
+    # unknown system
     save_dir = os.path.join(os.getcwd(), "saves")
     clear = lambda: None
 # makes sure the save directory is a thing
