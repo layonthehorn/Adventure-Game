@@ -2,6 +2,7 @@ import pickle
 import re
 import os
 import platform
+import getpass
 from chapter_one_classes import PlayerClass, Bunker, ComputerRoom, MainPlaza, SmallDen, WestWing, ToyShop, PetShop, Cemetery, UpstairsHallway, AnimalDen, Bathroom, ShoeStore, BasementEntry, BasementGenRoom
 
 
@@ -13,15 +14,6 @@ def load_game_state(file_name):
             return pickle_db
     except FileNotFoundError:
         return None
-
-
-# allows me to clear the screen when playing
-def clear():
-    operating = platform.system()
-    if operating == 'Linux' or operating == "Darwin":
-        os.system("clear")
-    elif operating == 'Windows':
-        os.system('cls')
 
 
 def print_help():
@@ -42,21 +34,6 @@ def print_help():
           "\nstat: Prints stats on commands used.")
 
 
-def print_intro():
-    clear()
-    print(""" 
-Vern the lion was traveling with his friend Johnson and his daughter Katie. 
-On their way to Harrisburg, they stopped for the night and he shared a drink with his friend. 
-Things got out of hand and one drink turned into many. 
-The next thing Vern knew he woke up with a massive headache in a strange place.
-
-You wake up, alone and afraid in an old fallout shelter, built some time in the past, but abandoned 
-long ago. It appears a group had set themselves up here before the end, judging by the things that were left 
-behind. The room smells of mould and rust. There is a disabled robot in the corner, an entry to a smaller 
-room and there is a door that appears to be locked.
-""")
-
-
 class ChapterOne:
     """This is a text adventure game, chapter one. All that is needed is to initialize it and the game will start."""
     under_line = '\033[4m'
@@ -70,7 +47,19 @@ class ChapterOne:
         # pattern matching for actions
         self.use_pattern = re.compile(r"^use\s|\swith\s|\son\s")
         self.combine_pattern = re.compile(r"^com\s|\swith\s|\son\s")
-        self.save_location = "saves/chapter_one.save"
+        operating = platform.system()
+        if operating == 'Linux' or operating == "Darwin":
+            # save location and clear if on linux or mac
+            self.save_location = f"/home/{getpass.getuser()}/Documents/vern_saves/chapter_one.save"
+            self.clear = lambda: os.system("clear")
+        elif operating == 'Windows':
+            # save location and clear if on windows
+            self.save_location = f"C:/Users/{getpass.getuser()}/Documents/vern_saves/chapter_one.save"
+            self.clear = lambda: os.system("cls")
+        else:
+            # unknown system so clear is turned off
+            self.save_location = "vern_saves/chapter_one.save"
+            self.clear = lambda: None
 
         # building the rooms and player names
         self.player_name = "player"
@@ -148,13 +137,13 @@ class ChapterOne:
                                         "end": 0,
                                         "unknown": 0,
                                         "stat": 0}
-                print_intro()
+                self.print_intro()
                 choosing = False
             elif player_option == "q":
                 choosing = False
                 end_game = True
             elif player_option == "l":
-                clear()
+                self.clear()
                 # getting loaded settings
                 new_value_dictionary = load_game_state(self.save_location)
                 # if the dictionary is none it can not load a game
@@ -257,7 +246,7 @@ class ChapterOne:
 
                 print(f"{self.bold+'Verbs look, inv(entory), get, oper(ate), com(bine), drop, score, use, go, save, end, help, stat'+self.end}")
                 player_choice = input("").lower()
-                clear()
+                self.clear()
                 # general actions shared by rooms
                 self.general_actions(player_choice)
 
@@ -321,14 +310,14 @@ class ChapterOne:
             if self.testing:
                 pick = input("Player or room? ").lower()
                 if pick == "player":
-                    clear()
+                    self.clear()
                     print(self.player)
                     self.player.debug_player()
                 elif pick == "room":
-                    clear()
+                    self.clear()
                     print(loc_name)
                 else:
-                    clear()
+                    self.clear()
                     print("Cannot debug print that.")
             else:
                 print(f"I don't know how to {general_list[0]}.")
@@ -484,6 +473,20 @@ class ChapterOne:
             print("The exit is open now.")
         else:
             print("Keep playing for more hints.")
+
+    def print_intro(self):
+        self.clear()
+        print(""" 
+    Vern the lion was traveling with his friend Johnson and his daughter Katie. 
+    On their way to Harrisburg, they stopped for the night and he shared a drink with his friend. 
+    Things got out of hand and one drink turned into many. 
+    The next thing Vern knew he woke up with a massive headache in a strange place.
+
+    You wake up, alone and afraid in an old fallout shelter, built some time in the past, but abandoned 
+    long ago. It appears a group had set themselves up here before the end, judging by the things that were left 
+    behind. The room smells of mould and rust. There is a disabled robot in the corner, an entry to a smaller 
+    room and there is a door that appears to be locked.
+    """)
 
     def print_outro(self):
         if "toy lion tail" in self.player.inventory:

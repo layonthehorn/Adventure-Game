@@ -3,6 +3,8 @@ from chapter_one import ChapterOne
 # from chapter_two import ChapterTwo
 import os
 import platform
+import getpass
+
 # Temporary ascii art from https://ascii.co.uk/art/lion
 ascii_image = """                 
                 ,  ,, ,
@@ -22,24 +24,33 @@ ascii_image = """
 
 """
 
+operating = platform.system()
+if operating == 'Linux' or operating == "Darwin":
+    # save location and clear if on linux or mac
+    save_dir = f"/home/{getpass.getuser()}/Documents/vern_saves"
+    clear = lambda: os.system("clear")
+elif operating == 'Windows':
+    # save location and clear if on windows
+    save_dir = f"C:/Users/{getpass.getuser()}/Documents/vern_saves"
+    clear = lambda: os.system("cls")
+else:
+    # unknown system so clear is turned off
+    save_dir = os.path.join(os.getcwd(), "saves")
+    clear = lambda: None
 # makes sure the save directory is a thing
 try:
-    save_dir = os.path.join(os.getcwd(), "saves")
-    # print(save_dir)
     if not os.path.isdir(save_dir):
-        os.makedirs(save_dir)
+        pick = input("Create Save directory? (y/n) ").lower()
+        if pick == "y":
+            os.makedirs(save_dir)
+            print(f"Made save folder at, {save_dir}")
+            input("Press Enter...")
+        else:
+            print("Saving will not be possible.")
+            input("Press Enter...")
+
 except IOError:
     print("Could not create save folder. Save feature will not work.")
-
-
-# allows me to clear the screen when playing
-def clear():
-    operating = platform.system()
-    if operating == 'Linux' or operating == "Darwin":
-        os.system("clear")
-    elif operating == 'Windows':
-        os.system('cls')
-
 
 clear()
 choosing = True
@@ -58,6 +69,6 @@ while choosing:
         # ChapterTwo()
     elif user_input == "q":
         clear()
-        print("Good bye!")
+        print("Goodbye!")
         choosing = False
-        input("")
+        input("Press Enter...")
