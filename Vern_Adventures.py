@@ -31,32 +31,28 @@ if (operating == 'Linux' or operating == "Darwin") and not ('ANDROID_ARGUMENT' i
     print("Found Linux or Mac.")
     # save location and clear if on linux or mac
     save_dir = f"/home/{getpass.getuser()}/Documents/vern_saves"
-    # lamda for a simple clear screen function
-    clear = lambda: os.system("clear")
+    def clear(): os.system("clear")
 
 elif operating == 'Windows':
     print("Found Windows.")
     # save location and clear if on windows
     save_dir = f"C:/Users/{getpass.getuser()}/Documents/vern_saves"
-    # lamda for a simple clear screen function
-    clear = lambda: os.system("cls")
+    def clear(): os.system("cls")
 
 elif 'ANDROID_ARGUMENT' in environ or 'ANDROID_STORAGE' in environ:
     print("Found Android.")
     # android system found
     save_dir = os.path.join(os.getcwd(), "vern_saves")
-    # lamda for a simple clear screen function
-    clear = lambda: os.system("clear")
+    def clear(): os.system("clear")
 
 else:
     # unknown system clear screen command
     # set to print a lot of new lines
     print("Found Unknown.")
     save_dir = os.path.join(os.getcwd(), "vern_saves")
-    # lamda for a simple clear screen function
     # I can't tell what system it is so
     # I use a lot of new lines instead.
-    clear = lambda: print("\n" * 100)
+    def clear(): print("\n" * 100)
 
 try:
     # makes sure the save directory is a thing
