@@ -1,6 +1,6 @@
 import pickle
 import re
-import os
+from os import path
 from chapter_one_classes import PlayerClass, Bunker, ComputerRoom, MainPlaza, SmallDen, WestWing, ToyShop, PetShop, Cemetery, UpstairsHallway, AnimalDen, Bathroom, ShoeStore, BasementEntry, BasementGenRoom
 
 
@@ -22,7 +22,7 @@ command to clear the screen."""
         # saving clear screen function
         self.clear = clear_func
         # getting save file location
-        self.save_location = os.path.join(save_dir, "chapter_one.save")
+        self.save_location = path.join(save_dir, "chapter_one.save")
 
         # building the rooms and player names
         self.player_name = "player"
@@ -239,7 +239,6 @@ command to clear the screen."""
 
     # saves games
     def save_game_state(self):
-
         try:
             # writes data to save file with pickle
             with open(self.save_location, 'wb+') as db_file:
@@ -264,16 +263,22 @@ command to clear the screen."""
         loc_name = self.switcher_dictionary.get(self.player.location)
         # splits the input on the first space
         general_list = action.split(" ", 1)
+
         # prints inventory
         if general_list[0] == "inv":
             self.stat_dictionary["inventory"] += 1
             self.player.check_inventory()
+
+        # lists the stats of what commands you have used
         elif general_list[0] == "stat":
             self.stat_dictionary["stat"] += 1
             self.print_stats()
+
+        # gives a hint
         elif general_list[0] == "hint":
             self.stat_dictionary["hint"] += 1
             self.hint_system()
+
         # prints help page
         elif general_list[0] == "help":
             self.stat_dictionary["help"] += 1
@@ -296,18 +301,22 @@ command to clear the screen."""
                     print("Cannot debug print that.")
             else:
                 print(f"I don't know how to {general_list[0]}.")
+
         # saves the game
         elif general_list[0] == "save":
             self.stat_dictionary["save"] += 1
             self.save_game_state()
+
         # prints score
         elif general_list[0] == "score":
             self.stat_dictionary["score"] += 1
             self.player.print_score()
+
         # in case input is blank
         elif action == "":
             self.stat_dictionary[""] += 1
             print("Vern taps his foot on the ground. \n'I get so sick of waiting for something to happen.'")
+
         # ends game and asks to save
         elif general_list[0] == "end":
             self.stat_dictionary["end"] += 1
@@ -392,6 +401,8 @@ command to clear the screen."""
                 loc_name.get_go_commands(general_list[1])
             except IndexError:
                 print("Go where?")
+
+        # in case you did not have match
         else:
             self.stat_dictionary["unknown"] += 1
             print(f"I don't know how to {general_list[0]}.")

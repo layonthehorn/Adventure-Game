@@ -11,6 +11,8 @@ def clear():
         os.system("clear")
     elif operating == 'Windows':
         os.system('cls')
+    else:
+        print("\n" * 100)
 
 
 # function class for inheritance.
@@ -395,7 +397,8 @@ class Bunker(FunctionClass):
         self.look_dict = {
             "room": self.print_description_room,
             "fuse box": self.print_description_box,
-            "exit door": self.print_description_door
+            "exit door": self.print_description_door,
+            "robot": self.print_description_robot
         }
 
         self.go_dict = {
@@ -403,7 +406,7 @@ class Bunker(FunctionClass):
             "outside": self.go_outside
         }
         self.oper_dict = {
-            "door": self.open_door
+            "door": self.oper_door
         }
 
         self.use_dict = {
@@ -442,7 +445,7 @@ class Bunker(FunctionClass):
         else:
             print("I hope it stays working as long as I need it.")
 
-    def look_robot(self):
+    def print_description_robot(self):
         if not self.robot_fixed:
             print("It's a robot and it has a fuse!")
         elif 'fuse' in self.inventory and self.robot_fixed:
@@ -489,7 +492,7 @@ class Bunker(FunctionClass):
             print("I don't have to mess with it anymore.")
 
     # tries to open door will fail if fuse box is not working.
-    def open_door(self):
+    def oper_door(self):
         if not self.fuse_box:
             print("The door is stuck. Looks like it's out of power.")
         elif self.door_opened:

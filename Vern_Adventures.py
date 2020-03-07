@@ -49,11 +49,14 @@ elif 'ANDROID_ARGUMENT' in environ or 'ANDROID_STORAGE' in environ:
     clear = lambda: os.system("clear")
 
 else:
-    # unknown system clear screen command disabled
+    # unknown system clear screen command
+    # set to print a lot of new lines
     print("Found Unknown.")
     save_dir = os.path.join(os.getcwd(), "vern_saves")
     # lamda for a simple clear screen function
-    clear = lambda: None
+    # I can't tell what system it is so
+    # I use a lot of new lines instead.
+    clear = lambda: print("\n" * 100)
 
 try:
     # makes sure the save directory is a thing
