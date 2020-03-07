@@ -4,27 +4,9 @@ import os
 from chapter_two_classes import PlayerClass
 
 
-# prints usage statement to players in game
-def print_help():
-    print("How to play.")
-    print("look {item}: Looks at things. room, map, objects."
-          "\ninv(entory): Checks your inventory and prints descriptions out."
-          "\nget {item}: Gets items from room."
-          "\noper(ate) {object}: How you use/read objects: doors, computers, etc."
-          "\ncom(bine) {item} with/on {item}: allows you to combine items. Use 'self' to use an item on you."
-          "\ndrop {item}: Allows you to get rid of an item."
-          "\nscore: Allows the player to check current progress in-game."
-          "\nuse {item} With/on {item}: how you use things with other things."
-          "\ngo {location}: How you change rooms."
-          "\nsave: How you save your game."
-          "\nend: Exit game and will ask to save or not."
-          "\nhint: This will give you a hint on how to continue."
-          "\nhelp: This menu."
-          "\nstat: Prints stats on commands used.")
-
-
 class ChapterTwo:
-    """This is a text adventure game, chapter one. All that is needed is to initialize it and the game will start."""
+    """This is a text adventure game, chapter two. All that is needed is to initialize it with a save directory and a
+command to clear the screen."""
     under_line = '\033[4m'
     bold = '\033[1m'
     end = '\033[0m'
@@ -107,7 +89,7 @@ class ChapterTwo:
 
             # prints instructions
             elif player_option == "h":
-                print_help()
+                self.print_help()
 
         # location dictionary
         # used for general actions to run player actions in any room.
@@ -194,7 +176,7 @@ class ChapterTwo:
         # prints help page
         elif general_list[0] == "help":
             self.stat_dictionary["help"] += 1
-            print_help()
+            self.print_help()
 
         # for debugging only
         # disabled by default
@@ -330,6 +312,25 @@ class ChapterTwo:
             print("not built yet")
         else:
             print("Keep playing for more hints.")
+
+    # prints usage statement to players in game
+    @staticmethod
+    def print_help():
+        print("How to play.")
+        print("look {item}: Looks at things. room, map, objects."
+              "\ninv(entory): Checks your inventory and prints descriptions out."
+              "\nget {item}: Gets items from room."
+              "\noper(ate) {object}: How you use/read objects: doors, computers, etc."
+              "\ncom(bine) {item} with/on {item}: allows you to combine items. Use 'self' to use an item on you."
+              "\ndrop {item}: Allows you to get rid of an item."
+              "\nscore: Allows the player to check current progress in-game."
+              "\nuse {item} With/on {item}: how you use things with other things."
+              "\ngo {location}: How you change rooms."
+              "\nsave: How you save your game."
+              "\nend: Exit game and will ask to save or not."
+              "\nhint: This will give you a hint on how to continue."
+              "\nhelp: This menu."
+              "\nstat: Prints stats on commands used.")
 
     def print_intro(self):
         self.clear()
