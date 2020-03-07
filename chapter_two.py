@@ -1,19 +1,10 @@
 import pickle
 import re
-
+import os
 from chapter_two_classes import PlayerClass
 
 
-# loading saved game
-def load_game_state(file_name):
-    try:
-        with open(file_name, 'rb') as db_file:
-            pickle_db = pickle.load(db_file)
-            return pickle_db
-    except FileNotFoundError:
-        return None
-
-
+# prints usage statement to players in game
 def print_help():
     print("How to play.")
     print("look {item}: Looks at things. room, map, objects."
@@ -32,22 +23,27 @@ def print_help():
           "\nstat: Prints stats on commands used.")
 
 
-def print_intro():
-    print("""Intro Here""")
-
-
-class ChapterOne:
+class ChapterTwo:
     """This is a text adventure game, chapter one. All that is needed is to initialize it and the game will start."""
-    def __init__(self):
+    under_line = '\033[4m'
+    bold = '\033[1m'
+    end = '\033[0m'
 
+    def __init__(self, save_dir, clear_func, testing=False):
+
+        # setting if we allow debug options
+        self.testing = testing
         # pattern matching for actions
         self.use_pattern = re.compile(r"^use\s|\swith\s|\son\s")
         self.combine_pattern = re.compile(r"^com\s|\swith\s|\son\s")
-        self.save_location = "saves/chapter_two.save"
+
+        # saving clear screen function
+        self.clear = clear_func
+        # getting save file location
+        self.save_location = os.path.join(save_dir, "chapter_two.save")
 
         # building the rooms and player names
         self.player_name = "player"
-
         self.exit_name = "exit"
         self.end_name = "end"
 
@@ -84,15 +80,15 @@ class ChapterOne:
                                         "end": 0,
                                         "unknown": 0,
                                         "stat": 0}
-                print_intro()
+                self.print_intro()
                 choosing = False
-                end_game = True
             elif player_option == "q":
                 choosing = False
                 end_game = True
             elif player_option == "l":
+                self.clear()
                 # getting loaded settings
-                new_value_dictionary = load_game_state(self.save_location)
+                new_value_dictionary = self.load_game_state()
                 # if the dictionary is none it can not load a game
                 if new_value_dictionary is None:
                     print("No save games found.")
@@ -101,8 +97,7 @@ class ChapterOne:
                     # loading saved settings for classes
                     # player data
                     self.player = new_value_dictionary.get(self.player_name)
-                    # bunker data
-
+                    # stat dictionary data
                     self.stat_dictionary = new_value_dictionary.get(self.stat_dictionary_name)
 
                     # tells player it loaded the game
@@ -123,37 +118,41 @@ class ChapterOne:
             self.save_dictionary = {
                 # player only here for saving
                 self.player_name: self.player,
-
                 self.stat_dictionary_name: self.stat_dictionary
             }
 
             # switcher dictionary for running actions
             self.switcher_dictionary = {
-
             }
 
         # main game play loop
         while self.playing and not end_game:
-            print("")
+
             # if you reach the exit then don't ask for actions from player
             if self.player.location != self.exit_name:
 
-                print("Verbs look, inv(entory), get, oper(ate), com(bine), drop, score, use, go, save, end, help, stat")
+                print(f"{self.bold+'Verbs look, inv(entory), get, oper(ate), com(bine), drop, score, use, go, save, end, help, stat'+self.end}")
                 player_choice = input("").lower()
+                self.clear()
                 # general actions shared by rooms
                 self.general_actions(player_choice)
 
             # gets the room the player is in
             p_local = self.player.location
             if p_local != self.end_name and p_local != self.exit_name:
+                # will be a room update function here later
+                pass
 
-                print("")
             elif p_local == self.end_name:
                 # ends game after player asks to
                 self.end_game()
             else:
                 # Winning game ending
+                self.clear()
                 self.exit_game()
+            print("")
+
+# end init function
 
     # saves games
     def save_game_state(self):
@@ -166,8 +165,16 @@ class ChapterOne:
         except IOError:
             print("Could not open file for saving...")
 
-        # general actions that can be done anywhere
+    # loading saved game
+    def load_game_state(self):
+        try:
+            with open(self.save_location, 'rb') as db_file:
+                pickle_db = pickle.load(db_file)
+                return pickle_db
+        except FileNotFoundError:
+            return None
 
+    # general actions that can be done anywhere
     def general_actions(self, action):
         # finds player location
         # this makes all your actions dependent on the room you are in
@@ -190,10 +197,22 @@ class ChapterOne:
             print_help()
 
         # for debugging only
-        elif action == "debug player":
-            print(self.player)
-        elif action == "debug room":
-            print(loc_name)
+        # disabled by default
+        elif general_list[0] == "debug":
+            if self.testing:
+                pick = input("Player or room? ").lower()
+                if pick == "player":
+                    self.clear()
+                    print(self.player)
+                    self.player.debug_player()
+                elif pick == "room":
+                    self.clear()
+                    print(loc_name)
+                else:
+                    self.clear()
+                    print("Cannot debug print that.")
+            else:
+                print(f"I don't know how to {general_list[0]}.")
         # saves the game
         elif general_list[0] == "save":
             self.stat_dictionary["save"] += 1
@@ -209,12 +228,12 @@ class ChapterOne:
         # ends game and asks to save
         elif general_list[0] == "end":
             self.stat_dictionary["end"] += 1
-            save = input("Save game? ").lower()
+            save = input("Save game? (y/n) ").lower()
             if save == 'y':
                 self.stat_dictionary["save"] += 1
                 print('Saved!')
                 self.save_game_state()
-            input("Press enter to quit. Goodbye!")
+            input("Press enter to quit. Goodbye! ")
             self.player.location = self.end_name
 
         # looking at things
@@ -259,9 +278,7 @@ class ChapterOne:
             if '' in choice_list:
                 choice_list.remove('')
             try:
-                if self.player.combine_items(choice_list[0], choice_list[1]):
-                    self.player.increase_score()
-
+                self.player.combine_items(choice_list[0], choice_list[1])
             except IndexError:
                 print("Combine what with what?")
 
@@ -300,7 +317,7 @@ class ChapterOne:
     def exit_game(self):
         self.print_outro()
         self.player.print_score()
-        input("Press enter to exit Chapter Two.\nThank you for playing!")
+        input("Press enter to exit Chapter One.\nThank you for playing! ")
         self.end_game()
 
     # a end game function
@@ -309,11 +326,35 @@ class ChapterOne:
 
     # hint system for cheaters
     def hint_system(self):
-        pass
+        if True:
+            print("not built yet")
+        else:
+            print("Keep playing for more hints.")
+
+    def print_intro(self):
+        self.clear()
+        print(""" 
+    Vern the lion was traveling with his friend Johnson and his daughter Katie. 
+    On their way to Harrisburg, they stopped for the night and he shared a drink with his friend. 
+    Things got out of hand and one drink turned into many. 
+    The next thing Vern knew he woke up with a massive headache in a strange place.
+
+    You wake up, alone and afraid in an old fallout shelter, built some time in the past, but abandoned 
+    long ago. It appears a group had set themselves up here before the end, judging by the things that were left 
+    behind. The room smells of mould and rust. There is a disabled robot in the corner, an entry to a smaller 
+    room and there is a door that appears to be locked.
+    """)
 
     def print_outro(self):
-
-        print("""outro here""")
+        if "toy lion tail" in self.player.inventory:
+            print("""
+Vern escapes the mall and reunites with Johnson and Katie. After a debriefing between them 
+and giving Katie the toy lion tail, they continued onwards to Harrisburg. 
+Hopefully, There would be no complications there.""")
+        else:
+            print("""
+Vern escapes the mall and reunites with Johnson and Katie. After a debriefing between them, 
+they continued onwards to Harrisburg. Hopefully, There would be no complications there.""")
         self.print_stats()
 
     # a formatted print of all commands that have been used
@@ -329,7 +370,3 @@ class ChapterOne:
 {"Used 'go'":<16} {self.stat_dictionary["go"]:<4} times. {"":>6} {"Used 'save'":<16} {self.stat_dictionary["save"]:<4} times.
 {"Used 'hint'":<16} {self.stat_dictionary["hint"]:<4} times. {"":>6} {"Used 'stat'":<16} {self.stat_dictionary["stat"]:<4} times.
 {"Unknown command":<16} {self.stat_dictionary["unknown"]:<4} times. {"":>6} {"Entered nothing":<16} {self.stat_dictionary[""]:<4} times.""")
-
-
-if __name__ == "__main__":
-    ChapterOne()

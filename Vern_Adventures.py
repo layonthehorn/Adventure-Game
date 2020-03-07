@@ -26,42 +26,43 @@ ascii_image = """
 """
 
 
-# saving will not work the same on android
-def check_android():
-    if 'ANDROID_ARGUMENT' in environ or 'ANDROID_STORAGE' in environ:
-        return True
-    else:
-        return False
-
-
 operating = platform.system()
-if (operating == 'Linux' or operating == "Darwin") and not check_android():
+if (operating == 'Linux' or operating == "Darwin") and not ('ANDROID_ARGUMENT' in environ or 'ANDROID_STORAGE' in environ):
     print("Found Linux or Mac.")
     # save location and clear if on linux or mac
     save_dir = f"/home/{getpass.getuser()}/Documents/vern_saves"
+    # lamda for a simple clear screen function
     clear = lambda: os.system("clear")
+
 elif operating == 'Windows':
     print("Found Windows.")
     # save location and clear if on windows
     save_dir = f"C:/Users/{getpass.getuser()}/Documents/vern_saves"
+    # lamda for a simple clear screen function
     clear = lambda: os.system("cls")
-elif check_android():
+
+elif 'ANDROID_ARGUMENT' in environ or 'ANDROID_STORAGE' in environ:
     print("Found Android.")
     # android system found
     save_dir = os.path.join(os.getcwd(), "vern_saves")
+    # lamda for a simple clear screen function
     clear = lambda: os.system("clear")
+
 else:
-    # unknown system
+    # unknown system clear screen command disabled
     print("Found Unknown.")
     save_dir = os.path.join(os.getcwd(), "vern_saves")
+    # lamda for a simple clear screen function
     clear = lambda: None
-# makes sure the save directory is a thing
+
 try:
+    # makes sure the save directory is a thing
     if not os.path.isdir(save_dir):
-        pick = input("Create Save directory? (y/n) ").lower()
+        print(f"Need save directory at, {save_dir}")
+        pick = input("OK, to create? (y/n) ").lower()
         if pick == "y":
             os.makedirs(save_dir)
-            print(f"Made save folder at, {save_dir}")
+            print("Save folder created successfully.")
             input("Press Enter...")
         else:
             print("Saving will not be possible.")
@@ -80,12 +81,12 @@ while choosing:
     if user_input == "1":
         clear()
         # add True as parameter to enable debugging commands
-        ChapterOne()
+        ChapterOne(save_dir, clear)
         clear()
     elif user_input == "2":
         clear()
         print("Not yet built.")
-        # ChapterTwo()
+        # ChapterTwo(save_dir, clear)
     elif user_input == "q":
         clear()
         print("Goodbye!")

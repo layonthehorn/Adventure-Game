@@ -1,30 +1,10 @@
 import pickle
 import re
 import os
-from os import environ
-import platform
-import getpass
 from chapter_one_classes import PlayerClass, Bunker, ComputerRoom, MainPlaza, SmallDen, WestWing, ToyShop, PetShop, Cemetery, UpstairsHallway, AnimalDen, Bathroom, ShoeStore, BasementEntry, BasementGenRoom
 
 
-# loading saved game
-def load_game_state(file_name):
-    try:
-        with open(file_name, 'rb') as db_file:
-            pickle_db = pickle.load(db_file)
-            return pickle_db
-    except FileNotFoundError:
-        return None
-
-
-# saving will not work the same on android
-def check_android():
-    if 'ANDROID_ARGUMENT' in environ or 'ANDROID_STORAGE' in environ:
-        return True
-    else:
-        return False
-
-
+# prints usage statement to players in game
 def print_help():
     print("How to play.")
     print("look {item}: Looks at things. room, map, objects."
@@ -49,30 +29,18 @@ class ChapterOne:
     bold = '\033[1m'
     end = '\033[0m'
 
-    def __init__(self, testing=False):
+    def __init__(self, save_dir, clear_func, testing=False):
 
         # setting if we allow debug options
         self.testing = testing
         # pattern matching for actions
         self.use_pattern = re.compile(r"^use\s|\swith\s|\son\s")
         self.combine_pattern = re.compile(r"^com\s|\swith\s|\son\s")
-        operating = platform.system()
-        if (operating == 'Linux' or operating == "Darwin") and not check_android():
-            # save location and clear if on linux or mac
-            self.save_location = f"/home/{getpass.getuser()}/Documents/vern_saves/chapter_one.save"
-            self.clear = lambda: os.system("clear")
-        elif operating == 'Windows':
-            # save location and clear if on windows
-            self.save_location = f"C:/Users/{getpass.getuser()}/Documents/vern_saves/chapter_one.save"
-            self.clear = lambda: os.system("cls")
-        elif check_android():
-            # checks for the android system
-            self.save_location = "vern_saves/chapter_one.save"
-            self.clear = lambda: os.system("clear")
-        else:
-            # unknown system so clear is turned off
-            self.save_location = "vern_saves/chapter_one.save"
-            self.clear = lambda: None
+
+        # saving clear screen function
+        self.clear = clear_func
+        # getting save file location
+        self.save_location = os.path.join(save_dir, "chapter_one.save")
 
         # building the rooms and player names
         self.player_name = "player"
@@ -158,7 +126,7 @@ class ChapterOne:
             elif player_option == "l":
                 self.clear()
                 # getting loaded settings
-                new_value_dictionary = load_game_state(self.save_location)
+                new_value_dictionary = self.load_game_state()
                 # if the dictionary is none it can not load a game
                 if new_value_dictionary is None:
                     print("No save games found.")
@@ -285,6 +253,8 @@ class ChapterOne:
                 self.exit_game()
             print("")
 
+# end init function
+
     # saves games
     def save_game_state(self):
 
@@ -295,6 +265,15 @@ class ChapterOne:
             print("Game has been saved!")
         except IOError:
             print("Could not open file for saving...")
+
+    # loading saved game
+    def load_game_state(self):
+        try:
+            with open(self.save_location, 'rb') as db_file:
+                pickle_db = pickle.load(db_file)
+                return pickle_db
+        except FileNotFoundError:
+            return None
 
     # general actions that can be done anywhere
     def general_actions(self, action):
@@ -527,7 +506,3 @@ they continued onwards to Harrisburg. Hopefully, There would be no complications
 {"Used 'go'":<16} {self.stat_dictionary["go"]:<4} times. {"":>6} {"Used 'save'":<16} {self.stat_dictionary["save"]:<4} times.
 {"Used 'hint'":<16} {self.stat_dictionary["hint"]:<4} times. {"":>6} {"Used 'stat'":<16} {self.stat_dictionary["stat"]:<4} times.
 {"Unknown command":<16} {self.stat_dictionary["unknown"]:<4} times. {"":>6} {"Entered nothing":<16} {self.stat_dictionary[""]:<4} times.""")
-
-
-if __name__ == "__main__":
-    ChapterOne()
