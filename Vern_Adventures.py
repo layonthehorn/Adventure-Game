@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 from chapter_one import ChapterOne
-# from chapter_two import ChapterTwo
+from chapter_two import ChapterTwo
 import os
 from os import environ
 import platform
@@ -84,8 +84,7 @@ while choosing:
         clear()
     elif user_input == "2":
         clear()
-        print("Not yet built.")
-        # ChapterTwo(save_dir, clear)
+        ChapterTwo(save_dir, clear)
     elif user_input == "q":
         clear()
         print("Goodbye!")

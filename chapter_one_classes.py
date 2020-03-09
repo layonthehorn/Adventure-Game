@@ -217,10 +217,15 @@ class PlayerClass:
         if location not in self.accepted_locations:
             print(f"Could not fine {location}... Possible missing spelling in code?")
             print("Could not find matching location. Canceling movement.")
-            location = self.__location
-        else:
+
+        # makes sure not to print if you win or end game
+        elif location != "end" and location != "exit":
             print(f"You have gone to the {location}.")
-        self.__location = location
+            self.__location = location
+
+        # if you go to the exit or end, does not print anything
+        else:
+            self.__location = location
 
     # prints your score
     def print_score(self):

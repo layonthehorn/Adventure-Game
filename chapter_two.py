@@ -1,10 +1,10 @@
 import pickle
 import re
 from os import path
-from chapter_two_classes import PlayerClass
+import chapter_two_section_classes as sections
 
 
-class ChapterOne:
+class ChapterTwo:
     """This is a text adventure game, chapter one. All that is needed is to initialize it with a save directory and a
 command to clear the screen."""
     under_line = '\033[4m'
@@ -15,6 +15,7 @@ command to clear the screen."""
 
         # setting if we allow debug options
         self.testing = testing
+        self.playing = True
         # pattern matching for actions
         self.use_pattern = re.compile(r"^use\s|\swith\s|\son\s")
         self.combine_pattern = re.compile(r"^com\s|\swith\s|\son\s")
@@ -22,26 +23,42 @@ command to clear the screen."""
         # saving clear screen function
         self.clear = clear_func
         # getting save file location
-        self.save_location = path.join(save_dir, "chapter_one.save")
+        self.save_location = path.join(save_dir, "chapter_two.save")
 
-        # building the rooms and player names
+        # player name
         self.player_name = "player"
+
+        # section names
+        self.town_center_name = "town"
+        self.ruins_name = "ruins"
+        self.mansion_name = "mansion"
+        self.upstairs_ruins_name = "upstairs"
+        self.back_rooms_name = "gen back rooms"
+        self.tower_name = "tower"
+        self.cellar_name = "cellar"
+        self.gardens_name = "gardens"
+
+        # special names
         self.exit_name = "exit"
         self.end_name = "end"
         self.stat_dictionary_name = "stat dictionary"
-        self.playing = True
-
-        # Main Classes
-        # These are loaded below as to not load them twice.
 
         choosing = True
         end_game = False
         while choosing:
-            print("Chapter One: The Lost Mall")
+            print("Chapter Two: Vern in the Big City.")
             player_option = input("Load(l), Start New(s), Quit(q), or How to play(h)?\n").lower()
             if player_option == "s":
                 # Loads defaults in classes for game
-                self.player = PlayerClass()
+                self.player = sections.PlayerClass()
+                self.town_center = sections.TownCenter(self.player)
+                self.ruins = sections.Ruins(self.player)
+                self.upstairs_ruins = sections.Upstairs(self.player)
+                self.back_rooms = sections.BackRooms(self.player)
+                self.mansion = sections.Mansion(self.player)
+                self.tower = sections.Tower(self.player)
+                self.gardens = sections.Gardens(self.player)
+                self.cellar = sections.Cellar(self.player)
 
                 # to keep a running toll of all actions preformed
                 self.stat_dictionary = {"look": 0,
@@ -77,7 +94,15 @@ command to clear the screen."""
                     # loading saved settings for classes
                     # player data
                     self.player = new_value_dictionary.get(self.player_name)
-                    # bunker data
+                    # section data
+                    self.town_center = new_value_dictionary.get(self.town_center_name)
+                    self.ruins = new_value_dictionary.get(self.ruins_name)
+                    self.upstairs_ruins = new_value_dictionary.get(self.upstairs_ruins_name)
+                    self.back_rooms = new_value_dictionary.get(self.back_rooms_name)
+                    self.mansion = new_value_dictionary.get(self.mansion_name)
+                    self.tower = new_value_dictionary.get(self.tower_name)
+                    self.gardens = new_value_dictionary.get(self.gardens_name)
+                    self.cellar = new_value_dictionary.get(self.cellar_name)
 
                     # stat dictionary data
                     self.stat_dictionary = new_value_dictionary.get(self.stat_dictionary_name)
@@ -95,18 +120,54 @@ command to clear the screen."""
         # used for general actions to run player actions in any room.
         # if the player is going to actually play builds rest of game
         if not end_game:
-
             # dictionary for saving game state
             self.save_dictionary = {
-                # player only here for saving
+                # saving player
                 self.player_name: self.player,
 
+                # saving sections
+                self.town_center_name: self.town_center,
+                self.ruins_name: self.ruins,
+                self.upstairs_ruins_name: self.upstairs_ruins,
+                self.back_rooms_name: self.back_rooms,
+                self.tower_name: self.tower,
+                self.mansion_name: self.mansion,
+                self.gardens_name: self.gardens,
+                self.cellar_name: self.cellar,
+
+                # saving stats of actions made
                 self.stat_dictionary_name: self.stat_dictionary
             }
 
             # switcher dictionary for running actions
             self.switcher_dictionary = {
+                # town center rooms and actions
+                "town center": self.town_center.center,
+                "bar": self.town_center.bar,
+                "bath house": self.town_center.bath_house,
+                "general store": self.town_center.gen_store,
+                "gate house": self.town_center.gate_house,
 
+                # ruins rooms and actions
+                self.ruins_name: self.ruins,
+
+                # ruins upstairs rooms and actions
+                self.upstairs_ruins_name: self.upstairs_ruins,
+
+                # back rooms and actions
+                self.back_rooms_name: self.back_rooms,
+
+                # tower rooms and actions
+                self.tower_name: self.tower,
+
+                # mansion rooms and actions
+                self.mansion_name: self.mansion,
+
+                # garden rooms and actions
+                self.gardens_name: self.gardens,
+
+                # cellar rooms and actions
+                self.cellar_name: self.cellar,
             }
 
         # main game play loop
@@ -117,7 +178,8 @@ command to clear the screen."""
                 # checks if something needs to be updated
                 self.update_room_states()
 
-                print(f"{self.bold+'Verbs look, inv(entory), get, oper(ate), com(bine), drop, score, use, go, save, end, help, stat'+self.end}")
+                print(
+                    f"{self.bold + 'Verbs look, inv(entory), get, oper(ate), com(bine), drop, score, use, go, save, end, help, stat' + self.end}")
                 player_choice = input("").lower()
                 self.clear()
                 # general actions shared by rooms
@@ -129,13 +191,13 @@ command to clear the screen."""
             if p_local == self.end_name:
                 # ends game after player asks to
                 self.end_game()
-            else:
+            elif p_local == self.exit_name:
                 # Winning game ending
                 self.clear()
                 self.exit_game()
             print("")
 
-# end init function
+    # end init function
 
     # general room update function
     def update_room_states(self):
@@ -347,28 +409,11 @@ command to clear the screen."""
 
     def print_intro(self):
         self.clear()
-        print(""" 
-    Vern the lion was traveling with his friend Johnson and his daughter Katie. 
-    On their way to Harrisburg, they stopped for the night and he shared a drink with his friend. 
-    Things got out of hand and one drink turned into many. 
-    The next thing Vern knew he woke up with a massive headache in a strange place.
-
-    You wake up, alone and afraid in an old fallout shelter, built some time in the past, but abandoned 
-    long ago. It appears a group had set themselves up here before the end, judging by the things that were left 
-    behind. The room smells of mould and rust. There is a disabled robot in the corner, an entry to a smaller 
-    room and there is a door that appears to be locked.
-    """)
+        print("""""")
 
     def print_outro(self):
-        if "toy lion tail" in self.player.inventory:
-            print("""
-Vern escapes the mall and reunites with Johnson and Katie. After a debriefing between them 
-and giving Katie the toy lion tail, they continued onwards to Harrisburg. 
-Hopefully, There would be no complications there.""")
-        else:
-            print("""
-Vern escapes the mall and reunites with Johnson and Katie. After a debriefing between them, 
-they continued onwards to Harrisburg. Hopefully, There would be no complications there.""")
+
+        print("""""")
         self.print_stats()
 
     # a formatted print of all commands that have been used
