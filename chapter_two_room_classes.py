@@ -212,7 +212,7 @@ class FunctionClass:
                 print(self.bold, item, self.end)
 
     def print_look(self):
-        if len(self.look_object) > 0:
+        if len(self.look_objects) > 0:
             print("There are a(n), ", end="")
             for thing in self.look_objects:
                 print(f"'{thing}', ", end="")

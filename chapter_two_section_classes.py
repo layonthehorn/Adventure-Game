@@ -9,7 +9,9 @@ class PlayerClass:
     # class variables for print formatting
     bold = '''\033[1m'''
     end = '''\033[0;0m'''
-    accepted_locations = ("town center", "general store", "gate house", "bath house", "bar"
+    accepted_locations = (
+        "end", "exit",
+        "town center", "general store", "gate house", "bath house", "bar"
                           )
     accepted_sections = {"town": ("town center", "general store", "gate house", "bath house", "bar")
                          , "ruins": ()
