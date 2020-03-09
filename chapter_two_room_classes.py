@@ -219,6 +219,7 @@ class FunctionClass:
             print("\n_____________________________")
 
 
+# town center rooms
 class TownCenter(FunctionClass):
     """Starting room and center of town."""
     def __init__(self, player_object):
@@ -234,7 +235,8 @@ class TownCenter(FunctionClass):
         self.go_dict = {"bar": self.go_bar,
                         "general store": self.go_gen_store,
                         "gate house": self.go_gate_house,
-                        "bath house": self.go_bath_house}
+                        "bath house": self.go_bath_house,
+                        "ruined street": self.go_ruined_street}
         self.oper_dict = {}
         self.use_dict = {}
 
@@ -255,6 +257,9 @@ class TownCenter(FunctionClass):
 
     def go_bath_house(self):
         self.player.location = "bath house"
+
+    def go_ruined_street(self):
+        self.player.location = "ruined street"
 
 
 class TownBar(FunctionClass, ShopFunctions):
@@ -359,3 +364,120 @@ class TownGateHouse(FunctionClass):
 
     def go_town_center(self):
         self.player.location = "town center"
+
+
+# Ruined City rooms
+class RuinedHouse(FunctionClass):
+    """town gate house that allows or denies entry to mansion."""
+    def __init__(self, player_object):
+
+        self.inventory = []
+        self.player = player_object
+        # things you can look at.
+        self.look_objects = ()
+        self.bool_one, self.bool_two, self.bool_three = (False, False, False)
+
+        self.shop_inventory = []
+        self.look_dict = {"room": self.print_description_room}
+        self.go_dict = {"ruined street": self.go_ruined_street}
+        self.oper_dict = {}
+        self.use_dict = {}
+
+    def print_description_room(self):
+        print("A ruined city house")
+        print("__________________")
+        self.print_look()
+        self.print_items()
+
+    def go_ruined_street(self):
+        self.player.location = "ruined street"
+
+
+class RuinedStreet(FunctionClass):
+    """town gate house that allows or denies entry to mansion."""
+    def __init__(self, player_object):
+
+        self.inventory = []
+        self.player = player_object
+        # things you can look at.
+        self.look_objects = ()
+        self.bool_one, self.bool_two, self.bool_three = (False, False, False)
+
+        self.shop_inventory = []
+        self.look_dict = {"room": self.print_description_room}
+        self.go_dict = {"town center": self.go_town_center,
+                        "ruined house": self.go_ruined_house,
+                        "ruined garage": self.go_ruined_garage,
+                        "ruined office": self.go_ruined_office}
+        self.oper_dict = {}
+        self.use_dict = {}
+
+    def print_description_room(self):
+        print("A ruined city street.")
+        print("__________________")
+        self.print_look()
+        self.print_items()
+
+    def go_town_center(self):
+        self.player.location = "town center"
+
+    def go_ruined_house(self):
+        self.player.location = "ruined house"
+
+    def go_ruined_garage(self):
+        self.player.location = "ruined garage"
+
+    def go_ruined_office(self):
+        self.player.location = "ruined office"
+
+
+class RuinedGarage(FunctionClass):
+    """town gate house that allows or denies entry to mansion."""
+    def __init__(self, player_object):
+
+        self.inventory = []
+        self.player = player_object
+        # things you can look at.
+        self.look_objects = ()
+        self.bool_one, self.bool_two, self.bool_three = (False, False, False)
+
+        self.shop_inventory = []
+        self.look_dict = {"room": self.print_description_room}
+        self.go_dict = {"ruined street": self.go_ruined_street}
+        self.oper_dict = {}
+        self.use_dict = {}
+
+    def print_description_room(self):
+        print("A ruined garage.")
+        print("__________________")
+        self.print_look()
+        self.print_items()
+
+    def go_ruined_street(self):
+        self.player.location = "ruined street"
+
+
+class RuinedOffice(FunctionClass):
+    """town gate house that allows or denies entry to mansion."""
+    def __init__(self, player_object):
+
+        self.inventory = []
+        self.player = player_object
+        # things you can look at.
+        self.look_objects = ()
+        self.bool_one, self.bool_two, self.bool_three = (False, False, False)
+
+        self.shop_inventory = []
+        self.look_dict = {"room": self.print_description_room}
+        self.go_dict = {"ruined street": self.go_ruined_street}
+        self.oper_dict = {}
+        self.use_dict = {}
+
+    def print_description_room(self):
+        print("A ruined city offce.")
+        print("__________________")
+        self.print_look()
+        self.print_items()
+
+    def go_ruined_street(self):
+        self.player.location = "ruined street"

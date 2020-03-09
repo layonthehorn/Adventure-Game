@@ -149,7 +149,10 @@ command to clear the screen."""
                 "gate house": self.town_center.gate_house,
 
                 # ruins rooms and actions
-                self.ruins_name: self.ruins,
+                "ruined street": self.ruins.street,
+                "ruined office": self.ruins.office,
+                "ruined house": self.ruins.house,
+                "ruined garage": self.ruins.garage,
 
                 # ruins upstairs rooms and actions
                 self.upstairs_ruins_name: self.upstairs_ruins,

@@ -11,10 +11,11 @@ class PlayerClass:
     end = '''\033[0;0m'''
     accepted_locations = (
         "end", "exit",
-        "town center", "general store", "gate house", "bath house", "bar"
+        "town center", "general store", "gate house", "bath house", "bar",
+        "ruined street", "ruined office", "ruined house", "ruined garage"
                           )
     accepted_sections = {"town": ("town center", "general store", "gate house", "bath house", "bar")
-                         , "ruins": ()
+                         , "ruins": ("ruined street", "ruined office", "ruined house", "ruined garage")
                          , "mansion": ()
                          , "upstairs": ()
                          , "gen back rooms": ()
@@ -64,11 +65,12 @@ class PlayerClass:
             if location not in self.accepted_sections.get(self.__section):
                 for key in self.accepted_sections:
                     if location in self.accepted_sections.get(key):
-                        print(f"You have gone to the {location}, in the {self.__section}.")
+                        print(f"You have gone to the {location}, in the {key}.")
                         self.__section = key
                         self.__location = location
-                    else:
-                        print(f"Error, no good section found for {location}.")
+                        break
+                else:
+                    print(f"Error, no good section found for {location}.")
 
             else:
                 print(f"You have gone to the {location}.")
@@ -213,7 +215,11 @@ class Ruins:
     NPC_Roster = {}
 
     def __init__(self, player):
-        pass
+        self.office = rooms.RuinedOffice(player)
+        self.street = rooms.RuinedStreet(player)
+        self.house = rooms.RuinedHouse(player)
+        self.garage = rooms.RuinedGarage(player)
+
 
 
 class Upstairs:
