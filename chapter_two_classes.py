@@ -30,10 +30,10 @@ class FunctionClass:
                     look_command()
                     break
             else:
-                print(f"I can't look at {look_at}.")
+                print(f"I can't look at the {look_at}.")
 
         else:
-            print(f"I can't go to {look_at}.")
+            print(f"I can't look at the {look_at}.")
 
     # allows getting operate commands
     def get_oper_commands(self, operate):
@@ -78,6 +78,42 @@ class FunctionClass:
                 print(f"I can't find the {room_object}.")
         else:
             print(f"What is a(n) {room_object}.")
+
+    # gives item to player
+    def get_item(self, item):
+        if item in self.inventory:
+            if item == "map":
+                print(f"Hey a {self.bold + item + self.end}, this might help me out.")
+            else:
+                print(f"I got the {self.bold + item + self.end}.")
+            self.inventory.remove(item)
+            self.player_object.inventory.append(item)
+        else:
+            print(f"There isn't a(n) {item} to get.")
+
+    # dropping item back into room
+    def drop_item(self, item):
+        if item in self.player_object.inventory and item != "map":
+            print(f"I dropped the {self.bold + item + self.end}.")
+            self.inventory.append(item)
+            self.player_object.inventory.remove(item)
+        elif item in self.player_object.inventory and item != "map":
+            print("I might need it, I'm not going to drop it.")
+        else:
+            print(f"I don't have a(n) {item} to drop.")
+
+    # prints items and bolds them for effect.
+    def print_items(self):
+        if len(self.inventory) > 0:
+            for item in self.inventory:
+                print(f"There is a(n) ", end="")
+                print(self.bold, item, self.end)
+
+
+class ShopFunctions:
+    # class variables for print formatting
+    bold = '''\033[1m'''
+    end = '''\033[0;0m'''
 
     # general shop keeper function
     def shop_keeper(self):
@@ -178,13 +214,6 @@ class FunctionClass:
         print(f"You bought the {self.bold + item + self.end}.")
         self.player_object.change_player_wallet(self.player_object.buy_item_values.get(item, 0))
 
-    # prints items and bolds them for effect.
-    def print_items(self):
-        if len(self.inventory) > 0:
-            for item in self.inventory:
-                print(f"There is a(n) ", end="")
-                print(self.bold, item, self.end)
-
 
 # Player Class
 class PlayerClass:
@@ -198,6 +227,7 @@ class PlayerClass:
 
         self.inventory = ["self"]
         self.started = True
+        self.accepted_locations = ()
         # neg
         self.buy_item_values = {"fish": -5,
                                 "can": -3}
@@ -241,10 +271,11 @@ class PlayerClass:
 
     @location.setter
     def location(self, location):
-        if location not in ():
-            print("Could not find matching location. Moving to None.")
+        # makes sure that you do not enter a bad location.
+        if location not in self.accepted_locations:
             print(f"Could not fine {location}... Possible missing spelling in code?")
-            location = None
+            print("Could not find matching location. Canceling movement.")
+            location = self.__location
         else:
             print(f"You have gone to the {location}.")
         self.__location = location

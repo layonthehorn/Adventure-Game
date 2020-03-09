@@ -1,11 +1,11 @@
 import pickle
 import re
-import os
+from os import path
 from chapter_two_classes import PlayerClass
 
 
-class ChapterTwo:
-    """This is a text adventure game, chapter two. All that is needed is to initialize it with a save directory and a
+class ChapterOne:
+    """This is a text adventure game, chapter one. All that is needed is to initialize it with a save directory and a
 command to clear the screen."""
     under_line = '\033[4m'
     bold = '\033[1m'
@@ -22,19 +22,17 @@ command to clear the screen."""
         # saving clear screen function
         self.clear = clear_func
         # getting save file location
-        self.save_location = os.path.join(save_dir, "chapter_two.save")
+        self.save_location = path.join(save_dir, "chapter_one.save")
 
         # building the rooms and player names
         self.player_name = "player"
         self.exit_name = "exit"
         self.end_name = "end"
-
         self.stat_dictionary_name = "stat dictionary"
         self.playing = True
 
         # Main Classes
         # These are loaded below as to not load them twice.
-        # self.player - The player character class
 
         choosing = True
         end_game = False
@@ -79,6 +77,8 @@ command to clear the screen."""
                     # loading saved settings for classes
                     # player data
                     self.player = new_value_dictionary.get(self.player_name)
+                    # bunker data
+
                     # stat dictionary data
                     self.stat_dictionary = new_value_dictionary.get(self.stat_dictionary_name)
 
@@ -100,11 +100,13 @@ command to clear the screen."""
             self.save_dictionary = {
                 # player only here for saving
                 self.player_name: self.player,
+
                 self.stat_dictionary_name: self.stat_dictionary
             }
 
             # switcher dictionary for running actions
             self.switcher_dictionary = {
+
             }
 
         # main game play loop
@@ -112,6 +114,8 @@ command to clear the screen."""
 
             # if you reach the exit then don't ask for actions from player
             if self.player.location != self.exit_name:
+                # checks if something needs to be updated
+                self.update_room_states()
 
                 print(f"{self.bold+'Verbs look, inv(entory), get, oper(ate), com(bine), drop, score, use, go, save, end, help, stat'+self.end}")
                 player_choice = input("").lower()
@@ -121,11 +125,8 @@ command to clear the screen."""
 
             # gets the room the player is in
             p_local = self.player.location
-            if p_local != self.end_name and p_local != self.exit_name:
-                # will be a room update function here later
-                pass
 
-            elif p_local == self.end_name:
+            if p_local == self.end_name:
                 # ends game after player asks to
                 self.end_game()
             else:
@@ -136,9 +137,12 @@ command to clear the screen."""
 
 # end init function
 
+    # general room update function
+    def update_room_states(self):
+        pass
+
     # saves games
     def save_game_state(self):
-
         try:
             # writes data to save file with pickle
             with open(self.save_location, 'wb+') as db_file:
@@ -163,16 +167,22 @@ command to clear the screen."""
         loc_name = self.switcher_dictionary.get(self.player.location)
         # splits the input on the first space
         general_list = action.split(" ", 1)
+
         # prints inventory
         if general_list[0] == "inv":
             self.stat_dictionary["inventory"] += 1
             self.player.check_inventory()
+
+        # lists the stats of what commands you have used
         elif general_list[0] == "stat":
             self.stat_dictionary["stat"] += 1
             self.print_stats()
+
+        # gives a hint
         elif general_list[0] == "hint":
             self.stat_dictionary["hint"] += 1
             self.hint_system()
+
         # prints help page
         elif general_list[0] == "help":
             self.stat_dictionary["help"] += 1
@@ -195,18 +205,22 @@ command to clear the screen."""
                     print("Cannot debug print that.")
             else:
                 print(f"I don't know how to {general_list[0]}.")
+
         # saves the game
         elif general_list[0] == "save":
             self.stat_dictionary["save"] += 1
             self.save_game_state()
+
         # prints score
         elif general_list[0] == "score":
             self.stat_dictionary["score"] += 1
             self.player.print_score()
+
         # in case input is blank
         elif action == "":
             self.stat_dictionary[""] += 1
             print("Vern taps his foot on the ground. \n'I get so sick of waiting for something to happen.'")
+
         # ends game and asks to save
         elif general_list[0] == "end":
             self.stat_dictionary["end"] += 1
@@ -291,6 +305,8 @@ command to clear the screen."""
                 loc_name.get_go_commands(general_list[1])
             except IndexError:
                 print("Go where?")
+
+        # in case you did not have match
         else:
             self.stat_dictionary["unknown"] += 1
             print(f"I don't know how to {general_list[0]}.")
@@ -308,10 +324,7 @@ command to clear the screen."""
 
     # hint system for cheaters
     def hint_system(self):
-        if True:
-            print("not built yet")
-        else:
-            print("Keep playing for more hints.")
+        pass
 
     # prints usage statement to players in game
     @staticmethod
