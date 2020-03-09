@@ -84,7 +84,7 @@ while choosing:
         clear()
     elif user_input == "2":
         clear()
-        ChapterTwo(save_dir, clear)
+        ChapterTwo(save_dir, clear, True)
     elif user_input == "q":
         clear()
         print("Goodbye!")
