@@ -164,7 +164,10 @@ command to clear the screen."""
                 self.tower_name: self.tower,
 
                 # mansion rooms and actions
-                self.mansion_name: self.mansion,
+                "foyer": self.mansion.foyer,
+                "sun room": self.mansion.sun_room,
+                "hallway": self.mansion.hallway,
+                "kitchen": self.mansion.kitchen,
 
                 # garden rooms and actions
                 self.gardens_name: self.gardens,

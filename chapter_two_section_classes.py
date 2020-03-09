@@ -9,14 +9,17 @@ class PlayerClass:
     # class variables for print formatting
     bold = '''\033[1m'''
     end = '''\033[0;0m'''
+
+    # accepted locations where you can go
     accepted_locations = (
         "end", "exit",
         "town center", "general store", "gate house", "bath house", "bar",
-        "ruined street", "ruined office", "ruined house", "ruined garage"
+        "ruined street", "ruined office", "ruined house", "ruined garage",
+        "kitchen", "foyer", "sun room", "living room", "hallway"
                           )
     accepted_sections = {"town": ("town center", "general store", "gate house", "bath house", "bar")
                          , "ruins": ("ruined street", "ruined office", "ruined house", "ruined garage")
-                         , "mansion": ()
+                         , "mansion": ("kitchen", "foyer", "sun room", "living room", "hallway")
                          , "upstairs": ()
                          , "gen back rooms": ()
                          , "tower": ()
@@ -27,7 +30,6 @@ class PlayerClass:
     def __init__(self):
 
         self.inventory = ["self"]
-        accepted_locations = ()
         # neg
         self.buy_item_values = {"fish": -5,
                                 "can": -3}
@@ -221,7 +223,6 @@ class Ruins:
         self.garage = rooms.RuinedGarage(player)
 
 
-
 class Upstairs:
     """This starts all the rooms in the ruins upstairs section.
     It also will track NPC movements and cross room changes."""
@@ -247,7 +248,11 @@ class Mansion:
     NPC_Roster = {}
 
     def __init__(self, player):
-        pass
+        self.foyer = rooms.MansionFoyer(player)
+        self.kitchen = rooms.MansionKitchen(player)
+        self.hallway = rooms.MansionHallWay(player)
+        self.sun_room = rooms.MansionSunRoom(player)
+        self.living_room = rooms.MansionLivingRoom(player)
 
 
 class Gardens:
