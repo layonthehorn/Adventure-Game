@@ -52,6 +52,14 @@ class PlayerClass:
         return f"""Inventory {self.inventory}\nLocation {self.__location}\nScore {self.__player_score}"""
 
     @property
+    def section(self):
+        return self.__section
+
+    @section.setter
+    def section(self, new_sec):
+        self.__section = new_sec
+
+    @property
     def location(self):
         return self.__location
 
@@ -66,11 +74,11 @@ class PlayerClass:
         elif location != "end" and location != "exit":
 
             # checks if we need to update the section you are in
-            if location not in self.accepted_sections.get(self.__section):
+            if location not in self.accepted_sections.get(self.section):
                 for key in self.accepted_sections:
                     if location in self.accepted_sections.get(key):
                         print(f"You have gone to the {location}, in the {key}.")
-                        self.__section = key
+                        self.section = key
                         self.__location = location
                         break
                 else:
@@ -164,25 +172,26 @@ class PlayerClass:
 
     # looking at map
     def look_player_map(self):
-        if "map" in self.inventory:
-            print("Let me check my map.\n*Map crinkling sounds.*")
-            time.sleep(1.5)
-            rooms = []
-            p_local = "??"
-            for room in self.places:
-                if self.map_dictionary.get(self.location, "") == room:
-
-                    # if the player is on the map it changes that room to the player symbol
-                    rooms.append("@@")
-                    # then puts the room symbol in the legend
-                    p_local = room
-                else:
-                    # other wise just puts rooms there normally
-                    rooms.append(room)
-            print("Map not made yet.")
-
+        print("Let me check my map.\n*Map crinkling sounds.*")
+        time.sleep(1.5)
+        if self.section == "town":
+            print("Town map here.")
+        elif self.section == "ruins":
+            print("Ruins map here.")
+        elif self.section == "tower":
+            print("Tower map here")
+        elif self.section == "mansion":
+            print("Mansion map here.")
+        elif self.section == "gardens":
+            print("Gardens map here.")
+        elif self.section == "cellar":
+            print("Cellars map here.")
+        elif self.section == "gen back rooms":
+            print("Back rooms map here.")
+        elif self.section == "upstairs":
+            print("Upstairs map here.")
         else:
-            print("I don't have one.")
+            print("Error no match location found.")
 
     # looking at self
     def look_self(self):
