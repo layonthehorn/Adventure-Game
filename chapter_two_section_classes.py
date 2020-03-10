@@ -240,7 +240,23 @@ class PlayerClass:
                                                    +--------------------+
               """)
         elif self.section == "gardens":
-            print("Gardens map here.")
+            print("""
+                                                   +--------------------+
+                                                   |    Garden Area     |
+                                                   +--------------------+
+                                                   |Legend:             |
+                                                   |                    |
+                                                   |Mansion Area:    MA |
+                                                   |Room One:        R1 |
+                                                   |Room Two:        R2 |
+                                                   |Room Three:      R3 |
+                                                   |Room Four:       R4 |
+                                                   |Room Five:       R5 |
+                                                   |Room Six:        R6 |
+                                                   |Room Seven:      R7 |
+                                                   |You: @@ in room  ?? |
+                                                   +--------------------+
+              """)
         elif self.section == "cellar":
             print("""
                                                    +--------------------+
@@ -258,7 +274,7 @@ class PlayerClass:
         elif self.section == "gen back rooms":
             print("""
                                                    +--------------------+
-                                                   |   Upstairs Area    |
+                                                   |  Back Rooms Area   |
                                                    +--------------------+
                         TA                         |Legend:             |
                        //                          |                    |
