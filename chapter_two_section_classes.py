@@ -51,6 +51,17 @@ class PlayerClass:
     def __str__(self):
         return f"""Inventory {self.inventory}\nLocation {self.__location}\nScore {self.__player_score}"""
 
+    # enables changing player room for testing
+    def debug_player(self):
+        print("\nEnter location?\n")
+        for number, place in enumerate(self.accepted_locations):
+            print(f"{self.bold+place+self.end}", end=", ")
+            if (number + 1) % 4 == 0:
+                print("")
+        print("")
+        choice = input("").lower()
+        self.location = choice
+
     @property
     def section(self):
         return self.__section
