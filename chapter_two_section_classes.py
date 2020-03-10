@@ -15,14 +15,15 @@ class PlayerClass:
         "end", "exit",
         "town center", "general store", "gate house", "bath house", "bar",
         "ruined street", "ruined office", "ruined house", "ruined garage",
-        "kitchen", "foyer", "sun room", "living room", "hallway"
+        "kitchen", "foyer", "sun room", "living room", "hallway",
+        "tower entrance", "tower peak"
                           )
     accepted_sections = {"town": ("town center", "general store", "gate house", "bath house", "bar")
                          , "ruins": ("ruined street", "ruined office", "ruined house", "ruined garage")
                          , "mansion": ("kitchen", "foyer", "sun room", "living room", "hallway")
                          , "upstairs": ()
                          , "gen back rooms": ()
-                         , "tower": ()
+                         , "tower": ("tower entrance", "tower peak")
                          , "cellar": ()
                          , "gardens": ()
                          }
@@ -239,7 +240,8 @@ class Tower:
     NPC_Roster = {}
 
     def __init__(self, player):
-        pass
+        self.entrance = rooms.TowerEntrance(player)
+        self.peak = rooms.TowerPeak(player)
 
 
 class Mansion:

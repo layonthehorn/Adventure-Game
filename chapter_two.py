@@ -161,7 +161,8 @@ command to clear the screen."""
                 self.back_rooms_name: self.back_rooms,
 
                 # tower rooms and actions
-                self.tower_name: self.tower,
+                "tower entrance": self.tower.entrance,
+                "tower peak": self.tower.peak,
 
                 # mansion rooms and actions
                 "foyer": self.mansion.foyer,

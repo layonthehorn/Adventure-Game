@@ -211,17 +211,16 @@ class FunctionClass:
                 print(f"There is a(n) ", end="")
                 print(self.bold, item, self.end)
 
+    # prints what you can look at
     def print_look(self):
-        if len(self.look_dict) > 0:
-            print("I could look at...")
-            print(f"There is a(n) ", end="")
-            for location in self.look_dict:
-                print(f"'{location}', ", end="")
-            print("\n_________________________________________________")
+        print("I could look at...")
+        for location in self.look_dict:
+            print(f"'{location}', ", end="")
+        print("\n_________________________________________________")
 
+    # prints where you can go
     def print_locations(self):
         print("I could go to...")
-        print(f"There is a(n) ", end="")
         for location in self.go_dict:
             print(f"'{location}', ", end="")
         print("\n______________________________________________________")
@@ -531,7 +530,8 @@ class MansionSunRoom(FunctionClass):
         self.player = player_object
         self.bool_one, self.bool_two, self.bool_three = (False, False, False)
         self.look_dict = {"room": self.print_description_room}
-        self.go_dict = {"foyer": self.go_mansion_foyer}
+        self.go_dict = {"foyer": self.go_mansion_foyer,
+                        "tower entrance": self.go_tower_entrance}
         self.oper_dict = {}
         self.use_dict = {}
 
@@ -544,6 +544,9 @@ class MansionSunRoom(FunctionClass):
 
     def go_mansion_foyer(self):
         self.player.location = "foyer"
+
+    def go_tower_entrance(self):
+        self.player.location = "tower entrance"
 
 
 class MansionKitchen(FunctionClass):
@@ -617,3 +620,55 @@ class MansionLivingRoom(FunctionClass):
 
     def go_mansion_hallway(self):
         self.player.location = "hallway"
+
+
+# tower rooms
+class TowerEntrance(FunctionClass):
+    """Starting room and center of town."""
+    def __init__(self, player_object):
+
+        self.inventory = []
+        self.player = player_object
+        self.bool_one, self.bool_two, self.bool_three = (False, False, False)
+        self.look_dict = {"room": self.print_description_room}
+        self.go_dict = {
+            "tower peak": self.go_tower_peak,
+            "hallway": self.go_mansion_sun_room}
+        self.oper_dict = {}
+        self.use_dict = {}
+
+    def print_description_room(self):
+        print("The tower entrance.")
+        print("__________________")
+        self.print_look()
+        self.print_locations()
+        self.print_items()
+
+    def go_mansion_sun_room(self):
+        self.player.location = "sun room"
+
+    def go_tower_peak(self):
+        self.player.location = "tower peak"
+
+
+class TowerPeak(FunctionClass):
+    """Starting room and center of town."""
+
+    def __init__(self, player_object):
+        self.inventory = []
+        self.player = player_object
+        self.bool_one, self.bool_two, self.bool_three = (False, False, False)
+        self.look_dict = {"room": self.print_description_room}
+        self.go_dict = {"tower peak": self.go_tower_entrance}
+        self.oper_dict = {}
+        self.use_dict = {}
+
+    def print_description_room(self):
+        print("The tower entrance.")
+        print("__________________")
+        self.print_look()
+        self.print_locations()
+        self.print_items()
+
+    def go_tower_entrance(self):
+        self.player.location = "tower entrance"
