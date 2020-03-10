@@ -256,9 +256,34 @@ class PlayerClass:
                                                    +--------------------+
               """)
         elif self.section == "gen back rooms":
-            print("Back rooms map here.")
+            print("""
+                                                   +--------------------+
+                                                   |   Upstairs Area    |
+                                                   +--------------------+
+                        TA                         |Legend:             |
+                       //                          |                    |
+              R3--R2--R1                           |Town Area:       TA |
+                    \\\\||                           |Room One:        R1 |
+                      R4                           |Room Two:        R2 |
+                                                   |Room Three:      R3 |
+                                                   |Room Four:       R4 |
+                                                   |You: @@ in room  ?? |
+                                                   +--------------------+
+              """)
         elif self.section == "upstairs":
-            print("Upstairs map here.")
+            print("""
+                                                   +--------------------+
+                                                   |   Upstairs Area    |
+                                                   +--------------------+
+                                                   |Legend:             |
+                                                   |                    |
+                      R1--RA                       |Ruins Area:      RA |
+                    //  \\\\                         |Room One:        R1 |
+                   R2----R3                        |Room Two:        R2 |
+                                                   |Room Three:      R3 |
+                                                   |You: @@ in room  ?? |
+                                                   +--------------------+
+              """)
         else:
             print("Error no match location found.")
 
