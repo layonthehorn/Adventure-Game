@@ -16,7 +16,8 @@ class PlayerClass:
         "town center", "general store", "gate house", "bath house", "bar",
         "ruined street", "ruined office", "ruined house", "ruined garage",
         "kitchen", "foyer", "sun room", "living room", "hallway",
-        "tower entrance", "tower peak"
+        "tower entrance", "tower peak",
+        "cellar entrance", "wine casks", "lab"
                           )
     accepted_sections = {"town": ("town center", "general store", "gate house", "bath house", "bar")
                          , "ruins": ("ruined street", "ruined office", "ruined house", "ruined garage")
@@ -24,7 +25,7 @@ class PlayerClass:
                          , "upstairs": ()
                          , "gen back rooms": ()
                          , "tower": ("tower entrance", "tower peak")
-                         , "cellar": ()
+                         , "cellar": ("cellar entrance", "wine casks", "lab")
                          , "gardens": ()
                          }
 
@@ -272,4 +273,6 @@ class Cellar:
     NPC_Roster = {}
 
     def __init__(self, player):
-        pass
+        self.lab = rooms.CellarLab(player)
+        self.entrance = rooms.CellarEntrance(player)
+        self.wine_casks = rooms.CellarWineCasks(player)

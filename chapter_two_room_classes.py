@@ -499,7 +499,7 @@ class MansionFoyer(FunctionClass):
         self.player = player_object
         self.bool_one, self.bool_two, self.bool_three = (False, False, False)
         self.look_dict = {"room": self.print_description_room}
-        self.go_dict = {"town center": self.go_town_center,
+        self.go_dict = {"gate house": self.go_gate_house,
                         "kitchen": self.go_mansion_kitchen,
                         "hallway": self.go_mansion_hallway,
                         "sun room": self.go_mansion_sun_room}
@@ -513,8 +513,8 @@ class MansionFoyer(FunctionClass):
         self.print_locations()
         self.print_items()
 
-    def go_town_center(self):
-        self.player.location = "town center"
+    def go_gate_house(self):
+        self.player.location = "gate house"
 
     def go_mansion_kitchen(self):
         self.player.location = "kitchen"
@@ -561,7 +561,8 @@ class MansionKitchen(FunctionClass):
         self.player = player_object
         self.bool_one, self.bool_two, self.bool_three = (False, False, False)
         self.look_dict = {"room": self.print_description_room}
-        self.go_dict = {"foyer": self.go_mansion_foyer}
+        self.go_dict = {"foyer": self.go_mansion_foyer,
+                        "cellar": self.go_cellar_entrance}
         self.oper_dict = {}
         self.use_dict = {}
 
@@ -574,6 +575,9 @@ class MansionKitchen(FunctionClass):
 
     def go_mansion_foyer(self):
         self.player.location = "foyer"
+
+    def go_cellar_entrance(self):
+        self.player.location = "cellar entrance"
 
 
 class MansionHallWay(FunctionClass):
@@ -676,3 +680,81 @@ class TowerPeak(FunctionClass):
 
     def go_tower_entrance(self):
         self.player.location = "tower entrance"
+
+
+# cellar rooms
+class CellarEntrance(FunctionClass):
+    """Entrance to cellar of mansion."""
+
+    def __init__(self, player_object):
+        self.inventory = []
+        self.player = player_object
+        self.bool_one, self.bool_two, self.bool_three = (False, False, False)
+        self.look_dict = {"room": self.print_description_room}
+        self.go_dict = {"mansion": self.go_mansion_kitchen,
+                        "wine casks": self.go_wine_casks,
+                        "lab": self.go_lab}
+        self.oper_dict = {}
+        self.use_dict = {}
+
+    def print_description_room(self):
+        print("The cellar entrance.")
+        print("__________________")
+        self.print_look()
+        self.print_locations()
+        self.print_items()
+
+    def go_mansion_kitchen(self):
+        self.player.location = "kitchen"
+
+    def go_wine_casks(self):
+        self.player.location = "wine casks"
+
+    def go_lab(self):
+        self.player.location = "lab"
+
+
+class CellarWineCasks(FunctionClass):
+    """Wine Casks in cellar of mansion."""
+
+    def __init__(self, player_object):
+        self.inventory = []
+        self.player = player_object
+        self.bool_one, self.bool_two, self.bool_three = (False, False, False)
+        self.look_dict = {"room": self.print_description_room}
+        self.go_dict = {"cellar entrance": self.go_cellar_entrance}
+        self.oper_dict = {}
+        self.use_dict = {}
+
+    def print_description_room(self):
+        print("The cellar wine casks.")
+        print("__________________")
+        self.print_look()
+        self.print_locations()
+        self.print_items()
+
+    def go_cellar_entrance(self):
+        self.player.location = "cellar entrance"
+
+
+class CellarLab(FunctionClass):
+    """Secret lab in cellar of mansion."""
+
+    def __init__(self, player_object):
+        self.inventory = []
+        self.player = player_object
+        self.bool_one, self.bool_two, self.bool_three = (False, False, False)
+        self.look_dict = {"room": self.print_description_room}
+        self.go_dict = {"cellar entrance": self}
+        self.oper_dict = {}
+        self.use_dict = {}
+
+    def print_description_room(self):
+        print("The cellar secret lab.")
+        print("__________________")
+        self.print_look()
+        self.print_locations()
+        self.print_items()
+
+    def go_cellar_entrance(self):
+        self.player.location = "cellar entrance"

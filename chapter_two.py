@@ -174,7 +174,9 @@ command to clear the screen."""
                 self.gardens_name: self.gardens,
 
                 # cellar rooms and actions
-                self.cellar_name: self.cellar,
+                "cellar entrance": self.cellar.entrance,
+                "wine casks": self.cellar.wine_casks,
+                "lab": self.cellar.lab
             }
 
         # main game play loop
