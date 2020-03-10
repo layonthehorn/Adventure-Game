@@ -175,17 +175,86 @@ class PlayerClass:
         print("Let me check my map.\n*Map crinkling sounds.*")
         time.sleep(1.5)
         if self.section == "town":
-            print("Town map here.")
+            print("""
+                                                   +--------------------+
+                                                   |     Town Area      |
+                                                   +--------------------+     
+                                                   |Legend:             |
+                                                   |                    |
+                                                   |Ruins Area:      RA |
+                      TB                           |Mansion Area:    MA |
+                      ||                           |Back Rooms Area: BA |
+                  RA--TC--GH--MA                   |Town Center:     TC |
+                      ||\\\\                         |Town Bar:        TB |
+                      GS BH                        |General Store:   GS |
+                     //                            |Bath House:      BH |
+                     BA                            |Gate House:      GH |
+                                                   |You: @@ in room  ?? |
+                                                   +--------------------+ 
+              """)
         elif self.section == "ruins":
-            print("Ruins map here.")
+            print("""
+                                                   +--------------------+
+                                                   |     Ruins Area     |
+                                                   +--------------------+
+                      RO                           |Legend:             |
+                      ||                           |                    |
+                      RS--TA                       |Town Area:       TA |
+                      ||\\\\                         |Upstairs Area:   UA |
+                  UA--MA RH                        |Ruined House:    RH |
+                                                   |Ruined Garage:   RG |
+                                                   |Ruined Office:   RO |
+                                                   |Ruined Street:   RS |
+                                                   |You: @@ in room  ?? |
+                                                   +--------------------+
+              """)
         elif self.section == "tower":
-            print("Tower map here")
+            print("""
+                                                   +--------------------+
+                                                   |     Tower Area     |
+                                                   +--------------------+
+                      TP                           |Legend:             |
+                      ||                           |                    |
+                      TE                           |Mansion Area:    MA |
+                      ||                           |Tower Peak:      TP |
+                      MA                           |Tower Entrance:  TE |
+                                                   |You: @@ in room  ?? |
+                                                   +--------------------+
+              """)
         elif self.section == "mansion":
-            print("Mansion map here.")
+            print("""
+                                                   +--------------------+
+                                                   |    Mansion Area    |
+                                                   +--------------------+
+                                                   |Legend:             |
+                      MT                           |                    |
+                      ||                           |Town Area:       TA |
+                      SR  LR                       |Mansion Tower:   MT |
+                      ||  ||                       |Garden Area:     GA |
+                  TA--MF--HW--GA                   |Mansion Foyer:   MF |
+                      ||                           |Mansion Kitchen: MK |
+                      MK                           |Hallway:         HW |
+                      ||                           |Sun Room:        SR |
+                      CA                           |Living Room:     LR |
+                                                   |You: @@ in room  ?? |
+                                                   +--------------------+
+              """)
         elif self.section == "gardens":
             print("Gardens map here.")
         elif self.section == "cellar":
-            print("Cellars map here.")
+            print("""
+                                                   +--------------------+
+                                                   |    Cellar Area     |
+                                                   +--------------------+
+                                                   |Legend:             |
+                      MA                           |                    |
+                      ||                           |Mansion Area:    MA |
+                      CE--LB                       |Lab:             LB |
+                      ||                           |Wine Casks:      WC |
+                      WC                           |Cellar Entrance: CE |
+                                                   |You: @@ in room  ?? |
+                                                   +--------------------+
+              """)
         elif self.section == "gen back rooms":
             print("Back rooms map here.")
         elif self.section == "upstairs":
