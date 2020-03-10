@@ -213,17 +213,21 @@ class FunctionClass:
 
     # prints what you can look at
     def print_look(self):
+        look_list = ""
         print("I could look at...")
         for location in self.look_dict:
-            print(f"'{location}', ", end="")
-        print("\n_________________________________________________")
+            look_list += f"'{location}', "
+        print(look_list)
+        print("_" * len(look_list))
 
     # prints where you can go
     def print_locations(self):
+        go_list = ""
         print("I could go to...")
         for location in self.go_dict:
-            print(f"'{location}', ", end="")
-        print("\n______________________________________________________")
+            go_list += f"'{location}', "
+        print(go_list)
+        print("_" * len(go_list))
 
 
 # town center rooms
