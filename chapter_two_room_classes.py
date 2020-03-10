@@ -1,4 +1,5 @@
 import os
+import random
 import platform
 
 
@@ -11,6 +12,7 @@ def clear():
         os.system('cls')
 
 
+# a shop class for inheritance
 class ShopFunctions:
     """A class for giving shops the needed functions."""
     # class variables for print formatting
@@ -117,13 +119,19 @@ class ShopFunctions:
         self.player_object.change_player_wallet(self.player_object.buy_item_values.get(item, 0))
 
 
-# function class for inheritance.
+# function class for inheritance
 class FunctionClass:
     """Never to be called. Only used for giving all other classes the same methods."""
 
     # class variables for print formatting
     bold = '''\033[1m'''
     end = '''\033[0;0m'''
+    look_at_remarks = ("I can't look at the {0}.", "What {0}?")
+    oper_remarks = ("I can't operate the {0}.", "How would I operate the {0}?")
+    go_to_remarks = ("I can't go to {go}.", "Where is {0}?")
+    use_remarks = ("What is a(n) {0}.", "I can't do anything to the {0}")
+    get_remarks = ("There isn't a(n) {0} to get.", "I can't find a(n) {0} to pick up.")
+    drop_remarks = ("I don't have a(n) {0} to drop.", "I would need to have a(n) {0} to drop it.")
 
     # allows getting a print function form the look dictionary.
     def get_look_commands(self, look_at):
@@ -135,10 +143,10 @@ class FunctionClass:
                     look_command()
                     break
             else:
-                print(f"I can't look at the {look_at}.")
+                self.print_random_phrase(self.look_at_remarks, look_at)
 
         else:
-            print(f"I can't look at the {look_at}.")
+            self.print_random_phrase(self.look_at_remarks, look_at)
 
     # allows getting operate commands
     def get_oper_commands(self, operate):
@@ -150,9 +158,9 @@ class FunctionClass:
                     oper_command()
                     break
             else:
-                print(f"I can't operate the {operate}.")
+                self.print_random_phrase(self.oper_remarks, operate)
         else:
-            print(f"I can't operate the {operate}.")
+            self.print_random_phrase(self.oper_remarks, operate)
 
     # allows getting go commands
     def get_go_commands(self, go):
@@ -164,9 +172,9 @@ class FunctionClass:
                     go_command()
                     break
             else:
-                print(f"I can't go to {go}.")
+                self.print_random_phrase(self.go_to_remarks, go)
         else:
-            print(f"I can't go to {go}.")
+            self.print_random_phrase(self.go_to_remarks, go)
 
     # allows using item on objects
     def get_use_commands(self, use_list):
@@ -180,9 +188,9 @@ class FunctionClass:
                     use_command(item)
                     break
             else:
-                print(f"I can't find the {room_object}.")
+                self.print_random_phrase(self.use_remarks, room_object)
         else:
-            print(f"What is a(n) {room_object}.")
+            self.print_random_phrase(self.use_remarks, room_object)
 
     # gives item to player
     def get_item(self, item):
@@ -191,7 +199,7 @@ class FunctionClass:
             self.inventory.remove(item)
             self.player_object.inventory.append(item)
         else:
-            print(f"There isn't a(n) {item} to get.")
+            self.print_random_phrase(self.get_remarks, item)
 
     # dropping item back into room
     def drop_item(self, item):
@@ -199,10 +207,8 @@ class FunctionClass:
             print(f"I dropped the {self.bold + item + self.end}.")
             self.inventory.append(item)
             self.player_object.inventory.remove(item)
-        elif item in self.player_object.inventory and item != "map":
-            print("I might need it, I'm not going to drop it.")
         else:
-            print(f"I don't have a(n) {item} to drop.")
+            self.print_random_phrase(self.drop_remarks, item)
 
     # prints items and bolds them for effect.
     def print_items(self):
@@ -215,8 +221,8 @@ class FunctionClass:
     def print_look(self):
         look_list = ""
         print("I could look at...")
-        for location in self.look_dict:
-            look_list += f"'{location}', "
+        for thing in self.look_dict:
+            look_list += f"'{self.bold, thing, self.end}', "
         print(look_list)
         print("_" * len(look_list))
 
@@ -225,9 +231,14 @@ class FunctionClass:
         go_list = ""
         print("I could go to...")
         for location in self.go_dict:
-            go_list += f"'{location}', "
+            go_list += f"'{self.bold, location, self.end}', "
         print(go_list)
         print("_" * len(go_list))
+
+    @staticmethod
+    def print_random_phrase(selection_list, item):
+        rand_phrase = random.choice(selection_list)
+        print(rand_phrase.format(item))
 
 
 # town center rooms
@@ -280,9 +291,10 @@ class TownBar(FunctionClass, ShopFunctions):
         self.player = player_object
         self.bool_one, self.bool_two, self.bool_three = (False, False, False)
         self.shop_inventory = []
-        self.look_dict = {"room": self.print_description_room}
+        self.look_dict = {"room": self.print_description_room,
+                          "shop keeper": self.print_description_shop}
         self.go_dict = {"town center": self.go_town_center}
-        self.oper_dict = {}
+        self.oper_dict = {"shop keeper": self.shop_keeper}
         self.use_dict = {}
 
     def print_description_room(self):
@@ -295,6 +307,13 @@ class TownBar(FunctionClass, ShopFunctions):
     def go_town_center(self):
         self.player.location = "town center"
 
+    def print_description_shop(self):
+        print("It's a grungy looking bar.", end=" ")
+        if len(self.shop_inventory) > 0:
+            print("Looks like there are things to buy.")
+        else:
+            print("He's all sold out of things I'd want.")
+
 
 class TownGenStore(FunctionClass, ShopFunctions):
     """town general store that acts as a shop and a puzzle hub."""
@@ -302,13 +321,11 @@ class TownGenStore(FunctionClass, ShopFunctions):
 
         self.inventory = []
         self.player = player_object
-        # things you can look at.
         self.bool_one, self.bool_two, self.bool_three = (False, False, False)
-
         self.shop_inventory = []
         self.look_dict = {"room": self.print_description_room}
         self.go_dict = {"town center": self.go_town_center}
-        self.oper_dict = {}
+        self.oper_dict = {"shop keeper": self.shop_keeper}
         self.use_dict = {}
 
     def print_description_room(self):
@@ -317,6 +334,13 @@ class TownGenStore(FunctionClass, ShopFunctions):
         self.print_look()
         self.print_locations()
         self.print_items()
+
+    def print_description_shop(self):
+        print("It's a nice General store.", end=" ")
+        if len(self.shop_inventory) > 0:
+            print("Looks like there are things to buy.")
+        else:
+            print("He's all sold out of things I'd want.")
 
     def go_town_center(self):
         self.player.location = "town center"
@@ -378,7 +402,7 @@ class TownGateHouse(FunctionClass):
 
 # Ruined City rooms
 class RuinedHouse(FunctionClass):
-    """town gate house that allows or denies entry to mansion."""
+    """A ruined house in the city."""
     def __init__(self, player_object):
 
         self.inventory = []
@@ -403,7 +427,7 @@ class RuinedHouse(FunctionClass):
 
 
 class RuinedStreet(FunctionClass):
-    """town gate house that allows or denies entry to mansion."""
+    """The main street of the ruined city."""
     def __init__(self, player_object):
 
         self.inventory = []
@@ -441,7 +465,7 @@ class RuinedStreet(FunctionClass):
 
 
 class RuinedGarage(FunctionClass):
-    """town gate house that allows or denies entry to mansion."""
+    """An old garage in the ruined city."""
     def __init__(self, player_object):
 
         self.inventory = []
@@ -466,7 +490,7 @@ class RuinedGarage(FunctionClass):
 
 
 class RuinedOffice(FunctionClass):
-    """town gate house that allows or denies entry to mansion."""
+    """A ruined office building in the city."""
     def __init__(self, player_object):
 
         self.inventory = []
@@ -492,7 +516,7 @@ class RuinedOffice(FunctionClass):
 
 # mansion rooms
 class MansionFoyer(FunctionClass):
-    """Starting room and center of town."""
+    """The entrance to the mansion."""
     def __init__(self, player_object):
 
         self.inventory = []
@@ -527,7 +551,7 @@ class MansionFoyer(FunctionClass):
 
 
 class MansionSunRoom(FunctionClass):
-    """Starting room and center of town."""
+    """A warm sun room in the house."""
     def __init__(self, player_object):
 
         self.inventory = []
@@ -554,7 +578,7 @@ class MansionSunRoom(FunctionClass):
 
 
 class MansionKitchen(FunctionClass):
-    """Starting room and center of town."""
+    """A kitchen in the mansion."""
     def __init__(self, player_object):
 
         self.inventory = []
@@ -581,7 +605,7 @@ class MansionKitchen(FunctionClass):
 
 
 class MansionHallWay(FunctionClass):
-    """Starting room and center of town."""
+    """A hallway in the mansion."""
     def __init__(self, player_object):
 
         self.inventory = []
@@ -608,7 +632,7 @@ class MansionHallWay(FunctionClass):
 
 
 class MansionLivingRoom(FunctionClass):
-    """Starting room and center of town."""
+    """A living room in the mansion."""
     def __init__(self, player_object):
 
         self.inventory = []
@@ -632,7 +656,7 @@ class MansionLivingRoom(FunctionClass):
 
 # tower rooms
 class TowerEntrance(FunctionClass):
-    """Starting room and center of town."""
+    """The entrance to the mansion tower."""
     def __init__(self, player_object):
 
         self.inventory = []
@@ -660,7 +684,7 @@ class TowerEntrance(FunctionClass):
 
 
 class TowerPeak(FunctionClass):
-    """Starting room and center of town."""
+    """The top of the mansion tower."""
 
     def __init__(self, player_object):
         self.inventory = []

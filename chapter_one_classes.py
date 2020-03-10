@@ -100,7 +100,7 @@ class FunctionClass:
             print(f"I dropped the {self.bold + item + self.end}.")
             self.inventory.append(item)
             self.player_object.inventory.remove(item)
-        elif item in self.player_object.inventory and item != "map":
+        elif item in self.player_object.inventory and item == "map":
             print("I might need it, I'm not going to drop it.")
         else:
             print(f"I don't have a(n) {item} to drop.")
