@@ -53,14 +53,35 @@ class PlayerClass:
 
     # enables changing player room for testing
     def debug_player(self):
-        print("\nEnter location?\n")
-        for number, place in enumerate(self.accepted_locations):
-            print(f"{self.bold+place+self.end}", end=", ")
-            if (number + 1) % 4 == 0:
-                print("")
-        print("")
-        choice = input("").lower()
-        self.location = choice
+        print("Add item or change location?")
+        pick = input("").lower()
+
+        # debug for changing rooms
+        if pick in "location":
+            print("\nEnter location?\n")
+            for number, place in enumerate(self.accepted_locations):
+                print(f"{self.bold+place+self.end}", end=", ")
+                if (number + 1) % 4 == 0:
+                    print("")
+            print("")
+            choice = input("").lower()
+            self.location = choice
+
+        # debug for adding items to inventory
+        elif pick in "item":
+            print("\nEnter item?\n")
+            for number, place in enumerate(self.item_dictionary):
+                print(f"{self.bold+place+self.end}", end=", ")
+                if (number + 1) % 4 == 0:
+                    print("")
+            print("")
+            choice = input("").lower()
+            if choice in self.item_dictionary:
+                self.inventory.append(choice)
+            else:
+                print("No matching item to add.")
+        else:
+            print("Not an acceptable action.")
 
     @property
     def section(self):
