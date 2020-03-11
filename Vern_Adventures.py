@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
-from chapter_one import ChapterOne
-from chapter_two import ChapterTwo
+from Chapter_One.chapter_one import ChapterOne
+from Chapter_Two.chapter_two import ChapterTwo
 import os
 from os import environ
 import platform
