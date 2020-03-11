@@ -249,8 +249,6 @@ class TownCenter(FunctionClass):
         self.inventory = []
         self.player = player_object
         self.bool_one, self.bool_two, self.bool_three = (False, False, False)
-        # optional/only for shops
-        # self.shop_inventory = []
         self.look_dict = {"room": self.print_description_room}
         self.go_dict = {"bar": self.go_bar,
                         "general store": self.go_gen_store,
@@ -432,7 +430,6 @@ class RuinedStreet(FunctionClass):
 
         self.inventory = []
         self.player = player_object
-        self.go_objects = ("town center", "ruined house", "ruined garage", "ruined office")
         self.bool_one, self.bool_two, self.bool_three = (False, False, False)
 
         self.shop_inventory = []
@@ -464,31 +461,6 @@ class RuinedStreet(FunctionClass):
         self.player.location = "ruined office"
 
 
-class RuinedGarage(FunctionClass):
-    """An old garage in the ruined city."""
-    def __init__(self, player_object):
-
-        self.inventory = []
-        self.player = player_object
-        self.bool_one, self.bool_two, self.bool_three = (False, False, False)
-
-        self.shop_inventory = []
-        self.look_dict = {"room": self.print_description_room}
-        self.go_dict = {"ruined street": self.go_ruined_street}
-        self.oper_dict = {}
-        self.use_dict = {}
-
-    def print_description_room(self):
-        print("A ruined garage.")
-        print("__________________")
-        self.print_look()
-        self.print_locations()
-        self.print_items()
-
-    def go_ruined_street(self):
-        self.player.location = "ruined street"
-
-
 class RuinedOffice(FunctionClass):
     """A ruined office building in the city."""
     def __init__(self, player_object):
@@ -512,6 +484,127 @@ class RuinedOffice(FunctionClass):
 
     def go_ruined_street(self):
         self.player.location = "ruined street"
+
+
+class RuinedGarage(FunctionClass):
+    """An old garage in the ruined city."""
+    def __init__(self, player_object):
+
+        self.inventory = []
+        self.player = player_object
+        self.bool_one, self.bool_two, self.bool_three = (False, False, False)
+
+        self.shop_inventory = []
+        self.look_dict = {"room": self.print_description_room}
+        self.go_dict = {"ruined street": self.go_ruined_street,
+                        "upstairs": self.go_upstairs_break_room}
+        self.oper_dict = {}
+        self.use_dict = {}
+
+    def print_description_room(self):
+        print("A ruined garage.")
+        print("__________________")
+        self.print_look()
+        self.print_locations()
+        self.print_items()
+
+    def go_ruined_street(self):
+        self.player.location = "ruined street"
+
+    def go_upstairs_break_room(self):
+        self.player.location = "break room"
+
+
+# Garage Upstairs
+class UpstairsBreakRoom(FunctionClass):
+    """An upstairs break room in the garage."""
+    def __init__(self, player_object):
+
+        self.inventory = []
+        self.player = player_object
+        self.bool_one, self.bool_two, self.bool_three = (False, False, False)
+
+        self.shop_inventory = []
+        self.look_dict = {"room": self.print_description_room}
+        self.go_dict = {"ruined garage": self.go_ruined_garage,
+                        "office": self.go_upstairs_office,
+                        "balcony": self.go_upstairs_balcony}
+        self.oper_dict = {}
+        self.use_dict = {}
+
+    def print_description_room(self):
+        print("An upstairs break room attached to the garage.")
+        print("__________________")
+        self.print_look()
+        self.print_locations()
+        self.print_items()
+
+    def go_ruined_garage(self):
+        self.player.location = "ruined garage"
+
+    def go_upstairs_office(self):
+        self.player.location = "managers office"
+
+    def go_upstairs_balcony(self):
+        self.player.location = "balcony"
+
+
+class UpstairsBalcony(FunctionClass):
+    """An upstairs balcony that overlooks the city street."""
+
+    def __init__(self, player_object):
+        self.inventory = []
+        self.player = player_object
+        self.bool_one, self.bool_two, self.bool_three = (False, False, False)
+
+        self.shop_inventory = []
+        self.look_dict = {"room": self.print_description_room}
+        self.go_dict = {"break room": self.go_upstairs_break_room,
+                        "office": self.go_upstairs_office}
+        self.oper_dict = {}
+        self.use_dict = {}
+
+    def print_description_room(self):
+        print("An upstairs balcony overlooking the ruined street.")
+        print("__________________")
+        self.print_look()
+        self.print_locations()
+        self.print_items()
+
+    def go_upstairs_break_room(self):
+        self.player.location = "break room"
+
+    def go_upstairs_office(self):
+        self.player.location = "managers office"
+
+
+class UpstairsOffice(FunctionClass):
+    """An upstairs office in the garage."""
+
+    def __init__(self, player_object):
+        self.inventory = []
+        self.player = player_object
+        self.bool_one, self.bool_two, self.bool_three = (False, False, False)
+
+        self.shop_inventory = []
+        self.look_dict = {"room": self.print_description_room}
+        self.go_dict = {"break room": self.go_upstairs_break_room,
+                        "balcony": self.go_upstairs_balcony}
+        self.oper_dict = {}
+        self.use_dict = {}
+
+    def print_description_room(self):
+        print("An upstairs managers office attached to the garage.")
+        print("__________________")
+        self.print_look()
+        self.print_locations()
+        self.print_items()
+
+    def go_upstairs_break_room(self):
+        self.player.location = "break room"
+
+    def go_upstairs_balcony(self):
+        self.player.location = "balcony"
 
 
 # mansion rooms

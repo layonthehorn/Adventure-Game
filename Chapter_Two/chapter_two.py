@@ -154,8 +154,10 @@ command to clear the screen."""
                 "ruined house": self.ruins.house,
                 "ruined garage": self.ruins.garage,
 
-                # ruins upstairs rooms and actions
-                self.upstairs_ruins_name: self.upstairs_ruins,
+                # garage upstairs rooms and actions
+                "break room": self.upstairs_ruins.break_room,
+                "managers office": self.upstairs_ruins.office,
+                "balcony": self.upstairs_ruins.balcony,
 
                 # back rooms and actions
                 self.back_rooms_name: self.back_rooms,

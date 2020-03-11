@@ -17,12 +17,13 @@ class PlayerClass:
         "ruined street", "ruined office", "ruined house", "ruined garage",
         "kitchen", "foyer", "sun room", "living room", "hallway",
         "tower entrance", "tower peak",
-        "cellar entrance", "wine casks", "lab"
+        "cellar entrance", "wine casks", "lab",
+        "manager office", "break room", "balcony"
                           )
     accepted_sections = {"town": ("town center", "general store", "gate house", "bath house", "bar")
                          , "ruins": ("ruined street", "ruined office", "ruined house", "ruined garage")
                          , "mansion": ("kitchen", "foyer", "sun room", "living room", "hallway")
-                         , "upstairs": ()
+                         , "upstairs": ("manager office", "break room", "balcony")
                          , "gen back rooms": ()
                          , "tower": ("tower entrance", "tower peak")
                          , "cellar": ("cellar entrance", "wine casks", "lab")
@@ -325,10 +326,10 @@ class PlayerClass:
                                                    +--------------------+
                                                    |Legend:             |
                                                    |                    |
-                      R1--RA                       |Ruins Area:      RA |
-                    //  \\\\                         |Room One:        R1 |
-                   R2----R3                        |Room Two:        R2 |
-                                                   |Room Three:      R3 |
+                   MO-BR-RA                        |Ruins Area:      RA |
+                    \\\\//                           |Break Room:      BR |
+                     GB                            |Managers Office: MO |
+                                                   |Garage Balcony:  GB |
                                                    |You: @@ in room  ?? |
                                                    +--------------------+
               """)
@@ -382,7 +383,9 @@ class Upstairs:
     NPC_Roster = {}
 
     def __init__(self, player):
-        pass
+        self.office = rooms.UpstairsOffice(player)
+        self.break_room = rooms.UpstairsBreakRoom(player)
+        self.balcony = rooms.UpstairsBalcony(player)
 
 
 # a tower to the house
