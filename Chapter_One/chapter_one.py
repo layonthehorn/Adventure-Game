@@ -1,7 +1,7 @@
 import pickle
 import re
 from os import path
-from chapter_one_classes import PlayerClass, Bunker, ComputerRoom, MainPlaza, SmallDen, WestWing, ToyShop, PetShop, Cemetery, UpstairsHallway, AnimalDen, Bathroom, ShoeStore, BasementEntry, BasementGenRoom
+from Chapter_One.chapter_one_classes import PlayerClass, Bunker, ComputerRoom, MainPlaza, SmallDen, WestWing, ToyShop, PetShop, Cemetery, UpstairsHallway, AnimalDen, Bathroom, ShoeStore, BasementEntry, BasementGenRoom
 
 
 class ChapterOne:

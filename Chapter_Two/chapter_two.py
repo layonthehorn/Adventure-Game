@@ -1,7 +1,7 @@
 import pickle
 import re
 from os import path
-import chapter_two_section_classes as sections
+import Chapter_Two.chapter_two_section_classes as sections
 
 
 class ChapterTwo:

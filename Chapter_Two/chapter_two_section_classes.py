@@ -1,5 +1,5 @@
 import time
-import chapter_two_room_classes as rooms
+import Chapter_Two.chapter_two_room_classes as rooms
 
 
 # Player Class
