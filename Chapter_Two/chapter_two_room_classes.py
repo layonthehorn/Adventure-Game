@@ -862,7 +862,7 @@ class CellarLab(FunctionClass):
         self.player = player_object
         self.bool_one, self.bool_two, self.bool_three = (False, False, False)
         self.look_dict = {"room": self.print_description_room}
-        self.go_dict = {"cellar entrance": self}
+        self.go_dict = {"cellar entrance": self.go_cellar_entrance}
         self.oper_dict = {}
         self.use_dict = {}
 
@@ -875,3 +875,108 @@ class CellarLab(FunctionClass):
 
     def go_cellar_entrance(self):
         self.player.location = "cellar entrance"
+
+
+# the general store's back rooms
+class GeneralStorage(FunctionClass):
+    def __init__(self, player_object):
+        self.inventory = []
+        self.player = player_object
+        self.bool_one, self.bool_two, self.bool_three = (False, False, False)
+        self.look_dict = {"room": self.print_description_room}
+        self.go_dict = {"general store": self.go_general_store,
+                        "work room": self.go_work_room,
+                        "freezer": self.go_freezer}
+        self.oper_dict = {}
+        self.use_dict = {}
+
+    def print_description_room(self):
+        print("The General Store's storage.")
+        print("__________________")
+        self.print_look()
+        self.print_locations()
+        self.print_items()
+
+    def go_general_store(self):
+        self.player.location = "general store"
+
+    def go_work_room(self):
+        self.player.location = "work room"
+
+    def go_freezer(self):
+        self.player.location = "freezer"
+
+
+class WeaponsStorage(FunctionClass):
+    def __init__(self, player_object):
+        self.inventory = []
+        self.player = player_object
+        self.bool_one, self.bool_two, self.bool_three = (False, False, False)
+        self.look_dict = {"room": self.print_description_room}
+        self.go_dict = {"work room": self.go_work_room}
+        self.oper_dict = {}
+        self.use_dict = {}
+
+    def print_description_room(self):
+        print("The General Store's weapons storage.")
+        print("__________________")
+        self.print_look()
+        self.print_locations()
+        self.print_items()
+
+    def go_work_room(self):
+        self.player.location = "work room"
+
+
+class WorkRoom(FunctionClass):
+    def __init__(self, player_object):
+        self.inventory = []
+        self.player = player_object
+        self.bool_one, self.bool_two, self.bool_three = (False, False, False)
+        self.look_dict = {"room": self.print_description_room}
+        self.go_dict = {"weapon storage": self.go_weapon_storage,
+                        "general storage": self.go_general_storage,
+                        "freezer": self.go_freezer}
+        self.oper_dict = {}
+        self.use_dict = {}
+
+    def print_description_room(self):
+        print("The General Store's work room.")
+        print("__________________")
+        self.print_look()
+        self.print_locations()
+        self.print_items()
+
+    def go_weapon_storage(self):
+        self.player.location = "weapons storage"
+
+    def go_general_storage(self):
+        self.player.location = "general storage"
+
+    def go_freezer(self):
+        self.player.location = "freezer"
+
+
+class Freezer(FunctionClass):
+    def __init__(self, player_object):
+        self.inventory = []
+        self.player = player_object
+        self.bool_one, self.bool_two, self.bool_three = (False, False, False)
+        self.look_dict = {"room": self.print_description_room}
+        self.go_dict = {"general storage": self.go_general_storage,
+                        "work room": self.go_work_room}
+        self.oper_dict = {}
+        self.use_dict = {}
+
+    def print_description_room(self):
+        print("The General Store's walk in freezer.")
+        print("__________________")
+        self.print_look()
+        self.print_locations()
+        self.print_items()
+
+    def go_general_storage(self):
+        self.player.location = "general storage"
+
+    def go_work_room(self):
+        self.player.location = "work room"

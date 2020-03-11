@@ -160,7 +160,10 @@ command to clear the screen."""
                 "balcony": self.upstairs_ruins.balcony,
 
                 # back rooms and actions
-                self.back_rooms_name: self.back_rooms,
+                "weapons storage": self.back_rooms.weapons_storage,
+                "work room": self.back_rooms.work_room,
+                "freezer": self.back_rooms.freezer,
+                "general storage": self.back_rooms.general_storage,
 
                 # tower rooms and actions
                 "tower entrance": self.tower.entrance,

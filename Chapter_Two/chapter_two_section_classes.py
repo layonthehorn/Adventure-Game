@@ -18,13 +18,15 @@ class PlayerClass:
         "kitchen", "foyer", "sun room", "living room", "hallway",
         "tower entrance", "tower peak",
         "cellar entrance", "wine casks", "lab",
-        "manager office", "break room", "balcony"
+        "manager office", "break room", "balcony",
+        "weapon storage", "work room", "general storage", "freezer"
                           )
+    # sections of the map, changes how your map looks.
     accepted_sections = {"town": ("town center", "general store", "gate house", "bath house", "bar")
                          , "ruins": ("ruined street", "ruined office", "ruined house", "ruined garage")
                          , "mansion": ("kitchen", "foyer", "sun room", "living room", "hallway")
                          , "upstairs": ("manager office", "break room", "balcony")
-                         , "gen back rooms": ()
+                         , "gen back rooms": ("weapon storage", "work room", "general storage", "freezer")
                          , "tower": ("tower entrance", "tower peak")
                          , "cellar": ("cellar entrance", "wine casks", "lab")
                          , "gardens": ()
@@ -311,11 +313,11 @@ class PlayerClass:
                                                    +--------------------+
                         TA                         |Legend:             |
                        //                          |                    |
-              R3--R2--R1                           |Town Area:       TA |
-                    \\\\||                           |Room One:        R1 |
-                      R4                           |Room Two:        R2 |
-                                                   |Room Three:      R3 |
-                                                   |Room Four:       R4 |
+              WS--WR--GS                           |Town Area:       TA |
+                    \\\\||                           |General Storage: GS |
+                      FR                           |Work Room:       WR |
+                                                   |Freezer:         FR |
+                                                   |Weapons Storage: WS |
                                                    |You: @@ in room  ?? |
                                                    +--------------------+
               """)
@@ -361,7 +363,10 @@ class BackRooms:
     NPC_Roster = {}
 
     def __init__(self, player):
-        pass
+        self.weapons_storage = rooms.WeaponsStorage(player)
+        self.general_storage = rooms.GeneralStorage(player)
+        self.freezer = rooms.Freezer(player)
+        self.work_room = rooms.WorkRoom(player)
 
 
 # ruins outside the town, good for scavenging
