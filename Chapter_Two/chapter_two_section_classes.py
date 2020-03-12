@@ -504,7 +504,7 @@ class RoomSystem:
     def set_up_npc(self):
         for key in self.npc_roster:
             person = self.npc_roster.get(key)
-            starting_point = person.position
+            starting_point = self.switcher_dictionary.get(person.position)
             starting_point.look_dict[key] = person.look_npc
             starting_point.oper_dict[key] = person.talk_to_npc
             starting_point.use_dict[key] = person.use_item
@@ -526,4 +526,4 @@ class RoomSystem:
                 del old_room.oper_dict[key]
                 del old_room.use_dict[key]
 
-        self.clock += .5
+        self.clock.timer += .5

@@ -222,7 +222,7 @@ class FunctionClass:
         look_list = ""
         print("I could look at...")
         for thing in self.look_dict:
-            look_list += f"'{self.bold, thing, self.end}', "
+            look_list += f"'{self.bold+ thing+ self.end}', "
         print(look_list)
         print("_" * len(look_list))
 
@@ -231,7 +231,7 @@ class FunctionClass:
         go_list = ""
         print("I could go to...")
         for location in self.go_dict:
-            go_list += f"'{self.bold, location, self.end}', "
+            go_list += f"'{self.bold+ location+ self.end}', "
         print(go_list)
         print("_" * len(go_list))
 

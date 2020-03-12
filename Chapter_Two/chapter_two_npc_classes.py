@@ -24,13 +24,13 @@ class NPC(ABC):
     def use_item(self, item):
         pass
 
-    @abstractmethod
     @property
+    @abstractmethod
     def position(self):
         pass
 
-    @abstractmethod
     @position.setter
+    @abstractmethod
     def position(self, value):
         pass
 
