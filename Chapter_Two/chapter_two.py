@@ -4,6 +4,36 @@ from os import path
 import Chapter_Two.chapter_two_section_classes as sections
 
 
+class TimeKeeper:
+    def __init__(self):
+        self.__timer = 0
+        self.__am_pm = "AM"
+
+    @property
+    def am_pm(self):
+        return self.__am_pm
+
+    @am_pm.setter
+    def am_pm(self, value):
+        if value in ("AM", "PM"):
+            self.__am_pm = value
+        else:
+            print("Error, bad value in AM/PM switcher.")
+
+    @property
+    def timer(self):
+        return self.__timer
+
+    @timer.setter
+    def timer(self, add_time):
+        if 12 <= self.timer < 13:
+            self.am_pm = "PM"
+        if (self.__timer + add_time)/2 > 24:
+            add_time = (self.__timer + add_time) % 24
+            self.am_pm = "AM"
+        self.__timer = add_time
+
+
 class ChapterTwo:
     """This is a text adventure game, chapter one. All that is needed is to initialize it with a save directory and a
 command to clear the screen."""
@@ -42,6 +72,8 @@ command to clear the screen."""
         self.exit_name = "exit"
         self.end_name = "end"
         self.stat_dictionary_name = "stat dictionary"
+
+        self.clock = TimeKeeper()
 
         choosing = True
         end_game = False
@@ -209,6 +241,9 @@ command to clear the screen."""
                 # Winning game ending
                 self.clear()
                 self.exit_game()
+
+            # internal game clock to move things around based on time.
+            self.clock.timer += .5
             print("")
 
     # end init function
