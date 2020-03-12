@@ -355,10 +355,31 @@ class NPCMovement:
         self.scavenger = npc.ScavengerNPC()
         self.scavenger_move_count = 0
 
+    # checks if it needs to move NPCs
     def check_npc_move(self):
-        pass
+        self.move_npc_scavenger()
 
-    def move_npc(self):
+    def move_npc_scavenger(self):
+        if self.scavenger.check_move:
+            # move to town
+            if self.scavenger_move_count == 0:
+                self.scavenger_move_count += 1
+                self.move_npc_actions(self.scavenger, self.town.center, self.ruins.ruined_street)
+            # move to general store
+            elif self.scavenger_move_count == 1:
+                self.scavenger_move_count += 1
+                self.move_npc_actions(self.scavenger, self.town.gen_store, self.ruins.center)
+            # move to town
+            elif self.scavenger_move_count == 2:
+                self.scavenger_move_count += 1
+                self.move_npc_actions(self.scavenger, self.ruins.center, self.town.gen_store)
+            # move to ruined street again
+            elif self.scavenger_move_count == 3:
+                self.move_npc_actions(self.scavenger, self.town.town_center, self.ruins.ruined_street)
+                self.scavenger_move_count = 0
+
+    @staticmethod
+    def move_npc_actions(npc, new_room, old_room):
         pass
 
 

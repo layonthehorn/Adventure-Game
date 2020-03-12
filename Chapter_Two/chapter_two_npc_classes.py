@@ -29,19 +29,19 @@ class ScavengerNPC(NPC):
 
     def check_move(self):
         # to do, move around at certain times
-        if 6 <= self.clock.timer < 7:
+        if 6 <= self.clock.timer <= 6.1:
             # move to town center
             self.position = "town center"
             return True
-        elif 7 <= self.clock.timer < 8:
+        elif 7 <= self.clock.timer <= 7.1:
             # move to general store
             self.position = "general store"
             return True
-        elif 9 <= self.clock.timer < 10:
+        elif 9 <= self.clock.timer <= 9.1:
             # move back to town center
             self.position = "town center"
             return True
-        elif 11 <= self.clock.timer < 12:
+        elif 11 <= self.clock.timer <= 11.1:
             # move to ruined street again
             self.position = "ruined street"
             return True
