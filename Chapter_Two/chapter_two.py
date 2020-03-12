@@ -73,8 +73,6 @@ command to clear the screen."""
         self.end_name = "end"
         self.stat_dictionary_name = "stat dictionary"
 
-        self.clock = TimeKeeper()
-
         choosing = True
         end_game = False
         while choosing:
@@ -91,6 +89,8 @@ command to clear the screen."""
                 self.tower = sections.Tower(self.player)
                 self.gardens = sections.Gardens(self.player)
                 self.cellar = sections.Cellar(self.player)
+                self.clock = TimeKeeper()
+                self.npc_tracker = sections.NPCMovement(self.town_center, self.ruins)
 
                 # to keep a running toll of all actions preformed
                 self.stat_dictionary = {"look": 0,
@@ -138,6 +138,9 @@ command to clear the screen."""
 
                     # stat dictionary data
                     self.stat_dictionary = new_value_dictionary.get(self.stat_dictionary_name)
+                    # timer for game
+                    self.clock = new_value_dictionary["clock"]
+                    self.npc_tracker = new_value_dictionary["npc"]
 
                     # tells player it loaded the game
                     print("Loaded Game.")
@@ -168,7 +171,11 @@ command to clear the screen."""
                 self.cellar_name: self.cellar,
 
                 # saving stats of actions made
-                self.stat_dictionary_name: self.stat_dictionary
+                self.stat_dictionary_name: self.stat_dictionary,
+                # saving timer
+                "clock": self.clock,
+                # saving NPC data
+                "npc": self.npc_tracker
             }
 
             # switcher dictionary for running actions
@@ -244,6 +251,8 @@ command to clear the screen."""
 
             # internal game clock to move things around based on time.
             self.clock.timer += .5
+            # see if NPCs should move or not
+            self.npc_tracker.check_npc_move()
             print("")
 
     # end init function

@@ -1,5 +1,6 @@
 import time
 import Chapter_Two.chapter_two_room_classes as rooms
+import Chapter_Two.chapter_two_npc_classes as npc
 
 
 # Player Class
@@ -343,13 +344,32 @@ class PlayerClass:
         print("A nervous lion is what you are. Somehow still alive but for how long? Hopefully long enough.")
 
 
+class NPCMovement:
+    """Controls NPC movement across rooms."""
+    def __init__(self, town, ruins):
+        # locations for NPCs to move
+        self.town = town
+        self.ruins = ruins
+
+        # NPCs listed here.
+        self.scavenger = npc.ScavengerNPC()
+        self.scavenger_move_count = 0
+
+    def check_npc_move(self):
+        pass
+
+    def move_npc(self):
+        pass
+
+
 # town center and starting section for player
 class TownCenter:
     NPC_Roster = {}
     """This starts all the rooms in the town center.
     It also will track NPC movements and cross room changes."""
 
-    def __init__(self, player):
+    def __init__(self, player, timer):
+        self.timer = timer
         self.center = rooms.TownCenter(player)
         self.bar = rooms.TownBar(player)
         self.gen_store = rooms.TownGenStore(player)
@@ -362,7 +382,8 @@ class BackRooms:
     It also will track NPC movements and cross room changes."""
     NPC_Roster = {}
 
-    def __init__(self, player):
+    def __init__(self, player, timer):
+        self.timer = timer
         self.weapons_storage = rooms.WeaponsStorage(player)
         self.general_storage = rooms.GeneralStorage(player)
         self.freezer = rooms.Freezer(player)
@@ -375,7 +396,8 @@ class Ruins:
     It also will track NPC movements and cross room changes."""
     NPC_Roster = {}
 
-    def __init__(self, player):
+    def __init__(self, player, timer):
+        self.timer = timer
         self.office = rooms.RuinedOffice(player)
         self.street = rooms.RuinedStreet(player)
         self.house = rooms.RuinedHouse(player)
@@ -387,7 +409,8 @@ class Upstairs:
     It also will track NPC movements and cross room changes."""
     NPC_Roster = {}
 
-    def __init__(self, player):
+    def __init__(self, player, timer):
+        self.timer = timer
         self.office = rooms.UpstairsOffice(player)
         self.break_room = rooms.UpstairsBreakRoom(player)
         self.balcony = rooms.UpstairsBalcony(player)
@@ -399,7 +422,8 @@ class Tower:
     It also will track NPC movements and cross room changes."""
     NPC_Roster = {}
 
-    def __init__(self, player):
+    def __init__(self, player, timer):
+        self.timer = timer
         self.entrance = rooms.TowerEntrance(player)
         self.peak = rooms.TowerPeak(player)
 
@@ -409,7 +433,8 @@ class Mansion:
     It also will track NPC movements and cross room changes."""
     NPC_Roster = {}
 
-    def __init__(self, player):
+    def __init__(self, player, timer):
+        self.timer = timer
         self.foyer = rooms.MansionFoyer(player)
         self.kitchen = rooms.MansionKitchen(player)
         self.hallway = rooms.MansionHallWay(player)
@@ -422,7 +447,8 @@ class Gardens:
     It also will track NPC movements and cross room changes."""
     NPC_Roster = {}
 
-    def __init__(self, player):
+    def __init__(self, player, timer):
+        self.timer = timer
         pass
 
 
@@ -431,7 +457,8 @@ class Cellar:
     It also will track NPC movements and cross room changes."""
     NPC_Roster = {}
 
-    def __init__(self, player):
+    def __init__(self, player, timer):
+        self.timer = timer
         self.lab = rooms.CellarLab(player)
         self.entrance = rooms.CellarEntrance(player)
         self.wine_casks = rooms.CellarWineCasks(player)
