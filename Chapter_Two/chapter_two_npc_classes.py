@@ -9,11 +9,29 @@ class NPC(ABC):
         pass
 
     @abstractmethod
-    def move_position(self, new_location):
+    def look_npc(self):
         pass
 
     @abstractmethod
     def check_move(self):
+        pass
+
+    @abstractmethod
+    def give_item(self, item):
+        pass
+
+    @abstractmethod
+    def use_item(self, item):
+        pass
+
+    @abstractmethod
+    @property
+    def position(self):
+        pass
+
+    @abstractmethod
+    @position.setter
+    def position(self, value):
         pass
 
 
@@ -21,11 +39,20 @@ class ScavengerNPC(NPC):
     """A scavenger that moves from the ruins to the general store and back."""
     def __init__(self, timer):
         self.clock = timer
-        self.position = "ruined street"
+        self.__position = "ruined street"
         self.name = "scavenger"
+        self.inventory = []
 
-    def move_position(self, new_location):
-        pass
+    @property
+    def position(self):
+        return self.__position
+
+    @position.setter
+    def position(self, value):
+        if value in ("town center", "ruined street", "general store"):
+            self.__position = value
+        else:
+            print("Error, Bad location to move.")
 
     def check_move(self):
         # to do, move around at certain times
@@ -39,7 +66,7 @@ class ScavengerNPC(NPC):
             return True
         elif 9 <= self.clock.timer <= 9.1:
             # move back to town center
-            self.position = "town center"
+            self.position = "center"
             return True
         elif 11 <= self.clock.timer <= 11.1:
             # move to ruined street again
@@ -48,6 +75,17 @@ class ScavengerNPC(NPC):
         else:
             return False
 
+    def give_item(self, item):
+        print("He doesn't want it.")
+        return False
+
+    def use_item(self, item):
+        print("It won't help.")
+        return False
+
     def talk_to_npc(self):
         print("You should be able to talk to me. Hello!")
         print(f"My name is {self.name}, I'm in {self.position}, and it is {self.clock.timer}, {self.clock.am_pm}")
+
+    def look_npc(self):
+        print("It's a scavenger.")

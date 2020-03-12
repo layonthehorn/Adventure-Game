@@ -4,36 +4,6 @@ from os import path
 import Chapter_Two.chapter_two_section_classes as sections
 
 
-class TimeKeeper:
-    def __init__(self):
-        self.__timer = 0
-        self.__am_pm = "AM"
-
-    @property
-    def am_pm(self):
-        return self.__am_pm
-
-    @am_pm.setter
-    def am_pm(self, value):
-        if value in ("AM", "PM"):
-            self.__am_pm = value
-        else:
-            print("Error, bad value in AM/PM switcher.")
-
-    @property
-    def timer(self):
-        return self.__timer
-
-    @timer.setter
-    def timer(self, add_time):
-        if 12 <= self.timer < 13:
-            self.am_pm = "PM"
-        if (self.__timer + add_time)/2 > 24:
-            add_time = (self.__timer + add_time) % 24
-            self.am_pm = "AM"
-        self.__timer = add_time
-
-
 class ChapterTwo:
     """This is a text adventure game, chapter one. All that is needed is to initialize it with a save directory and a
 command to clear the screen."""
@@ -58,16 +28,6 @@ command to clear the screen."""
         # player name
         self.player_name = "player"
 
-        # section names
-        self.town_center_name = "town"
-        self.ruins_name = "ruins"
-        self.mansion_name = "mansion"
-        self.upstairs_ruins_name = "upstairs"
-        self.back_rooms_name = "gen back rooms"
-        self.tower_name = "tower"
-        self.cellar_name = "cellar"
-        self.gardens_name = "gardens"
-
         # special names
         self.exit_name = "exit"
         self.end_name = "end"
@@ -81,16 +41,9 @@ command to clear the screen."""
             if player_option == "s":
                 # Loads defaults in classes for game
                 self.player = sections.PlayerClass()
-                self.town_center = sections.TownCenter(self.player)
-                self.ruins = sections.Ruins(self.player)
-                self.upstairs_ruins = sections.Upstairs(self.player)
-                self.back_rooms = sections.BackRooms(self.player)
-                self.mansion = sections.Mansion(self.player)
-                self.tower = sections.Tower(self.player)
-                self.gardens = sections.Gardens(self.player)
-                self.cellar = sections.Cellar(self.player)
-                self.clock = TimeKeeper()
-                self.npc_tracker = sections.NPCMovement(self.town_center, self.ruins)
+                self.rooms = sections.RoomSystem(self.player)
+                # sets NPC position
+                self.rooms.set_up_npc()
 
                 # to keep a running toll of all actions preformed
                 self.stat_dictionary = {"look": 0,
@@ -127,20 +80,10 @@ command to clear the screen."""
                     # player data
                     self.player = new_value_dictionary.get(self.player_name)
                     # section data
-                    self.town_center = new_value_dictionary.get(self.town_center_name)
-                    self.ruins = new_value_dictionary.get(self.ruins_name)
-                    self.upstairs_ruins = new_value_dictionary.get(self.upstairs_ruins_name)
-                    self.back_rooms = new_value_dictionary.get(self.back_rooms_name)
-                    self.mansion = new_value_dictionary.get(self.mansion_name)
-                    self.tower = new_value_dictionary.get(self.tower_name)
-                    self.gardens = new_value_dictionary.get(self.gardens_name)
-                    self.cellar = new_value_dictionary.get(self.cellar_name)
+                    self.rooms = new_value_dictionary.get("rooms")
 
                     # stat dictionary data
                     self.stat_dictionary = new_value_dictionary.get(self.stat_dictionary_name)
-                    # timer for game
-                    self.clock = new_value_dictionary["clock"]
-                    self.npc_tracker = new_value_dictionary["npc"]
 
                     # tells player it loaded the game
                     print("Loaded Game.")
@@ -155,72 +98,62 @@ command to clear the screen."""
         # used for general actions to run player actions in any room.
         # if the player is going to actually play builds rest of game
         if not end_game:
+
             # dictionary for saving game state
             self.save_dictionary = {
                 # saving player
                 self.player_name: self.player,
 
                 # saving sections
-                self.town_center_name: self.town_center,
-                self.ruins_name: self.ruins,
-                self.upstairs_ruins_name: self.upstairs_ruins,
-                self.back_rooms_name: self.back_rooms,
-                self.tower_name: self.tower,
-                self.mansion_name: self.mansion,
-                self.gardens_name: self.gardens,
-                self.cellar_name: self.cellar,
+                "rooms": self.rooms,
 
                 # saving stats of actions made
                 self.stat_dictionary_name: self.stat_dictionary,
-                # saving timer
-                "clock": self.clock,
-                # saving NPC data
-                "npc": self.npc_tracker
             }
 
             # switcher dictionary for running actions
             self.switcher_dictionary = {
                 # town center rooms and actions
-                "town center": self.town_center.center,
-                "bar": self.town_center.bar,
-                "bath house": self.town_center.bath_house,
-                "general store": self.town_center.gen_store,
-                "gate house": self.town_center.gate_house,
+                "town center": self.rooms.center,
+                "bar": self.rooms.bar,
+                "bath house": self.rooms.bath_house,
+                "general store": self.rooms.gen_store,
+                "gate house": self.rooms.gate_house,
 
                 # ruins rooms and actions
-                "ruined street": self.ruins.street,
-                "ruined office": self.ruins.office,
-                "ruined house": self.ruins.house,
-                "ruined garage": self.ruins.garage,
+                "ruined street": self.rooms.street,
+                "ruined office": self.rooms.office,
+                "ruined house": self.rooms.house,
+                "ruined garage": self.rooms.garage,
 
                 # garage upstairs rooms and actions
-                "break room": self.upstairs_ruins.break_room,
-                "managers office": self.upstairs_ruins.office,
-                "balcony": self.upstairs_ruins.balcony,
+                "break room": self.rooms.break_room,
+                "managers office": self.rooms.office,
+                "balcony": self.rooms.balcony,
 
                 # back rooms and actions
-                "weapons storage": self.back_rooms.weapons_storage,
-                "work room": self.back_rooms.work_room,
-                "freezer": self.back_rooms.freezer,
-                "general storage": self.back_rooms.general_storage,
+                "weapons storage": self.rooms.weapons_storage,
+                "work room": self.rooms.work_room,
+                "freezer": self.rooms.freezer,
+                "general storage": self.rooms.general_storage,
 
                 # tower rooms and actions
-                "tower entrance": self.tower.entrance,
-                "tower peak": self.tower.peak,
+                "tower entrance": self.rooms.entrance,
+                "tower peak": self.rooms.peak,
 
                 # mansion rooms and actions
-                "foyer": self.mansion.foyer,
-                "sun room": self.mansion.sun_room,
-                "hallway": self.mansion.hallway,
-                "kitchen": self.mansion.kitchen,
+                "foyer": self.rooms.foyer,
+                "sun room": self.rooms.sun_room,
+                "hallway": self.rooms.hallway,
+                "kitchen": self.rooms.kitchen,
 
                 # garden rooms and actions
-                self.gardens_name: self.gardens,
+                # "garden": self.rooms,
 
                 # cellar rooms and actions
-                "cellar entrance": self.cellar.entrance,
-                "wine casks": self.cellar.wine_casks,
-                "lab": self.cellar.lab
+                "cellar entrance": self.rooms.entrance,
+                "wine casks": self.rooms.wine_casks,
+                "lab": self.rooms.lab
             }
 
         # main game play loop
@@ -249,10 +182,8 @@ command to clear the screen."""
                 self.clear()
                 self.exit_game()
 
-            # internal game clock to move things around based on time.
-            self.clock.timer += .5
             # see if NPCs should move or not
-            self.npc_tracker.check_npc_move()
+            self.rooms.npc_movement_checker()
             print("")
 
     # end init function

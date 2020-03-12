@@ -344,142 +344,186 @@ class PlayerClass:
         print("A nervous lion is what you are. Somehow still alive but for how long? Hopefully long enough.")
 
 
-class NPCMovement:
-    """Controls NPC movement across rooms."""
-    def __init__(self, town, ruins):
-        # locations for NPCs to move
-        self.town = town
-        self.ruins = ruins
+class TimeKeeper:
+    def __init__(self):
+        self.__timer = 0
+        self.__am_pm = "AM"
 
-        # NPCs listed here.
-        self.scavenger = npc.ScavengerNPC()
-        self.scavenger_move_count = 0
+    @property
+    def am_pm(self):
+        return self.__am_pm
 
-    # checks if it needs to move NPCs
-    def check_npc_move(self):
-        self.move_npc_scavenger()
+    @am_pm.setter
+    def am_pm(self, value):
+        if value in ("AM", "PM"):
+            self.__am_pm = value
+        else:
+            print("Error, bad value in AM/PM switcher.")
 
-    def move_npc_scavenger(self):
-        if self.scavenger.check_move:
-            # move to town
-            if self.scavenger_move_count == 0:
-                self.scavenger_move_count += 1
-                self.move_npc_actions(self.scavenger, self.town.center, self.ruins.ruined_street)
-            # move to general store
-            elif self.scavenger_move_count == 1:
-                self.scavenger_move_count += 1
-                self.move_npc_actions(self.scavenger, self.town.gen_store, self.ruins.center)
-            # move to town
-            elif self.scavenger_move_count == 2:
-                self.scavenger_move_count += 1
-                self.move_npc_actions(self.scavenger, self.ruins.center, self.town.gen_store)
-            # move to ruined street again
-            elif self.scavenger_move_count == 3:
-                self.move_npc_actions(self.scavenger, self.town.town_center, self.ruins.ruined_street)
-                self.scavenger_move_count = 0
+    @property
+    def timer(self):
+        return self.__timer
 
-    @staticmethod
-    def move_npc_actions(npc, new_room, old_room):
-        pass
+    @timer.setter
+    def timer(self, add_time):
+        if 12 <= self.timer < 13:
+            self.am_pm = "PM"
+        if (self.__timer + add_time)/2 > 24:
+            add_time = (self.__timer + add_time) % 24
+            self.am_pm = "AM"
+        self.__timer = add_time
 
 
-# town center and starting section for player
-class TownCenter:
-    NPC_Roster = {}
-    """This starts all the rooms in the town center.
+# class NPCMovement:
+#     """Controls NPC movement across rooms."""
+#     def __init__(self, town, ruins):
+#         # locations for NPCs to move
+#         self.town = town
+#         self.ruins = ruins
+#
+#     # checks if it needs to move NPCs
+#     def check_npc_move(self):
+#         self.move_npc_scavenger()
+
+    # def move_npc_scavenger(self):
+    #     if self.scavenger.check_move:
+    #         # move to town
+    #         if self.scavenger_move_count == 0:
+    #             self.scavenger_move_count += 1
+    #             self.move_npc_actions(self.scavenger, self.town.center, self.ruins.ruined_street)
+    #         # move to general store
+    #         elif self.scavenger_move_count == 1:
+    #             self.scavenger_move_count += 1
+    #             self.move_npc_actions(self.scavenger, self.town.gen_store, self.ruins.center)
+    #         # move to town
+    #         elif self.scavenger_move_count == 2:
+    #             self.scavenger_move_count += 1
+    #             self.move_npc_actions(self.scavenger, self.ruins.center, self.town.gen_store)
+    #         # move to ruined street again
+    #         elif self.scavenger_move_count == 3:
+    #             self.move_npc_actions(self.scavenger, self.town.town_center, self.ruins.ruined_street)
+    #             self.scavenger_move_count = 0
+    #
+    # @staticmethod
+    # def move_npc_actions(npc, new_room, old_room):
+    #     pass
+
+
+class RoomSystem:
+    """This starts all the rooms.
     It also will track NPC movements and cross room changes."""
 
-    def __init__(self, player, timer):
-        self.timer = timer
+    def __init__(self, player):
+        self.clock = TimeKeeper()
+        # back rooms
+        self.weapons_storage = rooms.WeaponsStorage(player)
+        self.general_storage = rooms.GeneralStorage(player)
+        self.freezer = rooms.Freezer(player)
+        self.work_room = rooms.WorkRoom(player)
+        # town center
         self.center = rooms.TownCenter(player)
         self.bar = rooms.TownBar(player)
         self.gen_store = rooms.TownGenStore(player)
         self.bath_house = rooms.TownBathHouse(player)
         self.gate_house = rooms.TownGateHouse(player)
-
-
-class BackRooms:
-    """This starts all the rooms in the general store back rooms.
-    It also will track NPC movements and cross room changes."""
-    NPC_Roster = {}
-
-    def __init__(self, player, timer):
-        self.timer = timer
-        self.weapons_storage = rooms.WeaponsStorage(player)
-        self.general_storage = rooms.GeneralStorage(player)
-        self.freezer = rooms.Freezer(player)
-        self.work_room = rooms.WorkRoom(player)
-
-
-# ruins outside the town, good for scavenging
-class Ruins:
-    """This starts all the rooms in the ruins.
-    It also will track NPC movements and cross room changes."""
-    NPC_Roster = {}
-
-    def __init__(self, player, timer):
-        self.timer = timer
+        # ruins
         self.office = rooms.RuinedOffice(player)
         self.street = rooms.RuinedStreet(player)
         self.house = rooms.RuinedHouse(player)
         self.garage = rooms.RuinedGarage(player)
-
-
-class Upstairs:
-    """This starts all the rooms in the ruins upstairs section.
-    It also will track NPC movements and cross room changes."""
-    NPC_Roster = {}
-
-    def __init__(self, player, timer):
-        self.timer = timer
+        # upstairs
         self.office = rooms.UpstairsOffice(player)
         self.break_room = rooms.UpstairsBreakRoom(player)
         self.balcony = rooms.UpstairsBalcony(player)
-
-
-# a tower to the house
-class Tower:
-    """This starts all the rooms in the mansion tower.
-    It also will track NPC movements and cross room changes."""
-    NPC_Roster = {}
-
-    def __init__(self, player, timer):
-        self.timer = timer
+        # tower rooms
         self.entrance = rooms.TowerEntrance(player)
         self.peak = rooms.TowerPeak(player)
-
-
-class Mansion:
-    """This starts all the rooms in the mansion.
-    It also will track NPC movements and cross room changes."""
-    NPC_Roster = {}
-
-    def __init__(self, player, timer):
-        self.timer = timer
+        # mansion rooms
         self.foyer = rooms.MansionFoyer(player)
         self.kitchen = rooms.MansionKitchen(player)
         self.hallway = rooms.MansionHallWay(player)
         self.sun_room = rooms.MansionSunRoom(player)
         self.living_room = rooms.MansionLivingRoom(player)
-
-
-class Gardens:
-    """This starts all the rooms in the mansion gardens.
-    It also will track NPC movements and cross room changes."""
-    NPC_Roster = {}
-
-    def __init__(self, player, timer):
-        self.timer = timer
-        pass
-
-
-class Cellar:
-    """This starts all the rooms in the cellar.
-    It also will track NPC movements and cross room changes."""
-    NPC_Roster = {}
-
-    def __init__(self, player, timer):
-        self.timer = timer
+        # cellar rooms
         self.lab = rooms.CellarLab(player)
         self.entrance = rooms.CellarEntrance(player)
         self.wine_casks = rooms.CellarWineCasks(player)
+        self.scavenger = npc.ScavengerNPC(self.clock)
+        # npc_list = (npc.ScavengerNPC(self.clock))
+        # name_list = ("scavenger")
+
+        # list NPCs to check if should be moved
+        self.npc_roster = {"scavenger": self.scavenger}
+
+        # lists possible rooms to move to
+        self.switcher_dictionary = {
+            # town center rooms and actions
+            "town center": self.center,
+            "bar": self.bar,
+            "bath house": self.bath_house,
+            "general store": self.gen_store,
+            "gate house": self.gate_house,
+
+            # ruins rooms and actions
+            "ruined street": self.street,
+            "ruined office": self.office,
+            "ruined house": self.house,
+            "ruined garage": self.garage,
+
+            # garage upstairs rooms and actions
+            "break room": self.break_room,
+            "managers office": self.office,
+            "balcony": self.balcony,
+
+            # back rooms and actions
+            "weapons storage": self.weapons_storage,
+            "work room": self.work_room,
+            "freezer": self.freezer,
+            "general storage": self.general_storage,
+
+            # tower rooms and actions
+            "tower entrance": self.entrance,
+            "tower peak": self.peak,
+
+            # mansion rooms and actions
+            "foyer": self.foyer,
+            "sun room": self.sun_room,
+            "hallway": self.hallway,
+            "kitchen": self.kitchen,
+
+            # garden rooms and actions
+            # "garden": self.rooms,
+
+            # cellar rooms and actions
+            "cellar entrance": self.entrance,
+            "wine casks": self.wine_casks,
+            "lab": self.lab
+        }
+
+    # starts the NPCs where they should be
+    def set_up_npc(self):
+        for key in self.npc_roster:
+            person = self.npc_roster.get(key)
+            starting_point = person.position
+            starting_point.look_dict[key] = person.look_npc
+            starting_point.oper_dict[key] = person.talk_to_npc
+            starting_point.use_dict[key] = person.use_item
+
+    def npc_movement_checker(self):
+        for key in self.npc_roster:
+            person = self.npc_roster.get(key)
+            current_local = person.position
+            if person.check_move():
+                # add to new room
+                new_room = self.switcher_dictionary.get(person.position)
+                new_room.look_dict[key] = person.look_npc
+                new_room.oper_dict[key] = person.talk_to_npc
+                new_room.use_dict[key] = person.use_item
+
+                # delete from old room
+                old_room = self.switcher_dictionary.get(current_local)
+                del old_room.look_dict[key]
+                del old_room.oper_dict[key]
+                del old_room.use_dict[key]
+
+        self.clock += .5
