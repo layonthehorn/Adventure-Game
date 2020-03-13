@@ -17,10 +17,6 @@ class NPC(ABC):
         pass
 
     @abstractmethod
-    def give_item(self, item):
-        pass
-
-    @abstractmethod
     def use_item(self, item):
         pass
 
@@ -47,7 +43,8 @@ class NPC(ABC):
 
 class ScavengerNPC(NPC):
     """A scavenger that moves from the ruins to the general store and back."""
-    def __init__(self, timer):
+    def __init__(self, timer, player):
+        self.player = player
         self.clock = timer
         self.__position = "ruined street"
         self.__alive = True
@@ -97,10 +94,6 @@ class ScavengerNPC(NPC):
         else:
             return False
 
-    def give_item(self, item):
-        print("He doesn't want it.")
-        return False
-
     def use_item(self, item):
         print("It won't help.")
         return False
@@ -113,7 +106,63 @@ class ScavengerNPC(NPC):
         print("It's a scavenger.")
 
 
-if __name__ == "__main__":
-    from Chapter_Two.chapter_two_section_classes import TimeKeeper
-    npc = ScavengerNPC(TimeKeeper())
-    print(npc.alive)
+class OrganPlayer(NPC):
+    def __init__(self, timer, player):
+        self.clock = timer
+        self.player = player
+        self.__position = "tower peak"
+        self.__alive = True
+        self.name = "organ player"
+        self.inventory = []
+
+    @property
+    def alive(self):
+        return self.__alive
+
+    @alive.setter
+    def alive(self, new_value):
+        if new_value is True or new_value is False:
+            self.__alive = new_value
+        else:
+            print("Bad input, need a pure boolean value.")
+
+    @property
+    def position(self):
+        return self.__position
+
+    @position.setter
+    def position(self, value):
+        if value in ("tower peak", "tower entrance"):
+            self.__position = value
+        else:
+            print("Error, Bad location to move.")
+
+    def check_move(self):
+        if "music sheet" in self.inventory and self.position == "tower peak":
+            self.position = "tower entrance"
+            return True
+        else:
+            return False
+
+    def use_item(self, item):
+        if item == "music sheet":
+            print("That's what I needed! Thank you!")
+            print("I must go and read it right away!")
+            self.player.inventory.remove(item)
+            self.player.increase_score()
+        else:
+            print("No, no no. This won't do at all. I need music, my oddly furred man.")
+
+    def talk_to_npc(self):
+        if self.position == "tower peak":
+            print("Hello I am playing music up here. Perfect for a puzzle, huh?")
+            print(f"My name is {self.name}, I'm in {self.position}, and it is {self.clock.timer}, {self.clock.am_pm}")
+        else:
+            print("Think of them moving to this new location after I get what I want.")
+            print(f"My name is {self.name}, I'm in {self.position}, and it is {self.clock.timer}, {self.clock.am_pm}")
+
+    def look_npc(self):
+        if self.position == "tower peak":
+            print("It's a organ player. He is busy playing his organ.")
+        else:
+            print("It's a organ player. He's standing around waiting for something.")

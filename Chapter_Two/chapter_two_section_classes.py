@@ -50,7 +50,8 @@ class PlayerClass:
         self.places = []
         self.map_dictionary = {}
 
-        self.item_dictionary = {}
+        self.item_dictionary = {"music sheet": "A piece of sheet music. Maybe someone would want this?",
+                                "fish": "A tasty fish for testing only."}
 
     def __str__(self):
         return f"""Inventory {self.inventory}\nLocation {self.__location}\nScore {self.__player_score}"""
@@ -392,16 +393,16 @@ class RoomSystem:
         self.bath_house = rooms.TownBathHouse(player)
         self.gate_house = rooms.TownGateHouse(player)
         # ruins
-        self.office = rooms.RuinedOffice(player)
+        self.ruin_office = rooms.RuinedOffice(player)
         self.street = rooms.RuinedStreet(player)
         self.house = rooms.RuinedHouse(player)
         self.garage = rooms.RuinedGarage(player)
         # upstairs
-        self.office = rooms.UpstairsOffice(player)
+        self.gar_office = rooms.UpstairsOffice(player)
         self.break_room = rooms.UpstairsBreakRoom(player)
         self.balcony = rooms.UpstairsBalcony(player)
         # tower rooms
-        self.entrance = rooms.TowerEntrance(player)
+        self.tow_entrance = rooms.TowerEntrance(player)
         self.peak = rooms.TowerPeak(player)
         # mansion rooms
         self.foyer = rooms.MansionFoyer(player)
@@ -411,15 +412,17 @@ class RoomSystem:
         self.living_room = rooms.MansionLivingRoom(player)
         # cellar rooms
         self.lab = rooms.CellarLab(player)
-        self.entrance = rooms.CellarEntrance(player)
+        self.cell_entrance = rooms.CellarEntrance(player)
         self.wine_casks = rooms.CellarWineCasks(player)
-
-        zipped = zip(["scavenger"], [npc.ScavengerNPC(self.clock)])
+        self.scavenger = npc.ScavengerNPC(self.clock, player)
+        self.organ_player = npc.OrganPlayer(self.clock, player)
 
         # list NPCs to check if should be moved
-        self.npc_roster = {}
-        for key, cls in zipped:
-            self.npc_roster[key] = cls
+        self.npc_roster = {
+            # scavenger NPC.
+            self.scavenger.name: self.scavenger,
+            # organ player NPC
+            self.organ_player.name: self.organ_player}
 
         # lists possible rooms to move to
         self.switcher_dictionary = {
@@ -432,13 +435,13 @@ class RoomSystem:
 
             # ruins rooms and actions
             "ruined street": self.street,
-            "ruined office": self.office,
+            "ruined office": self.ruin_office,
             "ruined house": self.house,
             "ruined garage": self.garage,
 
             # garage upstairs rooms and actions
             "break room": self.break_room,
-            "managers office": self.office,
+            "managers office": self.gar_office,
             "balcony": self.balcony,
 
             # back rooms and actions
@@ -448,7 +451,7 @@ class RoomSystem:
             "general storage": self.general_storage,
 
             # tower rooms and actions
-            "tower entrance": self.entrance,
+            "tower entrance": self.tow_entrance,
             "tower peak": self.peak,
 
             # mansion rooms and actions
@@ -461,7 +464,7 @@ class RoomSystem:
             # "garden": self.rooms,
 
             # cellar rooms and actions
-            "cellar entrance": self.entrance,
+            "cellar entrance": self.cell_entrance,
             "wine casks": self.wine_casks,
             "lab": self.lab
         }
