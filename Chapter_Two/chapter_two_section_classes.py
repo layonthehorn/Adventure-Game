@@ -510,15 +510,19 @@ class RoomSystem:
             starting_point.use_dict[key] = person.use_item
 
     def npc_movement_checker(self):
+        # checks each NPC that can move
         for key in self.npc_roster:
             person = self.npc_roster.get(key)
             current_local = person.position
-            if person.check_move():
+            if person.check_move() and person.alive:
                 # add to new room
                 new_room = self.switcher_dictionary.get(person.position)
-                new_room.look_dict[key] = person.look_npc
-                new_room.oper_dict[key] = person.talk_to_npc
-                new_room.use_dict[key] = person.use_item
+                if key not in new_room.look_dict:
+                    new_room.look_dict[key] = person.look_npc
+                if key not in new_room.oper_dict:
+                    new_room.oper_dict[key] = person.talk_to_npc
+                if key not in new_room.use_dict:
+                    new_room.use_dict[key] = person.use_item
 
                 # delete from old room
                 old_room = self.switcher_dictionary.get(current_local)

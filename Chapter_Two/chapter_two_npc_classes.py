@@ -34,14 +34,36 @@ class NPC(ABC):
     def position(self, value):
         pass
 
+    @property
+    @abstractmethod
+    def alive(self):
+        pass
+
+    @alive.setter
+    @abstractmethod
+    def alive(self, new_value):
+        pass
+
 
 class ScavengerNPC(NPC):
     """A scavenger that moves from the ruins to the general store and back."""
     def __init__(self, timer):
         self.clock = timer
         self.__position = "ruined street"
+        self.__alive = True
         self.name = "scavenger"
         self.inventory = []
+
+    @property
+    def alive(self):
+        return self.__alive
+
+    @alive.setter
+    def alive(self, new_value):
+        if new_value is True or new_value is False:
+            self.__alive = new_value
+        else:
+            print("Bad input, need a pure boolean value.")
 
     @property
     def position(self):
@@ -89,3 +111,8 @@ class ScavengerNPC(NPC):
 
     def look_npc(self):
         print("It's a scavenger.")
+
+
+if __name__ == "__main__":
+    npc = ScavengerNPC(0)
+    print(npc.alive)
