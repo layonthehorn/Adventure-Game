@@ -107,6 +107,7 @@ class ScavengerNPC(NPC):
 
 
 class OrganPlayer(NPC):
+    """An organ player that starts in the mansion and you can give items."""
     def __init__(self, timer, player):
         self.clock = timer
         self.player = player

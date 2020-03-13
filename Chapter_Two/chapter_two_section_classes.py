@@ -459,6 +459,7 @@ class RoomSystem:
             "sun room": self.sun_room,
             "hallway": self.hallway,
             "kitchen": self.kitchen,
+            "living room": self.living_room,
 
             # garden rooms and actions
             # "garden": self.rooms,
@@ -478,6 +479,7 @@ class RoomSystem:
             starting_point.oper_dict[key] = person.talk_to_npc
             starting_point.use_dict[key] = person.use_item
 
+    # moves NPCs around or removes them from the world
     def npc_movement_checker(self):
         npc_deletion = []
         # checks each NPC that can move
@@ -485,6 +487,7 @@ class RoomSystem:
             person = self.npc_roster.get(key)
             current_local = person.position
             if person.check_move() and person.alive:
+
                 # add to new room
                 new_room = self.switcher_dictionary.get(person.position)
                 if key not in new_room.look_dict:
@@ -502,6 +505,7 @@ class RoomSystem:
                     del old_room.oper_dict[key]
                 if key in old_room.use_dict:
                     del old_room.use_dict[key]
+
             # if they are marked for deletion
             # we remove them from the game.
             elif not person.alive:
@@ -513,6 +517,8 @@ class RoomSystem:
                 if key in current_room.use_dict:
                     del current_room.use_dict[key]
                 npc_deletion.append(key)
+
+        # actually removes them from the game
         for removed in npc_deletion:
             try:
                 del self.npc_roster[removed]
