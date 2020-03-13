@@ -522,8 +522,11 @@ class RoomSystem:
 
                 # delete from old room
                 old_room = self.switcher_dictionary.get(current_local)
-                del old_room.look_dict[key]
-                del old_room.oper_dict[key]
-                del old_room.use_dict[key]
+                if key in old_room.look_dict:
+                    del old_room.look_dict[key]
+                if key in old_room.oper_dict:
+                    del old_room.oper_dict[key]
+                if key in old_room.use_dict:
+                    del old_room.use_dict[key]
 
         self.clock.timer += .5

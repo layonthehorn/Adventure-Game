@@ -66,7 +66,7 @@ class ScavengerNPC(NPC):
             return True
         elif 9 <= self.clock.timer <= 9.1:
             # move back to town center
-            self.position = "center"
+            self.position = "town center"
             return True
         elif 11 <= self.clock.timer <= 11.1:
             # move to ruined street again

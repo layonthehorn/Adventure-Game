@@ -128,7 +128,7 @@ class FunctionClass:
     end = '''\033[0;0m'''
     look_at_remarks = ("I can't look at the {0}.", "What {0}?")
     oper_remarks = ("I can't operate the {0}.", "How would I operate the {0}?")
-    go_to_remarks = ("I can't go to {go}.", "Where is {0}?")
+    go_to_remarks = ("I can't go to {0}.", "Where is {0}?")
     use_remarks = ("What is a(n) {0}.", "I can't do anything to the {0}")
     get_remarks = ("There isn't a(n) {0} to get.", "I can't find a(n) {0} to pick up.")
     drop_remarks = ("I don't have a(n) {0} to drop.", "I would need to have a(n) {0} to drop it.")
