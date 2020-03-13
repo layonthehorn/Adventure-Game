@@ -111,58 +111,11 @@ command to clear the screen."""
                 self.stat_dictionary_name: self.stat_dictionary,
             }
 
-            # switcher dictionary for running actions
-            self.switcher_dictionary = {
-                # town center rooms and actions
-                "town center": self.rooms.center,
-                "bar": self.rooms.bar,
-                "bath house": self.rooms.bath_house,
-                "general store": self.rooms.gen_store,
-                "gate house": self.rooms.gate_house,
-
-                # ruins rooms and actions
-                "ruined street": self.rooms.street,
-                "ruined office": self.rooms.office,
-                "ruined house": self.rooms.house,
-                "ruined garage": self.rooms.garage,
-
-                # garage upstairs rooms and actions
-                "break room": self.rooms.break_room,
-                "managers office": self.rooms.office,
-                "balcony": self.rooms.balcony,
-
-                # back rooms and actions
-                "weapons storage": self.rooms.weapons_storage,
-                "work room": self.rooms.work_room,
-                "freezer": self.rooms.freezer,
-                "general storage": self.rooms.general_storage,
-
-                # tower rooms and actions
-                "tower entrance": self.rooms.entrance,
-                "tower peak": self.rooms.peak,
-
-                # mansion rooms and actions
-                "foyer": self.rooms.foyer,
-                "sun room": self.rooms.sun_room,
-                "hallway": self.rooms.hallway,
-                "kitchen": self.rooms.kitchen,
-
-                # garden rooms and actions
-                # "garden": self.rooms,
-
-                # cellar rooms and actions
-                "cellar entrance": self.rooms.entrance,
-                "wine casks": self.rooms.wine_casks,
-                "lab": self.rooms.lab
-            }
-
         # main game play loop
         while self.playing and not end_game:
 
             # if you reach the exit then don't ask for actions from player
             if self.player.location != self.exit_name:
-                # checks if something needs to be updated
-                self.update_room_states()
 
                 print(
                     f"{self.bold + 'Verbs look, inv(entory), get, oper(ate), com(bine), drop, score, use, go, save, end, help, stat' + self.end}")
@@ -188,10 +141,6 @@ command to clear the screen."""
 
     # end init function
 
-    # general room update function
-    def update_room_states(self):
-        pass
-
     # saves games
     def save_game_state(self):
         try:
@@ -215,7 +164,7 @@ command to clear the screen."""
     def general_actions(self, action):
         # finds player location
         # this makes all your actions dependent on the room you are in
-        loc_name = self.switcher_dictionary.get(self.player.location)
+        loc_name = self.rooms.switcher_dictionary.get(self.player.location)
         # splits the input on the first space
         general_list = action.split(" ", 1)
 
