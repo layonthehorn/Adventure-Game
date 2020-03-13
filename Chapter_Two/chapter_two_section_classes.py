@@ -374,41 +374,6 @@ class TimeKeeper:
         self.__timer = add_time
 
 
-# class NPCMovement:
-#     """Controls NPC movement across rooms."""
-#     def __init__(self, town, ruins):
-#         # locations for NPCs to move
-#         self.town = town
-#         self.ruins = ruins
-#
-#     # checks if it needs to move NPCs
-#     def check_npc_move(self):
-#         self.move_npc_scavenger()
-
-    # def move_npc_scavenger(self):
-    #     if self.scavenger.check_move:
-    #         # move to town
-    #         if self.scavenger_move_count == 0:
-    #             self.scavenger_move_count += 1
-    #             self.move_npc_actions(self.scavenger, self.town.center, self.ruins.ruined_street)
-    #         # move to general store
-    #         elif self.scavenger_move_count == 1:
-    #             self.scavenger_move_count += 1
-    #             self.move_npc_actions(self.scavenger, self.town.gen_store, self.ruins.center)
-    #         # move to town
-    #         elif self.scavenger_move_count == 2:
-    #             self.scavenger_move_count += 1
-    #             self.move_npc_actions(self.scavenger, self.ruins.center, self.town.gen_store)
-    #         # move to ruined street again
-    #         elif self.scavenger_move_count == 3:
-    #             self.move_npc_actions(self.scavenger, self.town.town_center, self.ruins.ruined_street)
-    #             self.scavenger_move_count = 0
-    #
-    # @staticmethod
-    # def move_npc_actions(npc, new_room, old_room):
-    #     pass
-
-
 class RoomSystem:
     """This starts all the rooms.
     It also will track NPC movements and cross room changes."""
@@ -448,12 +413,13 @@ class RoomSystem:
         self.lab = rooms.CellarLab(player)
         self.entrance = rooms.CellarEntrance(player)
         self.wine_casks = rooms.CellarWineCasks(player)
-        self.scavenger = npc.ScavengerNPC(self.clock)
-        # npc_list = (npc.ScavengerNPC(self.clock))
-        # name_list = ("scavenger")
+
+        zipped = zip(["scavenger"], [npc.ScavengerNPC(self.clock)])
 
         # list NPCs to check if should be moved
-        self.npc_roster = {"scavenger": self.scavenger}
+        self.npc_roster = {}
+        for key, cls in zipped:
+            self.npc_roster[key] = cls
 
         # lists possible rooms to move to
         self.switcher_dictionary = {
@@ -510,6 +476,7 @@ class RoomSystem:
             starting_point.use_dict[key] = person.use_item
 
     def npc_movement_checker(self):
+        npc_deletion = []
         # checks each NPC that can move
         for key in self.npc_roster:
             person = self.npc_roster.get(key)
@@ -532,5 +499,21 @@ class RoomSystem:
                     del old_room.oper_dict[key]
                 if key in old_room.use_dict:
                     del old_room.use_dict[key]
+            # if they are marked for deletion
+            # we remove them from the game.
+            elif not person.alive:
+                current_room = self.switcher_dictionary.get(person.position)
+                if key in current_room.look_dict:
+                    del current_room.look_dict[key]
+                if key in current_room.oper_dict:
+                    del current_room.oper_dict[key]
+                if key in current_room.use_dict:
+                    del current_room.use_dict[key]
+                npc_deletion.append(key)
+        for removed in npc_deletion:
+            try:
+                del self.npc_roster[removed]
+            except KeyError:
+                pass
 
         self.clock.timer += .5

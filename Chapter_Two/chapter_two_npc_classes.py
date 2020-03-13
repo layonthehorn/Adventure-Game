@@ -114,5 +114,6 @@ class ScavengerNPC(NPC):
 
 
 if __name__ == "__main__":
-    npc = ScavengerNPC(0)
+    from Chapter_Two.chapter_two_section_classes import TimeKeeper
+    npc = ScavengerNPC(TimeKeeper())
     print(npc.alive)
