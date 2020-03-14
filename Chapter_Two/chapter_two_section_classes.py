@@ -54,7 +54,7 @@ class PlayerClass:
                                 "fish": "A tasty fish for testing only."}
 
     def __str__(self):
-        return f"""Inventory {self.inventory}\nLocation {self.__location}\nScore {self.__player_score}"""
+        return f"""Inventory {self.inventory}\nLocation {self.__location}\nSection {self.section}\nScore {self.__player_score}"""
 
     # enables changing player room for testing
     def debug_player(self):
@@ -367,12 +367,26 @@ class TimeKeeper:
 
     @timer.setter
     def timer(self, add_time):
-        if 12 <= self.timer < 13:
+        if self.timer == 1200:
             self.am_pm = "PM"
-        if (self.__timer + add_time)/2 > 24:
-            add_time = (self.__timer + add_time) % 24
+        if (self.__timer + add_time)/2 > 2400:
+            add_time = (self.__timer + add_time) % 2400
             self.am_pm = "AM"
         self.__timer = add_time
+
+    def display_time_human(self):
+        if self.timer >= 1300:
+            clock_time = str(self.timer - 1200)
+        else:
+            clock_time = str(self.timer)
+
+        # making sure it is always the right length for my string methods
+        clock_time = clock_time.zfill(4)
+        clock_time = clock_time[0:2] + ':' + clock_time[2:]
+        # finds the human readable time
+        minutes = str(int(int(clock_time[3:5]) * 3/5))
+        clock_time = clock_time[0:3] + minutes.zfill(2)
+        return f"The time is {clock_time}, {self.am_pm}"
 
 
 class RoomSystem:
@@ -472,57 +486,59 @@ class RoomSystem:
 
     # starts the NPCs where they should be
     def set_up_npc(self):
-        for key in self.npc_roster:
-            person = self.npc_roster.get(key)
+        for name in self.npc_roster:
+            person = self.npc_roster.get(name)
             starting_point = self.switcher_dictionary.get(person.position)
-            starting_point.look_dict[key] = person.look_npc
-            starting_point.oper_dict[key] = person.talk_to_npc
-            starting_point.use_dict[key] = person.use_item
+            # added them to the rooms action dictionaries
+            starting_point.look_dict[name] = person.look_npc
+            starting_point.oper_dict[name] = person.talk_to_npc
+            starting_point.use_dict[name] = person.use_item
 
     # moves NPCs around or removes them from the world
     def npc_movement_checker(self):
         npc_deletion = []
         # checks each NPC that can move
-        for key in self.npc_roster:
-            person = self.npc_roster.get(key)
+        for name in self.npc_roster:
+            person = self.npc_roster.get(name)
             current_local = person.position
             if person.check_move() and person.alive:
 
                 # add to new room
                 new_room = self.switcher_dictionary.get(person.position)
-                if key not in new_room.look_dict:
-                    new_room.look_dict[key] = person.look_npc
-                if key not in new_room.oper_dict:
-                    new_room.oper_dict[key] = person.talk_to_npc
-                if key not in new_room.use_dict:
-                    new_room.use_dict[key] = person.use_item
+                if name not in new_room.look_dict:
+                    new_room.look_dict[name] = person.look_npc
+                if name not in new_room.oper_dict:
+                    new_room.oper_dict[name] = person.talk_to_npc
+                if name not in new_room.use_dict:
+                    new_room.use_dict[name] = person.use_item
 
                 # delete from old room
                 old_room = self.switcher_dictionary.get(current_local)
-                if key in old_room.look_dict:
-                    del old_room.look_dict[key]
-                if key in old_room.oper_dict:
-                    del old_room.oper_dict[key]
-                if key in old_room.use_dict:
-                    del old_room.use_dict[key]
+                if name in old_room.look_dict:
+                    del old_room.look_dict[name]
+                if name in old_room.oper_dict:
+                    del old_room.oper_dict[name]
+                if name in old_room.use_dict:
+                    del old_room.use_dict[name]
 
             # if they are marked for deletion
             # we remove them from the game.
             elif not person.alive:
                 current_room = self.switcher_dictionary.get(person.position)
-                if key in current_room.look_dict:
-                    del current_room.look_dict[key]
-                if key in current_room.oper_dict:
-                    del current_room.oper_dict[key]
-                if key in current_room.use_dict:
-                    del current_room.use_dict[key]
-                npc_deletion.append(key)
+                if name in current_room.look_dict:
+                    del current_room.look_dict[name]
+                if name in current_room.oper_dict:
+                    del current_room.oper_dict[name]
+                if name in current_room.use_dict:
+                    del current_room.use_dict[name]
+                npc_deletion.append(name)
 
         # actually removes them from the game
-        for removed in npc_deletion:
+        for name in npc_deletion:
             try:
-                del self.npc_roster[removed]
+                del self.npc_roster[name]
             except KeyError:
                 pass
 
-        self.clock.timer += .5
+        # counts clock up by a quarter hour
+        self.clock.timer += 25

@@ -74,20 +74,23 @@ class ScavengerNPC(NPC):
             print("Error, Bad location to move.")
 
     def check_move(self):
-        # to do, move around at certain times
-        if 6 <= self.clock.timer <= 6.1:
+        # 9:00 AM
+        if self.clock.timer == 900:
             # move to town center
             self.position = "town center"
             return True
-        elif 7 <= self.clock.timer <= 7.1:
+        # 10:00 AM
+        elif self.clock.timer == 1000:
             # move to general store
             self.position = "general store"
             return True
-        elif 9 <= self.clock.timer <= 9.1:
+        # 1:00 PM
+        elif self.clock.timer == 1300:
             # move back to town center
             self.position = "town center"
             return True
-        elif 11 <= self.clock.timer <= 11.1:
+        # 2:00 PM
+        elif self.clock.timer == 1400:
             # move to ruined street again
             self.position = "ruined street"
             return True
