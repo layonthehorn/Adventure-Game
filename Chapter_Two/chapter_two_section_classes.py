@@ -1,6 +1,7 @@
 import time
 import Chapter_Two.chapter_two_room_classes as rooms
 import Chapter_Two.chapter_two_npc_classes as npc
+from Chapter_Two.exception_class import ChangeLocationError, NPCLocationError
 
 
 # Player Class
@@ -33,9 +34,10 @@ class PlayerClass:
                          , "gardens": ()
                          }
 
-    def __init__(self):
+    def __init__(self, debug):
 
         self.inventory = ["self"]
+        self.debug = debug
         # neg
         self.buy_item_values = {"fish": -5,
                                 "can": -3}
@@ -105,8 +107,11 @@ class PlayerClass:
     def location(self, location):
         # makes sure that you do not enter a bad location.
         if location not in self.accepted_locations:
-            print(f"Could not fine {location}... Possible missing spelling in code?")
-            print("Could not find matching location. Canceling movement.")
+            if not self.debug:
+                print(f"Could not fine {location}... Possible missing spelling in code?")
+                print("Could not find matching location. Canceling movement.")
+            else:
+                raise ChangeLocationError(location)
 
         # makes sure not to print if you win or end game
         elif location != "end" and location != "exit":
@@ -116,6 +121,7 @@ class PlayerClass:
                 for key in self.accepted_sections:
                     if location in self.accepted_sections.get(key):
                         print(f"You have gone to the {location}, in the {key}.")
+                        self.changed_location = True
                         self.section = key
                         self.__location = location
                         break
@@ -124,6 +130,7 @@ class PlayerClass:
 
             else:
                 print(f"You have gone to the {location}.")
+                self.changed_location = True
                 self.__location = location
 
         # if you go to the exit or end, does not print anything
@@ -431,13 +438,17 @@ class RoomSystem:
         self.wine_casks = rooms.CellarWineCasks(player)
         self.scavenger = npc.ScavengerNPC(self.clock, player)
         self.organ_player = npc.OrganPlayer(self.clock, player)
+        self.gen_shop_keeper = npc.GeneralStoreOwner(self.clock, player)
 
         # list NPCs to check if should be moved
         self.npc_roster = {
             # scavenger NPC.
             self.scavenger.name: self.scavenger,
             # organ player NPC
-            self.organ_player.name: self.organ_player}
+            self.organ_player.name: self.organ_player,
+            # general store owner NPC
+            self.gen_shop_keeper.name: self.gen_shop_keeper
+            }
 
         # lists possible rooms to move to
         self.switcher_dictionary = {
@@ -490,6 +501,10 @@ class RoomSystem:
         for name in self.npc_roster:
             person = self.npc_roster.get(name)
             starting_point = self.switcher_dictionary.get(person.position)
+
+            # errors if no matching location is found for starting point
+            if starting_point is None:
+                raise NPCLocationError(name, person.position)
             # added them to the rooms action dictionaries
             starting_point.look_dict[name] = person.look_npc
             starting_point.oper_dict[name] = person.talk_to_npc

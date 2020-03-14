@@ -40,7 +40,7 @@ command to clear the screen."""
             player_option = input("Load(l), Start New(s), Quit(q), or How to play(h)?\n").lower()
             if player_option == "s":
                 # Loads defaults in classes for game
-                self.player = sections.PlayerClass()
+                self.player = sections.PlayerClass(testing)
                 self.rooms = sections.RoomSystem(self.player)
                 # sets NPC position
                 self.rooms.set_up_npc()
@@ -118,6 +118,7 @@ command to clear the screen."""
             if self.player.location != self.exit_name:
                 if self.player.changed_location:
 
+                    # displays the look rooms result when you change rooms
                     loc_name = self.rooms.switcher_dictionary.get(self.player.location)
                     loc_name.print_description_room()
                     self.player.changed_location = False
