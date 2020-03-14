@@ -45,6 +45,7 @@ class PlayerClass:
                                  "rock": 1}
         self.__location = "town center"
         self.__section = "town"
+        self.changed_location = False
         self.__player_score = 0
         self.player_wallet = 0
         self.places = []

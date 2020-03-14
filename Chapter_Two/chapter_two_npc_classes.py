@@ -20,6 +20,10 @@ class NPC(ABC):
     def use_item(self, item):
         pass
 
+    @abstractmethod
+    def __str__(self):
+        pass
+
     @property
     @abstractmethod
     def position(self):
@@ -50,6 +54,9 @@ class ScavengerNPC(NPC):
         self.__alive = True
         self.name = "scavenger"
         self.inventory = []
+
+    def __str__(self):
+        return f"My name is {self.name}, I'm in {self.position}, and it is {self.clock.display_human_time()}, {self.clock.am_pm}"
 
     @property
     def alive(self):
@@ -103,7 +110,6 @@ class ScavengerNPC(NPC):
 
     def talk_to_npc(self):
         print("You should be able to talk to me. Hello!")
-        print(f"My name is {self.name}, I'm in {self.position}, and it is {self.clock.timer}, {self.clock.am_pm}")
 
     def look_npc(self):
         print("It's a scavenger.")
@@ -118,6 +124,9 @@ class OrganPlayer(NPC):
         self.__alive = True
         self.name = "organ player"
         self.inventory = []
+
+    def __str__(self):
+        return f"My name is {self.name}, I'm in {self.position}, and it is {self.clock.display_human_time()}, {self.clock.am_pm}"
 
     @property
     def alive(self):

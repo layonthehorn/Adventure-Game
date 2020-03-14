@@ -116,6 +116,11 @@ command to clear the screen."""
 
             # if you reach the exit then don't ask for actions from player
             if self.player.location != self.exit_name:
+                if self.player.changed_location:
+
+                    loc_name = self.rooms.switcher_dictionary.get(self.player.location)
+                    loc_name.print_description_room()
+                    self.player.changed_location = False
 
                 print(
                     f"{self.bold + 'Verbs look, inv(entory), get, oper(ate), com(bine), drop, score, use, go, save, end, help, stat' + self.end}")

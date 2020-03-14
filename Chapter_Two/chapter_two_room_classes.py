@@ -267,18 +267,23 @@ class TownCenter(FunctionClass):
 
     def go_bar(self):
         self.player.location = "bar"
+        self.player.changed_location = True
 
     def go_gen_store(self):
         self.player.location = "general store"
+        self.player.changed_location = True
 
     def go_gate_house(self):
         self.player.location = "gate house"
+        self.player.changed_location = True
 
     def go_bath_house(self):
         self.player.location = "bath house"
+        self.player.changed_location = True
 
     def go_ruined_street(self):
         self.player.location = "ruined street"
+        self.player.changed_location = True
 
 
 class TownBar(FunctionClass, ShopFunctions):
@@ -304,6 +309,7 @@ class TownBar(FunctionClass, ShopFunctions):
 
     def go_town_center(self):
         self.player.location = "town center"
+        self.player.changed_location = True
 
     def print_description_shop(self):
         print("It's a grungy looking bar.", end=" ")
@@ -342,6 +348,7 @@ class TownGenStore(FunctionClass, ShopFunctions):
 
     def go_town_center(self):
         self.player.location = "town center"
+        self.player.changed_location = True
 
 
 class TownBathHouse(FunctionClass):
@@ -367,6 +374,7 @@ class TownBathHouse(FunctionClass):
 
     def go_town_center(self):
         self.player.location = "town center"
+        self.player.changed_location = True
 
 
 class TownGateHouse(FunctionClass):
@@ -393,9 +401,11 @@ class TownGateHouse(FunctionClass):
 
     def go_town_center(self):
         self.player.location = "town center"
+        self.player.changed_location = True
 
     def go_mansion_foyer(self):
         self.player.location = "foyer"
+        self.player.changed_location = True
 
 
 # Ruined City rooms
@@ -422,6 +432,7 @@ class RuinedHouse(FunctionClass):
 
     def go_ruined_street(self):
         self.player.location = "ruined street"
+        self.player.changed_location = True
 
 
 class RuinedStreet(FunctionClass):
@@ -450,15 +461,19 @@ class RuinedStreet(FunctionClass):
 
     def go_town_center(self):
         self.player.location = "town center"
+        self.player.changed_location = True
 
     def go_ruined_house(self):
         self.player.location = "ruined house"
+        self.player.changed_location = True
 
     def go_ruined_garage(self):
         self.player.location = "ruined garage"
+        self.player.changed_location = True
 
     def go_ruined_office(self):
         self.player.location = "ruined office"
+        self.player.changed_location = True
 
 
 class RuinedOffice(FunctionClass):
@@ -484,6 +499,7 @@ class RuinedOffice(FunctionClass):
 
     def go_ruined_street(self):
         self.player.location = "ruined street"
+        self.player.changed_location = True
 
 
 class RuinedGarage(FunctionClass):
@@ -510,9 +526,11 @@ class RuinedGarage(FunctionClass):
 
     def go_ruined_street(self):
         self.player.location = "ruined street"
+        self.player.changed_location = True
 
     def go_upstairs_break_room(self):
         self.player.location = "break room"
+        self.player.changed_location = True
 
 
 # Garage Upstairs
@@ -541,12 +559,15 @@ class UpstairsBreakRoom(FunctionClass):
 
     def go_ruined_garage(self):
         self.player.location = "ruined garage"
+        self.player.changed_location = True
 
     def go_upstairs_office(self):
         self.player.location = "managers office"
+        self.player.changed_location = True
 
     def go_upstairs_balcony(self):
         self.player.location = "balcony"
+        self.player.changed_location = True
 
 
 class UpstairsBalcony(FunctionClass):
@@ -573,9 +594,11 @@ class UpstairsBalcony(FunctionClass):
 
     def go_upstairs_break_room(self):
         self.player.location = "break room"
+        self.player.changed_location = True
 
     def go_upstairs_office(self):
         self.player.location = "managers office"
+        self.player.changed_location = True
 
 
 class UpstairsOffice(FunctionClass):
@@ -602,9 +625,11 @@ class UpstairsOffice(FunctionClass):
 
     def go_upstairs_break_room(self):
         self.player.location = "break room"
+        self.player.changed_location = True
 
     def go_upstairs_balcony(self):
         self.player.location = "balcony"
+        self.player.changed_location = True
 
 
 # mansion rooms
@@ -632,15 +657,19 @@ class MansionFoyer(FunctionClass):
 
     def go_gate_house(self):
         self.player.location = "gate house"
+        self.player.changed_location = True
 
     def go_mansion_kitchen(self):
         self.player.location = "kitchen"
+        self.player.changed_location = True
 
     def go_mansion_hallway(self):
         self.player.location = "hallway"
+        self.player.changed_location = True
 
     def go_mansion_sun_room(self):
         self.player.location = "sun room"
+        self.player.changed_location = True
 
 
 class MansionSunRoom(FunctionClass):
@@ -665,9 +694,11 @@ class MansionSunRoom(FunctionClass):
 
     def go_mansion_foyer(self):
         self.player.location = "foyer"
+        self.player.changed_location = True
 
     def go_tower_entrance(self):
         self.player.location = "tower entrance"
+        self.player.changed_location = True
 
 
 class MansionKitchen(FunctionClass):
@@ -692,9 +723,11 @@ class MansionKitchen(FunctionClass):
 
     def go_mansion_foyer(self):
         self.player.location = "foyer"
+        self.player.changed_location = True
 
     def go_cellar_entrance(self):
         self.player.location = "cellar entrance"
+        self.player.changed_location = True
 
 
 class MansionHallWay(FunctionClass):
@@ -719,9 +752,11 @@ class MansionHallWay(FunctionClass):
 
     def go_mansion_foyer(self):
         self.player.location = "foyer"
+        self.player.changed_location = True
 
     def go_mansion_living_room(self):
         self.player.location = "living room"
+        self.player.changed_location = True
 
 
 class MansionLivingRoom(FunctionClass):
@@ -745,6 +780,7 @@ class MansionLivingRoom(FunctionClass):
 
     def go_mansion_hallway(self):
         self.player.location = "hallway"
+        self.player.changed_location = True
 
 
 # tower rooms
@@ -771,9 +807,11 @@ class TowerEntrance(FunctionClass):
 
     def go_mansion_sun_room(self):
         self.player.location = "sun room"
+        self.player.changed_location = True
 
     def go_tower_peak(self):
         self.player.location = "tower peak"
+        self.player.changed_location = True
 
 
 class TowerPeak(FunctionClass):
@@ -797,6 +835,7 @@ class TowerPeak(FunctionClass):
 
     def go_tower_entrance(self):
         self.player.location = "tower entrance"
+        self.player.changed_location = True
 
 
 # cellar rooms
@@ -823,12 +862,15 @@ class CellarEntrance(FunctionClass):
 
     def go_mansion_kitchen(self):
         self.player.location = "kitchen"
+        self.player.changed_location = True
 
     def go_wine_casks(self):
         self.player.location = "wine casks"
+        self.player.changed_location = True
 
     def go_lab(self):
         self.player.location = "lab"
+        self.player.changed_location = True
 
 
 class CellarWineCasks(FunctionClass):
@@ -852,6 +894,7 @@ class CellarWineCasks(FunctionClass):
 
     def go_cellar_entrance(self):
         self.player.location = "cellar entrance"
+        self.player.changed_location = True
 
 
 class CellarLab(FunctionClass):
@@ -875,6 +918,7 @@ class CellarLab(FunctionClass):
 
     def go_cellar_entrance(self):
         self.player.location = "cellar entrance"
+        self.player.changed_location = True
 
 
 # the general store's back rooms
@@ -899,12 +943,15 @@ class GeneralStorage(FunctionClass):
 
     def go_general_store(self):
         self.player.location = "general store"
+        self.player.changed_location = True
 
     def go_work_room(self):
         self.player.location = "work room"
+        self.player.changed_location = True
 
     def go_freezer(self):
         self.player.location = "freezer"
+        self.player.changed_location = True
 
 
 class WeaponsStorage(FunctionClass):
@@ -926,6 +973,7 @@ class WeaponsStorage(FunctionClass):
 
     def go_work_room(self):
         self.player.location = "work room"
+        self.player.changed_location = True
 
 
 class WorkRoom(FunctionClass):
@@ -949,12 +997,15 @@ class WorkRoom(FunctionClass):
 
     def go_weapon_storage(self):
         self.player.location = "weapons storage"
+        self.player.changed_location = True
 
     def go_general_storage(self):
         self.player.location = "general storage"
+        self.player.changed_location = True
 
     def go_freezer(self):
         self.player.location = "freezer"
+        self.player.changed_location = True
 
 
 class Freezer(FunctionClass):
@@ -977,6 +1028,8 @@ class Freezer(FunctionClass):
 
     def go_general_storage(self):
         self.player.location = "general storage"
+        self.player.changed_location = True
 
     def go_work_room(self):
         self.player.location = "work room"
+        self.player.changed_location = True
