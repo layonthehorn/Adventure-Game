@@ -325,19 +325,19 @@ class GeneralStoreOwner(NPC, ShopFunctions):
         return False
 
     def talk_to_npc(self):
-        print("You want to 'talk' or 'shop'?")
-        choice = input("").lower()
+
         while True:
+            print("You want to 'talk' or 'shop'? (q to exit)")
+            choice = input("").lower()
+            clear()
             if choice == "talk":
                 print("Some talking function here.")
-                input()
             elif choice == "shop":
                 self.shop_keeper("The lioness shows you her stock of goods.")
-            elif choice == "quit":
+            elif choice == "q":
                 break
             else:
                 print("Do what now?")
-                input()
 
     def use_item(self, item):
         print(f"She won't want the {item}.")
