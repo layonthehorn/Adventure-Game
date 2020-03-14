@@ -57,7 +57,7 @@ class PlayerClass:
                                 "fish": "A tasty fish for testing only."}
 
     def __str__(self):
-        return f"""Inventory {self.inventory}\nLocation {self.__location}\nSection {self.section}\nScore {self.__player_score}"""
+        return f"""Inventory {self.inventory}\nLocation {self.__location}\nSection {self.section}\nScore {self.__score}"""
 
     # enables changing player room for testing
     def debug_player(self):

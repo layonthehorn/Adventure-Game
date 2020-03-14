@@ -280,6 +280,7 @@ class OrganPlayer(NPC):
         if item == "music sheet":
             print("That's what I needed! Thank you!")
             print("I must go and read it right away!")
+            self.inventory.append(item)
             self.player.inventory.remove(item)
             self.player.score += 1
         else:
