@@ -154,7 +154,7 @@ class PlayerClass:
     @score.setter
     def score(self, new_value):
         if new_value < 1:
-            raise ValueError(f"Must be x <= 1, {new_value}.")
+            raise ValueError(f"Must be x >= 1, {new_value}.")
         else:
             print("You're score went up!")
             self.__score = new_value
@@ -434,6 +434,8 @@ class RoomSystem:
         self.lab = rooms.CellarLab(player)
         self.cell_entrance = rooms.CellarEntrance(player)
         self.wine_casks = rooms.CellarWineCasks(player)
+
+        # Loading NPCs
         self.scavenger = npc.ScavengerNPC(self.clock, player)
         self.organ_player = npc.OrganPlayer(self.clock, player)
         self.gen_shop_keeper = npc.GeneralStoreOwner(self.clock, player)
