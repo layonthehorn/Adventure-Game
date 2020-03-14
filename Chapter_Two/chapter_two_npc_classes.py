@@ -281,7 +281,7 @@ class OrganPlayer(NPC):
             print("That's what I needed! Thank you!")
             print("I must go and read it right away!")
             self.player.inventory.remove(item)
-            self.player.increase_score()
+            self.player.score += 1
         else:
             print("No, no no. This won't do at all. I need music, my oddly furred man.")
 

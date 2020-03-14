@@ -48,7 +48,7 @@ class PlayerClass:
         self.__location = "town center"
         self.__section = "town"
         self.changed_location = True
-        self.__player_score = 0
+        self.__score = 0
         self.player_wallet = 0
         self.places = []
         self.map_dictionary = {}
@@ -148,22 +148,20 @@ class PlayerClass:
         print(f"You have {self.player_wallet} coins total now.")
 
     @property
-    def player_score(self):
-        return self.__player_score
+    def score(self):
+        return self.__score
 
-    @player_score.setter
-    def player_score(self, new_value):
+    @score.setter
+    def score(self, new_value):
         if new_value < 1:
-            new_value = 1
-            print("You're score went up!")
-            self.__player_score += new_value
+            raise ValueError(f"Must be x <= 1, {new_value}.")
         else:
             print("You're score went up!")
-            self.__player_score = new_value
+            self.__score = new_value
 
     # prints your score
     def print_score(self):
-        print(f"Your score is {self.player_score}.")
+        print(f"Your score is {self.score}.")
 
     # prints his inventory
     def check_inventory(self):
