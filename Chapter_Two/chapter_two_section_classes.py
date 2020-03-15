@@ -1,7 +1,7 @@
 import time
 import Chapter_Two.chapter_two_room_classes as rooms
 import Chapter_Two.chapter_two_npc_classes as npc
-from Chapter_Two.exception_class import ChangeLocationError, NPCLocationError, ChangeSectionError
+from Chapter_Two.exception_class import ChangeLocationError, NPCLocationError, ChangeSectionError, RedundantMoveError
 
 
 # Player Class
@@ -38,6 +38,7 @@ class PlayerClass:
 
         self.inventory = ["self"]
         self.debug = debug
+        self.name = "Vern MacCaster"
         # neg
         self.buy_item_values = {"fish": -5,
                                 "can": -3}
@@ -112,6 +113,10 @@ class PlayerClass:
                 print("Could not find matching location. Canceling movement.")
             else:
                 raise ChangeLocationError(location)
+
+        # should never need to move to own location
+        elif location == self.location and not self.debug:
+            raise RedundantMoveError(self.name)
 
         # makes sure not to print if you win or end game
         elif location != "end" and location != "exit":
@@ -525,7 +530,9 @@ class RoomSystem:
             person = self.npc_roster.get(name)
             current_local = person.position
             if person.check_move() and person.alive:
-
+                if current_local == person.position:
+                    # NPC should never move to the same room twice
+                    raise RedundantMoveError(name)
                 # add to new room
                 new_room = self.switcher_dictionary.get(person.position)
                 if name not in new_room.look_dict:

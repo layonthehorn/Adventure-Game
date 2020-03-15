@@ -33,3 +33,9 @@ class ChangeNPCLocationError(Error):
     """An error to tell me that I messed up naming a room correctly when moving a NPC."""
     def __init__(self, name, area):
         super().__init__(f"Failed to find matching area for {area} when moving {name}.")
+
+
+class RedundantMoveError(Error):
+    """For if a NPC or player tries to move to the same room they are in already."""
+    def __init__(self, name):
+        super().__init__(f"Tried to move {name} to same room as they are in.")
