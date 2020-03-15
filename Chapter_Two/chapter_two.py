@@ -219,6 +219,7 @@ command to clear the screen."""
                     self.clear()
                     print("Cannot debug print that.")
             else:
+                self.stat_dictionary["unknown"] += 1
                 print(f"I don't know how to {general_list[0]}.")
 
         # saves the game
