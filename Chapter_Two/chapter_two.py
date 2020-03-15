@@ -61,7 +61,8 @@ command to clear the screen."""
                                         "hint": 0,
                                         "end": 0,
                                         "unknown": 0,
-                                        "stat": 0}
+                                        "stat": 0,
+                                        "time": 0}
                 self.print_intro()
                 choosing = False
             elif player_option == "q":
@@ -124,7 +125,7 @@ command to clear the screen."""
                     self.player.changed_location = False
 
                 print(
-                    f"{self.bold + 'Verbs look, inv(entory), get, oper(ate), com(bine), drop, score, use, go, save, end, help, stat' + self.end}")
+                    f"{self.bold + 'Verbs look, inv(entory), time, get, oper(ate), com(bine), drop, score, use, go, save, end, help, stat' + self.end}")
                 player_choice = input("").lower()
                 self.clear()
                 # general actions shared by rooms
@@ -193,6 +194,10 @@ command to clear the screen."""
         elif general_list[0] == "help":
             self.stat_dictionary["help"] += 1
             self.print_help()
+
+        elif general_list[0] == "time":
+            print(self.rooms.clock)
+            self.stat_dictionary["time"] += 1
 
         # for debugging only
         # disabled by default
@@ -382,4 +387,5 @@ hoping to raise $5000 to get them through to their next destination.
 {"Used 'score'":<16} {self.stat_dictionary["score"]:<4} times. {"":>6} {"Used 'use'":<16} {self.stat_dictionary["use"]:<4} times.
 {"Used 'go'":<16} {self.stat_dictionary["go"]:<4} times. {"":>6} {"Used 'save'":<16} {self.stat_dictionary["save"]:<4} times.
 {"Used 'hint'":<16} {self.stat_dictionary["hint"]:<4} times. {"":>6} {"Used 'stat'":<16} {self.stat_dictionary["stat"]:<4} times.
-{"Unknown command":<16} {self.stat_dictionary["unknown"]:<4} times. {"":>6} {"Entered nothing":<16} {self.stat_dictionary[""]:<4} times.""")
+{"Unknown command":<16} {self.stat_dictionary["unknown"]:<4} times. {"":>6} {"Entered nothing":<16} {self.stat_dictionary[""]:<4} times.
+{"Checked time":<16} {self.stat_dictionary["time"]:<4} times.""")

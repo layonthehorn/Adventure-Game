@@ -154,7 +154,7 @@ class NPC(ABC):
         pass
 
     def __str__(self):
-        return f"My name is {self.name}, I'm in {self.position}, and it is {self.clock.display_time_human()}."
+        return f"My name is {self.name}, I'm in {self.position}, and it is {self.clock}."
 
     @property
     @abstractmethod

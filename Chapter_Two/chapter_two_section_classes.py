@@ -380,7 +380,7 @@ class TimeKeeper:
             self.am_pm = "AM"
         self.__timer = add_time
 
-    def display_time_human(self):
+    def __str__(self):
         if self.timer >= 1300:
             clock_time = str(self.timer - 1200)
         else:
@@ -392,7 +392,8 @@ class TimeKeeper:
         # finds the human readable time
         minutes = str(int(int(clock_time[3:5]) * 3/5))
         clock_time = clock_time[0:3] + minutes.zfill(2)
-        return f"The time is {clock_time}, {self.am_pm}"
+
+        return f"The time is {clock_time}, {self.am_pm}."
 
 
 class RoomSystem:
@@ -407,7 +408,7 @@ class RoomSystem:
         self.freezer = rooms.Freezer(player)
         self.work_room = rooms.WorkRoom(player)
         # town center
-        self.center = rooms.TownCenter(player)
+        self.center = rooms.TownCenter(player, self.clock)
         self.bar = rooms.TownBar(player)
         self.gen_store = rooms.TownGenStore(player)
         self.bath_house = rooms.TownBathHouse(player)

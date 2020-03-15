@@ -137,9 +137,10 @@ class FunctionClass:
 # town center rooms
 class TownCenter(FunctionClass):
     """Starting room and center of town."""
-    def __init__(self, player_object):
+    def __init__(self, player_object, timer):
 
         self.inventory = []
+        self.clock = timer
         self.player = player_object
         self.bool_one, self.bool_two, self.bool_three = (False, False, False)
         self.look_dict = {"room": self.print_description_room}
@@ -162,7 +163,10 @@ class TownCenter(FunctionClass):
         self.player.location = "bar"
 
     def go_gen_store(self):
-        self.player.location = "general store"
+        if 2000 <= self.clock.timer <= 2500 or 0 <= self.clock.timer <= 800:
+            print("It's closed for the night. It will open at 8:00 AM.")
+        else:
+            self.player.location = "general store"
 
     def go_gate_house(self):
         self.player.location = "gate house"
