@@ -7,8 +7,8 @@ class Error(Exception):
 
 class ReadOnlyError(Error):
     """Throws error if attempting to set a read only variable."""
-    def __init__(self, item):
-        super().__init__(f"Failed to set read only variable to {item}")
+    def __init__(self, item, npc):
+        super().__init__(f"Failed to set read only variable to {item}, on {npc}")
 
 
 class ChangeLocationError(Error):

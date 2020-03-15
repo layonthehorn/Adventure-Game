@@ -117,7 +117,8 @@ command to clear the screen."""
         while self.playing and not end_game:
 
             # if you reach the exit then don't ask for actions from player
-            if self.player.location != self.exit_name:
+            # or if he is asleep
+            if self.player.location != self.exit_name and not self.player.sleep:
                 if self.player.changed_location:
 
                     # displays the look rooms result when you change rooms
@@ -145,7 +146,8 @@ command to clear the screen."""
 
             # see if NPCs should move or not
             self.rooms.npc_movement_checker()
-            print("")
+            if not self.player.sleep:
+                print("")
 
     # end init function
 

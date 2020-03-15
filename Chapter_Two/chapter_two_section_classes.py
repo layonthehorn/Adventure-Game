@@ -21,7 +21,8 @@ class PlayerClass:
         "tower entrance", "tower peak",
         "cellar entrance", "wine casks", "lab",
         "manager office", "break room", "balcony",
-        "weapon storage", "work room", "general storage", "freezer"
+        "weapon storage", "work room", "general storage", "freezer",
+        "inn entrance", "inn room"
                           )
     # sections of the map, changes how your map looks.
     accepted_sections = {"town": ("town center", "general store", "gate house", "bath house", "bar")
@@ -32,12 +33,14 @@ class PlayerClass:
                          , "tower": ("tower entrance", "tower peak")
                          , "cellar": ("cellar entrance", "wine casks", "lab")
                          , "gardens": ()
+                         , "inn": ("inn entrance", "inn room")
                          }
 
     def __init__(self, debug):
 
         self.inventory = ["self"]
         self.debug = debug
+        self.sleep = False
         self.name = "Vern MacCaster"
         # neg
         self.buy_item_values = {"fish": -5,
@@ -55,7 +58,9 @@ class PlayerClass:
         self.map_dictionary = {}
 
         self.item_dictionary = {"music sheet": "A piece of sheet music. Maybe someone would want this?",
-                                "fish": "A tasty fish for testing only."}
+                                "fish": "A tasty fish for testing only.",
+                                "vhs tape": "An old VHS tape that a collector might want somewhere.",
+                                "movie poster": "An old movie poster. It shows an action hero fighting a monster cat man."}
 
     def __str__(self):
         return f"""Inventory {self.inventory}\nLocation {self.__location}\nSection {self.section}\nScore {self.__score}"""
@@ -182,7 +187,7 @@ class PlayerClass:
                 # should not be shown to player as being an item.
                 if item != "self":
                     print(
-                        f"{self.bold + item + self.end:<20}{self.item_dictionary.get(item, 'Error, Report me pls!'):<5}")
+                        f"{self.bold + item + self.end:<25}{self.item_dictionary.get(item, 'Error, Report me pls!'):<5}")
 
     # removes items from player
     def use_item(self, item):
@@ -230,13 +235,14 @@ class PlayerClass:
                                                    |Legend:             |
                                                    |                    |
                                                    |Ruins Area:      RA |
-                      TB                           |Mansion Area:    MA |
-                      ||                           |Back Rooms Area: BA |
+                      TB TI                        |Mansion Area:    MA |
+                      ||//                         |Back Rooms Area: BA |
                   RA--TC--GH--MA                   |Town Center:     TC |
                       ||\\\\                         |Town Bar:        TB |
                       GS BH                        |General Store:   GS |
                      //                            |Bath House:      BH |
                      BA                            |Gate House:      GH |
+                                                   |Town Inn:        TI |
                                                    |You: @@ in room  ?? |
                                                    +--------------------+ 
               """)
@@ -348,6 +354,19 @@ class PlayerClass:
                                                    |You: @@ in room  ?? |
                                                    +--------------------+
               """)
+        elif self.section == "inn":
+            print("""
+                                                   +--------------------+
+                                                   |      Inn Area      |
+                                                   +--------------------+
+                       TA                          |Legend:             |
+                       ||                          |                    |
+                       IE--IR                      |Town Area:       TA |
+                                                   |Inn Entrance:    IE |
+                                                   |Inn Room:        IR |
+                                                   |You: @@ in room  ?? |
+                                                   +--------------------+
+              """)
         else:
             print("Error no match location found.")
 
@@ -358,8 +377,21 @@ class PlayerClass:
 
 class TimeKeeper:
     def __init__(self):
-        self.__timer = 0
+        self.__timer = 700
         self.__am_pm = "AM"
+        self.__days_past = 0
+
+    @property
+    def days_past(self):
+        return self.__days_past
+
+    @days_past.setter
+    def days_past(self, new_value):
+        if new_value - self.days_past != 1:
+            raise ValueError(f"Increasing time can only be done with a value of one, {new_value}.")
+        else:
+            self.__days_past = new_value
+            print("A new day is here.")
 
     @property
     def am_pm(self):
@@ -378,12 +410,13 @@ class TimeKeeper:
 
     @timer.setter
     def timer(self, add_time):
-        if self.timer == 1200:
-            self.am_pm = "PM"
         if (self.__timer + add_time)/2 > 2400:
             add_time = (self.__timer + add_time) % 2400
+            self.days_past += 1
             self.am_pm = "AM"
         self.__timer = add_time
+        if self.timer == 1200:
+            self.am_pm = "PM"
 
     def __str__(self):
         if self.timer >= 1300:
@@ -398,7 +431,7 @@ class TimeKeeper:
         minutes = str(int(int(clock_time[3:5]) * 3/5))
         clock_time = clock_time[0:3] + minutes.zfill(2)
 
-        return f"The time is {clock_time}, {self.am_pm}."
+        return f"The time is {clock_time}, {self.am_pm} and {self.days_past} days have past."
 
 
 class RoomSystem:
@@ -406,6 +439,7 @@ class RoomSystem:
     It also will track NPC movements and cross room changes."""
 
     def __init__(self, player):
+        self.player = player
         self.clock = TimeKeeper()
         # back rooms
         self.weapons_storage = rooms.WeaponsStorage(player)
@@ -441,12 +475,17 @@ class RoomSystem:
         self.cell_entrance = rooms.CellarEntrance(player)
         self.wine_casks = rooms.CellarWineCasks(player)
 
+        # inn rooms
+        self.inn_entrance = rooms.InnEntrance(player)
+        self.inn_room = rooms.InnRoom(player)
+
         # Loading NPCs
         self.scavenger = npc.ScavengerNPC(self.clock, player)
         self.organ_player = npc.OrganPlayer(self.clock, player)
         self.gen_shop_keeper = npc.GeneralStoreOwner(self.clock, player)
         self.katie = npc.Katie(self.clock, player)
         self.johnson = npc.Johnson(self.clock, player)
+        self.collecter = npc.CollectorFelilian(self.clock, self.player)
 
         # list NPCs to check if should be moved
         self.npc_roster = {
@@ -459,7 +498,9 @@ class RoomSystem:
             # Katie NPC
             self.katie.name: self.katie,
             # Johnson NPC
-            self.johnson.name: self.johnson
+            self.johnson.name: self.johnson,
+            # collector NPC
+            self.collecter.name: self.collecter
             }
 
         # lists possible rooms to move to
@@ -502,11 +543,24 @@ class RoomSystem:
             # garden rooms and actions
             # "garden": self.rooms,
 
+            # inn rooms and actions
+            "inn entrance": self.inn_entrance,
+            "inn room": self.inn_room,
+
             # cellar rooms and actions
             "cellar entrance": self.cell_entrance,
             "wine casks": self.wine_casks,
             "lab": self.lab
         }
+
+    # will allow time to pass when you sleep or preform some actions
+    def time_wait_events(self):
+        if self.player.sleep:
+            if self.clock.timer == 700:
+                rooms.clear()
+                print("You wake up feeling rested.")
+                print(self.clock)
+                self.player.sleep = False
 
     # starts the NPCs where they should be
     def set_up_npc(self):
@@ -524,6 +578,7 @@ class RoomSystem:
 
     # moves NPCs around or removes them from the world
     def npc_movement_checker(self):
+        self.time_wait_events()
         npc_deletion = []
         # checks each NPC that can move
         for name in self.npc_roster:
@@ -585,4 +640,3 @@ class RoomSystem:
             print(self.npc_roster.get(choice))
         else:
             print("No match found.")
-

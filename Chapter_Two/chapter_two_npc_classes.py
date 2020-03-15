@@ -132,10 +132,7 @@ class NPC(ABC):
         self.__alive = True
         self.name = "scavenger"
         self.inventory = []
-
-    def __str__(self):
-        return f"My name is {self.name}, I'm in {self.position}, and it is {self.clock.display_human_time()}, {self.clock.am_pm}"
-        """
+  """
 
     @abstractmethod
     def talk_to_npc(self):
@@ -145,9 +142,8 @@ class NPC(ABC):
     def look_npc(self):
         pass
 
-    @abstractmethod
     def check_move(self):
-        pass
+        return False
 
     @abstractmethod
     def use_item(self, item):
@@ -196,7 +192,7 @@ class ScavengerNPC(NPC):
         if new_value is True or new_value is False:
             self.__alive = new_value
         else:
-            print("Bad input, need a pure boolean value.")
+            raise ValueError(f"Need a pure boolean only. {new_value}, on {self.name}.")
 
     @property
     def position(self):
@@ -263,7 +259,7 @@ class OrganPlayer(NPC):
         if new_value is True or new_value is False:
             self.__alive = new_value
         else:
-            print("Bad input, need a pure boolean value.")
+            raise ValueError(f"Need a pure boolean only. {new_value}, on {self.name}.")
 
     @property
     def position(self):
@@ -325,10 +321,6 @@ class GeneralStoreOwner(NPC, ShopFunctions):
         else:
             print("She's all sold out of everything.")
 
-    # she never moves
-    def check_move(self):
-        return False
-
     def talk_to_npc(self):
 
         while True:
@@ -354,7 +346,7 @@ class GeneralStoreOwner(NPC, ShopFunctions):
     @alive.setter
     def alive(self, new_value):
         # cannot be killed or removed from game
-        raise ReadOnlyError(new_value)
+        raise ReadOnlyError(new_value, self.name)
 
     @property
     def position(self):
@@ -362,7 +354,7 @@ class GeneralStoreOwner(NPC, ShopFunctions):
 
     @position.setter
     def position(self, value):
-        raise ReadOnlyError(value)
+        raise ReadOnlyError(value, self.name)
 
 
 class Johnson(NPC):
@@ -381,7 +373,7 @@ class Johnson(NPC):
     @alive.setter
     def alive(self, new_value):
         # cannot remove Johnson from game
-        raise ReadOnlyError(new_value)
+        raise ReadOnlyError(new_value, self.name)
 
     @property
     def position(self):
@@ -393,9 +385,6 @@ class Johnson(NPC):
             self.__position = value
         else:
             raise ChangeNPCLocationError(self.name, value)
-
-    def check_move(self):
-        return False
 
     def use_item(self, item):
         print("He doesn't want it.")
@@ -430,7 +419,7 @@ class Katie(NPC):
     @alive.setter
     def alive(self, new_value):
         # cannot remove Katie from game
-        raise ReadOnlyError(new_value)
+        raise ReadOnlyError(new_value, self.name)
 
     @property
     def position(self):
@@ -479,3 +468,90 @@ class Katie(NPC):
     def look_npc(self):
         print("It's my wonderful daughter Katie. She's wearing that lion tail I found in the mall."
               "\nI adore her in every way. I can't wait to see how she grows up.")
+
+
+class CollectorFelilian(NPC):
+    def __init__(self, timer, player):
+        self.player = player
+        self.clock = timer
+        self.quest_taken = False
+        self.__position = "inn entrance"
+        self.__alive = True
+        self.name = "bored jaguar"
+        self.inventory = []
+
+    @property
+    def alive(self):
+        return self.__alive
+
+    @alive.setter
+    def alive(self, new_value):
+        if new_value is True or new_value is False:
+            self.__alive = new_value
+        else:
+            raise ValueError(f"Need a pure boolean only. {new_value}, on {self.name}.")
+
+    @property
+    def position(self):
+        return self.__position
+
+    @position.setter
+    def position(self, value):
+        raise ReadOnlyError(value, self.name)
+
+    def use_item(self, item):
+        if self.quest_taken:
+            if item == "vhs tape":
+                print("Whoa, a tape? This is perfect! But... how do I play it?")
+                self.inventory.append(item)
+                self.player.score += 1
+                self.player.inventory.remove(item)
+                # check if should leave game
+                self.leave_game()
+            elif item == "movie poster":
+                print("Wow, look at that! A real Felilian, he even looks a bit like you."
+                      "\nThis will shake things up a bit for sure!")
+                self.inventory.append(item)
+                self.player.score += 1
+                self.player.inventory.remove(item)
+                # check if should leave game
+                self.leave_game()
+            else:
+                print("No that's not what I am looking for. I need things that prove we were always here."
+                      "\nDisprove those lunnies that say we showed up out of nowhere.")
+        else:
+            print("Hey, are you a scavenger? If so let's talk.")
+
+    def talk_to_npc(self):
+        if not self.quest_taken:
+            print("Hey, you. would you mind helping me with something?")
+            choice = input("(y/n) ").lower()
+            clear()
+            if choice == "y":
+                print("Oh wonderful!")
+                print("I need to try and collect a few oddities from human history."
+                      "\n")
+                self.quest_taken = True
+            else:
+                print("Oh, well if you change your mind, I'll be right here.")
+        elif "movie poster" in self.inventory:
+            print("That movie poster is great! Can you keep an eye out for more?")
+        elif "vhs tape" in self.inventory:
+            print("I just need a few more things. The tape is exciting and I hope it plays still.")
+        else:
+            print("You still looking for those items? Try the ruins outside of town.")
+
+    def look_npc(self):
+        if not self.quest_taken:
+            print("It's a young looking jaguar. Seems to be focused on reading a book.")
+        else:
+            print("He's that guy I'm looking for relics for.")
+
+    def leave_game(self):
+        if len(self.inventory) == 2:
+            print("That's all I needed! Thanks my friendly lion.")
+            print("The jaguar quickly runs off with the items you collected but not before"
+                  "\npaying you handsomely for your efforts."
+                  "\nI wonder if I'll ever see him again, odd fellow.")
+            self.player.change_player_wallet(50)
+            self.alive = False

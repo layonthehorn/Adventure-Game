@@ -1,6 +1,7 @@
 import os
 import random
 import platform
+import time
 
 
 # allows me to clear the screen when playing
@@ -10,6 +11,22 @@ def clear():
         os.system("clear")
     elif operating == 'Windows':
         os.system('cls')
+
+
+# a fun little thing for sleeping. does nothing useful.
+def simulation_faker():
+    percent = 0
+    progress = ""
+    time.sleep(2)
+    clear()
+    while len(progress) < 11:
+        print(f"Simulating world: [{progress:<10}] {percent}%")
+        progress += "-"
+        percent += 10
+        time.sleep(.5)
+        clear()
+    print("Finished Simulations")
+    time.sleep(1)
 
 
 # function class for inheritance
@@ -149,7 +166,8 @@ class TownCenter(FunctionClass):
                         "general store": self.go_gen_store,
                         "gate house": self.go_gate_house,
                         "bath house": self.go_bath_house,
-                        "ruined street": self.go_ruined_street}
+                        "ruined street": self.go_ruined_street,
+                        "town inn": self.go_inn_entrance}
         self.oper_dict = {}
         self.use_dict = {}
 
@@ -177,6 +195,9 @@ class TownCenter(FunctionClass):
 
     def go_ruined_street(self):
         self.player.location = "ruined street"
+
+    def go_inn_entrance(self):
+        self.player.location = "inn entrance"
 
 
 class TownBar(FunctionClass):
@@ -870,3 +891,68 @@ class Freezer(FunctionClass):
 
     def go_work_room(self):
         self.player.location = "work room"
+
+
+# towns inn locations
+class InnEntrance(FunctionClass):
+    def __init__(self, player_object):
+        self.inventory = []
+        self.player = player_object
+        self.bool_one, self.bool_two, self.bool_three = (False, False, False)
+        self.look_dict = {"room": self.print_description_room}
+        self.go_dict = {"town center": self.go_town_center,
+                        "inn room": self.go_inn_room}
+        self.oper_dict = {}
+        self.use_dict = {}
+
+    def print_description_room(self):
+        print("The inns entrance.")
+        print("__________________")
+        self.print_look()
+        self.print_locations()
+        self.print_items()
+
+    def go_town_center(self):
+        self.player.location = "town center"
+
+    def go_inn_room(self):
+        self.player.location = "inn room"
+
+
+class InnRoom(FunctionClass):
+    def __init__(self, player_object):
+        self.inventory = []
+        self.player = player_object
+
+        # ghost quest stuff
+        self.ghost_found = False
+        self.ghost_solved = True
+
+        self.bool_one, self.bool_two, self.bool_three = (False, False, False)
+        self.look_dict = {"room": self.print_description_room,
+                          "bed": self.print_description_bed}
+        self.go_dict = {"inn lobby": self.go_inn_entrance}
+        self.oper_dict = {"bed": self.operate_inn_bed}
+        self.use_dict = {}
+
+    def print_description_room(self):
+        print("The inn's bed room you rented.")
+        print("__________________")
+        self.print_look()
+        self.print_locations()
+        self.print_items()
+
+    def print_description_bed(self):
+        print("A lion like me does need lots of naps.")
+        if self.ghost_found and not self.ghost_solved:
+            print("I still need to figure out what that spirit needed.")
+        else:
+            print("I hope I don't run into anything else ghostly.")
+
+    def operate_inn_bed(self):
+        print("It's time for a good sleep.")
+        simulation_faker()
+        self.player.sleep = True
+
+    def go_inn_entrance(self):
+        self.player.location = "inn entrance"
