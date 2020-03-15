@@ -53,7 +53,7 @@ class PlayerClass:
         self.__section = "town"
         self.changed_location = True
         self.__score = 0
-        self.player_wallet = 0
+        self.player_wallet = 10
         self.places = []
         self.map_dictionary = {}
 
@@ -439,6 +439,9 @@ class RoomSystem:
     It also will track NPC movements and cross room changes."""
 
     def __init__(self, player):
+        # room update trackers
+        self.room_rented = False
+
         self.player = player
         self.clock = TimeKeeper()
         # back rooms
@@ -485,7 +488,8 @@ class RoomSystem:
         self.gen_shop_keeper = npc.GeneralStoreOwner(self.clock, player)
         self.katie = npc.Katie(self.clock, player)
         self.johnson = npc.Johnson(self.clock, player)
-        self.collecter = npc.CollectorFelilian(self.clock, self.player)
+        self.collector = npc.CollectorFelilian(self.clock, self.player)
+        self.inn_keeper = npc.InnKeeper(self.clock, self.player)
 
         # list NPCs to check if should be moved
         self.npc_roster = {
@@ -500,7 +504,9 @@ class RoomSystem:
             # Johnson NPC
             self.johnson.name: self.johnson,
             # collector NPC
-            self.collecter.name: self.collecter
+            self.collector.name: self.collector,
+            # the inn keeper
+            self.inn_keeper.name: self.inn_keeper
             }
 
         # lists possible rooms to move to
@@ -561,6 +567,12 @@ class RoomSystem:
                 print("You wake up feeling rested.")
                 print(self.clock)
                 self.player.sleep = False
+
+        if self.inn_keeper.room_rented and not self.room_rented:
+            self.katie.home_room = "inn room"
+            self.johnson.home_room = "inn room"
+            self.inn_entrance.room_rented = True
+            self.room_rented = True
 
     # starts the NPCs where they should be
     def set_up_npc(self):

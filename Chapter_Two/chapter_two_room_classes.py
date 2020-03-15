@@ -898,6 +898,7 @@ class InnEntrance(FunctionClass):
     def __init__(self, player_object):
         self.inventory = []
         self.player = player_object
+        self.room_rented = False
         self.bool_one, self.bool_two, self.bool_three = (False, False, False)
         self.look_dict = {"room": self.print_description_room}
         self.go_dict = {"town center": self.go_town_center,
@@ -916,7 +917,10 @@ class InnEntrance(FunctionClass):
         self.player.location = "town center"
 
     def go_inn_room(self):
-        self.player.location = "inn room"
+        if not self.room_rented:
+            print("I should rent the room first.")
+        else:
+            self.player.location = "inn room"
 
 
 class InnRoom(FunctionClass):

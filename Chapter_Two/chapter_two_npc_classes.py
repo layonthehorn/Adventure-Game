@@ -361,6 +361,7 @@ class Johnson(NPC):
     def __init__(self, timer, player):
         self.player = player
         self.clock = timer
+        self.__home_room = "town center"
         self.__position = "town center"
         self.__alive = True
         self.name = "johnson"
@@ -376,15 +377,33 @@ class Johnson(NPC):
         raise ReadOnlyError(new_value, self.name)
 
     @property
+    def home_room(self):
+        return self.__home_room
+
+    @home_room.setter
+    def home_room(self, new_value):
+        if new_value not in ["town center", "inn room"]:
+            raise ValueError(f"{new_value} not accepted as a home for Johnson.")
+        else:
+            self.__home_room = new_value
+
+    @property
     def position(self):
         return self.__position
 
     @position.setter
     def position(self, value):
-        if value in ["town center"]:
+        if value in ["town center", "inn room"]:
             self.__position = value
         else:
             raise ChangeNPCLocationError(self.name, value)
+
+    def check_move(self):
+        if self.position != self.home_room:
+            self.position = self.home_room
+            return True
+        else:
+            return False
 
     def use_item(self, item):
         print("He doesn't want it.")
@@ -406,11 +425,22 @@ class Katie(NPC):
         self.player = player
         self.clock = timer
         self.follow = False
-        self.move_back = False
+        self.__home_room = "town center"
         self.__position = "town center"
         self.__alive = True
         self.name = "katie"
         self.inventory = []
+
+    @property
+    def home_room(self):
+        return self.__home_room
+
+    @home_room.setter
+    def home_room(self, new_value):
+        if new_value not in ["town center", "inn room"]:
+            raise ValueError(f"{new_value} not accepted as a home for Katie.")
+        else:
+            self.__home_room = new_value
 
     @property
     def alive(self):
@@ -437,9 +467,10 @@ class Katie(NPC):
             if self.player.location != self.position:
                 self.position = self.player.location
                 return True
-        elif self.move_back:
-            self.position = "town center"
-            self.move_back = False
+            else:
+                return False
+        elif self.position != self.home_room:
+            self.position = self.home_room
             return True
         else:
             return False
@@ -461,7 +492,6 @@ class Katie(NPC):
                     print("OK! I'm right behind you.")
                 else:
                     print("Ok, I'll head back to the town center!")
-                    self.move_back = True
             elif choice == "hug":
                 print("You share a large hug and feel much better.")
 
@@ -555,3 +585,56 @@ class CollectorFelilian(NPC):
                   "\nI wonder if I'll ever see him again, odd fellow.")
             self.player.change_player_wallet(50)
             self.alive = False
+
+
+class InnKeeper(NPC):
+    def __init__(self, timer, player):
+        self.player = player
+        self.clock = timer
+        self.room_rented = False
+        self.__position = "inn entrance"
+        self.__alive = True
+        self.name = "inn keeper"
+        self.inventory = []
+
+    @property
+    def alive(self):
+        return self.__alive
+
+    @alive.setter
+    def alive(self, new_value):
+        raise ReadOnlyError(new_value, self.name)
+
+    @property
+    def position(self):
+        return self.__position
+
+    @position.setter
+    def position(self, value):
+        raise ReadOnlyError(value, self.name)
+
+    def use_item(self, item):
+        print("He won't want it.")
+
+    def talk_to_npc(self):
+        if not self.room_rented:
+            print("Would you like to rent a room? It's only 5 coins for your whole stay.")
+            choice = input("y/n ").lower()
+            if choice == "y":
+                if self.player.player_wallet >= 5:
+                    print("Ok, the room's all yours. Please don't get fur on everything?")
+                    self.player.change_player_wallet(-5)
+                    self.room_rented = True
+                else:
+                    print(f"Sorry, you'll need more money. about {5 - self.player.player_wallet} more in fact.")
+            else:
+                print("Well if you change your mind, it's still open.")
+        else:
+            print("How's you and your group doing?")
+
+    def look_npc(self):
+        print("An older human inn keeper.", end=" ")
+        if self.room_rented:
+            print("He rented me a room to stay in.")
+        else:
+            print("I should ask about renting a room for my stay.")

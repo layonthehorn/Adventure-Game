@@ -10,7 +10,7 @@ command to clear the screen."""
     under_line = '\033[4m'
     bold = '\033[1m'
     end = '\033[0m'
-    commands = 'Verbs: look, inv(entory), time, get, oper(ate), com(bine), drop, score, use, go, save, end, help, stat'
+    commands = 'Verbs: look, inv(entory), time, wallet, get, oper(ate), com(bine), drop, score, use, go, save, end, help, stat'
 
     def __init__(self, save_dir, clear_func, testing=False):
 
@@ -63,7 +63,8 @@ command to clear the screen."""
                                         "end": 0,
                                         "unknown": 0,
                                         "stat": 0,
-                                        "time": 0}
+                                        "time": 0,
+                                        "wallet": 0}
                 self.print_intro()
                 choosing = False
             elif player_option == "q":
@@ -187,6 +188,11 @@ command to clear the screen."""
         elif general_list[0] == "stat":
             self.stat_dictionary["stat"] += 1
             self.print_stats()
+
+        # allows you to check how much cash you have
+        elif general_list[0] == "wallet":
+            self.stat_dictionary["wallet"] += 1
+            print(f"I have {self.player.player_wallet} coins.")
 
         # gives a hint
         elif general_list[0] == "hint":
@@ -387,9 +393,9 @@ hoping to raise $5000 to get them through to their next destination.
 {"Used 'look'":<16} {self.stat_dictionary["look"]:<4} times. {"":>6} {"Used 'get'":<16} {self.stat_dictionary["get"]:<4} times.
 {"Used 'inventory'":<16} {self.stat_dictionary["inventory"]:<4} times. {"":>6} {"Used 'help'":<16} {self.stat_dictionary["help"]:<4} times.
 {"Used 'end'":<16} {self.stat_dictionary[""]:<4} times. {"":>6} {"Used 'operate'":<16} {self.stat_dictionary["operate"]:<4} times.
+{"Checked time":<16} {self.stat_dictionary["time"]:<4} times. {"":>6} {"Wallet":<16} {self.stat_dictionary["wallet"]:<4} times.
 {"Used 'combine'":<16} {self.stat_dictionary["combine"]:<4} times. {"":>6} {"Used 'drop'":<16} {self.stat_dictionary["drop"]:<4} times.
 {"Used 'score'":<16} {self.stat_dictionary["score"]:<4} times. {"":>6} {"Used 'use'":<16} {self.stat_dictionary["use"]:<4} times.
 {"Used 'go'":<16} {self.stat_dictionary["go"]:<4} times. {"":>6} {"Used 'save'":<16} {self.stat_dictionary["save"]:<4} times.
 {"Used 'hint'":<16} {self.stat_dictionary["hint"]:<4} times. {"":>6} {"Used 'stat'":<16} {self.stat_dictionary["stat"]:<4} times.
-{"Unknown command":<16} {self.stat_dictionary["unknown"]:<4} times. {"":>6} {"Entered nothing":<16} {self.stat_dictionary[""]:<4} times.
-{"Checked time":<16} {self.stat_dictionary["time"]:<4} times.""")
+{"Unknown command":<16} {self.stat_dictionary["unknown"]:<4} times. {"":>6} {"Entered nothing":<16} {self.stat_dictionary[""]:<4} times.""")
