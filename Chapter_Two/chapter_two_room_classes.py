@@ -2,6 +2,7 @@ import os
 import random
 import platform
 import time
+from Chapter_Two.exception_class import LocationError
 
 
 # allows me to clear the screen when playing
@@ -27,6 +28,78 @@ def simulation_faker():
         clear()
     print("Finished Simulations")
     time.sleep(1)
+
+
+# a class for picking random events
+class RandomEvent:
+    """A class to return random events."""
+    def __init__(self, local_dict):
+        self.local_dict = local_dict
+        self.random_event_dict = {
+            # town center rooms and actions
+            "town center": ["A wagon races through the town.",
+                            "A young man trips and falls while distracted by a passing lady."],
+            "bar": ["A glass is dropped and broken by an drunk patron.",
+                    "the bar tender wipes down the counter after a patron leaves."],
+            "bath house": [],
+            "general store": [],
+            "gate house": [],
+
+            # ruins rooms and actions
+            "ruined street": [],
+            "ruined office": [],
+            "ruined house": [],
+            "ruined garage": [],
+
+            # garage upstairs rooms and actions
+            "break room": [],
+            "managers office": [],
+            "balcony": [],
+
+            # back rooms and actions
+            "weapons storage": [],
+            "work room": [],
+            "freezer": [],
+            "general storage": [],
+
+            # tower rooms and actions
+            "tower entrance": [],
+            "tower peak": [],
+
+            # mansion rooms and actions
+            "foyer": [],
+            "sun room": [],
+            "hallway": [],
+            "kitchen": [],
+            "living room": [],
+
+            # garden rooms and actions
+            # "garden": self.rooms,
+
+            # inn rooms and actions
+            "inn entrance": [],
+            "inn room": [],
+
+            # cellar rooms and actions
+            "cellar entrance": [],
+            "wine casks": [],
+            "lab": []
+        }
+
+    def grab_event(self, player_location):
+        # if the random number is between my range then it runs a random event
+        rand_num = random.randint(0, 100)
+        if 0 <= rand_num <= 15:
+            location_library = self.random_event_dict.get(player_location)
+            if location_library:
+                return random.choice(location_library)
+            # it should never return a None
+            elif location_library is None:
+                raise LocationError(player_location)
+            else:
+                return False
+        else:
+            return False
 
 
 # function class for inheritance

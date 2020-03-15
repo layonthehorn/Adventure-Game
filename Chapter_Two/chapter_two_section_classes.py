@@ -2,7 +2,7 @@ import time
 import pprint
 import Chapter_Two.chapter_two_room_classes as rooms
 import Chapter_Two.chapter_two_npc_classes as npc
-from Chapter_Two.exception_class import ChangeLocationError, NPCLocationError, ChangeSectionError, RedundantMoveError
+from Chapter_Two.exception_class import LocationError, NPCLocationError, ChangeSectionError, RedundantMoveError
 
 
 # Player Class
@@ -124,7 +124,7 @@ class PlayerClass:
                 print(f"Could not fine {location}... Possible missing spelling in code?")
                 print("Could not find matching location. Canceling movement.")
             else:
-                raise ChangeLocationError(location)
+                raise LocationError(location)
 
         # should never need to move to own location
         elif location == self.location and not self.debug:
@@ -448,6 +448,7 @@ class RoomSystem:
     def __init__(self, player):
         # room update trackers
         self.room_rented = False
+        self.random_counter = 0
 
         self.player = player
         self.clock = TimeKeeper()
@@ -565,6 +566,7 @@ class RoomSystem:
             "wine casks": self.wine_casks,
             "lab": self.lab
         }
+        self.random_events = rooms.RandomEvent(self.switcher_dictionary)
 
     def time_wait_events(self):
         # will allow time to pass when you sleep or preform some actions
@@ -574,6 +576,17 @@ class RoomSystem:
                 print("You wake up feeling rested.")
                 print(self.clock)
                 self.player.sleep = False
+
+        # To Do: random events
+        # if one is triggered will not happen again until 25 turns have passed
+        if not self.player.sleep:
+            if self.random_counter <= 0:
+                random_event = self.random_events.grab_event(self.player.location)
+                if random_event:
+                    print(random_event)
+                self.random_counter = 25
+            else:
+                self.random_counter -= 1
 
         # updates the game rooms if you rent a room
         if self.inn_keeper.room_rented and not self.room_rented:

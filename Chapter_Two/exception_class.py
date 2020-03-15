@@ -11,7 +11,7 @@ class ReadOnlyError(Error):
         super().__init__(f"Failed to set read only variable to {item}, on {npc}")
 
 
-class ChangeLocationError(Error):
+class LocationError(Error):
     """Throws this error if attempting to move to unknown place."""
     def __init__(self, area):
         super().__init__(f"Failed to find matching area for {area}.")
