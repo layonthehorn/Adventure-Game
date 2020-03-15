@@ -1,4 +1,5 @@
 import time
+import pprint
 import Chapter_Two.chapter_two_room_classes as rooms
 import Chapter_Two.chapter_two_npc_classes as npc
 from Chapter_Two.exception_class import ChangeLocationError, NPCLocationError, ChangeSectionError, RedundantMoveError
@@ -67,11 +68,12 @@ class PlayerClass:
 
     # enables changing player room for testing
     def debug_player(self):
-        print("Add item or change location?")
+        print("\n")
+        print("item, wallet, location.")
         pick = input("").lower()
 
         # debug for changing rooms
-        if pick in "location":
+        if pick == "location":
             print("\nEnter location?\n")
             for number, place in enumerate(self.accepted_locations):
                 print(f"{self.bold+place+self.end}", end=", ")
@@ -82,7 +84,7 @@ class PlayerClass:
             self.location = choice
 
         # debug for adding items to inventory
-        elif pick in "item":
+        elif pick == "item":
             print("\nEnter item?\n")
             for number, place in enumerate(self.item_dictionary):
                 print(f"{self.bold+place+self.end}", end=", ")
@@ -94,8 +96,13 @@ class PlayerClass:
                 self.inventory.append(choice)
             else:
                 print("No matching item to add.")
-        else:
-            print("Not an acceptable action.")
+        elif pick == "wallet":
+            number = input("Amount? ")
+            if number.isdigit():
+                number = int(number)
+                self.change_player_wallet(number)
+            else:
+                print("Must be an integer only.")
 
     @property
     def section(self):
@@ -650,6 +657,6 @@ class RoomSystem:
         print("")
         choice = input("").lower()
         if choice in self.npc_roster:
-            print(self.npc_roster.get(choice))
+            pprint.pprint(vars(self.npc_roster.get(choice)))
         else:
             print("No match found.")

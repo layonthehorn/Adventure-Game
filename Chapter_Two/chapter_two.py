@@ -2,6 +2,7 @@ import pickle
 import re
 from os import path
 import Chapter_Two.chapter_two_section_classes as sections
+import pprint
 
 
 class ChapterTwo:
@@ -215,11 +216,11 @@ command to clear the screen."""
                 pick = input("Player, room, or npc? ").lower()
                 if pick == "player":
                     self.clear()
-                    print(self.player)
+                    pprint.pprint(vars(self.player))
                     self.player.debug_player()
                 elif pick == "room":
                     self.clear()
-                    print(loc_name)
+                    pprint.pprint(vars(loc_name))
                 elif pick == "npc":
                     self.clear()
                     self.rooms.debug_npc()
@@ -393,7 +394,7 @@ hoping to raise $5000 to get them through to their next destination.
 {"Used 'look'":<16} {self.stat_dictionary["look"]:<4} times. {"":>6} {"Used 'get'":<16} {self.stat_dictionary["get"]:<4} times.
 {"Used 'inventory'":<16} {self.stat_dictionary["inventory"]:<4} times. {"":>6} {"Used 'help'":<16} {self.stat_dictionary["help"]:<4} times.
 {"Used 'end'":<16} {self.stat_dictionary[""]:<4} times. {"":>6} {"Used 'operate'":<16} {self.stat_dictionary["operate"]:<4} times.
-{"Checked time":<16} {self.stat_dictionary["time"]:<4} times. {"":>6} {"Wallet":<16} {self.stat_dictionary["wallet"]:<4} times.
+{"Used 'time'":<16} {self.stat_dictionary["time"]:<4} times. {"":>6} {"Used 'wallet'":<16} {self.stat_dictionary["wallet"]:<4} times.
 {"Used 'combine'":<16} {self.stat_dictionary["combine"]:<4} times. {"":>6} {"Used 'drop'":<16} {self.stat_dictionary["drop"]:<4} times.
 {"Used 'score'":<16} {self.stat_dictionary["score"]:<4} times. {"":>6} {"Used 'use'":<16} {self.stat_dictionary["use"]:<4} times.
 {"Used 'go'":<16} {self.stat_dictionary["go"]:<4} times. {"":>6} {"Used 'save'":<16} {self.stat_dictionary["save"]:<4} times.
