@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from Chapter_Two.exception_class import ReadOnlyError
+from Chapter_Two.exception_class import ReadOnlyError, ChangeNPCLocationError
 import os
 import platform
 
@@ -121,7 +121,21 @@ class ShopFunctions:
 
 
 class NPC(ABC):
-    """A base class to create NPCs from."""
+    """A base class to create NPCs from.
+
+    init should look like this.
+
+    def __init__(self, timer, player):
+        self.player = player
+        self.clock = timer
+        self.__position = "ruined street"
+        self.__alive = True
+        self.name = "scavenger"
+        self.inventory = []
+
+    def __str__(self):
+        return f"My name is {self.name}, I'm in {self.position}, and it is {self.clock.display_human_time()}, {self.clock.am_pm}"
+        """
 
     @abstractmethod
     def talk_to_npc(self):
@@ -197,7 +211,7 @@ class ScavengerNPC(NPC):
         if value in ("town center", "ruined street", "general store"):
             self.__position = value
         else:
-            print("Error, Bad location to move.")
+            raise ChangeNPCLocationError(self.name, value)
 
     def check_move(self):
         # 9:00 AM
@@ -267,7 +281,7 @@ class OrganPlayer(NPC):
         if value in ("tower peak", "tower entrance"):
             self.__position = value
         else:
-            print("Error, Bad location to move.")
+            raise ChangeNPCLocationError(self.name, value)
 
     def check_move(self):
         if "music sheet" in self.inventory and self.position == "tower peak":
@@ -359,3 +373,99 @@ class GeneralStoreOwner(NPC, ShopFunctions):
     @position.setter
     def position(self, value):
         raise ReadOnlyError(value)
+
+
+class Johnson(NPC):
+    def __init__(self, timer, player):
+        self.player = player
+        self.clock = timer
+        self.__position = "town center"
+        self.__alive = True
+        self.name = "johnson"
+        self.inventory = []
+
+    def __str__(self):
+        return f"My name is {self.name}, I'm in {self.position}, and it is {self.clock.display_human_time()}, {self.clock.am_pm}"
+
+    @property
+    def alive(self):
+        return self.__alive
+
+    @alive.setter
+    def alive(self, new_value):
+        # cannot remove Johnson from game
+        raise ReadOnlyError(new_value)
+
+    @property
+    def position(self):
+        return self.__position
+
+    @position.setter
+    def position(self, value):
+        if value in ["town center"]:
+            self.__position = value
+        else:
+            raise ChangeNPCLocationError(self.name, value)
+
+    def check_move(self):
+        return False
+
+    def use_item(self, item):
+        print("He doesn't want it.")
+
+    def talk_to_npc(self):
+        if self.player.player_wallet < 15000:
+            print("Hello Vern. You should keep collecting money. Don't lose it this time OK?")
+        else:
+            # winning game condition
+            print("Hey, you actually got the amount we need to get out of here, nice.")
+            self.player.location = "exit"
+
+    def look_npc(self):
+        print("It's Johnson. I hope he's not too sore about the money thing...")
+
+
+class Katie(NPC):
+    def __init__(self, timer, player):
+        self.player = player
+        self.clock = timer
+        self.__position = "town center"
+        self.__alive = True
+        self.name = "katie"
+        self.inventory = []
+
+    def __str__(self):
+        return f"My name is {self.name}, I'm in {self.position}, and it is {self.clock.display_human_time()}, {self.clock.am_pm}"
+
+    @property
+    def alive(self):
+        return self.__alive
+
+    @alive.setter
+    def alive(self, new_value):
+        # cannot remove Katie from game
+        raise ReadOnlyError(new_value)
+
+    @property
+    def position(self):
+        return self.__position
+
+    @position.setter
+    def position(self, value):
+        if value in ["town center"]:
+            self.__position = value
+        else:
+            raise ChangeNPCLocationError(self.name, value)
+
+    def check_move(self):
+        return False
+
+    def use_item(self, item):
+        print("She won't want it.")
+
+    def talk_to_npc(self):
+        print("Hi, Dad! I love you!\nShe gives you a large hug.")
+
+    def look_npc(self):
+        print("It's my wonderful daughter Katie. She's wearing that lion tail I found in the mall."
+              "\nI adore her in every way. I can't wait to see how she grows up.")

@@ -439,6 +439,8 @@ class RoomSystem:
         self.scavenger = npc.ScavengerNPC(self.clock, player)
         self.organ_player = npc.OrganPlayer(self.clock, player)
         self.gen_shop_keeper = npc.GeneralStoreOwner(self.clock, player)
+        self.katie = npc.Katie(self.clock, player)
+        self.johnson = npc.Johnson(self.clock, player)
 
         # list NPCs to check if should be moved
         self.npc_roster = {
@@ -447,7 +449,11 @@ class RoomSystem:
             # organ player NPC
             self.organ_player.name: self.organ_player,
             # general store owner NPC
-            self.gen_shop_keeper.name: self.gen_shop_keeper
+            self.gen_shop_keeper.name: self.gen_shop_keeper,
+            # Katie NPC
+            self.katie.name: self.katie,
+            # Johnson NPC
+            self.johnson.name: self.johnson
             }
 
         # lists possible rooms to move to
