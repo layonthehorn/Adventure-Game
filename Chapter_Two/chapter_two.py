@@ -353,7 +353,14 @@ command to clear the screen."""
 
     def print_intro(self):
         self.clear()
-        print("""""")
+        print("""
+After a week of travelling from the abandoned mall, Vern, Johnson and Katie arrived at the city of Harrisburg. 
+They were relieved to have finally arrived, as they were in need of supplies, a clean up and a feed. 
+However, this relief was short lived, when Vern realised that his money pouch had got a hole along the way, 
+and had managed to lose all the money they had. After a short argument, the group agreed to try 
+and make back the money they lost by seeing what they could do for the residents of the city, 
+hoping to raise $5000 to get them through to their next destination.
+""")
 
     def print_outro(self):
 

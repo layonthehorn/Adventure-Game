@@ -24,5 +24,6 @@ class NPCLocationError(Error):
 
 
 class ChangeNPCLocationError(Error):
+    """An error to tell me that I messed up naming a room correctly when moving."""
     def __init__(self, name, area):
         super().__init__(f"Failed to find matching area for {area} when moving {name}.")
