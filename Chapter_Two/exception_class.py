@@ -17,13 +17,19 @@ class ChangeLocationError(Error):
         super().__init__(f"Failed to find matching area for {area}.")
 
 
+class ChangeSectionError(Error):
+    """Throws this error if attempting to move to unknown section of the map."""
+    def __init__(self, area):
+        super().__init__(f"Failed to find matching section for {area}. Missing map section?")
+
+
 class NPCLocationError(Error):
-    """Throws this error if attempting to place NPC in unknown place."""
+    """Throws this error if attempting to start a NPC in an unknown place."""
     def __init__(self, name, area):
         super().__init__(f"Failed to find matching area for {area} when setting up {name}.")
 
 
 class ChangeNPCLocationError(Error):
-    """An error to tell me that I messed up naming a room correctly when moving."""
+    """An error to tell me that I messed up naming a room correctly when moving a NPC."""
     def __init__(self, name, area):
         super().__init__(f"Failed to find matching area for {area} when moving {name}.")

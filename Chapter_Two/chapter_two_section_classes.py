@@ -1,7 +1,7 @@
 import time
 import Chapter_Two.chapter_two_room_classes as rooms
 import Chapter_Two.chapter_two_npc_classes as npc
-from Chapter_Two.exception_class import ChangeLocationError, NPCLocationError
+from Chapter_Two.exception_class import ChangeLocationError, NPCLocationError, ChangeSectionError
 
 
 # Player Class
@@ -107,7 +107,7 @@ class PlayerClass:
     def location(self, location):
         # makes sure that you do not enter a bad location.
         if location not in self.accepted_locations:
-            if not self.debug:
+            if self.debug:
                 print(f"Could not fine {location}... Possible missing spelling in code?")
                 print("Could not find matching location. Canceling movement.")
             else:
@@ -126,7 +126,7 @@ class PlayerClass:
                         self.__location = location
                         break
                 else:
-                    print(f"Error, no good section found for {location}.")
+                    raise ChangeSectionError(location)
 
             else:
                 print(f"You have gone to the {location}.")
