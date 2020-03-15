@@ -429,6 +429,8 @@ class Katie(NPC):
     def __init__(self, timer, player):
         self.player = player
         self.clock = timer
+        self.follow = False
+        self.move_back = False
         self.__position = "town center"
         self.__alive = True
         self.name = "katie"
@@ -452,19 +454,43 @@ class Katie(NPC):
 
     @position.setter
     def position(self, value):
-        if value in ["town center"]:
+        if value in self.player.accepted_locations:
             self.__position = value
         else:
             raise ChangeNPCLocationError(self.name, value)
 
     def check_move(self):
-        return False
+        if self.follow:
+            if self.player.location != self.position:
+                self.position = self.player.location
+                return True
+        elif self.move_back:
+            self.position = "town center"
+            self.move_back = False
+            return True
+        else:
+            return False
 
     def use_item(self, item):
         print("She won't want it.")
 
     def talk_to_npc(self):
         print("Hi, Dad! I love you!\nShe gives you a large hug.")
+        print("")
+        while True:
+            choice = input("follow, quit, hug.\nDid you need something? ").lower()
+            clear()
+            if choice == "quit" or choice == "q":
+                break
+            elif choice == "follow":
+                self.follow = not self.follow
+                if self.follow:
+                    print("OK! I'm right behind you.")
+                else:
+                    print("Ok, I'll head back to the town center!")
+                    self.move_back = True
+            elif choice == "hug":
+                print("You share a large hug and feel much better.")
 
     def look_npc(self):
         print("It's my wonderful daughter Katie. She's wearing that lion tail I found in the mall."
