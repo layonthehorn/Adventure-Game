@@ -10,6 +10,7 @@ command to clear the screen."""
     under_line = '\033[4m'
     bold = '\033[1m'
     end = '\033[0m'
+    commands = 'Verbs: look, inv(entory), time, get, oper(ate), com(bine), drop, score, use, go, save, end, help, stat'
 
     def __init__(self, save_dir, clear_func, testing=False):
 
@@ -124,8 +125,8 @@ command to clear the screen."""
                     loc_name.print_description_room()
                     self.player.changed_location = False
 
-                print(
-                    f"{self.bold + 'Verbs look, inv(entory), time, get, oper(ate), com(bine), drop, score, use, go, save, end, help, stat' + self.end}")
+                print("_" * len(self.commands))
+                print(f"{self.bold + self.commands + self.end}")
                 player_choice = input("").lower()
                 self.clear()
                 # general actions shared by rooms

@@ -126,7 +126,8 @@ class FunctionClass:
         for location in self.go_dict:
             go_list += f"'{self.bold+ location+ self.end}', "
         print(go_list)
-        print("_" * len(go_list))
+        if len(self.inventory) > 0:
+            print("_" * len(go_list))
 
     @staticmethod
     def print_random_phrase(selection_list, item):
