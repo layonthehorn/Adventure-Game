@@ -153,9 +153,8 @@ class NPC(ABC):
     def use_item(self, item):
         pass
 
-    @abstractmethod
     def __str__(self):
-        pass
+        return f"My name is {self.name}, I'm in {self.position}, and it is {self.clock.display_time_human()}."
 
     @property
     @abstractmethod
@@ -187,9 +186,6 @@ class ScavengerNPC(NPC):
         self.__alive = True
         self.name = "scavenger"
         self.inventory = []
-
-    def __str__(self):
-        return f"My name is {self.name}, I'm in {self.position}, and it is {self.clock.display_human_time()}, {self.clock.am_pm}"
 
     @property
     def alive(self):
@@ -258,9 +254,6 @@ class OrganPlayer(NPC):
         self.name = "organ player"
         self.inventory = []
 
-    def __str__(self):
-        return f"My name is {self.name}, I'm in {self.position}, and it is {self.clock.display_human_time()}, {self.clock.am_pm}"
-
     @property
     def alive(self):
         return self.__alive
@@ -325,9 +318,6 @@ class GeneralStoreOwner(NPC, ShopFunctions):
         self.name = "shop keeper"
         self.shop_inventory = []
 
-    def __str__(self):
-        return f"My name is {self.name}, I'm in {self.position}, and it is {self.clock.display_human_time()}, {self.clock.am_pm}"
-
     def look_npc(self):
         print("She's a friendly lioness shop keeper. Very attractive if I say so myself.", end=" ")
         if self.shop_inventory:
@@ -384,9 +374,6 @@ class Johnson(NPC):
         self.name = "johnson"
         self.inventory = []
 
-    def __str__(self):
-        return f"My name is {self.name}, I'm in {self.position}, and it is {self.clock.display_human_time()}, {self.clock.am_pm}"
-
     @property
     def alive(self):
         return self.__alive
@@ -435,9 +422,6 @@ class Katie(NPC):
         self.__alive = True
         self.name = "katie"
         self.inventory = []
-
-    def __str__(self):
-        return f"My name is {self.name}, I'm in {self.position}, and it is {self.clock.display_human_time()}, {self.clock.am_pm}"
 
     @property
     def alive(self):

@@ -198,7 +198,7 @@ command to clear the screen."""
         # disabled by default
         elif general_list[0] == "debug":
             if self.testing:
-                pick = input("Player or room? ").lower()
+                pick = input("Player, room, or npc? ").lower()
                 if pick == "player":
                     self.clear()
                     print(self.player)
@@ -206,6 +206,9 @@ command to clear the screen."""
                 elif pick == "room":
                     self.clear()
                     print(loc_name)
+                elif pick == "npc":
+                    self.clear()
+                    self.rooms.debug_npc()
                 else:
                     self.clear()
                     print("Cannot debug print that.")

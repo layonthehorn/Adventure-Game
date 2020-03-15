@@ -564,3 +564,17 @@ class RoomSystem:
 
         # counts clock up by a quarter hour
         self.clock.timer += 25
+
+    # allows debugging of NPCs
+    def debug_npc(self):
+        for number, person in enumerate(self.npc_roster):
+            print(person, end=", ")
+            if (number + 1) % 3 == 0:
+                print("")
+        print("")
+        choice = input("").lower()
+        if choice in self.npc_roster:
+            print(self.npc_roster.get(choice))
+        else:
+            print("No match found.")
+
