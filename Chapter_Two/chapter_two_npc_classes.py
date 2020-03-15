@@ -358,6 +358,7 @@ class GeneralStoreOwner(NPC, ShopFunctions):
 
 
 class Johnson(NPC):
+    """The NPC that gives your first mission and the one to end the game."""
     def __init__(self, timer, player):
         self.player = player
         self.clock = timer
@@ -409,6 +410,8 @@ class Johnson(NPC):
         print("He doesn't want it.")
 
     def talk_to_npc(self):
+        if self.home_room == "inn room":
+            print("Good job on the room. Much better than a child out on the streets.")
         if self.player.player_wallet < 15000:
             print("Hello Vern. You should keep collecting money. Don't lose it this time OK?")
         else:
@@ -421,6 +424,7 @@ class Johnson(NPC):
 
 
 class Katie(NPC):
+    """The main character's daughter."""
     def __init__(self, timer, player):
         self.player = player
         self.clock = timer
@@ -480,7 +484,8 @@ class Katie(NPC):
 
     def talk_to_npc(self):
         print("Hi, Dad! I love you!\nShe gives you a large hug.")
-        print("")
+        if self.home_room == "inn room":
+            print("Thank you for getting us a room to stay in dad!")
         while True:
             choice = input("follow, quit, hug.\nDid you need something? ").lower()
             clear()
@@ -501,6 +506,7 @@ class Katie(NPC):
 
 
 class CollectorFelilian(NPC):
+    """A collector of oddities that resides in the inn entrance."""
     def __init__(self, timer, player):
         self.player = player
         self.clock = timer
@@ -588,6 +594,7 @@ class CollectorFelilian(NPC):
 
 
 class InnKeeper(NPC):
+    """The inn keeper that rents the rooms out."""
     def __init__(self, timer, player):
         self.player = player
         self.clock = timer
@@ -625,6 +632,7 @@ class InnKeeper(NPC):
                     print("Ok, the room's all yours. Please don't get fur on everything?")
                     self.player.change_player_wallet(-5)
                     self.room_rented = True
+                    print("Katie and Johnson move to the inn's room you rented.")
                 else:
                     print(f"Sorry, you'll need more money. about {5 - self.player.player_wallet} more in fact.")
             else:

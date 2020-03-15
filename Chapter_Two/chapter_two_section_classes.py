@@ -559,8 +559,8 @@ class RoomSystem:
             "lab": self.lab
         }
 
-    # will allow time to pass when you sleep or preform some actions
     def time_wait_events(self):
+        # will allow time to pass when you sleep or preform some actions
         if self.player.sleep:
             if self.clock.timer == 700:
                 rooms.clear()
@@ -568,6 +568,7 @@ class RoomSystem:
                 print(self.clock)
                 self.player.sleep = False
 
+        # updates the game rooms if you rent a room
         if self.inn_keeper.room_rented and not self.room_rented:
             self.katie.home_room = "inn room"
             self.johnson.home_room = "inn room"
