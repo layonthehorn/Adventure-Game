@@ -622,13 +622,14 @@ class RoomSystem:
             time.sleep(1)
             self.player.location = "town center"
 
-        # if one is triggered will not happen again until 25 turns have passed
+        # if one is triggered can not happen again until up to 25 turns have passed
         if not self.player.sleep:
             if self.random_counter <= 0:
                 random_event = self.random_events.grab_event(self.player.location)
                 if random_event:
                     print(random_event)
-                self.random_counter = 25
+                    self.random_counter = random.randint(1, 25)
+
             else:
                 self.random_counter -= 1
 

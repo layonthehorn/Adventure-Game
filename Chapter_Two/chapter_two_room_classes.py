@@ -38,7 +38,8 @@ class RandomEvent:
         self.random_event_dict = {
             # town center random events
             "town center": ["A wagon races through the town.",
-                            "A young man trips and falls while distracted by a passing lady."],
+                            "A young man trips and falls while distracted by a passing lady.",
+                            "A dog bark sets your fur on edge."],
 
             # town bar random events
             "bar": ["A glass is dropped and broken by an drunk patron.",
@@ -54,28 +55,31 @@ class RandomEvent:
                               "The faint smell of smoked meat reminds you that you're hungry."],
 
             #
-            "gate house": [],
+            "gate house": ["A guard taps his foot waiting for you say what you want.",
+                           "You see young children playing on the mansion front lawn.",
+                           "The large mansion gates creak eerily in the wind."],
 
-            # ruins rooms and actions
+            # ruins random events
             "ruined street": [],
             "ruined office": [],
             "ruined house": [],
             "ruined garage": [],
 
-            # garage upstairs rooms and actions
+            # garage upstairs random events
             "break room": [],
             "managers office": [],
             "balcony": [],
 
-            # back rooms and actions
-            "weapons storage": [],
+            # back rooms random events
+            "weapons storage": ["The glint of sun light off chrome plated weapons momentarily blinds you."],
             "work room": [],
             "freezer": [],
             "general storage": [],
 
-            # tower rooms and actions
+            # tower rooms random events
             "tower entrance": [],
-            "tower peak": [],
+            "tower peak": ["It strikes you how lovely the surrounding mansion grounds look from up here.",
+                           "The organ's pipes seem to stretch for miles downward. Such an impressive instrument."],
 
             # mansion rooms and actions
             "foyer": [],
@@ -84,17 +88,19 @@ class RandomEvent:
             "kitchen": [],
             "living room": [],
 
-            # garden rooms and actions
-            # "garden": self.rooms,
+            # garden rooms random events
+            # "garden entrance": [],
 
-            # inn rooms and actions
+            # inn rooms random events
             "inn entrance": [],
-            "inn room": [],
+            "inn room": ["The windows shake in the wind. Though you would swear there's no wind to cause it.",
+                         "Whispers seem to echo from the closet but when you try to listen they stop."],
 
-            # cellar rooms and actions
+            # cellar rooms random events
             "cellar entrance": [],
-            "wine casks": [],
-            "lab": []
+            "wine casks": ["You notice how some of the casks seem to be newer than the rest.",
+                           "The amount of spider webs down here creep you out."],
+            "lab": ["Beakers and bottles bubble all around you."]
         }
 
     def grab_event(self, player_location):
