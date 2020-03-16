@@ -477,9 +477,13 @@ class RoomSystem:
 
     def __init__(self, player):
         # room update trackers
-        self.room_rented = False
+        self.room_booleans = {"room rented": False,
+                              "player bathed": False,
+
+                              # first entry events
+                              "gen work room": False
+                              }
         self.random_counter = 0
-        self.player_bathed = False
 
         self.player = player
         self.clock = TimeKeeper()
@@ -600,6 +604,9 @@ class RoomSystem:
         self.random_events = rooms.RandomEvent(self.switcher_dictionary)
 
     def time_wait_events(self):
+        # checks if it is your first time
+        self.first_entered_events()
+
         # will allow time to pass when you sleep or preform some actions
         if self.player.sleep:
             if self.clock.timer == 700:
@@ -615,7 +622,6 @@ class RoomSystem:
             time.sleep(1)
             self.player.location = "town center"
 
-        # To Do: random events
         # if one is triggered will not happen again until 25 turns have passed
         if not self.player.sleep:
             if self.random_counter <= 0:
@@ -627,11 +633,11 @@ class RoomSystem:
                 self.random_counter -= 1
 
         # updates the game rooms if you rent a room
-        if self.inn_keeper.room_rented and not self.room_rented:
+        if self.inn_keeper.room_rented and not self.room_booleans["room rented"]:
             self.katie.home_room = "inn room"
             self.johnson.home_room = "inn room"
             self.inn_entrance.room_rented = True
-            self.room_rented = True
+            self.room_booleans["room rented"] = True
 
     # starts the NPCs where they should be
     def set_up_npc(self):
@@ -698,6 +704,14 @@ class RoomSystem:
 
         # counts clock up by a quarter hour
         self.clock.timer += 25
+
+    def first_entered_events(self):
+        # if all are triggered it stops running all the checks
+        if not all([self.room_booleans["bath house first"]]):
+            if self.player.location == "work room" and not self.room_booleans["gen work room"]:
+                print("As you enter the room an odd looking animal grabs the tool bag and leaps out a window."
+                      "\nDamn it. Now how am I going to get that machine fixed? I need to find that creature.")
+                self.room_booleans["gen work room"] = True
 
     # allows debugging of NPCs
     def debug_npc(self):

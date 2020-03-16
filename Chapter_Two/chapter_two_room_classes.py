@@ -26,7 +26,7 @@ def simulation_faker():
         percent += 10
         time.sleep(.5)
         clear()
-    print("Finished Simulations")
+    print("Finished Simulation")
     time.sleep(1)
 
 
@@ -36,13 +36,24 @@ class RandomEvent:
     def __init__(self, local_dict):
         self.local_dict = local_dict
         self.random_event_dict = {
-            # town center rooms and actions
+            # town center random events
             "town center": ["A wagon races through the town.",
                             "A young man trips and falls while distracted by a passing lady."],
+
+            # town bar random events
             "bar": ["A glass is dropped and broken by an drunk patron.",
                     "the bar tender wipes down the counter after a patron leaves."],
-            "bath house": [],
-            "general store": [],
+
+            # bath house random events
+            "bath house": ["The pipe let out an odd groaning noise around you.",
+                           "The faint sound of water dripping echoes from the building."],
+
+            # general store random events
+            "general store": ["A young child tries to pick up some sweets, but her mother makes her put them back.",
+                              "A echo of moving material rumbles from the back rooms.",
+                              "The faint smell of smoked meat reminds you that you're hungry."],
+
+            #
             "gate house": [],
 
             # ruins rooms and actions
