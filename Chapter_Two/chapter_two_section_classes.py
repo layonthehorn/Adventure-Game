@@ -49,6 +49,8 @@ class PlayerClass:
                          , "gardens": ()
                          , "inn": ("inn entrance", "inn room")
                          }
+    use_remarks = ("I was useful after all.", "I feel used...", "I never knew I could use myself.",
+                   "At least I didn't ruffle my mane.", "I think I'm still in one piece after that.")
 
     def __init__(self, debug):
 
@@ -210,38 +212,33 @@ class PlayerClass:
                         f"{self.bold + item + self.end:<25}{self.item_dictionary.get(item, 'Error, Report me pls!'):<5}")
 
     # removes items from player
-    def use_item(self, item):
+    # can use any number of items.
+    def use_item(self, *items):
         # never removes self from inventory.
-        if item != "self":
-            print("I used the ", item)
-            self.inventory.remove(item)
-        else:
-            print("I used myself?")
+        for item in items:
+            if item != "self":
+                print(f"I used the {self.bold + item + self.end}.")
+                self.inventory.remove(item)
+            else:
+                # prints something random when you use yourself
+                print(random.choice(self.use_remarks))
 
     # combines items
-    def combine_items(self, item_1, item_2):
-        # debugging line to check the items being used.
-        # print(item_1, " ", item_2)
+    def combine_items(self, *item_list):
+        # unpacking the items to use later
+        item_1, item_2 = item_list
         if item_1 in self.inventory and item_2 in self.inventory:
-            # a list to make checking for contents easier
-            item_list = (item_1, item_2)
 
-            # item crafting results
-            if "" in item_list and "" in item_list:
-                self.inventory.remove(item_1)
-                self.inventory.remove(item_2)
-                self.inventory.append("")
-                print("Replace me!")
-                return True
+            # to do: add combinable items
+            if 0:
+                pass
             # no matches found
             else:
                 print(f"I can't combine {item_1} and {item_2}.")
-                return False
 
         # No matching items found
         else:
             print("I don't have all I need.")
-            return False
 
     # looking at map
     def look_player_map(self):
