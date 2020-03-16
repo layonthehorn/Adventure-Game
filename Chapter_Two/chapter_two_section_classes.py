@@ -3,7 +3,7 @@ import pprint
 import random
 import Chapter_Two.chapter_two_room_classes as rooms
 import Chapter_Two.chapter_two_npc_classes as npc
-from Chapter_Two.exception_class import LocationError, NPCLocationError, ChangeSectionError, RedundantMoveError
+from Chapter_Two.exception_class import LocationError, NPCLocationError, ChangeSectionError, RedundantMoveError, MapMatchError
 
 
 # Player Class
@@ -13,6 +13,18 @@ class PlayerClass:
     # class variables for print formatting
     bold = '''\033[1m'''
     end = '''\033[0;0m'''
+
+    # dictionaries used for formatting the maps
+    map_dict = {"inn": {"IE": "inn entrance", "IR": "inn room"},
+                "town": {"TC": "town center", "TB": "bar", "GS": "general store", "BH": "bath house", "GH": "gate house"},
+                "ruins": {"RH": "ruined house", "RG": "ruined garage", "RO": "ruined office", "RS": "ruined street"},
+                "tower": {"TP": "tower peak", "TE": "tower entrance"},
+                "mansion": {"MF": "foyer", "MK": "kitchen", "HW": "hallway", "SR": "sun room", "LR": "living room"},
+                "gardens": {},
+                "cellar": {"LB": "lab", "WC": "wine casks", "CE": "cellar entrance"},
+                "gen back rooms": {"WR": "work room", "FR": "freezer", "WS": "weapon storage", "GS": "general storage"},
+                "upstairs": {"BR": "break room", "MO": "manager office", "GB": "balcony", },
+                }
 
     # accepted locations where you can go
     accepted_locations = (
@@ -58,7 +70,6 @@ class PlayerClass:
         self.__score = 0
         self.player_wallet = 0
         self.places = []
-        self.map_dictionary = {}
 
         self.item_dictionary = {"music sheet": "A piece of sheet music. Maybe someone would want this?",
                                 "fish": "A tasty fish for testing only.",
@@ -235,6 +246,16 @@ class PlayerClass:
     # looking at map
     def look_player_map(self):
         print("Let me check my map.\n*Map crinkling sounds.*")
+        places = []
+        map_dict = self.map_dict.get(self.section)
+        for map_icon in map_dict:
+            if map_dict.get(map_icon) == self.location:
+                places.append("@@")
+                player_room = map_icon
+            elif map_icon is None:
+                raise LocationError(map_icon)
+            else:
+                places.append(map_icon)
         time.sleep(1.5)
         if self.section == "town":
             print("""
@@ -244,14 +265,14 @@ class PlayerClass:
                                                    |Legend:             |
                                                    |                    |
                                                    |Ruins Area:      RA |
-                      TB TI                        |Mansion Area:    MA |
+                      TB IA                        |Mansion Area:    MA |
                       ||//                         |Back Rooms Area: BA |
                   RA--TC--GH--MA                   |Town Center:     TC |
                       ||\\\\                         |Town Bar:        TB |
                       GS BH                        |General Store:   GS |
                      //                            |Bath House:      BH |
                      BA                            |Gate House:      GH |
-                                                   |Town Inn:        TI |
+                                                   |Inn Area:        IA |
                                                    |You: @@ in room  ?? |
                                                    +--------------------+ 
               """)
@@ -377,7 +398,8 @@ class PlayerClass:
                                                    +--------------------+
               """)
         else:
-            print("Error no match location found.")
+            # IF I fail to find a matching map section
+            raise MapMatchError(self.section)
 
     # looking at self
     def look_self(self):
@@ -585,6 +607,13 @@ class RoomSystem:
                 print("You wake up feeling rested.")
                 print(self.clock)
                 self.player.sleep = False
+
+        # moves player out of the general store
+        if (2000 <= self.clock.timer <= 2500 or 0 <= self.clock.timer <= 800) and (self.player.location == "general store" or self.player.section == "gen back rooms"):
+
+            print("Looks like the store is closing. I'll have to leave for the night.")
+            time.sleep(1)
+            self.player.location = "town center"
 
         # To Do: random events
         # if one is triggered will not happen again until 25 turns have passed

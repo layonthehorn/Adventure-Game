@@ -39,3 +39,9 @@ class RedundantMoveError(Error):
     """For if a NPC or player tries to move to the same room they are in already."""
     def __init__(self, name):
         super().__init__(f"Tried to move {name} to same room as they are in.")
+
+
+class MapMatchError(Error):
+    """If can not find a matching map for player section."""
+    def __init__(self, name):
+        super().__init__(f"Missing map for {name}.")
