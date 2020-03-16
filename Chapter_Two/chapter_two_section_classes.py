@@ -247,80 +247,82 @@ class PlayerClass:
     def look_player_map(self):
         print("Let me check my map.\n*Map crinkling sounds.*")
         places = []
+        # should never see a XX on map
+        player_room = "XX"
         map_dict = self.map_dict.get(self.section)
         for map_icon in map_dict:
             if map_dict.get(map_icon) == self.location:
                 places.append("@@")
                 player_room = map_icon
-            elif map_icon is None:
-                raise LocationError(map_icon)
             else:
                 places.append(map_icon)
+        if "@@" not in places and "XX" in places:
+            raise LocationError(self.location)
         time.sleep(1.5)
         if self.section == "town":
-            print("""
+            print(f"""
                                                    +--------------------+
                                                    |     Town Area      |
                                                    +--------------------+     
                                                    |Legend:             |
                                                    |                    |
                                                    |Ruins Area:      RA |
-                      TB IA                        |Mansion Area:    MA |
+                      {places[1]} IA                        |Mansion Area:    MA |
                       ||//                         |Back Rooms Area: BA |
-                  RA--TC--GH--MA                   |Town Center:     TC |
+                  RA--{places[0]}--{places[4]}--MA                   |Town Center:     TC |
                       ||\\\\                         |Town Bar:        TB |
-                      GS BH                        |General Store:   GS |
+                      {places[2]} {places[3]}                        |General Store:   GS |
                      //                            |Bath House:      BH |
                      BA                            |Gate House:      GH |
                                                    |Inn Area:        IA |
-                                                   |You: @@ in room  ?? |
+                                                   |You: @@ in room  {player_room} |
                                                    +--------------------+ 
               """)
         elif self.section == "ruins":
-            print("""
+            print(f"""
                                                    +--------------------+
                                                    |     Ruins Area     |
                                                    +--------------------+
-                      RO                           |Legend:             |
+                      {places[2]}                           |Legend:             |
                       ||                           |                    |
-                      RS--TA                       |Town Area:       TA |
+                      {places[3]}--TA                       |Town Area:       TA |
                       ||\\\\                         |Upstairs Area:   UA |
-                  UA--MA RH                        |Ruined House:    RH |
+                  UA--{places[1]} {places[0]}                        |Ruined House:    RH |
                                                    |Ruined Garage:   RG |
                                                    |Ruined Office:   RO |
                                                    |Ruined Street:   RS |
-                                                   |You: @@ in room  ?? |
+                                                   |You: @@ in room  {player_room} |
                                                    +--------------------+
               """)
         elif self.section == "tower":
-            print("""
+            print(f"""
                                                    +--------------------+
                                                    |     Tower Area     |
                                                    +--------------------+
-                      TP                           |Legend:             |
+                      {places[0]}                           |Legend:             |
                       ||                           |                    |
-                      TE                           |Mansion Area:    MA |
+                      {places[1]}                           |Mansion Area:    MA |
                       ||                           |Tower Peak:      TP |
                       MA                           |Tower Entrance:  TE |
-                                                   |You: @@ in room  ?? |
+                                                   |You: @@ in room  {player_room} |
                                                    +--------------------+
               """)
         elif self.section == "mansion":
-            print("""
+            print(f"""
                                                    +--------------------+
                                                    |    Mansion Area    |
                                                    +--------------------+
                                                    |Legend:             |
                       MT                           |                    |
                       ||                           |Town Area:       TA |
-                      SR  LR                       |Mansion Tower:   MT |
+                      {places[3]}  {places[4]}                       |Mansion Tower:   MT |
                       ||  ||                       |Garden Area:     GA |
-                  TA--MF--HW--GA                   |Mansion Foyer:   MF |
+                  TA--{places[0]}--{places[2]}--GA                   |Mansion Foyer:   MF |
                       ||                           |Mansion Kitchen: MK |
-                      MK                           |Hallway:         HW |
+                      {places[1]}                           |Hallway:         HW |
                       ||                           |Sun Room:        SR |
                       CA                           |Living Room:     LR |
-                                                   |You: @@ in room  ?? |
+                                                   |You: @@ in room  {player_room} |
                                                    +--------------------+
               """)
         elif self.section == "gardens":
@@ -342,59 +344,60 @@ class PlayerClass:
                                                    +--------------------+
               """)
         elif self.section == "cellar":
-            print("""
+            print(f"""
                                                    +--------------------+
                                                    |    Cellar Area     |
                                                    +--------------------+
                                                    |Legend:             |
                       MA                           |                    |
                       ||                           |Mansion Area:    MA |
-                      CE--LB                       |Lab:             LB |
+                      {places[2]}--{places[0]}                       |Lab:             LB |
                       ||                           |Wine Casks:      WC |
-                      WC                           |Cellar Entrance: CE |
-                                                   |You: @@ in room  ?? |
+                      {places[1]}                           |Cellar Entrance: CE |
+                                                   |You: @@ in room  {player_room} |
                                                    +--------------------+
               """)
         elif self.section == "gen back rooms":
-            print("""
+            print(f"""
                                                    +--------------------+
                                                    |  Back Rooms Area   |
                                                    +--------------------+
                         TA                         |Legend:             |
                        //                          |                    |
-              WS--WR--GS                           |Town Area:       TA |
+              {places[2]}--{places[0]}--{places[3]}                           |Town Area:       TA |
                     \\\\||                           |General Storage: GS |
-                      FR                           |Work Room:       WR |
+                      {places[1]}                           |Work Room:       WR |
                                                    |Freezer:         FR |
                                                    |Weapons Storage: WS |
-                                                   |You: @@ in room  ?? |
+                                                   |You: @@ in room  {player_room} |
                                                    +--------------------+
               """)
         elif self.section == "upstairs":
-            print("""
+            print(f"""
                                                    +--------------------+
                                                    |   Upstairs Area    |
                                                    +--------------------+
                                                    |Legend:             |
                                                    |                    |
-                   MO-BR-RA                        |Ruins Area:      RA |
+                   {places[1]}-{places[0]}-RA                        |Ruins Area:      RA |
                     \\\\//                           |Break Room:      BR |
-                     GB                            |Managers Office: MO |
+                     {places[2]}                            |Managers Office: MO |
                                                    |Garage Balcony:  GB |
-                                                   |You: @@ in room  ?? |
+                                                   |You: @@ in room  {player_room} |
                                                    +--------------------+
               """)
         elif self.section == "inn":
-            print("""
+            # dynamic map
+            print(f"""
                                                    +--------------------+
                                                    |      Inn Area      |
                                                    +--------------------+
                        TA                          |Legend:             |
                        ||                          |                    |
-                       IE--IR                      |Town Area:       TA |
+                       {places[0]}--{places[1]}                      |Town Area:       TA |
                                                    |Inn Entrance:    IE |
                                                    |Inn Room:        IR |
-                                                   |You: @@ in room  ?? |
+                                                   |You: @@ in room  {player_room} |
                                                    +--------------------+
               """)
         else:
