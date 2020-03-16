@@ -421,6 +421,8 @@ class Johnson(NPC):
 
     def look_npc(self):
         print("It's Johnson. I hope he's not too sore about the money thing...")
+        if self.home_room == "town center":
+            print("I need to figure out a place for us to stay.")
 
 
 class Katie(NPC):
@@ -496,13 +498,15 @@ class Katie(NPC):
                 if self.follow:
                     print("OK! I'm right behind you.")
                 else:
-                    print("Ok, I'll head back to the town center!")
+                    print(f"Ok, I'll head back to the {self.home_room}!")
             elif choice == "hug":
                 print("You share a large hug and feel much better.")
 
     def look_npc(self):
         print("It's my wonderful daughter Katie. She's wearing that lion tail I found in the mall."
               "\nI adore her in every way. I can't wait to see how she grows up.")
+        if self.home_room == "town center":
+            print("I need a safe place for her. I can't have her spend the night outside.")
 
 
 class CollectorFelilian(NPC):

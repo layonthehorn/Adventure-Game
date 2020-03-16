@@ -1,5 +1,6 @@
 import time
 import pprint
+import random
 import Chapter_Two.chapter_two_room_classes as rooms
 import Chapter_Two.chapter_two_npc_classes as npc
 from Chapter_Two.exception_class import LocationError, NPCLocationError, ChangeSectionError, RedundantMoveError
@@ -42,6 +43,7 @@ class PlayerClass:
         self.inventory = ["self"]
         self.debug = debug
         self.sleep = False
+        self.bathed = False
         self.name = "Vern MacCaster"
         # neg
         self.buy_item_values = {"fish": -5,
@@ -54,7 +56,7 @@ class PlayerClass:
         self.__section = "town"
         self.changed_location = True
         self.__score = 0
-        self.player_wallet = 10
+        self.player_wallet = 0
         self.places = []
         self.map_dictionary = {}
 
@@ -380,6 +382,12 @@ class PlayerClass:
     # looking at self
     def look_self(self):
         print("A nervous lion is what you are. Somehow still alive but for how long? Hopefully long enough.")
+        if not self.bathed:
+            print(random.choice(["I could really use a good clean up.",
+                                 "I'm covered in filth from traveling. I better find somewhere to clean myself up.",
+                                 "My mane needs a good clean up and brush."]))
+        else:
+            print("I'm looking a lot nicer than when I came here.")
 
 
 class TimeKeeper:
@@ -449,6 +457,7 @@ class RoomSystem:
         # room update trackers
         self.room_rented = False
         self.random_counter = 0
+        self.player_bathed = False
 
         self.player = player
         self.clock = TimeKeeper()
