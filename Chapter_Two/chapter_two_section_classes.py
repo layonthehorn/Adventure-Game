@@ -523,7 +523,7 @@ class RoomSystem:
 
         # inn rooms
         self.inn_entrance = rooms.InnEntrance(player)
-        self.inn_room = rooms.InnRoom(player)
+        self.inn_room = rooms.InnRoom(player, self.clock)
 
         # Loading NPCs
         self.scavenger = npc.ScavengerNPC(self.clock, player)

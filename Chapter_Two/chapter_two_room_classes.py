@@ -1014,13 +1014,14 @@ class InnEntrance(FunctionClass):
 
 
 class InnRoom(FunctionClass):
-    def __init__(self, player_object):
+    def __init__(self, player_object, timer):
         self.inventory = []
+        self.clock = timer
         self.player = player_object
 
         # ghost quest stuff
         self.ghost_found = False
-        self.ghost_solved = True
+        self.ghost_solved = False
 
         self.bool_one, self.bool_two, self.bool_three = (False, False, False)
         self.look_dict = {"room": self.print_description_room,
@@ -1044,9 +1045,39 @@ class InnRoom(FunctionClass):
             print("I hope I don't run into anything else ghostly.")
 
     def operate_inn_bed(self):
-        print("It's time for a good sleep.")
-        simulation_faker()
-        self.player.sleep = True
+        if self.clock.timer >= 1800:
+            print("It's time for a good sleep.")
+            sleep_action = self.random_sleep_event()
+            sleep_action()
+            self.player.sleep = True
+        else:
+            print("It's too early to go to bed right now.")
 
     def go_inn_entrance(self):
         self.player.location = "inn entrance"
+
+    # TO DO: will allow random events to play when sleeping
+    def random_sleep_event(self):
+        rand_num = random.randint(0, 100)
+        if not self.ghost_found:
+            # find ghost function
+            return self.find_ghost
+        elif "some item" in self.player.inventory:
+            # solve ghost puzzle function
+            return self.solve_ghost
+        # ten percent chance to happen
+        elif -1 < rand_num < 10:
+            return simulation_faker
+        # ten percent chance to happen
+        elif 10 < rand_num < 20:
+            return simulation_faker
+        else:
+            return simulation_faker
+
+    def solve_ghost(self):
+        self.ghost_solved = True
+        print("Ghost solve puzzle here")
+
+    def find_ghost(self):
+        self.ghost_found = True
+        print("Ghost encounter here")
