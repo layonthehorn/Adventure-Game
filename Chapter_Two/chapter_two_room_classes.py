@@ -18,7 +18,6 @@ def clear():
 def simulation_faker():
     percent = 0
     progress = ""
-    time.sleep(2)
     clear()
     while len(progress) < 11:
         print(f"Simulating world: [{progress:<10}] {percent}%")
@@ -431,7 +430,7 @@ class RuinedStreet(FunctionClass):
 
         self.inventory = []
         self.player = player_object
-        self.bool_one, self.bool_two, self.bool_three = (False, False, False)
+        self.office_opened, self.bool_two, self.bool_three = (False, False, False)
 
         self.shop_inventory = []
         self.look_dict = {"room": self.print_description_room}
@@ -459,7 +458,10 @@ class RuinedStreet(FunctionClass):
         self.player.location = "ruined garage"
 
     def go_ruined_office(self):
-        self.player.location = "ruined office"
+        if not self.office_opened:
+            print("It's blocked. I'll have to figure out how to clear it first.")
+        else:
+            self.player.location = "ruined office"
 
 
 class RuinedOffice(FunctionClass):
@@ -1045,8 +1047,9 @@ class InnRoom(FunctionClass):
             print("I hope I don't run into anything else ghostly.")
 
     def operate_inn_bed(self):
-        if self.clock.timer >= 1800:
+        if self.clock.timer >= 1800 or self.clock.timer <= 700:
             print("It's time for a good sleep.")
+            time.sleep(2)
             sleep_action = self.random_sleep_event()
             sleep_action()
             self.player.sleep = True
@@ -1066,18 +1069,29 @@ class InnRoom(FunctionClass):
             # solve ghost puzzle function
             return self.solve_ghost
         # ten percent chance to happen
-        elif -1 < rand_num < 10:
+        elif 0 <= rand_num < 10:
             return simulation_faker
         # ten percent chance to happen
-        elif 10 < rand_num < 20:
+        elif 10 <= rand_num < 20:
+            return simulation_faker
+        # five percent chance to happen
+        elif 20 <= rand_num < 25:
             return simulation_faker
         else:
             return simulation_faker
 
     def solve_ghost(self):
         self.ghost_solved = True
-        print("Ghost solve puzzle here")
+        print("Ghost solve puzzle here.")
 
     def find_ghost(self):
         self.ghost_found = True
-        print("Ghost encounter here")
+        print("Please, listen to me. A voice echos to you as you lay in bed.")
+        time.sleep(.5)
+        clear()
+        print("I need you to find my lost family's heirloom."
+              "\nIt's a white mostly see through spirit, your heart races in your chest.")
+        time.sleep(.5)
+        clear()
+        print("Please... Search my office..."
+              "\nThe spirit fades away and you are left wondering if you really did hear what you thought you did.")

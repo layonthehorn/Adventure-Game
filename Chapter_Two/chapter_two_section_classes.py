@@ -479,6 +479,7 @@ class RoomSystem:
         # room update trackers
         self.room_booleans = {"room rented": False,
                               "player bathed": False,
+                              "office opened": False,
 
                               # first entry events
                               "gen work room": False
@@ -605,7 +606,7 @@ class RoomSystem:
 
     def time_wait_events(self):
         # checks if it is your first time
-        self.first_entered_events()
+
 
         # will allow time to pass when you sleep or preform some actions
         if self.player.sleep:
@@ -633,13 +634,6 @@ class RoomSystem:
             else:
                 self.random_counter -= 1
 
-        # updates the game rooms if you rent a room
-        if self.inn_keeper.room_rented and not self.room_booleans["room rented"]:
-            self.katie.home_room = "inn room"
-            self.johnson.home_room = "inn room"
-            self.inn_entrance.room_rented = True
-            self.room_booleans["room rented"] = True
-
     # starts the NPCs where they should be
     def set_up_npc(self):
         for name in self.npc_roster:
@@ -656,7 +650,12 @@ class RoomSystem:
 
     # moves NPCs around or removes them from the world
     def npc_movement_checker(self):
+        # sleeping event checker
         self.time_wait_events()
+        # cross room changes checker
+        self.cross_room_changes()
+        # checks for special events
+        self.first_entered_events()
         npc_deletion = []
         # checks each NPC that can move
         for name in self.npc_roster:
@@ -713,6 +712,19 @@ class RoomSystem:
                 print("As you enter the room an odd looking animal grabs the tool bag and leaps out a window."
                       "\nDamn it. Now how am I going to get that machine fixed? I need to find that creature.")
                 self.room_booleans["gen work room"] = True
+
+    def cross_room_changes(self):
+        # updates the game rooms if you rent a room
+        if self.inn_keeper.room_rented and not self.room_booleans["room rented"]:
+            self.katie.home_room = "inn room"
+            self.johnson.home_room = "inn room"
+            self.inn_entrance.room_rented = True
+            self.room_booleans["room rented"] = True
+
+        # opens the office if you find the ghost
+        if self.inn_room.ghost_found and not self.room_booleans["office opened"]:
+            self.room_booleans["office opened"] = True
+            self.street.office_opened = True
 
     # allows debugging of NPCs
     def debug_npc(self):
