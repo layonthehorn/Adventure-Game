@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/python3
 from Chapter_One.chapter_one import ChapterOne
 from Chapter_Two.chapter_two import ChapterTwo
 import os

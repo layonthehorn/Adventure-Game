@@ -4,13 +4,10 @@ import glob
 
 # This in built to count how many lines of code I have built
 # Will be removed when testing and building is finished.
-
 total_lines = 0
 pwd = os.getcwd()
-chapter_one_dir = os.path.join(pwd, "Chapter_One/*.py")
-chapter_one_files = glob.glob(chapter_one_dir)
-chapter_two_dir = os.path.join(pwd, "Chapter_Two/*.py")
-chapter_two_files = glob.glob(chapter_two_dir)
+chapter_one_files = glob.glob(os.path.join(pwd, "Chapter_One/*.py"))
+chapter_two_files = glob.glob(os.path.join(pwd, "Chapter_Two/*.py"))
 main_file = os.path.join(pwd, "Vern_Adventures.py")
 
 with open(main_file, "r") as file:
