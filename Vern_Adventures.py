@@ -30,7 +30,7 @@ operating = platform.system()
 if (operating == 'Linux' or operating == "Darwin") and not ('ANDROID_ARGUMENT' in environ or 'ANDROID_STORAGE' in environ):
     print("Found Linux or Mac.")
     # save location and clear if on linux or mac
-    save_dir = f"/home/{getpass.getuser()}/Documents/vern_saves"
+    save_dir = f"/home/{getpass.getuser()}/.config/vern_saves"
     def clear(): os.system("clear")
 
 elif operating == 'Windows':

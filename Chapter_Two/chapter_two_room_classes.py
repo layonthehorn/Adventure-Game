@@ -338,7 +338,7 @@ class TownGenStore(FunctionClass):
         if len(self.shop_inventory) > 0:
             print("Looks like there are things to buy.")
         else:
-            print("He's all sold out of things I'd want.")
+            print("She's all sold out of things I'd want.")
 
     def go_town_center(self):
         self.player.location = "town center"
