@@ -1,7 +1,3 @@
-# Note: This is an older version of my adventure game that I have reuploaded with a proper license. https://github.com/layonthehorn/text_adventure_game
-
-
-
 # Adventure-Game
 A WIP adventure game built in python.
 
